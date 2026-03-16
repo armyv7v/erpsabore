@@ -1,6 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
-import { Store, LayoutDashboard, Wallet, Package, Users, FileText } from 'lucide-react';
+import { Store, LayoutDashboard, Wallet, Package, Users, FileText, Briefcase, UserCog, LineChart, ArrowRightLeft, PieChart } from 'lucide-react';
 
 export default function Sidebar() {
   return (
@@ -12,7 +12,8 @@ export default function Sidebar() {
         <span className="text-xl font-bold tracking-tight">PymeSync</span>
       </div>
       
-      <nav className="flex-1 px-4 space-y-2 mt-4">
+      <nav className="flex-1 px-4 space-y-2 mt-4 overflow-y-auto">
+        <div className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2 mt-4 px-2">Principal</div>
         <Link href="/" className="flex items-center gap-3 p-3 bg-primary/10 text-primary rounded-xl font-medium">
           <LayoutDashboard className="w-5 h-5" />
           Inicio
@@ -29,9 +30,37 @@ export default function Sidebar() {
           <Users className="w-5 h-5" />
           CRM
         </Link>
+        
+        <div className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2 mt-6 px-2">Finanzas</div>
         <Link href="/facturacion" className="flex items-center gap-3 p-3 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl transition-colors">
           <FileText className="w-5 h-5" />
           Facturación
+        </Link>
+        <Link href="/finanzas/flujo-caja" className="flex items-center gap-3 p-3 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl transition-colors">
+          <LineChart className="w-5 h-5" />
+          Flujo de Caja
+        </Link>
+        <Link href="/finanzas/conciliacion" className="flex items-center gap-3 p-3 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl transition-colors">
+          <ArrowRightLeft className="w-5 h-5" />
+          Conciliación
+        </Link>
+        <Link href="/finanzas/estado-resultados" className="flex items-center gap-3 p-3 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl transition-colors">
+          <PieChart className="w-5 h-5" />
+          Estado de Resultados
+        </Link>
+
+        <div className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2 mt-6 px-2">Administración</div>
+        <Link href="/empleados" className="flex items-center gap-3 p-3 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl transition-colors">
+          <Briefcase className="w-5 h-5" />
+          Empleados
+        </Link>
+        <Link href="/sucursales" className="flex items-center gap-3 p-3 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl transition-colors">
+          <Store className="w-5 h-5" />
+          Sucursales
+        </Link>
+        <Link href="/usuarios" className="flex items-center gap-3 p-3 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl transition-colors">
+          <UserCog className="w-5 h-5" />
+          Usuarios
         </Link>
       </nav>
 
