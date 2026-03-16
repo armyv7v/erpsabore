@@ -1,6 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
-import { Store, LayoutDashboard, Wallet, Package, Users, FileText, Briefcase, UserCog, LineChart, ArrowRightLeft, PieChart } from 'lucide-react';
+import { Store, LayoutDashboard, Wallet, Package, Users, FileText, Briefcase, UserCog, LineChart, ArrowRightLeft, PieChart, Grid2X2, Truck, PackageOpen } from 'lucide-react';
 
 export default function Sidebar() {
   return (
@@ -26,11 +26,25 @@ export default function Sidebar() {
           <Package className="w-5 h-5" />
           Inventario
         </Link>
+        <Link href="/catalogo" className="flex items-center gap-3 p-3 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl transition-colors">
+          <Grid2X2 className="w-5 h-5" />
+          Catálogo
+        </Link>
         <Link href="/crm" className="flex items-center gap-3 p-3 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl transition-colors">
           <Users className="w-5 h-5" />
           CRM
         </Link>
         
+        <div className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2 mt-6 px-2">Operaciones</div>
+        <Link href="/proveedores" className="flex items-center gap-3 p-3 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl transition-colors">
+          <Truck className="w-5 h-5" />
+          Proveedores
+        </Link>
+        <Link href="/despachos" className="flex items-center gap-3 p-3 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl transition-colors">
+          <PackageOpen className="w-5 h-5" />
+          Despachos
+        </Link>
+
         <div className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2 mt-6 px-2">Finanzas</div>
         <Link href="/facturacion" className="flex items-center gap-3 p-3 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl transition-colors">
           <FileText className="w-5 h-5" />
