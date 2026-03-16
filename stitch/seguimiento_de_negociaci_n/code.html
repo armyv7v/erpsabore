@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>CRM Deal Activity - Acme Corp Expansion</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#ec5b13",
+                        "background-light": "#f8f6f6",
+                        "background-dark": "#221610",
+                    },
+                    fontFamily: {
+                        "display": ["Public Sans"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        body { font-family: 'Public Sans', sans-serif; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 font-display">
+<div class="relative flex min-h-screen w-full flex-col overflow-x-hidden">
+<!-- Header Section -->
+<header class="sticky top-0 z-10 border-b border-primary/10 bg-background-light/80 backdrop-blur-md dark:bg-background-dark/80">
+<div class="flex items-center p-4 justify-between">
+<div class="flex items-center gap-3">
+<div class="text-primary cursor-pointer">
+<span class="material-symbols-outlined">arrow_back</span>
+</div>
+<div>
+<h2 class="text-lg font-bold leading-tight tracking-tight">Acme Corp Expansion</h2>
+<p class="text-xs text-slate-500 dark:text-slate-400 font-medium">Deal Value: $145,000 • Stage: Proposal</p>
+</div>
+</div>
+<div class="flex items-center gap-2">
+<button class="flex items-center justify-center rounded-xl h-10 w-10 bg-primary/10 text-primary">
+<span class="material-symbols-outlined">share</span>
+</button>
+<button class="flex items-center justify-center rounded-xl h-10 w-10 bg-transparent text-slate-600 dark:text-slate-300">
+<span class="material-symbols-outlined">more_vert</span>
+</button>
+</div>
+</div>
+<!-- Tab Navigation -->
+<div class="flex border-b border-primary/5 px-4 gap-8">
+<a class="flex flex-col items-center justify-center border-b-2 border-primary text-primary pb-3 pt-2" href="#">
+<p class="text-sm font-bold">Activity</p>
+</a>
+<a class="flex flex-col items-center justify-center border-b-2 border-transparent text-slate-500 dark:text-slate-400 pb-3 pt-2" href="#">
+<p class="text-sm font-medium">Details</p>
+</a>
+<a class="flex flex-col items-center justify-center border-b-2 border-transparent text-slate-500 dark:text-slate-400 pb-3 pt-2" href="#">
+<p class="text-sm font-medium">Contacts</p>
+</a>
+<a class="flex flex-col items-center justify-center border-b-2 border-transparent text-slate-500 dark:text-slate-400 pb-3 pt-2" href="#">
+<p class="text-sm font-medium">Files</p>
+</a>
+</div>
+</header>
+<main class="flex-1 flex flex-col p-4 gap-6 max-w-4xl mx-auto w-full pb-24">
+<!-- Quick Action: Log New Activity -->
+<section class="bg-white dark:bg-slate-900 rounded-xl p-5 shadow-sm border border-primary/5">
+<h3 class="text-base font-bold mb-4">Log New Activity</h3>
+<div class="flex mb-4">
+<div class="flex h-11 flex-1 items-center justify-center rounded-xl bg-slate-100 dark:bg-slate-800 p-1">
+<label class="flex cursor-pointer h-full grow items-center justify-center rounded-lg px-2 has-[:checked]:bg-white dark:has-[:checked]:bg-slate-700 has-[:checked]:shadow-sm has-[:checked]:text-primary text-slate-500 text-sm font-semibold transition-all">
+<span class="material-symbols-outlined text-sm mr-2">call</span>
+<span class="truncate">Call</span>
+<input checked="" class="hidden" name="activity_type" type="radio" value="Call"/>
+</label>
+<label class="flex cursor-pointer h-full grow items-center justify-center rounded-lg px-2 has-[:checked]:bg-white dark:has-[:checked]:bg-slate-700 has-[:checked]:shadow-sm has-[:checked]:text-primary text-slate-500 text-sm font-semibold transition-all">
+<span class="material-symbols-outlined text-sm mr-2">groups</span>
+<span class="truncate">Meeting</span>
+<input class="hidden" name="activity_type" type="radio" value="Meeting"/>
+</label>
+<label class="flex cursor-pointer h-full grow items-center justify-center rounded-lg px-2 has-[:checked]:bg-white dark:has-[:checked]:bg-slate-700 has-[:checked]:shadow-sm has-[:checked]:text-primary text-slate-500 text-sm font-semibold transition-all">
+<span class="material-symbols-outlined text-sm mr-2">mail</span>
+<span class="truncate">Email</span>
+<input class="hidden" name="activity_type" type="radio" value="Email"/>
+</label>
+</div>
+</div>
+<div class="space-y-4">
+<div>
+<textarea class="w-full bg-slate-50 dark:bg-slate-800 border-none rounded-xl text-sm focus:ring-2 focus:ring-primary/50 placeholder:text-slate-400" placeholder="Add meeting notes or activity details..." rows="3"></textarea>
+</div>
+<div class="flex flex-col md:flex-row gap-3">
+<div class="flex-1">
+<label class="text-xs font-semibold text-slate-500 mb-1 block">Next Steps</label>
+<input class="w-full bg-slate-50 dark:bg-slate-800 border-none rounded-xl text-sm focus:ring-2 focus:ring-primary/50" placeholder="What happens next?" type="text"/>
+</div>
+<div class="w-full md:w-48">
+<label class="text-xs font-semibold text-slate-500 mb-1 block">Follow-up Date</label>
+<input class="w-full bg-slate-50 dark:bg-slate-800 border-none rounded-xl text-sm focus:ring-2 focus:ring-primary/50" type="date"/>
+</div>
+</div>
+<div class="flex justify-end pt-2">
+<button class="bg-primary text-white font-bold px-6 py-2.5 rounded-xl hover:bg-primary/90 transition-colors flex items-center gap-2">
+<span class="material-symbols-outlined text-base">save</span>
+                            Save Activity
+                        </button>
+</div>
+</div>
+</section>
+<!-- Timeline View -->
+<section class="flex flex-col gap-4">
+<div class="flex items-center justify-between">
+<h3 class="text-base font-bold">Activity Timeline</h3>
+<button class="text-primary text-xs font-bold flex items-center gap-1">
+<span class="material-symbols-outlined text-sm">filter_list</span>
+                        Filter
+                    </button>
+</div>
+<!-- Timeline Container -->
+<div class="relative space-y-6 before:absolute before:inset-0 before:ml-5 before:-translate-x-px md:before:mx-auto md:before:translate-x-0 before:h-full before:w-0.5 before:bg-gradient-to-b before:from-primary/20 before:via-primary/20 before:to-transparent">
+<!-- Item 1: Meeting -->
+<div class="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group is-active">
+<div class="flex items-center justify-center w-10 h-10 rounded-full border border-primary bg-white dark:bg-slate-900 text-primary shadow shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 z-10">
+<span class="material-symbols-outlined text-xl">groups</span>
+</div>
+<div class="w-[calc(100%-4rem)] md:w-[45%] p-4 rounded-xl bg-white dark:bg-slate-900 border border-primary/10 shadow-sm">
+<div class="flex items-center justify-between space-x-2 mb-1">
+<div class="font-bold text-slate-900 dark:text-slate-100">Project Kick-off Meeting</div>
+<time class="font-medium text-xs text-primary bg-primary/5 px-2 py-0.5 rounded-full">Today, 2:30 PM</time>
+</div>
+<div class="text-slate-500 dark:text-slate-400 text-sm mb-3 italic">"Reviewed initial requirements and timeline for the Q4 expansion. Client is keen on the sustainability features."</div>
+<div class="flex flex-wrap gap-2">
+<span class="bg-slate-100 dark:bg-slate-800 px-2 py-1 rounded text-[10px] font-bold uppercase tracking-wider text-slate-500">Next Step: Send Proposal</span>
+<span class="bg-slate-100 dark:bg-slate-800 px-2 py-1 rounded text-[10px] font-bold uppercase tracking-wider text-slate-500">Oct 24</span>
+</div>
+</div>
+</div>
+<!-- Item 2: Phone Call -->
+<div class="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group">
+<div class="flex items-center justify-center w-10 h-10 rounded-full border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-400 shadow shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 z-10">
+<span class="material-symbols-outlined text-xl">call</span>
+</div>
+<div class="w-[calc(100%-4rem)] md:w-[45%] p-4 rounded-xl bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 shadow-sm">
+<div class="flex items-center justify-between space-x-2 mb-1">
+<div class="font-bold">Follow-up Call</div>
+<time class="font-medium text-xs text-slate-400">Oct 20, 10:15 AM</time>
+</div>
+<p class="text-slate-600 dark:text-slate-400 text-sm">Brief discussion with John regarding budget approvals. He mentioned they might need an extra 5% for site prep.</p>
+</div>
+</div>
+<!-- Item 3: Email -->
+<div class="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group">
+<div class="flex items-center justify-center w-10 h-10 rounded-full border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-400 shadow shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 z-10">
+<span class="material-symbols-outlined text-xl">mail</span>
+</div>
+<div class="w-[calc(100%-4rem)] md:w-[45%] p-4 rounded-xl bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 shadow-sm">
+<div class="flex items-center justify-between space-x-2 mb-1">
+<div class="font-bold">Sent: Updated Case Study</div>
+<time class="font-medium text-xs text-slate-400">Oct 18, 4:50 PM</time>
+</div>
+<p class="text-slate-600 dark:text-slate-400 text-sm">Forwarded the retail expansion case study as requested. No response yet.</p>
+<div class="mt-2 flex items-center text-xs text-primary font-medium">
+<span class="material-symbols-outlined text-xs mr-1">attach_file</span>
+                                CaseStudy_Retail_V2.pdf
+                            </div>
+</div>
+</div>
+<!-- Item 4: Call -->
+<div class="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group">
+<div class="flex items-center justify-center w-10 h-10 rounded-full border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-400 shadow shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 z-10">
+<span class="material-symbols-outlined text-xl">call</span>
+</div>
+<div class="w-[calc(100%-4rem)] md:w-[45%] p-4 rounded-xl bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 shadow-sm">
+<div class="flex items-center justify-between space-x-2 mb-1">
+<div class="font-bold">Initial Discovery Call</div>
+<time class="font-medium text-xs text-slate-400">Oct 15, 9:00 AM</time>
+</div>
+<p class="text-slate-600 dark:text-slate-400 text-sm">First contact with Acme team. Identified core pain points in their logistics network.</p>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Bottom Navigation Bar -->
+<nav class="fixed bottom-0 left-0 right-0 z-20 flex bg-white/90 dark:bg-slate-900/90 backdrop-blur-lg border-t border-primary/10 px-4 pb-6 pt-2">
+<a class="flex flex-1 flex-col items-center justify-center gap-1 text-primary" href="#">
+<span class="material-symbols-outlined">handshake</span>
+<p class="text-[10px] font-bold uppercase tracking-wider">Deals</p>
+</a>
+<a class="flex flex-1 flex-col items-center justify-center gap-1 text-slate-400 hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined">check_box</span>
+<p class="text-[10px] font-bold uppercase tracking-wider">Tasks</p>
+</a>
+<a class="flex flex-1 flex-col items-center justify-center gap-1 text-slate-400 hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined">filter_list</span>
+<p class="text-[10px] font-bold uppercase tracking-wider">Pipeline</p>
+</a>
+<a class="flex flex-1 flex-col items-center justify-center gap-1 text-slate-400 hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined">more_horiz</span>
+<p class="text-[10px] font-bold uppercase tracking-wider">More</p>
+</a>
+</nav>
+</div>
+</body></html>

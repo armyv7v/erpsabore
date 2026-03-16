@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+
+<html lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Configuración de Empresa - ERP Chile</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#ec5b13",
+                        "background-light": "#f8f6f6",
+                        "background-dark": "#221610",
+                    },
+                    fontFamily: {
+                        "display": ["Public Sans"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: "Public Sans", sans-serif;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 min-h-screen">
+<!-- Top Navigation Bar -->
+<header class="sticky top-0 z-50 bg-white/80 dark:bg-background-dark/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-800">
+<div class="max-w-5xl mx-auto px-4 h-16 flex items-center justify-between">
+<div class="flex items-center gap-4">
+<button class="p-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full transition-colors">
+<span class="material-symbols-outlined text-slate-600 dark:text-slate-400">arrow_back</span>
+</button>
+<h1 class="text-xl font-bold tracking-tight">Configuración de Empresa</h1>
+</div>
+<div class="flex items-center gap-3">
+<button class="hidden sm:flex items-center gap-2 px-4 py-2 text-sm font-semibold text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors">
+                    Cancelar
+                </button>
+<button class="flex items-center gap-2 bg-primary hover:bg-primary/90 text-white px-5 py-2 rounded-lg font-bold shadow-lg shadow-primary/20 transition-all">
+<span class="material-symbols-outlined text-sm">check</span>
+<span>Guardar Cambios</span>
+</button>
+</div>
+</div>
+</header>
+<main class="max-w-5xl mx-auto px-4 py-8">
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+<!-- Sidebar Navigation/Info -->
+<div class="lg:col-span-1 space-y-6">
+<div class="bg-white dark:bg-slate-900/50 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
+<div class="flex items-center gap-4 mb-6">
+<div class="size-16 rounded-xl bg-primary/10 flex items-center justify-center text-primary overflow-hidden border border-primary/20">
+<span class="material-symbols-outlined text-3xl">corporate_fare</span>
+</div>
+<div>
+<h3 class="font-bold text-lg leading-tight">Perfil Corporativo</h3>
+<p class="text-sm text-slate-500 dark:text-slate-400">Actualiza la información legal de tu pyme.</p>
+</div>
+</div>
+<nav class="space-y-1">
+<a class="flex items-center gap-3 p-3 bg-primary/10 text-primary font-semibold rounded-lg" href="#">
+<span class="material-symbols-outlined">info</span>
+                            Información General
+                        </a>
+<a class="flex items-center gap-3 p-3 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined">receipt_long</span>
+                            Datos de Facturación
+                        </a>
+<a class="flex items-center gap-3 p-3 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined">group</span>
+                            Usuarios y Permisos
+                        </a>
+</nav>
+</div>
+<div class="p-6 rounded-xl bg-gradient-to-br from-primary to-orange-600 text-white shadow-xl">
+<h4 class="font-bold mb-2">¿Necesitas ayuda?</h4>
+<p class="text-sm opacity-90 mb-4">Si tienes dudas sobre el RUT o el Giro comercial según el SII, contacta a soporte.</p>
+<button class="w-full py-2 bg-white/20 hover:bg-white/30 backdrop-blur-md rounded-lg font-bold text-sm transition-colors">
+                        Hablar con un experto
+                    </button>
+</div>
+</div>
+<!-- Form Area -->
+<div class="lg:col-span-2">
+<div class="bg-white dark:bg-slate-900/50 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden">
+<div class="p-6 border-b border-slate-200 dark:border-slate-800">
+<h2 class="text-lg font-bold">Datos Legales</h2>
+<p class="text-sm text-slate-500 dark:text-slate-400">Estos datos aparecerán en tus facturas y documentos tributarios.</p>
+</div>
+<div class="p-6 space-y-6">
+<!-- Razon Social -->
+<div class="flex flex-col gap-2">
+<label class="text-sm font-semibold text-slate-700 dark:text-slate-300">Razón Social</label>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">business</span>
+<input class="w-full pl-11 pr-4 py-3 bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none text-slate-900 dark:text-slate-100" placeholder="Ej: Comercializadora y Distribuidora SpA" type="text"/>
+</div>
+</div>
+<!-- RUT and Giro Row -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<div class="flex flex-col gap-2">
+<label class="text-sm font-semibold text-slate-700 dark:text-slate-300">RUT</label>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">badge</span>
+<input class="w-full pl-11 pr-4 py-3 bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none" placeholder="12.345.678-9" type="text"/>
+</div>
+<p class="text-[10px] text-slate-400">Formato: XX.XXX.XXX-X</p>
+</div>
+<div class="flex flex-col gap-2">
+<label class="text-sm font-semibold text-slate-700 dark:text-slate-300">Giro Comercial</label>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">category</span>
+<input class="w-full pl-11 pr-4 py-3 bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none" placeholder="Venta al por menor..." type="text"/>
+</div>
+</div>
+</div>
+<!-- Address Section -->
+<div class="flex flex-col gap-2">
+<label class="text-sm font-semibold text-slate-700 dark:text-slate-300">Dirección Casa Matriz</label>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">location_on</span>
+<input class="w-full pl-11 pr-4 py-3 bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none" placeholder="Av. Providencia 1234, Oficina 501" type="text"/>
+</div>
+</div>
+<!-- Comuna and Region Row -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<div class="flex flex-col gap-2">
+<label class="text-sm font-semibold text-slate-700 dark:text-slate-300">Comuna</label>
+<select class="w-full px-4 py-3 bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none appearance-none">
+<option>Santiago</option>
+<option>Providencia</option>
+<option>Las Condes</option>
+<option>Viña del Mar</option>
+<option>Concepción</option>
+</select>
+</div>
+<div class="flex flex-col gap-2">
+<label class="text-sm font-semibold text-slate-700 dark:text-slate-300">Región</label>
+<select class="w-full px-4 py-3 bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none appearance-none">
+<option>Región Metropolitana</option>
+<option>Valparaíso</option>
+<option>Biobío</option>
+</select>
+</div>
+</div>
+<div class="pt-4 border-t border-slate-200 dark:border-slate-800">
+<div class="flex items-center gap-3 p-4 rounded-xl bg-primary/5 border border-primary/10">
+<span class="material-symbols-outlined text-primary">verified</span>
+<div>
+<p class="text-sm font-bold text-primary">Certificación SII Activa</p>
+<p class="text-xs text-primary/70">Tu empresa está habilitada para facturación electrónica.</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Form Footer -->
+<div class="p-6 bg-slate-50 dark:bg-slate-800/30 flex justify-end gap-3">
+<button class="px-6 py-2.5 rounded-xl font-bold text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors">
+                            Restablecer
+                        </button>
+<button class="px-8 py-2.5 bg-primary text-white rounded-xl font-bold shadow-lg shadow-primary/30 hover:scale-[1.02] active:scale-95 transition-all">
+                            Actualizar Datos
+                        </button>
+</div>
+</div>
+</div>
+</div>
+<!-- Extra Map/Location Visibility Section -->
+<div class="mt-8">
+<div class="bg-white dark:bg-slate-900/50 rounded-xl border border-slate-200 dark:border-slate-800 p-1 overflow-hidden h-64 relative group">
+<div class="absolute inset-0 bg-slate-200 dark:bg-slate-800 animate-pulse flex items-center justify-center">
+<img class="w-full h-full object-cover opacity-60 grayscale group-hover:grayscale-0 transition-all duration-700" data-alt="Modern map view of Santiago Chile district" data-location="Santiago, Chile" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBxEtOooY7jOmkXp3xJFjOboGXPhU0Gz3Jsv759YD6WLnVC6GvgNPXCRX8LYoUfoo0AeAd5vOM73kc0bEi90gydn-p7OLWsq7PET7Mp5-QyTGmlMdsw_APiyPQy1fYoqc0QO4AutOfROBOKAz34htf5wlJGtIMV-_ZWckR8EEuvQylOqfSrjzneutjqYAOD-uwiCuQDEvafnFwtwsCTIXIEWphuB5IceycXTGFdzohv_iBhypICKvmfKQUBTPrQVtKJFUqbdpP59Xk"/>
+</div>
+<div class="absolute bottom-6 left-6 bg-white dark:bg-slate-900 p-4 rounded-xl shadow-2xl border border-slate-200 dark:border-slate-800 max-w-xs">
+<div class="flex items-center gap-3">
+<div class="size-10 bg-primary/20 rounded-full flex items-center justify-center">
+<span class="material-symbols-outlined text-primary">location_on</span>
+</div>
+<div>
+<p class="text-xs font-bold uppercase tracking-wider text-slate-400">Ubicación Actual</p>
+<p class="text-sm font-semibold">Región Metropolitana, Chile</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<footer class="max-w-5xl mx-auto px-4 py-8 text-center">
+<p class="text-sm text-slate-400 dark:text-slate-600">
+            © 2024 ERP Pyme Chile. Todos los derechos reservados conforme a la normativa del SII.
+        </p>
+</footer>
+</body></html>

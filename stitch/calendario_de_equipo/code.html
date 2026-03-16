@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+
+<html class="light" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#ec5b13",
+                        "background-light": "#f8f6f6",
+                        "background-dark": "#221610",
+                    },
+                    fontFamily: {
+                        "display": ["Public Sans"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 min-h-screen pb-20">
+<header class="sticky top-0 z-10 bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-800">
+<div class="max-w-4xl mx-auto flex items-center justify-between p-4">
+<div class="flex items-center gap-3">
+<div class="bg-primary/10 p-2 rounded-lg">
+<span class="material-symbols-outlined text-primary">calendar_month</span>
+</div>
+<h1 class="text-xl font-bold tracking-tight">Vacaciones del Equipo</h1>
+</div>
+<button class="p-2 hover:bg-slate-200 dark:hover:bg-slate-800 rounded-full transition-colors">
+<span class="material-symbols-outlined">search</span>
+</button>
+</div>
+</header>
+<main class="max-w-4xl mx-auto p-4 space-y-6">
+<section class="bg-white dark:bg-slate-900/50 rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 overflow-hidden">
+<div class="flex items-center justify-between p-4 border-b border-slate-200 dark:border-slate-800">
+<button class="p-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full">
+<span class="material-symbols-outlined">chevron_left</span>
+</button>
+<h2 class="text-lg font-bold">Julio 2024</h2>
+<button class="p-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full">
+<span class="material-symbols-outlined">chevron_right</span>
+</button>
+</div>
+<div class="p-4">
+<div class="grid grid-cols-7 mb-2">
+<div class="text-center text-xs font-bold text-slate-500 uppercase py-2">Lun</div>
+<div class="text-center text-xs font-bold text-slate-500 uppercase py-2">Mar</div>
+<div class="text-center text-xs font-bold text-slate-500 uppercase py-2">Mié</div>
+<div class="text-center text-xs font-bold text-slate-500 uppercase py-2">Jue</div>
+<div class="text-center text-xs font-bold text-slate-500 uppercase py-2">Vie</div>
+<div class="text-center text-xs font-bold text-slate-500 uppercase py-2">Sáb</div>
+<div class="text-center text-xs font-bold text-slate-500 uppercase py-2">Dom</div>
+</div>
+<div class="grid grid-cols-7 gap-px bg-slate-100 dark:bg-slate-800 rounded-lg overflow-hidden border border-slate-100 dark:border-slate-800">
+<div class="bg-white dark:bg-slate-900 h-16 sm:h-24 p-1"><span class="text-xs text-slate-400">24</span></div>
+<div class="bg-white dark:bg-slate-900 h-16 sm:h-24 p-1"><span class="text-xs text-slate-400">25</span></div>
+<div class="bg-white dark:bg-slate-900 h-16 sm:h-24 p-1"><span class="text-xs text-slate-400">26</span></div>
+<div class="bg-white dark:bg-slate-900 h-16 sm:h-24 p-1"><span class="text-xs text-slate-400">27</span></div>
+<div class="bg-white dark:bg-slate-900 h-16 sm:h-24 p-1"><span class="text-xs text-slate-400">28</span></div>
+<div class="bg-white dark:bg-slate-900 h-16 sm:h-24 p-1"><span class="text-xs text-slate-400">29</span></div>
+<div class="bg-white dark:bg-slate-900 h-16 sm:h-24 p-1"><span class="text-xs text-slate-400">30</span></div>
+<div class="bg-white dark:bg-slate-900 h-16 sm:h-24 p-1 relative">
+<span class="text-xs font-medium">1</span>
+<div class="mt-1 h-1.5 w-full rounded-full bg-blue-400"></div>
+</div>
+<div class="bg-white dark:bg-slate-900 h-16 sm:h-24 p-1">
+<span class="text-xs font-medium">2</span>
+</div>
+<div class="bg-white dark:bg-slate-900 h-16 sm:h-24 p-1">
+<span class="text-xs font-medium">3</span>
+</div>
+<div class="bg-white dark:bg-slate-900 h-16 sm:h-24 p-1 border-2 border-primary rounded-sm">
+<span class="text-xs font-bold text-primary">4</span>
+<div class="mt-1 h-1.5 w-full rounded-full bg-green-400"></div>
+<div class="mt-0.5 h-1.5 w-full rounded-full bg-pink-400"></div>
+</div>
+<div class="bg-white dark:bg-slate-900 h-16 sm:h-24 p-1">
+<span class="text-xs font-medium">5</span>
+<div class="mt-1 h-1.5 w-full rounded-full bg-green-400"></div>
+</div>
+<div class="bg-slate-50 dark:bg-slate-800/50 h-16 sm:h-24 p-1">
+<span class="text-xs font-medium">6</span>
+</div>
+<div class="bg-slate-50 dark:bg-slate-800/50 h-16 sm:h-24 p-1">
+<span class="text-xs font-medium">7</span>
+</div>
+<div class="bg-white dark:bg-slate-900 h-16 sm:h-24 p-1">
+<span class="text-xs font-medium">8</span>
+<div class="mt-1 h-1.5 w-full rounded-full bg-yellow-400"></div>
+</div>
+<div class="bg-white dark:bg-slate-900 h-16 sm:h-24 p-1">
+<span class="text-xs font-medium">9</span>
+<div class="mt-1 h-1.5 w-full rounded-full bg-yellow-400"></div>
+</div>
+<div class="bg-white dark:bg-slate-900 h-16 sm:h-24 p-1">
+<span class="text-xs font-medium">10</span>
+</div>
+<div class="bg-white dark:bg-slate-900 h-16 sm:h-24 p-1">
+<span class="text-xs font-medium">11</span>
+<div class="mt-1 h-1.5 w-full rounded-full bg-blue-400"></div>
+</div>
+<div class="bg-white dark:bg-slate-900 h-16 sm:h-24 p-1">
+<span class="text-xs font-medium">12</span>
+<div class="mt-1 h-1.5 w-full rounded-full bg-blue-400"></div>
+</div>
+<div class="bg-slate-50 dark:bg-slate-800/50 h-16 sm:h-24 p-1">
+<span class="text-xs font-medium">13</span>
+</div>
+<div class="bg-slate-50 dark:bg-slate-800/50 h-16 sm:h-24 p-1">
+<span class="text-xs font-medium">14</span>
+</div>
+<div class="bg-white dark:bg-slate-900 h-16 sm:h-24 p-1">
+<span class="text-xs font-medium">15</span>
+<div class="flex flex-col gap-0.5">
+<div class="h-1.5 w-full rounded-full bg-pink-400"></div>
+<div class="h-1.5 w-full rounded-full bg-pink-400"></div>
+</div>
+</div>
+<div class="bg-white dark:bg-slate-900 h-16 sm:h-24 p-1">
+<span class="text-xs font-medium">16</span>
+<div class="h-1.5 w-full rounded-full bg-pink-400"></div>
+</div>
+<div class="bg-white dark:bg-slate-900 h-16 sm:h-24 p-1">
+<span class="text-xs font-medium">17</span>
+</div>
+<div class="bg-white dark:bg-slate-900 h-16 sm:h-24 p-1">
+<span class="text-xs font-medium">18</span>
+</div>
+<div class="bg-white dark:bg-slate-900 h-16 sm:h-24 p-1">
+<span class="text-xs font-medium">19</span>
+</div>
+<div class="bg-slate-50 dark:bg-slate-800/50 h-16 sm:h-24 p-1">
+<span class="text-xs font-medium">20</span>
+</div>
+<div class="bg-slate-50 dark:bg-slate-800/50 h-16 sm:h-24 p-1">
+<span class="text-xs font-medium">21</span>
+</div>
+</div>
+</div>
+</section>
+<section class="space-y-3">
+<h3 class="text-sm font-bold text-slate-500 uppercase tracking-wider px-1">Departamentos</h3>
+<div class="flex flex-wrap gap-3">
+<div class="flex items-center gap-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 py-2 px-3 rounded-lg shadow-sm">
+<div class="size-3 rounded-full bg-blue-400"></div>
+<span class="text-sm font-medium">IT</span>
+</div>
+<div class="flex items-center gap-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 py-2 px-3 rounded-lg shadow-sm">
+<div class="size-3 rounded-full bg-green-400"></div>
+<span class="text-sm font-medium">Ventas</span>
+</div>
+<div class="flex items-center gap-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 py-2 px-3 rounded-lg shadow-sm">
+<div class="size-3 rounded-full bg-pink-400"></div>
+<span class="text-sm font-medium">Diseño</span>
+</div>
+<div class="flex items-center gap-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 py-2 px-3 rounded-lg shadow-sm">
+<div class="size-3 rounded-full bg-yellow-400"></div>
+<span class="text-sm font-medium">RRHH</span>
+</div>
+</div>
+</section>
+<section class="space-y-4">
+<div class="flex items-center justify-between px-1">
+<h3 class="text-sm font-bold text-slate-500 uppercase tracking-wider">Fuera hoy (4 de Julio)</h3>
+<span class="bg-primary/10 text-primary text-xs font-bold px-2 py-1 rounded-full">3 personas</span>
+</div>
+<div class="grid gap-3">
+<div class="flex items-center gap-4 bg-white dark:bg-slate-900 p-3 rounded-xl shadow-sm border border-slate-200 dark:border-slate-800">
+<img alt="Avatar de Felix" class="size-12 rounded-full bg-slate-100 dark:bg-slate-800" data-alt="Portrait of a male employee with glasses" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCIjVTJ3bn8XqN59RxNpJ_1h1XNHB3JhexpJ8n7h3_hFnvWlxwvsSaks3gMTsiIgQRDYAplLsDM7eImuFc7H1tVbeiSMVGtBkQspCGJkfxQqwgc6lmtd6u64yzEKaU0c-Cm_dDP-8EnbMHPwWtYGV6VKFqRKOMURt45zLOohqBszBqTOslug6HpLiBnlOvmGxn2yl_wHeDwnDQFx7fOw6MXtEFfCGX9blgbem_nIhAtMT0AEICZsnYGKzarqzizx7t0NndnAAofdcE"/>
+<div class="flex-1">
+<p class="font-bold">Carlos Méndez</p>
+<p class="text-xs text-slate-500">Ventas • Regresa en 3 días</p>
+</div>
+<div class="bg-green-400/20 text-green-600 dark:text-green-400 text-[10px] font-bold px-2 py-1 rounded uppercase">Ventas</div>
+</div>
+<div class="flex items-center gap-4 bg-white dark:bg-slate-900 p-3 rounded-xl shadow-sm border border-slate-200 dark:border-slate-800">
+<img alt="Avatar de Aneka" class="size-12 rounded-full bg-slate-100 dark:bg-slate-800" data-alt="Portrait of a female employee with dark hair" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBbtkCw0ORorBR_lh7Z9pehh7Kg8BVQGWFVGWhLuVARH7lEz5uzuteQsVaU18Iz28bVGGIt7wiGdZ0WydizTkW5qRCh3LjF1t329uQKqXO2rO-LENlzAqqV311YNmIELP_JGt9FjlFhzlSn9ijJdP2eD-cnpHgZndR6qf_4C4UT9YQGLdu-oRdCjskZ0jWwtG1D9WzRf4hRJ6chYrLRBxMHWuejNcuWBsPwFznptZp5rxsduIEL0hoGnLt72C4hDZVAdxM3D40C3sg"/>
+<div class="flex-1">
+<p class="font-bold">Lucía Torres</p>
+<p class="text-xs text-slate-500">Diseño • Regresa mañana</p>
+</div>
+<div class="bg-pink-400/20 text-pink-600 dark:text-pink-400 text-[10px] font-bold px-2 py-1 rounded uppercase">Diseño</div>
+</div>
+<div class="flex items-center gap-4 bg-white dark:bg-slate-900 p-3 rounded-xl shadow-sm border border-slate-200 dark:border-slate-800">
+<img alt="Avatar de George" class="size-12 rounded-full bg-slate-100 dark:bg-slate-800" data-alt="Portrait of a male employee with a beard" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAcs-pdtQHfSZ9wuwi-Eb0UWqgvtkWs45PxxMH5-Y_x6dt6Iid7gJGYBpfkhbyIQLhqLcon1NPRSYKTt4dIikYXDB6L4mf4yDXC9UvZrbKTb70SpbhdXfVu4OeVh0MR-QY_cBoifNWNjPI8nHEp_UAqvSX5lDYDG_8yHP0b8JN1rDtQ7P4-liR2w05hGfOa2sXgUdxz0f2zkgyftWhzr-OeDBEj4ePC_DgRABNVSBGt2Z__4CoZcColDLr74mQei571HujBve4F-8Q"/>
+<div class="flex-1">
+<p class="font-bold">Jorge Ruiz</p>
+<p class="text-xs text-slate-500">Ventas • Regresa hoy</p>
+</div>
+<div class="bg-green-400/20 text-green-600 dark:text-green-400 text-[10px] font-bold px-2 py-1 rounded uppercase">Ventas</div>
+</div>
+</div>
+</section>
+</main>
+<nav class="fixed bottom-0 left-0 right-0 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-t border-slate-200 dark:border-slate-800 z-20">
+<div class="max-w-4xl mx-auto flex justify-around p-2">
+<a class="flex flex-col items-center gap-1 p-2 text-slate-400 hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined">home</span>
+<span class="text-[10px] font-medium">Inicio</span>
+</a>
+<a class="flex flex-col items-center gap-1 p-2 text-primary" href="#">
+<span class="material-symbols-outlined fill-1">calendar_month</span>
+<span class="text-[10px] font-medium">Calendario</span>
+</a>
+<a class="flex flex-col items-center gap-1 p-2 text-slate-400 hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined">group</span>
+<span class="text-[10px] font-medium">Equipo</span>
+</a>
+<a class="flex flex-col items-center gap-1 p-2 text-slate-400 hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined">account_circle</span>
+<span class="text-[10px] font-medium">Perfil</span>
+</a>
+</div>
+</nav>
+<button class="fixed bottom-24 right-6 size-14 bg-primary text-white rounded-full shadow-lg flex items-center justify-center hover:scale-105 active:scale-95 transition-transform">
+<span class="material-symbols-outlined text-3xl">add</span>
+</button>
+</body></html>

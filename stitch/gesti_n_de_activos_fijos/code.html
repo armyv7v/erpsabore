@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+
+<html lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#ec5b13",
+                        "background-light": "#f8f6f6",
+                        "background-dark": "#221610",
+                    },
+                    fontFamily: {
+                        "display": ["Public Sans", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<title>Activos Fijos - ERP SaaS Chile</title>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 min-h-screen">
+<div class="relative flex h-auto min-h-screen w-full flex-col overflow-x-hidden">
+<!-- Header / Navigation Bar -->
+<header class="flex items-center justify-between bg-white dark:bg-zinc-900 px-6 py-4 border-b border-slate-200 dark:border-zinc-800 sticky top-0 z-50">
+<div class="flex items-center gap-4">
+<div class="bg-primary p-2 rounded-lg">
+<span class="material-symbols-outlined text-white">account_balance_wallet</span>
+</div>
+<div>
+<h1 class="text-xl font-bold leading-tight tracking-tight">Activos Fijos</h1>
+<p class="text-xs text-slate-500 dark:text-slate-400 uppercase tracking-widest font-semibold">ERP Chile v2.4</p>
+</div>
+</div>
+<div class="flex items-center gap-3">
+<button class="hidden md:flex items-center gap-2 bg-primary hover:bg-primary/90 text-white px-4 py-2 rounded-xl transition-all shadow-md">
+<span class="material-symbols-outlined text-[20px]">add</span>
+<span class="text-sm font-bold tracking-tight">Agregar Activo</span>
+</button>
+<button class="p-2 text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-zinc-800 rounded-full">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<div class="h-8 w-8 rounded-full bg-primary/20 flex items-center justify-center">
+<span class="material-symbols-outlined text-primary text-[20px]">person</span>
+</div>
+</div>
+</header>
+<!-- Main Dashboard Content -->
+<main class="flex-1 p-4 md:p-8 max-w-7xl mx-auto w-full">
+<!-- Summary Stats Cards -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+<div class="bg-white dark:bg-zinc-900 p-6 rounded-xl border border-slate-200 dark:border-zinc-800 shadow-sm">
+<div class="flex justify-between items-start mb-4">
+<p class="text-slate-500 dark:text-slate-400 text-sm font-medium">Valor Libro Total</p>
+<span class="material-symbols-outlined text-primary">payments</span>
+</div>
+<p class="text-3xl font-bold mb-1">$45.200.000</p>
+<div class="flex items-center gap-1 text-emerald-600 dark:text-emerald-400 text-xs font-bold">
+<span class="material-symbols-outlined text-xs">trending_up</span>
+<span>+2.4% vs mes anterior</span>
+</div>
+</div>
+<div class="bg-white dark:bg-zinc-900 p-6 rounded-xl border border-slate-200 dark:border-zinc-800 shadow-sm">
+<div class="flex justify-between items-start mb-4">
+<p class="text-slate-500 dark:text-slate-400 text-sm font-medium">Depreciación Acum.</p>
+<span class="material-symbols-outlined text-primary">account_tree</span>
+</div>
+<p class="text-3xl font-bold mb-1">$12.450.000</p>
+<div class="flex items-center gap-1 text-slate-400 text-xs font-bold">
+<span>Calculado al 31 Oct</span>
+</div>
+</div>
+<div class="bg-white dark:bg-zinc-900 p-6 rounded-xl border border-slate-200 dark:border-zinc-800 shadow-sm">
+<div class="flex justify-between items-start mb-4">
+<p class="text-slate-500 dark:text-slate-400 text-sm font-medium">Próximas Mantenciones</p>
+<span class="material-symbols-outlined text-primary">build</span>
+</div>
+<p class="text-3xl font-bold mb-1">8</p>
+<div class="flex items-center gap-1 text-amber-600 dark:text-amber-400 text-xs font-bold">
+<span class="material-symbols-outlined text-xs">warning</span>
+<span>3 vencen esta semana</span>
+</div>
+</div>
+<div class="bg-white dark:bg-zinc-900 p-6 rounded-xl border border-slate-200 dark:border-zinc-800 shadow-sm">
+<div class="flex justify-between items-start mb-4">
+<p class="text-slate-500 dark:text-slate-400 text-sm font-medium">Activos Totales</p>
+<span class="material-symbols-outlined text-primary">inventory_2</span>
+</div>
+<p class="text-3xl font-bold mb-1">142</p>
+<div class="flex items-center gap-1 text-slate-400 text-xs font-bold">
+<span>Operativos en 4 sedes</span>
+</div>
+</div>
+</div>
+<!-- Management Section -->
+<div class="bg-white dark:bg-zinc-900 rounded-xl border border-slate-200 dark:border-zinc-800 shadow-sm overflow-hidden">
+<div class="p-6 border-b border-slate-200 dark:border-zinc-800 flex flex-wrap items-center justify-between gap-4">
+<div class="flex items-center gap-4 overflow-x-auto pb-2 sm:pb-0 no-scrollbar">
+<button class="bg-primary/10 text-primary border border-primary/20 px-4 py-1.5 rounded-full text-sm font-bold whitespace-nowrap">Todos</button>
+<button class="bg-slate-100 dark:bg-zinc-800 text-slate-600 dark:text-slate-300 px-4 py-1.5 rounded-full text-sm font-medium hover:bg-slate-200 dark:hover:bg-zinc-700 transition-colors whitespace-nowrap">Maquinaria</button>
+<button class="bg-slate-100 dark:bg-zinc-800 text-slate-600 dark:text-slate-300 px-4 py-1.5 rounded-full text-sm font-medium hover:bg-slate-200 dark:hover:bg-zinc-700 transition-colors whitespace-nowrap">Equipos IT</button>
+<button class="bg-slate-100 dark:bg-zinc-800 text-slate-600 dark:text-slate-300 px-4 py-1.5 rounded-full text-sm font-medium hover:bg-slate-200 dark:hover:bg-zinc-700 transition-colors whitespace-nowrap">Vehículos</button>
+</div>
+<div class="relative w-full sm:w-64">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-[20px]">search</span>
+<input class="w-full pl-10 pr-4 py-2 bg-slate-100 dark:bg-zinc-800 border-none rounded-lg text-sm focus:ring-2 focus:ring-primary/50" placeholder="Buscar por código o nombre..." type="text"/>
+</div>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left">
+<thead class="bg-slate-50 dark:bg-zinc-800/50 text-slate-500 dark:text-slate-400 text-xs uppercase font-bold">
+<tr>
+<th class="px-6 py-4">Activo / Código</th>
+<th class="px-6 py-4">Categoría</th>
+<th class="px-6 py-4">Valor Libro</th>
+<th class="px-6 py-4">Depr. Acumulada</th>
+<th class="px-6 py-4">Próx. Mantención</th>
+<th class="px-6 py-4 text-right">Acciones</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-slate-200 dark:divide-zinc-800">
+<tr class="hover:bg-slate-50 dark:hover:bg-zinc-800/30 transition-colors">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="h-10 w-10 rounded bg-slate-100 dark:bg-zinc-800 flex items-center justify-center overflow-hidden border border-slate-200 dark:border-zinc-700">
+<img alt="" class="object-cover h-full w-full" data-alt="Industrial crane in construction site" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDu9WujqlXqI2Hmkaum3UHxNwf6FUxmgyMp_R55mXhoGlDxXcdm8qtE7m8lrjt4g0xvifLFgGFAvRU7mLVLmBuC_3E_1ydxt5Wgxq_IbPcitlnM7vrW9efpiVkerTb2IPuH2zdLOk7jOINMmGs0OPldSmYiNlXMJdCLdBVDggmuMI1HIFfMt_2zUFOO0KezWuU_6JVWSdVNMtrhjOYYRYQTcFFYAmPWq32gQx33zyV8LioISQEaZALaTIjQlvBtV-gdnlVOAVanQF0"/>
+</div>
+<div>
+<p class="font-bold text-sm">Grúa Torre Potain MC85</p>
+<p class="text-xs text-slate-500">ID: MAQ-2023-001</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-4">
+<span class="bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 px-2 py-1 rounded-md text-[10px] font-bold uppercase tracking-wider">Maquinaria</span>
+</td>
+<td class="px-6 py-4 font-semibold text-sm">$15.400.000</td>
+<td class="px-6 py-4 text-sm">$2.100.000</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-2 text-sm text-amber-600 dark:text-amber-400 font-medium">
+<span class="material-symbols-outlined text-[18px]">event</span>
+                                        15 Nov 2023
+                                    </div>
+</td>
+<td class="px-6 py-4 text-right">
+<button class="text-slate-400 hover:text-primary"><span class="material-symbols-outlined">edit_square</span></button>
+<button class="text-slate-400 hover:text-primary ml-2"><span class="material-symbols-outlined">more_vert</span></button>
+</td>
+</tr>
+<tr class="hover:bg-slate-50 dark:hover:bg-zinc-800/30 transition-colors">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="h-10 w-10 rounded bg-slate-100 dark:bg-zinc-800 flex items-center justify-center overflow-hidden border border-slate-200 dark:border-zinc-700">
+<img alt="" class="object-cover h-full w-full" data-alt="Laptop computer on office desk" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDN8PbiLMjKIPswJv3BJ0pLCv8IcGE1FxIA01ZmukkPZpKqTzWWMXPt_bTGNO4MAtpEMwzqosacLDP2xDu0hNDkZcuQ6piVjaRRexqlkHqApi7-r3pzbIeBj37OTA2GKtkT4o4sAkpB-GOn-LjZBcKUJFfxFcREFiPO1ZBT4n-zTMDCioJtqpdKzcgchJt8MFnxQfEDiIfjzcESN520BAWLN3Fry-3fsKPy9Sfq3rA9SePVmYyCyp7LlyaR5GgP8LmVc_H9LATEnRE"/>
+</div>
+<div>
+<p class="font-bold text-sm">MacBook Pro M2 14"</p>
+<p class="text-xs text-slate-500">ID: IT-2023-042</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-4">
+<span class="bg-indigo-100 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 px-2 py-1 rounded-md text-[10px] font-bold uppercase tracking-wider">Equipos IT</span>
+</td>
+<td class="px-6 py-4 font-semibold text-sm">$2.250.000</td>
+<td class="px-6 py-4 text-sm">$450.000</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-2 text-sm text-slate-500 dark:text-slate-400">
+<span class="material-symbols-outlined text-[18px]">event</span>
+                                        02 Feb 2024
+                                    </div>
+</td>
+<td class="px-6 py-4 text-right">
+<button class="text-slate-400 hover:text-primary"><span class="material-symbols-outlined">edit_square</span></button>
+<button class="text-slate-400 hover:text-primary ml-2"><span class="material-symbols-outlined">more_vert</span></button>
+</td>
+</tr>
+<tr class="hover:bg-slate-50 dark:hover:bg-zinc-800/30 transition-colors">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="h-10 w-10 rounded bg-slate-100 dark:bg-zinc-800 flex items-center justify-center overflow-hidden border border-slate-200 dark:border-zinc-700">
+<img alt="" class="object-cover h-full w-full" data-alt="Modern SUV vehicle front view" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDx93vrn0_wqM9BebduHR3UaickY_ilaU2jSGTKNHmJlezx5FpshGTzTRKjrax_CTMkx6Qo7uswqp-XwB7m2kERDxgAh-5Xx2P-c3RupVHFcovS69DaHWVZo8Wb_pov911aq2uwFen-IHs9hZFnsCEKlRBqaBQiuShYZNiZjfaWUnd_Ym1wBh05w2ckLx4mIMHJIy_SQS9zGoTCmy5gNQJnHNP_gyOZkpewYb7EPmgy-nq1XeU6XUv99UKhjJNPx8l_W8lmyZJGqy0"/>
+</div>
+<div>
+<p class="font-bold text-sm">Camioneta Toyota Hilux 4x4</p>
+<p class="text-xs text-slate-500">ID: VEH-2022-015</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-4">
+<span class="bg-emerald-100 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400 px-2 py-1 rounded-md text-[10px] font-bold uppercase tracking-wider">Vehículos</span>
+</td>
+<td class="px-6 py-4 font-semibold text-sm">$22.800.000</td>
+<td class="px-6 py-4 text-sm">$8.400.000</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-2 text-sm text-rose-600 dark:text-rose-400 font-bold">
+<span class="material-symbols-outlined text-[18px]">error</span>
+                                        Vencida (28 Oct)
+                                    </div>
+</td>
+<td class="px-6 py-4 text-right">
+<button class="text-slate-400 hover:text-primary"><span class="material-symbols-outlined">edit_square</span></button>
+<button class="text-slate-400 hover:text-primary ml-2"><span class="material-symbols-outlined">more_vert</span></button>
+</td>
+</tr>
+<tr class="hover:bg-slate-50 dark:hover:bg-zinc-800/30 transition-colors">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="h-10 w-10 rounded bg-slate-100 dark:bg-zinc-800 flex items-center justify-center overflow-hidden border border-slate-200 dark:border-zinc-700">
+<img alt="" class="object-cover h-full w-full" data-alt="Industrial robot arm on assembly line" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB3Puh3clRgMuZb-DbTMge7rdj8fP54BQSVf95-4IAZI2AbVVzos4AjttzczzD4ze4qqp70Zxar1-4CBzNLOBleatXJe_YRCSIw5GmHwN9gJeOcHvRwnW3V4EYkvNc_NDmcB60axueuQnxIaw89kdMk9yKnFo8J7KwJ6j7RHd6PFofbNk0V848L5oJJxXy2HlQaPE0cXebHQmLPIn236p-bT6RvFapGq-MeTzqmVzeVEeDR8azlA2CVizFDtQtPykq0UKepWYhzOrU"/>
+</div>
+<div>
+<p class="font-bold text-sm">Soldadora Industrial Miller</p>
+<p class="text-xs text-slate-500">ID: MAQ-2023-112</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-4">
+<span class="bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 px-2 py-1 rounded-md text-[10px] font-bold uppercase tracking-wider">Maquinaria</span>
+</td>
+<td class="px-6 py-4 font-semibold text-sm">$4.750.000</td>
+<td class="px-6 py-4 text-sm">$1.500.000</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-2 text-sm text-slate-500 dark:text-slate-400">
+<span class="material-symbols-outlined text-[18px]">event</span>
+                                        12 Dic 2023
+                                    </div>
+</td>
+<td class="px-6 py-4 text-right">
+<button class="text-slate-400 hover:text-primary"><span class="material-symbols-outlined">edit_square</span></button>
+<button class="text-slate-400 hover:text-primary ml-2"><span class="material-symbols-outlined">more_vert</span></button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="p-4 border-t border-slate-200 dark:border-zinc-800 flex items-center justify-between">
+<p class="text-xs text-slate-500 dark:text-slate-400 font-medium tracking-tight">Mostrando 4 de 142 activos</p>
+<div class="flex gap-2">
+<button class="p-2 border border-slate-200 dark:border-zinc-800 rounded-lg hover:bg-slate-50 dark:hover:bg-zinc-800 transition-colors"><span class="material-symbols-outlined text-[18px]">chevron_left</span></button>
+<button class="p-2 border border-slate-200 dark:border-zinc-800 rounded-lg hover:bg-slate-50 dark:hover:bg-zinc-800 transition-colors"><span class="material-symbols-outlined text-[18px]">chevron_right</span></button>
+</div>
+</div>
+</div>
+</main>
+<!-- Fixed Action Button (Mobile) -->
+<button class="md:hidden fixed bottom-24 right-6 h-14 w-14 bg-primary text-white rounded-full shadow-lg flex items-center justify-center z-40">
+<span class="material-symbols-outlined">add</span>
+</button>
+<!-- Bottom Navigation Bar -->
+<nav class="flex border-t border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-4 pb-4 pt-2 sticky bottom-0 z-50">
+<a class="flex flex-1 flex-col items-center justify-center gap-1 text-slate-400 dark:text-zinc-500" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<p class="text-[10px] font-bold leading-normal uppercase tracking-wider">Dashboard</p>
+</a>
+<a class="flex flex-1 flex-col items-center justify-center gap-1 text-primary" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1">inventory</span>
+<p class="text-[10px] font-bold leading-normal uppercase tracking-wider">Activos</p>
+</a>
+<a class="flex flex-1 flex-col items-center justify-center gap-1 text-slate-400 dark:text-zinc-500" href="#">
+<span class="material-symbols-outlined">analytics</span>
+<p class="text-[10px] font-bold leading-normal uppercase tracking-wider">Informes</p>
+</a>
+<a class="flex flex-1 flex-col items-center justify-center gap-1 text-slate-400 dark:text-zinc-500" href="#">
+<span class="material-symbols-outlined">settings</span>
+<p class="text-[10px] font-bold leading-normal uppercase tracking-wider">Config</p>
+</a>
+</nav>
+</div>
+</body></html>

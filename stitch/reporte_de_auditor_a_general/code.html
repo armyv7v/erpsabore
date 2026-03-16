@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+
+<html class="light" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#ec5b13",
+                        "background-light": "#f8f6f6",
+                        "background-dark": "#221610",
+                    },
+                    fontFamily: {
+                        "display": ["Public Sans"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<title>Reporte de Auditoría General - ERP SaaS</title>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 min-h-screen flex flex-col">
+<header class="sticky top-0 z-10 bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-800">
+<div class="flex items-center p-4 justify-between max-w-7xl mx-auto w-full">
+<div class="flex items-center gap-3">
+<div class="text-primary flex size-10 items-center justify-center rounded-lg bg-primary/10">
+<span class="material-symbols-outlined">arrow_back</span>
+</div>
+<h1 class="text-xl font-bold leading-tight tracking-tight">Reporte de Auditoría General</h1>
+</div>
+<div class="flex gap-2">
+<button class="flex items-center justify-center rounded-xl h-10 px-4 bg-primary text-white gap-2 text-sm font-bold transition-colors hover:bg-primary/90">
+<span class="material-symbols-outlined text-[20px]">download</span>
+<span>Exportar</span>
+</button>
+</div>
+</div>
+</header>
+<main class="flex-1 max-w-7xl mx-auto w-full p-4 space-y-6 pb-24">
+<section class="grid grid-cols-1 md:grid-cols-3 gap-4">
+<div class="flex flex-col gap-2 rounded-xl p-6 border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/50 shadow-sm">
+<div class="flex items-center justify-between">
+<p class="text-slate-600 dark:text-slate-400 text-sm font-medium">Total de eventos</p>
+<span class="material-symbols-outlined text-primary">history</span>
+</div>
+<p class="text-3xl font-bold">1,284</p>
+<p class="text-emerald-600 dark:text-emerald-400 text-xs font-bold flex items-center gap-1">
+<span class="material-symbols-outlined text-sm">trending_up</span>
+                    +5.2% esta semana
+                </p>
+</div>
+<div class="flex flex-col gap-2 rounded-xl p-6 border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/50 shadow-sm">
+<div class="flex items-center justify-between">
+<p class="text-slate-600 dark:text-slate-400 text-sm font-medium">Alertas críticas</p>
+<span class="material-symbols-outlined text-red-500">warning</span>
+</div>
+<p class="text-3xl font-bold">12</p>
+<p class="text-emerald-600 dark:text-emerald-400 text-xs font-bold flex items-center gap-1">
+<span class="material-symbols-outlined text-sm">trending_up</span>
+                    +2.1% vs mes anterior
+                </p>
+</div>
+<div class="flex flex-col gap-2 rounded-xl p-6 border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/50 shadow-sm">
+<div class="flex items-center justify-between">
+<p class="text-slate-600 dark:text-slate-400 text-sm font-medium">Cambios sensibles</p>
+<span class="material-symbols-outlined text-amber-500">security</span>
+</div>
+<p class="text-3xl font-bold">45</p>
+<p class="text-red-600 dark:text-red-400 text-xs font-bold flex items-center gap-1">
+<span class="material-symbols-outlined text-sm">trending_down</span>
+                    -1.5% reducción de riesgos
+                </p>
+</div>
+</section>
+<section class="space-y-4">
+<h3 class="text-lg font-bold">Filtros Avanzados</h3>
+<div class="flex flex-wrap gap-3 overflow-x-auto pb-2 scrollbar-hide">
+<button class="flex h-10 shrink-0 items-center justify-center gap-x-2 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 px-4 hover:border-primary transition-colors">
+<span class="material-symbols-outlined text-slate-500 text-[20px]">calendar_today</span>
+<p class="text-sm font-medium">Últimos 30 días</p>
+<span class="material-symbols-outlined text-slate-400">expand_more</span>
+</button>
+<button class="flex h-10 shrink-0 items-center justify-center gap-x-2 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 px-4 hover:border-primary transition-colors">
+<span class="material-symbols-outlined text-slate-500 text-[20px]">person</span>
+<p class="text-sm font-medium">Usuario</p>
+<span class="material-symbols-outlined text-slate-400">expand_more</span>
+</button>
+<button class="flex h-10 shrink-0 items-center justify-center gap-x-2 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 px-4 hover:border-primary transition-colors">
+<span class="material-symbols-outlined text-slate-500 text-[20px]">account_tree</span>
+<p class="text-sm font-medium">Módulo</p>
+<span class="material-symbols-outlined text-slate-400">expand_more</span>
+</button>
+<button class="flex h-10 shrink-0 items-center justify-center gap-x-2 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 px-4 hover:border-primary transition-colors">
+<span class="material-symbols-outlined text-slate-500 text-[20px]">error_outline</span>
+<p class="text-sm font-medium">Severidad</p>
+<span class="material-symbols-outlined text-slate-400">expand_more</span>
+</button>
+</div>
+</section>
+<section class="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 overflow-hidden shadow-sm">
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-slate-50 dark:bg-slate-800/50 border-b border-slate-200 dark:border-slate-800">
+<th class="px-6 py-4 text-xs font-bold uppercase tracking-wider text-slate-500">Fecha y Hora</th>
+<th class="px-6 py-4 text-xs font-bold uppercase tracking-wider text-slate-500">Usuario</th>
+<th class="px-6 py-4 text-xs font-bold uppercase tracking-wider text-slate-500">Módulo</th>
+<th class="px-6 py-4 text-xs font-bold uppercase tracking-wider text-slate-500">Acción</th>
+<th class="px-6 py-4 text-xs font-bold uppercase tracking-wider text-slate-500">Dirección IP</th>
+<th class="px-6 py-4 text-xs font-bold uppercase tracking-wider text-slate-500">Severidad</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-slate-100 dark:divide-slate-800">
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+<td class="px-6 py-4 text-sm whitespace-nowrap">20 Oct 2023, 14:32:15</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="flex items-center gap-3">
+<div class="size-8 rounded-full bg-primary/20 flex items-center justify-center text-primary font-bold text-xs">RS</div>
+<div class="flex flex-col">
+<span class="text-sm font-semibold">Ricardo Soto</span>
+<span class="text-xs text-slate-500">ID: 4492</span>
+</div>
+</div>
+</td>
+<td class="px-6 py-4 text-sm whitespace-nowrap">
+<span class="px-2 py-1 rounded bg-slate-100 dark:bg-slate-800 text-xs font-medium uppercase tracking-tight">Ventas</span>
+</td>
+<td class="px-6 py-4 text-sm whitespace-nowrap">
+<span class="font-medium text-amber-600">Actualizado</span>
+</td>
+<td class="px-6 py-4 text-sm font-mono text-slate-500">190.161.22.41</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<span class="px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-400">Medio</span>
+</td>
+</tr>
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+<td class="px-6 py-4 text-sm whitespace-nowrap">20 Oct 2023, 13:15:02</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="flex items-center gap-3">
+<div class="size-8 rounded-full bg-slate-200 dark:bg-slate-700 flex items-center justify-center text-slate-600 dark:text-slate-300 font-bold text-xs">MA</div>
+<div class="flex flex-col">
+<span class="text-sm font-semibold">María Alarcón</span>
+<span class="text-xs text-slate-500">ID: 1022</span>
+</div>
+</div>
+</td>
+<td class="px-6 py-4 text-sm whitespace-nowrap">
+<span class="px-2 py-1 rounded bg-slate-100 dark:bg-slate-800 text-xs font-medium uppercase tracking-tight">Inventario</span>
+</td>
+<td class="px-6 py-4 text-sm whitespace-nowrap">
+<span class="font-medium text-emerald-600">Creado</span>
+</td>
+<td class="px-6 py-4 text-sm font-mono text-slate-500">186.105.18.9</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<span class="px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-emerald-100 text-emerald-800 dark:bg-emerald-900/30 dark:text-emerald-400">Bajo</span>
+</td>
+</tr>
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+<td class="px-6 py-4 text-sm whitespace-nowrap">20 Oct 2023, 12:45:55</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="flex items-center gap-3">
+<div class="size-8 rounded-full bg-red-100 dark:bg-red-900/30 flex items-center justify-center text-red-600 font-bold text-xs">S</div>
+<div class="flex flex-col">
+<span class="text-sm font-semibold">SISTEMA</span>
+<span class="text-xs text-slate-500">ID: AUTO</span>
+</div>
+</div>
+</td>
+<td class="px-6 py-4 text-sm whitespace-nowrap">
+<span class="px-2 py-1 rounded bg-slate-100 dark:bg-slate-800 text-xs font-medium uppercase tracking-tight">Seguridad</span>
+</td>
+<td class="px-6 py-4 text-sm whitespace-nowrap">
+<span class="font-medium text-red-600">Eliminado</span>
+</td>
+<td class="px-6 py-4 text-sm font-mono text-slate-500">Internal</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<span class="px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400">Crítico</span>
+</td>
+</tr>
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+<td class="px-6 py-4 text-sm whitespace-nowrap">20 Oct 2023, 12:10:22</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="flex items-center gap-3">
+<div class="size-8 rounded-full bg-primary/20 flex items-center justify-center text-primary font-bold text-xs">JP</div>
+<div class="flex flex-col">
+<span class="text-sm font-semibold">Juan Pérez</span>
+<span class="text-xs text-slate-500">ID: 5521</span>
+</div>
+</div>
+</td>
+<td class="px-6 py-4 text-sm whitespace-nowrap">
+<span class="px-2 py-1 rounded bg-slate-100 dark:bg-slate-800 text-xs font-medium uppercase tracking-tight">RRHH</span>
+</td>
+<td class="px-6 py-4 text-sm whitespace-nowrap">
+<span class="font-medium text-primary">Login</span>
+</td>
+<td class="px-6 py-4 text-sm font-mono text-slate-500">201.214.5.112</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<span class="px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-slate-100 text-slate-800 dark:bg-slate-800 dark:text-slate-300">Informativo</span>
+</td>
+</tr>
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+<td class="px-6 py-4 text-sm whitespace-nowrap">20 Oct 2023, 11:55:40</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="flex items-center gap-3">
+<div class="size-8 rounded-full bg-amber-100 dark:bg-amber-900/30 flex items-center justify-center text-amber-600 font-bold text-xs">AV</div>
+<div class="flex flex-col">
+<span class="text-sm font-semibold">Ana Valdés</span>
+<span class="text-xs text-slate-500">ID: 3310</span>
+</div>
+</div>
+</td>
+<td class="px-6 py-4 text-sm whitespace-nowrap">
+<span class="px-2 py-1 rounded bg-slate-100 dark:bg-slate-800 text-xs font-medium uppercase tracking-tight">Seguridad</span>
+</td>
+<td class="px-6 py-4 text-sm whitespace-nowrap">
+<span class="font-medium text-red-600">Acceso Denegado</span>
+</td>
+<td class="px-6 py-4 text-sm font-mono text-slate-500">200.75.10.4</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<span class="px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-orange-100 text-orange-800 dark:bg-orange-900/30 dark:text-orange-400">Alto</span>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="flex items-center justify-between p-4 border-t border-slate-200 dark:border-slate-800">
+<p class="text-sm text-slate-500">Mostrando 5 de 1,284 eventos</p>
+<div class="flex gap-2">
+<button class="px-3 py-1 border border-slate-200 dark:border-slate-800 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-800 text-sm font-medium transition-colors">Anterior</button>
+<button class="px-3 py-1 bg-primary text-white rounded-lg text-sm font-medium">Siguiente</button>
+</div>
+</div>
+</section>
+</main>
+<nav class="fixed bottom-0 left-0 right-0 bg-white/90 dark:bg-slate-900/90 backdrop-blur-lg border-t border-slate-200 dark:border-slate-800">
+<div class="flex gap-2 px-4 pb-3 pt-2 max-w-lg mx-auto">
+<a class="flex flex-1 flex-col items-center justify-center gap-1 text-slate-400 dark:text-slate-500 hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined">home</span>
+<p class="text-[10px] font-medium leading-normal tracking-[0.015em]">Inicio</p>
+</a>
+<a class="flex flex-1 flex-col items-center justify-center gap-1 text-slate-400 dark:text-slate-500 hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined">receipt_long</span>
+<p class="text-[10px] font-medium leading-normal tracking-[0.015em]">Ventas</p>
+</a>
+<a class="flex flex-1 flex-col items-center justify-center gap-1 text-primary" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1">history</span>
+<p class="text-[10px] font-bold leading-normal tracking-[0.015em]">Auditoría</p>
+</a>
+<a class="flex flex-1 flex-col items-center justify-center gap-1 text-slate-400 dark:text-slate-500 hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined">inventory_2</span>
+<p class="text-[10px] font-medium leading-normal tracking-[0.015em]">Inventario</p>
+</a>
+<a class="flex flex-1 flex-col items-center justify-center gap-1 text-slate-400 dark:text-slate-500 hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined">settings</span>
+<p class="text-[10px] font-medium leading-normal tracking-[0.015em]">Ajustes</p>
+</a>
+</div>
+</nav>
+</body></html>

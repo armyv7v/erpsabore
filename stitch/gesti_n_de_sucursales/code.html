@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+
+<html class="light" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#ec5b13",
+                        "background-light": "#f8f6f6",
+                        "background-dark": "#221610",
+                    },
+                    fontFamily: {
+                        "display": ["Public Sans", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        body { font-family: 'Public Sans', sans-serif; }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 min-h-screen">
+<div class="flex flex-col min-h-screen max-w-5xl mx-auto bg-background-light dark:bg-background-dark shadow-sm">
+<!-- Header Section -->
+<header class="sticky top-0 z-10 bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-md border-b border-primary/10">
+<div class="flex items-center justify-between p-4">
+<div class="flex items-center gap-3">
+<div class="p-2 bg-primary/10 rounded-lg text-primary">
+<span class="material-symbols-outlined">storefront</span>
+</div>
+<h1 class="text-xl font-bold tracking-tight">Gestión de Sucursales</h1>
+</div>
+<div class="flex gap-2">
+<button class="p-2 hover:bg-primary/10 rounded-full transition-colors">
+<span class="material-symbols-outlined">search</span>
+</button>
+<button class="p-2 hover:bg-primary/10 rounded-full transition-colors">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+</div>
+</div>
+<!-- Action Bar -->
+<div class="px-4 pb-4 flex flex-col md:flex-row gap-3 items-center justify-between">
+<div class="flex gap-2 overflow-x-auto w-full no-scrollbar py-1">
+<button class="flex shrink-0 items-center gap-2 px-4 py-2 rounded-xl bg-primary text-white font-medium shadow-sm hover:bg-primary/90 transition-all">
+<span class="material-symbols-outlined text-sm">add</span>
+<span>Añadir Sucursal</span>
+</button>
+<button class="flex shrink-0 items-center gap-2 px-4 py-2 rounded-xl bg-primary/10 text-primary font-medium hover:bg-primary/20 transition-all">
+<span class="material-symbols-outlined text-sm">filter_list</span>
+<span>Filtros Avanzados</span>
+</button>
+</div>
+</div>
+<!-- Region/Comuna Filters -->
+<div class="px-4 pb-4 flex gap-2 overflow-x-auto no-scrollbar scroll-smooth">
+<button class="flex h-9 shrink-0 items-center justify-center gap-x-2 rounded-full border border-primary/20 bg-white dark:bg-slate-800 px-4 transition-all hover:border-primary">
+<span class="text-sm font-medium">Región: Metropolitana</span>
+<span class="material-symbols-outlined text-sm">expand_more</span>
+</button>
+<button class="flex h-9 shrink-0 items-center justify-center gap-x-2 rounded-full border border-primary/20 bg-white dark:bg-slate-800 px-4 transition-all hover:border-primary">
+<span class="text-sm font-medium">Comuna: Providencia</span>
+<span class="material-symbols-outlined text-sm">expand_more</span>
+</button>
+<button class="flex h-9 shrink-0 items-center justify-center gap-x-2 rounded-full border border-primary/20 bg-white dark:bg-slate-800 px-4 transition-all hover:border-primary">
+<span class="text-sm font-medium">Estado: Activas</span>
+<span class="material-symbols-outlined text-sm">expand_more</span>
+</button>
+</div>
+</header>
+<!-- Content Area -->
+<main class="flex-1 p-4 space-y-4">
+<!-- Branch Card 1 -->
+<div class="group relative overflow-hidden bg-white dark:bg-slate-900 border border-primary/10 rounded-2xl shadow-sm transition-all hover:shadow-md hover:border-primary/30">
+<div class="flex flex-col md:flex-row">
+<div class="w-full md:w-64 h-48 md:h-auto overflow-hidden">
+<img class="w-full h-full object-cover transition-transform group-hover:scale-105" data-alt="Modern retail storefront with large glass windows" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDIPTIB0cu-wWH-J6Ht7bD9uLOf_VGDtS6EYyTf0XHklP2sx1cEFuUWzo3qwdc2Ii1e0VSypWlQUrp8fS-TpuzIPU0OJWyc2L5Mh6K3STPa5j_cf_YviLNgfdDexcsLXxMAoHHK1oq1W4YMiE7UqQzpCjfkSe8ySPa4CWwzB1l-tRU1alZ3HTsIzGXnjMT2Ghyq0AFiWTEr7388B1Yw-tLBWF3is9wbb3z9nNRfk9kB-SoGGqdK97MZlSrw41GOcFsIdwCdrZYxZC4"/>
+</div>
+<div class="flex-1 p-5 flex flex-col justify-between">
+<div>
+<div class="flex justify-between items-start mb-2">
+<h3 class="text-lg font-bold text-slate-900 dark:text-slate-100">Casa Matriz - Providencia</h3>
+<span class="bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400 text-xs font-bold px-2 py-1 rounded-full uppercase tracking-wider">Operativa</span>
+</div>
+<p class="text-slate-500 dark:text-slate-400 text-sm flex items-center gap-1 mb-4">
+<span class="material-symbols-outlined text-sm">location_on</span>
+                                Av. Andrés Bello 2425, Santiago, Región Metropolitana
+                            </p>
+<!-- Key Metrics Grid -->
+<div class="grid grid-cols-3 gap-4 mb-4">
+<div class="p-3 rounded-xl bg-background-light dark:bg-slate-800/50 border border-primary/5">
+<p class="text-[10px] text-slate-500 dark:text-slate-400 uppercase font-bold tracking-wider mb-1">Stock Total</p>
+<p class="text-lg font-bold text-primary">15,400</p>
+<p class="text-[10px] text-green-600 font-medium">+2.5% vs ayer</p>
+</div>
+<div class="p-3 rounded-xl bg-background-light dark:bg-slate-800/50 border border-primary/5">
+<p class="text-[10px] text-slate-500 dark:text-slate-400 uppercase font-bold tracking-wider mb-1">Ventas Hoy</p>
+<p class="text-lg font-bold text-primary">$2.45M</p>
+<p class="text-[10px] text-green-600 font-medium">85% meta diaria</p>
+</div>
+<div class="p-3 rounded-xl bg-background-light dark:bg-slate-800/50 border border-primary/5">
+<p class="text-[10px] text-slate-500 dark:text-slate-400 uppercase font-bold tracking-wider mb-1">Empleados</p>
+<p class="text-lg font-bold text-primary">45</p>
+<p class="text-[10px] text-slate-500 font-medium">Activos ahora</p>
+</div>
+</div>
+</div>
+<div class="flex justify-end gap-2">
+<button class="px-4 py-2 text-sm font-semibold text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl transition-colors">Configurar</button>
+<button class="px-4 py-2 text-sm font-semibold bg-primary text-white rounded-xl shadow-sm hover:shadow-primary/20 transition-all">Ver Detalles</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Branch Card 2 -->
+<div class="group relative overflow-hidden bg-white dark:bg-slate-900 border border-primary/10 rounded-2xl shadow-sm transition-all hover:shadow-md hover:border-primary/30">
+<div class="flex flex-col md:flex-row">
+<div class="w-full md:w-64 h-48 md:h-auto overflow-hidden">
+<img class="w-full h-full object-cover transition-transform group-hover:scale-105" data-alt="Large industrial warehouse interior with racks" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBcucJQT3h7qo4UDhcIm1FOVEFPSxmjRvz759tnrZF1Gv-Qhli4jDKbN2kuZVvKNB8O4g0I9b9xXbMjpB7yhn5CRr-VRqWbuysE60F3ytWAFKD18m9Fyd_IBOnx_U2tsXXE45FQkQSYKLE0qpPXsrHtyFyQJShfjJ0ZDqQOqfKDZTW3Ihyfmf7ZmJ7d5SrWeEwGQEyHXOjMplmIKuqyE9OwRoqoIFbogbxVheqMb1QPm51jn5Domah4r8Sn1ad0nqZOhyBpExgn4eg"/>
+</div>
+<div class="flex-1 p-5 flex flex-col justify-between">
+<div>
+<div class="flex justify-between items-start mb-2">
+<h3 class="text-lg font-bold text-slate-900 dark:text-slate-100">Bodega Norte - Quilicura</h3>
+<span class="bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400 text-xs font-bold px-2 py-1 rounded-full uppercase tracking-wider">Logística</span>
+</div>
+<p class="text-slate-500 dark:text-slate-400 text-sm flex items-center gap-1 mb-4">
+<span class="material-symbols-outlined text-sm">location_on</span>
+                                Panamericana Norte 8000, Quilicura, Región Metropolitana
+                            </p>
+<div class="grid grid-cols-3 gap-4 mb-4">
+<div class="p-3 rounded-xl bg-background-light dark:bg-slate-800/50 border border-primary/5">
+<p class="text-[10px] text-slate-500 dark:text-slate-400 uppercase font-bold tracking-wider mb-1">Stock Total</p>
+<p class="text-lg font-bold text-primary">82,150</p>
+<p class="text-[10px] text-red-600 font-medium">-1.2% stock out</p>
+</div>
+<div class="p-3 rounded-xl bg-background-light dark:bg-slate-800/50 border border-primary/5">
+<p class="text-[10px] text-slate-500 dark:text-slate-400 uppercase font-bold tracking-wider mb-1">Ventas Hoy</p>
+<p class="text-lg font-bold text-primary">$420k</p>
+<p class="text-[10px] text-slate-500 font-medium">Solo B2B</p>
+</div>
+<div class="p-3 rounded-xl bg-background-light dark:bg-slate-800/50 border border-primary/5">
+<p class="text-[10px] text-slate-500 dark:text-slate-400 uppercase font-bold tracking-wider mb-1">Empleados</p>
+<p class="text-lg font-bold text-primary">12</p>
+<p class="text-[10px] text-slate-500 font-medium">Turno rotativo</p>
+</div>
+</div>
+</div>
+<div class="flex justify-end gap-2">
+<button class="px-4 py-2 text-sm font-semibold text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl transition-colors">Configurar</button>
+<button class="px-4 py-2 text-sm font-semibold bg-primary text-white rounded-xl shadow-sm hover:shadow-primary/20 transition-all">Ver Detalles</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Branch Card 3 -->
+<div class="group relative overflow-hidden bg-white dark:bg-slate-900 border border-primary/10 rounded-2xl shadow-sm transition-all hover:shadow-md hover:border-primary/30">
+<div class="flex flex-col md:flex-row">
+<div class="w-full md:w-64 h-48 md:h-auto overflow-hidden">
+<img class="w-full h-full object-cover transition-transform group-hover:scale-105" data-alt="Boutique clothing store interior" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCYGfStgF2Pp1r_twJqrlUeEHEJEoZyQ70BsWk6jUM9Z1edkKVq0oifbANUbg96ap_SodKQuR5pHDovXsfi2v5d2tBO-3DDYOsTXMYOOY09c8TvC8mbGFqy2WJRpRcj9IK-69y_ppdyJJ8hmF35ybvei4Cx63L2ay-kYGKZHCbMUhGlwI8sqfKUhXvNihfhEZTD5jvLplXL1ak-CK_RZU7VcomumKnqyGmqIOr4rZsB1SQm7ayoH8vTCRrkAN86cGI6_R9WtAWXIb0"/>
+</div>
+<div class="flex-1 p-5 flex flex-col justify-between">
+<div>
+<div class="flex justify-between items-start mb-2">
+<h3 class="text-lg font-bold text-slate-900 dark:text-slate-100">Tienda Centro - Santiago</h3>
+<span class="bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400 text-xs font-bold px-2 py-1 rounded-full uppercase tracking-wider">Operativa</span>
+</div>
+<p class="text-slate-500 dark:text-slate-400 text-sm flex items-center gap-1 mb-4">
+<span class="material-symbols-outlined text-sm">location_on</span>
+                                Paseo Ahumada 312, Santiago Centro, Región Metropolitana
+                            </p>
+<div class="grid grid-cols-3 gap-4 mb-4">
+<div class="p-3 rounded-xl bg-background-light dark:bg-slate-800/50 border border-primary/5">
+<p class="text-[10px] text-slate-500 dark:text-slate-400 uppercase font-bold tracking-wider mb-1">Stock Total</p>
+<p class="text-lg font-bold text-primary">4,200</p>
+<p class="text-[10px] text-green-600 font-medium">Reposición OK</p>
+</div>
+<div class="p-3 rounded-xl bg-background-light dark:bg-slate-800/50 border border-primary/5">
+<p class="text-[10px] text-slate-500 dark:text-slate-400 uppercase font-bold tracking-wider mb-1">Ventas Hoy</p>
+<p class="text-lg font-bold text-primary">$1.12M</p>
+<p class="text-[10px] text-green-600 font-medium">+12% vs ayer</p>
+</div>
+<div class="p-3 rounded-xl bg-background-light dark:bg-slate-800/50 border border-primary/5">
+<p class="text-[10px] text-slate-500 dark:text-slate-400 uppercase font-bold tracking-wider mb-1">Empleados</p>
+<p class="text-lg font-bold text-primary">8</p>
+<p class="text-[10px] text-slate-500 font-medium">Staff completo</p>
+</div>
+</div>
+</div>
+<div class="flex justify-end gap-2">
+<button class="px-4 py-2 text-sm font-semibold text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl transition-colors">Configurar</button>
+<button class="px-4 py-2 text-sm font-semibold bg-primary text-white rounded-xl shadow-sm hover:shadow-primary/20 transition-all">Ver Detalles</button>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Bottom Navigation Bar -->
+<nav class="sticky bottom-0 z-20 bg-white dark:bg-slate-900 border-t border-primary/10 px-4 pb-6 pt-2">
+<div class="flex justify-between items-center max-w-md mx-auto">
+<a class="flex flex-col items-center gap-1 text-slate-400 hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined">home</span>
+<span class="text-[10px] font-medium uppercase tracking-tighter">Inicio</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-primary" href="#">
+<span class="material-symbols-outlined font-bold">storefront</span>
+<span class="text-[10px] font-bold uppercase tracking-tighter">Sucursales</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-slate-400 hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined">inventory_2</span>
+<span class="text-[10px] font-medium uppercase tracking-tighter">Inventario</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-slate-400 hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined">analytics</span>
+<span class="text-[10px] font-medium uppercase tracking-tighter">Reportes</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-slate-400 hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined">person</span>
+<span class="text-[10px] font-medium uppercase tracking-tighter">Perfil</span>
+</a>
+</div>
+</nav>
+</div>
+</body></html>

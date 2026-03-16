@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+
+<html class="light" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#ec5b13",
+                        "background-light": "#f8f6f6",
+                        "background-dark": "#221610",
+                    },
+                    fontFamily: {
+                        "display": ["Public Sans"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        body { font-family: 'Public Sans', sans-serif; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 font-display">
+<div class="relative flex min-h-screen w-full flex-col overflow-x-hidden">
+<!-- Header Section -->
+<div class="flex items-center bg-white dark:bg-stone-900 p-4 border-b border-slate-200 dark:border-stone-800 justify-between sticky top-0 z-10">
+<div class="flex items-center gap-3">
+<div class="text-slate-900 dark:text-slate-100 flex size-10 shrink-0 items-center justify-center cursor-pointer hover:bg-slate-100 dark:hover:bg-stone-800 rounded-full">
+<span class="material-symbols-outlined">arrow_back</span>
+</div>
+<h2 class="text-slate-900 dark:text-slate-100 text-lg font-bold leading-tight tracking-tight">Configuración de Alertas</h2>
+</div>
+<div class="flex items-center gap-2">
+<button class="bg-primary hover:bg-primary/90 text-white px-4 py-2 rounded-lg text-sm font-bold transition-colors">
+                    Guardar Cambios
+                </button>
+</div>
+</div>
+<main class="flex-1 max-w-4xl mx-auto w-full p-4 space-y-6">
+<!-- Alert Activation Section -->
+<section class="bg-white dark:bg-stone-900 rounded-xl border border-slate-200 dark:border-stone-800 overflow-hidden">
+<div class="p-4 border-b border-slate-100 dark:border-stone-800">
+<h3 class="text-lg font-bold">Preferencias Generales</h3>
+</div>
+<div class="divide-y divide-slate-100 dark:divide-stone-800">
+<div class="flex items-center justify-between p-4">
+<div class="flex items-center gap-4">
+<div class="bg-primary/10 text-primary flex items-center justify-center rounded-lg size-12">
+<span class="material-symbols-outlined">notifications_active</span>
+</div>
+<div>
+<p class="font-medium">Activar Alertas de Stock Bajo</p>
+<p class="text-slate-500 dark:text-slate-400 text-sm">Recibir avisos cuando el inventario sea insuficiente</p>
+</div>
+</div>
+<label class="relative flex h-7 w-12 cursor-pointer items-center rounded-full bg-slate-200 dark:bg-stone-700 p-1 transition-colors has-[:checked]:bg-primary">
+<input checked="" class="sr-only peer" type="checkbox"/>
+<div class="h-5 w-5 rounded-full bg-white shadow-sm transition-transform peer-checked:translate-x-5"></div>
+</label>
+</div>
+<div class="p-4 bg-slate-50 dark:bg-stone-800/50">
+<p class="text-sm font-semibold mb-3">Umbral de Alerta Global</p>
+<div class="flex items-center gap-4">
+<div class="flex-1">
+<input class="w-full h-2 bg-slate-200 dark:bg-stone-700 rounded-lg appearance-none cursor-pointer accent-primary" max="100" min="0" type="range" value="15"/>
+</div>
+<span class="bg-white dark:bg-stone-900 border border-slate-200 dark:border-stone-700 px-3 py-1 rounded-lg font-bold text-primary">15 unidades</span>
+</div>
+<p class="text-xs text-slate-400 dark:text-stone-500 mt-2 italic">* Este valor se aplicará a todos los productos sin un umbral específico.</p>
+</div>
+</div>
+</section>
+<!-- Channels Section -->
+<section class="bg-white dark:bg-stone-900 rounded-xl border border-slate-200 dark:border-stone-800 overflow-hidden">
+<div class="p-4 border-b border-slate-100 dark:border-stone-800 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">campaign</span>
+<h3 class="text-lg font-bold">Canales de Notificación</h3>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4 p-4">
+<div class="flex items-center justify-between p-4 rounded-lg border border-slate-200 dark:border-stone-700">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-slate-400">mail</span>
+<span class="font-medium">Correo Electrónico</span>
+</div>
+<input checked="" class="rounded border-slate-300 text-primary focus:ring-primary h-5 w-5" type="checkbox"/>
+</div>
+<div class="flex items-center justify-between p-4 rounded-lg border border-slate-200 dark:border-stone-700">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-slate-400">send_to_mobile</span>
+<span class="font-medium">Notificación Push</span>
+</div>
+<input class="rounded border-slate-300 text-primary focus:ring-primary h-5 w-5" type="checkbox"/>
+</div>
+</div>
+</section>
+<!-- Current Alerts Section -->
+<section class="space-y-4">
+<div class="flex items-center justify-between">
+<h3 class="text-xl font-bold flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">warning</span>
+                        Productos en Alerta Crítica
+                    </h3>
+<span class="bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400 text-xs font-bold px-2.5 py-1 rounded-full">
+                        4 Ítems Detectados
+                    </span>
+</div>
+<div class="grid grid-cols-1 gap-3">
+<!-- Product Card -->
+<div class="bg-white dark:bg-stone-900 p-4 rounded-xl border-l-4 border-l-red-500 border-slate-200 dark:border-stone-800 flex items-center gap-4 shadow-sm">
+<img alt="Producto" class="size-16 rounded-lg object-cover" data-alt="Componentes electrónicos de alta precisión para ensamblaje" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAKB6uVj_zSEygkYM8zhzGJB_-Mr6sdyIrwIiPThh9rQMjnsJCQO2yqVjvIfYK444Dtn_SDkt57II-mTtnhpCAtqmdybYN9zg_S0eYUfRr9zlppr1u8iL8x706N78HtMBAJVE3YuzfNQrgq4QVUU7h3Kq0efVbfeBya5wETB5qkySZHG3r3THGGCB8v0MyS0IgPqEXx3q5vwjCqbysXcCRh6-NpXWJN1F8RPtSYFOu6Xmh23d5LWUa4tZRIiNIDlpzSjXgeyPtp0lY"/>
+<div class="flex-1">
+<div class="flex justify-between items-start">
+<h4 class="font-bold">Sensor Proximidad X-200</h4>
+<span class="text-xs text-slate-400">SKU: SPX-20045</span>
+</div>
+<div class="mt-1 flex items-center gap-4">
+<div class="text-sm">
+<span class="text-slate-500">Stock Actual:</span>
+<span class="text-red-600 font-bold ml-1">4 unid.</span>
+</div>
+<div class="text-sm border-l border-slate-200 dark:border-stone-700 pl-4">
+<span class="text-slate-500">Umbral:</span>
+<span class="font-medium ml-1">10 unid.</span>
+</div>
+</div>
+</div>
+<button class="text-primary hover:bg-primary/10 p-2 rounded-lg">
+<span class="material-symbols-outlined">edit</span>
+</button>
+</div>
+<!-- Product Card 2 -->
+<div class="bg-white dark:bg-stone-900 p-4 rounded-xl border-l-4 border-l-red-500 border-slate-200 dark:border-stone-800 flex items-center gap-4 shadow-sm">
+<img alt="Producto" class="size-16 rounded-lg object-cover" data-alt="Cables industriales de cobre de alta resistencia" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCrJlsXQQOe3qRsGFQqGQJdSPbcCIOgOdhTKsL1jqCaACQtAVQepHW2QUuHJvYX9_yEvGTJwjYiO6SEMZE8Xqr-NlMr8nZGg8pTQDovrT_o9ZZD5J8c4478FScw14SDwqoi1uNxVplHN1T84LuVS_H4QHiOwN3-umuNy3zN8sniZXVaEsLO2KJ8EqgjvV6IzX0wMPrGw9dplhosnzfnyOwkOP1zaOyQvdr-AigQ33v2W4HBwinnos8ufvnnUMIGJWTkhBMKDkmtMMM"/>
+<div class="flex-1">
+<div class="flex justify-between items-start">
+<h4 class="font-bold">Cableado Cobre 20mm</h4>
+<span class="text-xs text-slate-400">SKU: CAB-20MM-R</span>
+</div>
+<div class="mt-1 flex items-center gap-4">
+<div class="text-sm">
+<span class="text-slate-500">Stock Actual:</span>
+<span class="text-red-600 font-bold ml-1">12 mts.</span>
+</div>
+<div class="text-sm border-l border-slate-200 dark:border-stone-700 pl-4">
+<span class="text-slate-500">Umbral:</span>
+<span class="font-medium ml-1">50 mts.</span>
+</div>
+</div>
+</div>
+<button class="text-primary hover:bg-primary/10 p-2 rounded-lg">
+<span class="material-symbols-outlined">edit</span>
+</button>
+</div>
+</div>
+</section>
+</main>
+<!-- Bottom Navigation Bar -->
+<div class="sticky bottom-0 w-full flex gap-2 border-t border-slate-200 dark:border-stone-800 bg-white dark:bg-stone-900 px-4 pb-3 pt-2">
+<a class="flex flex-1 flex-col items-center justify-center gap-1 text-slate-400 hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined">home</span>
+<p class="text-[10px] font-medium leading-normal">Inicio</p>
+</a>
+<a class="flex flex-1 flex-col items-center justify-center gap-1 text-slate-400 hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined">inventory_2</span>
+<p class="text-[10px] font-medium leading-normal">Inventario</p>
+</a>
+<a class="flex flex-1 flex-col items-center justify-center gap-1 text-primary" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">notifications</span>
+<p class="text-[10px] font-medium leading-normal">Alertas</p>
+</a>
+<a class="flex flex-1 flex-col items-center justify-center gap-1 text-slate-400 hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined">person</span>
+<p class="text-[10px] font-medium leading-normal">Perfil</p>
+</a>
+</div>
+</div>
+</body></html>

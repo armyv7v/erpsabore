@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+
+<html class="light" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Ranking de Vendedores - ERP SaaS</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#ec5b13",
+                        "background-light": "#f8f6f6",
+                        "background-dark": "#221610",
+                    },
+                    fontFamily: {
+                        "display": ["Public Sans", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="font-display bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 min-h-screen">
+<div class="max-w-5xl mx-auto pb-24">
+<!-- Header -->
+<div class="flex items-center bg-white dark:bg-slate-900 p-4 border-b border-slate-200 dark:border-slate-800 sticky top-0 z-10 justify-between">
+<div class="flex items-center gap-4">
+<div class="text-primary cursor-pointer">
+<span class="material-symbols-outlined">arrow_back</span>
+</div>
+<h1 class="text-xl font-bold tracking-tight">Ranking de Vendedores</h1>
+</div>
+<div class="flex gap-2">
+<button class="p-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg">
+<span class="material-symbols-outlined">search</span>
+</button>
+<button class="p-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg">
+<span class="material-symbols-outlined">download</span>
+</button>
+</div>
+</div>
+<!-- Period Tabs -->
+<div class="bg-white dark:bg-slate-900 px-4 border-b border-slate-200 dark:border-slate-800">
+<div class="flex gap-8 overflow-x-auto no-scrollbar">
+<a class="flex flex-col items-center justify-center border-b-2 border-primary text-primary pb-3 pt-4 whitespace-nowrap" href="#">
+<span class="text-sm font-bold leading-normal">Este mes</span>
+</a>
+<a class="flex flex-col items-center justify-center border-b-2 border-transparent text-slate-500 pb-3 pt-4 whitespace-nowrap" href="#">
+<span class="text-sm font-bold leading-normal">Mes pasado</span>
+</a>
+<a class="flex flex-col items-center justify-center border-b-2 border-transparent text-slate-500 pb-3 pt-4 whitespace-nowrap" href="#">
+<span class="text-sm font-bold leading-normal">Trimestre</span>
+</a>
+</div>
+</div>
+<!-- Branch Filters -->
+<div class="flex gap-3 p-4 overflow-x-auto no-scrollbar">
+<button class="flex h-9 shrink-0 items-center justify-center gap-x-2 rounded-xl bg-primary text-white px-4 text-sm font-medium">
+                Todas las sucursales
+                <span class="material-symbols-outlined text-sm">expand_more</span>
+</button>
+<button class="flex h-9 shrink-0 items-center justify-center gap-x-2 rounded-xl bg-slate-200 dark:bg-slate-800 px-4 text-sm font-medium">
+                Santiago Centro
+                <span class="material-symbols-outlined text-sm">expand_more</span>
+</button>
+<button class="flex h-9 shrink-0 items-center justify-center gap-x-2 rounded-xl bg-slate-200 dark:bg-slate-800 px-4 text-sm font-medium">
+                Las Condes
+                <span class="material-symbols-outlined text-sm">expand_more</span>
+</button>
+</div>
+<!-- Podium Section (Top 3) -->
+<div class="px-4 py-8 bg-gradient-to-b from-primary/5 to-transparent">
+<div class="flex items-end justify-center gap-4 max-w-2xl mx-auto">
+<!-- 2nd Place -->
+<div class="flex flex-col items-center w-1/3 text-center">
+<div class="relative mb-2">
+<div class="size-20 rounded-full border-4 border-slate-300 bg-cover bg-center" data-alt="Avatar of Maria second place seller" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBHZ4nU8mfHICxEIAPzsP1p9_5ut8OmQU0ouBKdAfl_Jd_Pqc-ppiAXbIaS6GHhraU3pAgakqEmSog7tSyVbryC-RRvPC_0Sdsf90xRchSnv1yoNE9KAnJk2eIXbPIaooBuknOr8yhHVrBFiBzFyOy38KJHHPE3MD-ZLAfo-zJpqkCe7HORPxkr5-Cp182lZTS74qfcvz0FYbOeGNuDCDnyX9Z2aAmZwyalaL-VE3QS48gHKJIB-3oWZvJRIQWUyhb_mnt7A19J-Nk')"></div>
+<div class="absolute -bottom-2 right-0 size-8 bg-slate-300 rounded-full flex items-center justify-center text-slate-700 font-bold text-sm">2</div>
+</div>
+<p class="font-bold text-sm truncate w-full">María García</p>
+<p class="text-primary text-xs font-bold">$12.850.000</p>
+<div class="w-full h-16 bg-slate-200 dark:bg-slate-800 mt-2 rounded-t-lg"></div>
+</div>
+<!-- 1st Place -->
+<div class="flex flex-col items-center w-1/3 text-center">
+<div class="relative mb-2">
+<div class="size-28 rounded-full border-4 border-yellow-400 bg-cover bg-center shadow-lg" data-alt="Avatar of Juan first place seller" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCpguRR9QEpV9f4l1Gh_HzKO40QiX_Tmcp0t0TCjb56eDwoc_WCs2vW1MkNgR8Wolm41_xBkcV_RppgrH_dZZziOlr_zpn4U2xPbjx2iqX0PtgpUvlgkE1oLw3BWVqcWyzCWk8lGaEGbKbH0XsmE3v66taTkwsYAOuA04QsB-pdcjIHlpNOaczCM939rZUDVWNexFll86BoMaLk346H-LcToRaxjGZTa8e55q6FTfnObN1R6ZZWOWxG0W6l-VXrpXcLSjtP77FdENA')"></div>
+<div class="absolute -top-4 left-1/2 -translate-x-1/2 text-yellow-400">
+<span class="material-symbols-outlined text-3xl fill-current">badge</span>
+</div>
+<div class="absolute -bottom-2 right-0 size-10 bg-yellow-400 rounded-full flex items-center justify-center text-white font-bold">1</div>
+</div>
+<p class="font-bold text-base truncate w-full">Juan Pérez</p>
+<p class="text-primary text-sm font-bold">$15.420.000</p>
+<div class="w-full h-24 bg-primary/20 dark:bg-primary/30 mt-2 rounded-t-lg"></div>
+</div>
+<!-- 3rd Place -->
+<div class="flex flex-col items-center w-1/3 text-center">
+<div class="relative mb-2">
+<div class="size-20 rounded-full border-4 border-orange-300 bg-cover bg-center" data-alt="Avatar of Carlos third place seller" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBPYc3QwYReBzE05O4W_XKmLUoEW_CnIY2sE8NQ4iBcnKFSuaWOPFczjR8RZ8pLSVeFiR9gcO4qzpk1qb4k4jO0eTMHrY2ugJVbi_E2VBL_W7uTOHtnRfaQd9xk1rEj7j_Va4YQlisP0jL0JLy9_FBkg54YNI1l64eLhjiRG-Ek5N09ERE1H2tEL9sqQlOaROZEoNatImhw-5a3ccvG5qMwL1JKUDlT88yIT4BtmPjr0yfeLtQ-OdSFtsgzfBSL-RJZAOX0yZgyZAs')"></div>
+<div class="absolute -bottom-2 right-0 size-8 bg-orange-300 rounded-full flex items-center justify-center text-orange-800 font-bold text-sm">3</div>
+</div>
+<p class="font-bold text-sm truncate w-full">Carlos Ruiz</p>
+<p class="text-primary text-xs font-bold">$10.200.000</p>
+<div class="w-full h-12 bg-orange-100 dark:bg-orange-900/20 mt-2 rounded-t-lg"></div>
+</div>
+</div>
+</div>
+<!-- Detailed Table -->
+<div class="mx-4 overflow-hidden rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-sm">
+<div class="overflow-x-auto">
+<table class="w-full text-left text-sm">
+<thead class="bg-slate-50 dark:bg-slate-800/50 text-slate-500 uppercase text-[10px] font-bold tracking-wider">
+<tr>
+<th class="px-4 py-3">Pos</th>
+<th class="px-4 py-3">Vendedor</th>
+<th class="px-4 py-3">Ventas</th>
+<th class="px-4 py-3">Total (CLP)</th>
+<th class="px-4 py-3">Promedio</th>
+<th class="px-4 py-3"></th>
+</tr>
+</thead>
+<tbody class="divide-y divide-slate-100 dark:divide-slate-800">
+<!-- Rank 4 -->
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50">
+<td class="px-4 py-4">
+<div class="flex items-center gap-1">
+<span class="font-bold">4</span>
+<span class="material-symbols-outlined text-green-500 text-xs">arrow_upward</span>
+</div>
+</td>
+<td class="px-4 py-4">
+<div class="flex items-center gap-3">
+<div class="size-8 rounded-full bg-cover bg-center" data-alt="Seller Ana portrait" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDGdmMvURsjSe0Tb_j8ex6ImPCEsOUMA4XCmSE9VeZyRfe0yJudYwyQbtZamIbr8uGcR_Ct-8cYb6mEQmWu3Lm3VH69qTbUb_j2EhPx_ZxlrFwouSjg9W2jhdnE03bN0NApqWnzW9Ld35PuECloiUw8KwMeJg1oy0jQP_BmvrsRJksobgV7PCsybVLTBLgIIm6ASMl18IDg8MfGjeyLMIGzc3XnJsOvpXkmrScUCDi6XlpuKmnzWnVVtoN4ad91bwPFWRhlOY55nNs')"></div>
+<div>
+<p class="font-semibold">Ana Silva</p>
+<p class="text-xs text-slate-500">Providencia</p>
+</div>
+</div>
+</td>
+<td class="px-4 py-4 font-medium">42</td>
+<td class="px-4 py-4 font-bold text-primary">$9.450.000</td>
+<td class="px-4 py-4 text-slate-500">$225.000</td>
+<td class="px-4 py-4 text-right">
+<button class="text-primary hover:bg-primary/10 p-1 rounded">
+<span class="material-symbols-outlined">visibility</span>
+</button>
+</td>
+</tr>
+<!-- Rank 5 -->
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50">
+<td class="px-4 py-4">
+<div class="flex items-center gap-1">
+<span class="font-bold">5</span>
+<span class="material-symbols-outlined text-red-500 text-xs">arrow_downward</span>
+</div>
+</td>
+<td class="px-4 py-4">
+<div class="flex items-center gap-3">
+<div class="size-8 rounded-full bg-cover bg-center" data-alt="Seller Diego portrait" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuB0_GVJVLLvVtNUD_JV13g5xRhI3aR8lLKscZzKMUCIfJjdGYTXynjH9EnD0QHJ-gq1PfIjDh1gXDZh1GMenZcPFznmiEktfvA4QY0FzMnqB3VDXTC5iGGoSVBGU0WDyvwFain55QHH1EeUTqi9ZESs-Og3y1asAZ5ySBMtVIqxVn6tfxeVCSKnwrXuA2adNV4tuD5SyEpuFXyevqc0_sRoAHYFccK7VxwCyjTUYGhB7dS5_pY-OOMwyf5EIryzJTSst9ZZga9xoZM')"></div>
+<div>
+<p class="font-semibold">Diego Torres</p>
+<p class="text-xs text-slate-500">Las Condes</p>
+</div>
+</div>
+</td>
+<td class="px-4 py-4 font-medium">38</td>
+<td class="px-4 py-4 font-bold text-primary">$8.900.000</td>
+<td class="px-4 py-4 text-slate-500">$234.210</td>
+<td class="px-4 py-4 text-right">
+<button class="text-primary hover:bg-primary/10 p-1 rounded">
+<span class="material-symbols-outlined">visibility</span>
+</button>
+</td>
+</tr>
+<!-- Rank 6 -->
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50">
+<td class="px-4 py-4">
+<div class="flex items-center gap-1">
+<span class="font-bold">6</span>
+<span class="material-symbols-outlined text-slate-400 text-xs">remove</span>
+</div>
+</td>
+<td class="px-4 py-4">
+<div class="flex items-center gap-3">
+<div class="size-8 rounded-full bg-cover bg-center" data-alt="Seller Sofia portrait" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBmGLfKlyOqp_VcS99FClHOgI_gOvfCIt-b_L1dp4LH_n7kLaenGJ9gGOygykJLawirWc6M60-GhHYHih3I0OZaQycKoMMGl1uv3HcR4mdT7YIrq2d1CSR63j17QIUlanOC2YZEZFMWdS1YqOs8mKS3w6FbYbmceMO5JhNw-puSdAGC9ZVGQ1FkwYrnTbeZDC4MOJl2MnY88qOZzvYjok3OzpeNSwyFdSkzSZbaggEtHhRI_di__G60DTR83V0p0z2_wFhy9zaOm-g')"></div>
+<div>
+<p class="font-semibold">Sofía Herrera</p>
+<p class="text-xs text-slate-500">Santiago Centro</p>
+</div>
+</div>
+</td>
+<td class="px-4 py-4 font-medium">35</td>
+<td class="px-4 py-4 font-bold text-primary">$8.200.000</td>
+<td class="px-4 py-4 text-slate-500">$234.285</td>
+<td class="px-4 py-4 text-right">
+<button class="text-primary hover:bg-primary/10 p-1 rounded">
+<span class="material-symbols-outlined">visibility</span>
+</button>
+</td>
+</tr>
+<!-- Rank 7 -->
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50">
+<td class="px-4 py-4">
+<div class="flex items-center gap-1">
+<span class="font-bold">7</span>
+<span class="material-symbols-outlined text-green-500 text-xs">arrow_upward</span>
+</div>
+</td>
+<td class="px-4 py-4">
+<div class="flex items-center gap-3">
+<div class="size-8 rounded-full bg-cover bg-center" data-alt="Seller Pablo portrait" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCfxJNyUB8wdk3xwrdC1Jht8OF8VrRRhFHaN5j4Jhx1Pi7tEKBtUEZCftocwP-5C2Xaxa-lZ1f85onE19e3X_hZBTu_bHFRQW9ghlALVBCGWDczDrOpiCA4cKSITvJYDhVw3MzunqL8b_DMuTv53YMRhz5ES3Flnd_-WUVJtM8gC2zud8iGHAbdm_RcdG303frawW3NYHRTbfdfepOkI5DWfiLQyaX9crA7JH77QvJ-YBChylRxec6C9Nrfo_2aoiuq6GoZKZ5JinI')"></div>
+<div>
+<p class="font-semibold">Pablo Mackenna</p>
+<p class="text-xs text-slate-500">Las Condes</p>
+</div>
+</div>
+</td>
+<td class="px-4 py-4 font-medium">29</td>
+<td class="px-4 py-4 font-bold text-primary">$7.150.000</td>
+<td class="px-4 py-4 text-slate-500">$246.551</td>
+<td class="px-4 py-4 text-right">
+<button class="text-primary hover:bg-primary/10 p-1 rounded">
+<span class="material-symbols-outlined">visibility</span>
+</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="p-4 border-t border-slate-100 dark:border-slate-800 text-center">
+<button class="text-primary text-sm font-bold hover:underline">Ver ranking completo</button>
+</div>
+</div>
+</div>
+<!-- Bottom Navigation Bar -->
+<div class="fixed bottom-0 left-0 right-0 z-50 bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800">
+<div class="max-w-5xl mx-auto flex h-16 items-center justify-around px-4">
+<a class="flex flex-col items-center gap-1 text-slate-500 dark:text-slate-400" href="#">
+<span class="material-symbols-outlined">home</span>
+<span class="text-[10px] font-medium">Inicio</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-slate-500 dark:text-slate-400" href="#">
+<span class="material-symbols-outlined">bar_chart</span>
+<span class="text-[10px] font-medium">Ventas</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-primary" href="#">
+<span class="material-symbols-outlined fill-current">emoji_events</span>
+<span class="text-[10px] font-bold">Ranking</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-slate-500 dark:text-slate-400" href="#">
+<span class="material-symbols-outlined">store</span>
+<span class="text-[10px] font-medium">Sucursales</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-slate-500 dark:text-slate-400" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="text-[10px] font-medium">Ajustes</span>
+</a>
+</div>
+</div>
+</body></html>

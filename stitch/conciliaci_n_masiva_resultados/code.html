@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+
+<html lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Conciliación de Pagos - ERP SaaS Chile</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              colors: {
+                "primary": "#ec5b13",
+                "background-light": "#f8f6f6",
+                "background-dark": "#221610",
+              },
+              fontFamily: {
+                "display": ["Public Sans"]
+              },
+              borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+            },
+          },
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="font-display bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 min-h-screen flex flex-col">
+<!-- Header -->
+<header class="sticky top-0 z-50 bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-800">
+<div class="flex items-center p-4 justify-between">
+<div class="flex items-center gap-3">
+<div class="text-primary flex size-10 items-center justify-center rounded-lg bg-primary/10">
+<span class="material-symbols-outlined">arrow_back</span>
+</div>
+<h1 class="text-lg font-bold leading-tight tracking-tight">Resultados de Conciliación</h1>
+</div>
+<div class="flex gap-2">
+<button class="flex size-10 items-center justify-center rounded-full bg-slate-100 dark:bg-slate-800">
+<span class="material-symbols-outlined text-slate-600 dark:text-slate-400">search</span>
+</button>
+<button class="flex size-10 items-center justify-center rounded-full bg-slate-100 dark:bg-slate-800">
+<span class="material-symbols-outlined text-slate-600 dark:text-slate-400">filter_list</span>
+</button>
+</div>
+</div>
+</header>
+<main class="flex-1 overflow-y-auto">
+<!-- Summary Cards -->
+<div class="p-4 grid grid-cols-1 gap-4 sm:grid-cols-3">
+<div class="flex flex-col gap-2 rounded-xl p-5 border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-sm">
+<div class="flex items-center justify-between">
+<p class="text-slate-500 dark:text-slate-400 text-sm font-medium">Total Procesado</p>
+<span class="material-symbols-outlined text-primary text-xl">account_balance_wallet</span>
+</div>
+<p class="text-2xl font-bold tracking-tight text-slate-900 dark:text-white">$45.200.000</p>
+<p class="text-xs text-slate-400">148 transacciones totales</p>
+</div>
+<div class="flex flex-col gap-2 rounded-xl p-5 border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-sm">
+<div class="flex items-center justify-between">
+<p class="text-slate-500 dark:text-slate-400 text-sm font-medium">Matches Automáticos</p>
+<span class="material-symbols-outlined text-green-500 text-xl">auto_awesome</span>
+</div>
+<p class="text-2xl font-bold tracking-tight text-slate-900 dark:text-white">124</p>
+<div class="w-full bg-slate-100 dark:bg-slate-800 h-1.5 rounded-full mt-1">
+<div class="bg-green-500 h-1.5 rounded-full" style="width: 84%"></div>
+</div>
+</div>
+<div class="flex flex-col gap-2 rounded-xl p-5 border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-sm">
+<div class="flex items-center justify-between">
+<p class="text-slate-500 dark:text-slate-400 text-sm font-medium">Pendientes de Revisión</p>
+<span class="material-symbols-outlined text-amber-500 text-xl">pending_actions</span>
+</div>
+<p class="text-2xl font-bold tracking-tight text-slate-900 dark:text-white">12</p>
+<p class="text-xs text-amber-600 dark:text-amber-400 font-medium">Requieren acción manual</p>
+</div>
+</div>
+<!-- Section Header & Main Action -->
+<div class="px-4 py-2 flex items-center justify-between">
+<h3 class="text-slate-900 dark:text-white text-base font-bold">Detalle de Movimientos</h3>
+<button class="bg-primary hover:bg-primary/90 text-white px-4 py-2 rounded-lg text-sm font-bold shadow-md shadow-primary/20 transition-all">
+                Confirmar Todo
+            </button>
+</div>
+<!-- Transaction List -->
+<div class="mt-2 space-y-1">
+<!-- Item 1: Conciliado -->
+<div class="flex flex-col border-b border-slate-100 dark:border-slate-800 bg-white dark:bg-slate-900 px-4 py-4">
+<div class="flex justify-between items-start mb-2">
+<div class="flex items-start gap-3">
+<div class="flex items-center justify-center rounded-lg bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400 size-10 shrink-0">
+<span class="material-symbols-outlined">check_circle</span>
+</div>
+<div>
+<p class="text-slate-900 dark:text-white text-sm font-bold leading-tight">Inversiones Los Andes SpA</p>
+<p class="text-slate-500 dark:text-slate-400 text-xs font-normal">76.123.456-K</p>
+</div>
+</div>
+<span class="px-2 py-1 rounded bg-green-100 dark:bg-green-900/40 text-green-700 dark:text-green-300 text-[10px] font-bold tracking-wider uppercase">CONCILIADO</span>
+</div>
+<div class="flex justify-between items-end pl-13 ml-13">
+<div>
+<p class="text-primary text-sm font-bold">$1.250.000</p>
+<p class="text-slate-400 text-xs">Factura #F-982 • Match 100%</p>
+</div>
+<button class="text-slate-400 hover:text-primary">
+<span class="material-symbols-outlined text-xl">more_vert</span>
+</button>
+</div>
+</div>
+<!-- Item 2: Sugerido -->
+<div class="flex flex-col border-b border-slate-100 dark:border-slate-800 bg-white dark:bg-slate-900 px-4 py-4">
+<div class="flex justify-between items-start mb-2">
+<div class="flex items-start gap-3">
+<div class="flex items-center justify-center rounded-lg bg-amber-100 dark:bg-amber-900/30 text-amber-600 dark:text-amber-400 size-10 shrink-0">
+<span class="material-symbols-outlined">lightbulb</span>
+</div>
+<div>
+<p class="text-slate-900 dark:text-white text-sm font-bold leading-tight">Transportes del Sur Ltda</p>
+<p class="text-slate-500 dark:text-slate-400 text-xs font-normal">77.445.990-2</p>
+</div>
+</div>
+<span class="px-2 py-1 rounded bg-amber-100 dark:bg-amber-900/40 text-amber-700 dark:text-amber-300 text-[10px] font-bold tracking-wider uppercase">SUGERIDO</span>
+</div>
+<div class="flex justify-between items-center mt-2 pl-13">
+<div class="flex-1">
+<p class="text-primary text-sm font-bold">$890.500</p>
+<p class="text-slate-400 text-xs">Factura #F-1024 • Diferencia $500</p>
+</div>
+<button class="bg-primary/10 text-primary px-3 py-1.5 rounded-lg text-xs font-bold hover:bg-primary/20 transition-colors">
+                        Resolver Manualmente
+                    </button>
+</div>
+</div>
+<!-- Item 3: Sin Coincidencia -->
+<div class="flex flex-col border-b border-slate-100 dark:border-slate-800 bg-white dark:bg-slate-900 px-4 py-4">
+<div class="flex justify-between items-start mb-2">
+<div class="flex items-start gap-3">
+<div class="flex items-center justify-center rounded-lg bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400 size-10 shrink-0">
+<span class="material-symbols-outlined">error</span>
+</div>
+<div>
+<p class="text-slate-900 dark:text-white text-sm font-bold leading-tight">Comercializadora Global</p>
+<p class="text-slate-500 dark:text-slate-400 text-xs font-normal">76.888.111-5</p>
+</div>
+</div>
+<span class="px-2 py-1 rounded bg-red-100 dark:bg-red-900/40 text-red-700 dark:text-red-300 text-[10px] font-bold tracking-wider uppercase">SIN COINCIDENCIA</span>
+</div>
+<div class="flex justify-between items-center mt-2 pl-13">
+<div class="flex-1">
+<p class="text-primary text-sm font-bold">$2.400.000</p>
+<p class="text-red-500/80 text-xs font-medium">No se encontraron facturas abiertas</p>
+</div>
+<button class="bg-primary/10 text-primary px-3 py-1.5 rounded-lg text-xs font-bold hover:bg-primary/20 transition-colors">
+                        Resolver Manualmente
+                    </button>
+</div>
+</div>
+<!-- Item 4: Conciliado -->
+<div class="flex flex-col border-b border-slate-100 dark:border-slate-800 bg-white dark:bg-slate-900 px-4 py-4">
+<div class="flex justify-between items-start mb-2">
+<div class="flex items-start gap-3">
+<div class="flex items-center justify-center rounded-lg bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400 size-10 shrink-0">
+<span class="material-symbols-outlined">check_circle</span>
+</div>
+<div>
+<p class="text-slate-900 dark:text-white text-sm font-bold leading-tight">Agropecuaria El Monte</p>
+<p class="text-slate-500 dark:text-slate-400 text-xs font-normal">76.321.000-4</p>
+</div>
+</div>
+<span class="px-2 py-1 rounded bg-green-100 dark:bg-green-900/40 text-green-700 dark:text-green-300 text-[10px] font-bold tracking-wider uppercase">CONCILIADO</span>
+</div>
+<div class="flex justify-between items-end pl-13 ml-13">
+<div>
+<p class="text-primary text-sm font-bold">$4.120.300</p>
+<p class="text-slate-400 text-xs">Factura #F-881 • Match 100%</p>
+</div>
+<button class="text-slate-400 hover:text-primary">
+<span class="material-symbols-outlined text-xl">more_vert</span>
+</button>
+</div>
+</div>
+</div>
+<div class="h-20 bg-transparent"></div>
+</main>
+<!-- Bottom Navigation Bar -->
+<nav class="fixed bottom-0 w-full border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 pb-safe pt-2">
+<div class="flex gap-1 px-4 pb-3">
+<a class="flex flex-1 flex-col items-center justify-center gap-1 text-slate-400 dark:text-slate-500" href="#">
+<span class="material-symbols-outlined text-2xl">home</span>
+<p class="text-[10px] font-medium leading-normal">Inicio</p>
+</a>
+<a class="flex flex-1 flex-col items-center justify-center gap-1 text-primary" href="#">
+<span class="material-symbols-outlined text-2xl" style="font-variation-settings: 'FILL' 1">handshake</span>
+<p class="text-[10px] font-medium leading-normal">Conciliar</p>
+</a>
+<a class="flex flex-1 flex-col items-center justify-center gap-1 text-slate-400 dark:text-slate-500" href="#">
+<span class="material-symbols-outlined text-2xl">description</span>
+<p class="text-[10px] font-medium leading-normal">Facturas</p>
+</a>
+<a class="flex flex-1 flex-col items-center justify-center gap-1 text-slate-400 dark:text-slate-500" href="#">
+<span class="material-symbols-outlined text-2xl">settings</span>
+<p class="text-[10px] font-medium leading-normal">Config</p>
+</a>
+</div>
+</nav>
+</body></html>

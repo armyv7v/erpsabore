@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+
+<html lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#ec5b13",
+                        "background-light": "#f8f6f6",
+                        "background-dark": "#221610",
+                    },
+                    fontFamily: {
+                        "display": ["Public Sans"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        body { font-family: 'Public Sans', sans-serif; }
+        .material-symbols-outlined { font-size: 24px; }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 min-h-screen">
+<!-- Header / Nav -->
+<header class="border-b border-primary/20 bg-white dark:bg-background-dark/50 sticky top-0 z-50">
+<div class="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-primary cursor-pointer">arrow_back</span>
+<h1 class="text-xl font-bold tracking-tight">Conciliación Bancaria</h1>
+</div>
+<div class="flex items-center gap-3">
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">search</span>
+<input class="pl-10 pr-4 py-2 bg-slate-100 dark:bg-white/5 border-none rounded-lg text-sm focus:ring-2 focus:ring-primary w-64" placeholder="Buscar movimientos..." type="text"/>
+</div>
+<button class="bg-primary text-white px-4 py-2 rounded-lg font-bold text-sm flex items-center gap-2 hover:opacity-90 transition-opacity">
+<span class="material-symbols-outlined text-sm">magic_button</span>
+                    Auto-conciliar
+                </button>
+</div>
+</div>
+<!-- Tabs -->
+<div class="max-w-7xl mx-auto px-4 flex gap-8">
+<button class="py-3 border-b-2 border-primary text-primary font-bold text-sm">Pendientes (24)</button>
+<button class="py-3 border-b-2 border-transparent text-slate-500 font-medium text-sm hover:text-primary transition-colors">Conciliados</button>
+<button class="py-3 border-b-2 border-transparent text-slate-500 font-medium text-sm hover:text-primary transition-colors">Discrepancias (3)</button>
+</div>
+</header>
+<main class="max-w-7xl mx-auto p-4 lg:p-6">
+<!-- Summary Cards -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+<div class="bg-white dark:bg-white/5 p-4 rounded-xl border border-primary/10 shadow-sm">
+<p class="text-xs font-medium text-slate-500 uppercase tracking-wider">Saldo Extracto</p>
+<p class="text-2xl font-bold mt-1 text-slate-900 dark:text-slate-50">$45.230,00</p>
+<div class="mt-2 flex items-center gap-1 text-green-600 text-xs">
+<span class="material-symbols-outlined text-xs">account_balance</span>
+<span>Banco Santander • 4432</span>
+</div>
+</div>
+<div class="bg-white dark:bg-white/5 p-4 rounded-xl border border-primary/10 shadow-sm">
+<p class="text-xs font-medium text-slate-500 uppercase tracking-wider">Saldo ERP</p>
+<p class="text-2xl font-bold mt-1 text-slate-900 dark:text-slate-50">$44.850,50</p>
+<div class="mt-2 flex items-center gap-1 text-primary text-xs font-semibold">
+<span class="material-symbols-outlined text-xs">difference</span>
+<span>Diferencia: -$379,50</span>
+</div>
+</div>
+<div class="bg-primary/10 p-4 rounded-xl border border-primary/20 flex flex-col justify-center">
+<div class="flex items-center justify-between">
+<div>
+<p class="text-sm font-bold text-primary">Progreso</p>
+<p class="text-xs text-primary/80">12 de 36 conciliados</p>
+</div>
+<span class="text-xl font-black text-primary">33%</span>
+</div>
+<div class="w-full bg-primary/20 h-2 rounded-full mt-3 overflow-hidden">
+<div class="bg-primary h-full w-1/3"></div>
+</div>
+</div>
+</div>
+<!-- Comparison View -->
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+<!-- Left Side: Bank Statements -->
+<section class="space-y-4">
+<div class="flex items-center justify-between">
+<h3 class="font-bold flex items-center gap-2">
+<span class="material-symbols-outlined text-blue-500">account_balance_wallet</span>
+                        Extracto Bancario
+                    </h3>
+<span class="text-xs text-slate-500">Última actualización: Hoy, 08:30</span>
+</div>
+<div class="space-y-3">
+<!-- Row Match -->
+<div class="bg-white dark:bg-white/5 p-4 rounded-xl border-l-4 border-green-500 shadow-sm hover:ring-1 hover:ring-primary/30 transition-all cursor-pointer group">
+<div class="flex justify-between items-start">
+<div>
+<p class="text-xs text-slate-500">12 Oct 2023</p>
+<p class="font-bold text-slate-800 dark:text-slate-100">Pago Proveedor: Tech Solutions</p>
+<p class="text-xs text-slate-500">Ref: BNK-992834</p>
+</div>
+<div class="text-right">
+<p class="font-bold text-red-500">-$1.200,00</p>
+<span class="inline-flex items-center gap-1 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 text-[10px] px-2 py-0.5 rounded-full mt-1">
+<span class="material-symbols-outlined !text-[12px]">check_circle</span>
+                                    Coincidencia exacta
+                                </span>
+</div>
+</div>
+</div>
+<!-- Row Discrepancy -->
+<div class="bg-white dark:bg-white/5 p-4 rounded-xl border-l-4 border-amber-500 shadow-sm hover:ring-1 hover:ring-primary/30 transition-all cursor-pointer">
+<div class="flex justify-between items-start">
+<div>
+<p class="text-xs text-slate-500">14 Oct 2023</p>
+<p class="font-bold text-slate-800 dark:text-slate-100">Comisión Mantenimiento</p>
+<p class="text-xs text-slate-500">Ref: FEES-OCT</p>
+</div>
+<div class="text-right">
+<p class="font-bold text-red-500">-$15,50</p>
+<span class="inline-flex items-center gap-1 bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400 text-[10px] px-2 py-0.5 rounded-full mt-1">
+<span class="material-symbols-outlined !text-[12px]">warning</span>
+                                    Sin registro en ERP
+                                </span>
+</div>
+</div>
+</div>
+<!-- Row Potential Match -->
+<div class="bg-white dark:bg-white/5 p-4 rounded-xl border-l-4 border-slate-300 dark:border-slate-700 shadow-sm hover:ring-1 hover:ring-primary/30 transition-all cursor-pointer">
+<div class="flex justify-between items-start">
+<div>
+<p class="text-xs text-slate-500">15 Oct 2023</p>
+<p class="font-bold text-slate-800 dark:text-slate-100">Depósito Cliente: Innova Corp</p>
+<p class="text-xs text-slate-500">Ref: DEP-8821</p>
+</div>
+<div class="text-right">
+<p class="font-bold text-green-600">+$3.450,00</p>
+<span class="inline-flex items-center gap-1 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 text-[10px] px-2 py-0.5 rounded-full mt-1">
+<span class="material-symbols-outlined !text-[12px]">question_mark</span>
+                                    Pendiente
+                                </span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Right Side: ERP Records -->
+<section class="space-y-4">
+<div class="flex items-center justify-between">
+<h3 class="font-bold flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">database</span>
+                        Registros ERP (Contabilidad)
+                    </h3>
+<button class="text-xs text-primary font-bold hover:underline">+ Crear ajuste</button>
+</div>
+<div class="space-y-3">
+<!-- Row Match Connected -->
+<div class="bg-white dark:bg-white/5 p-4 rounded-xl border-l-4 border-green-500 shadow-sm ring-1 ring-primary/20">
+<div class="flex justify-between items-start">
+<div>
+<p class="text-xs text-slate-500">12 Oct 2023</p>
+<p class="font-bold text-slate-800 dark:text-slate-100">Factura Compra #F-2023-44</p>
+<p class="text-xs text-slate-500">Tech Solutions • Libro Mayor</p>
+</div>
+<div class="text-right">
+<p class="font-bold text-red-500">-$1.200,00</p>
+<span class="inline-flex items-center gap-1 text-green-600 font-bold text-[10px] mt-1">
+<span class="material-symbols-outlined !text-[14px]">link</span>
+                                    Vinculado
+                                </span>
+</div>
+</div>
+</div>
+<!-- Row Missing (Placeholder for better UX) -->
+<div class="p-4 rounded-xl border-2 border-dashed border-slate-200 dark:border-white/10 flex flex-col items-center justify-center py-8 opacity-60">
+<span class="material-symbols-outlined text-slate-400 mb-1">search_off</span>
+<p class="text-xs font-medium text-slate-500 text-center px-4">No se encontró registro para la comisión de $15,50</p>
+<button class="mt-2 text-[10px] bg-slate-200 dark:bg-white/10 px-3 py-1 rounded-full font-bold hover:bg-primary/20 hover:text-primary transition-colors">Contabilizar ahora</button>
+</div>
+<!-- Row Potential Match Candidate -->
+<div class="bg-white dark:bg-white/5 p-4 rounded-xl border-l-4 border-primary/30 shadow-sm hover:ring-1 hover:ring-primary/30 transition-all cursor-pointer">
+<div class="flex justify-between items-start">
+<div>
+<p class="text-xs text-slate-500">14 Oct 2023 (Diferencia 1 día)</p>
+<p class="font-bold text-slate-800 dark:text-slate-100">Cobro Factura #V-890</p>
+<p class="text-xs text-slate-500">Innova Corp • Ventas</p>
+</div>
+<div class="text-right">
+<p class="font-bold text-green-600">+$3.450,00</p>
+<span class="inline-flex items-center gap-1 bg-primary/10 text-primary text-[10px] px-2 py-0.5 rounded-full mt-1 font-bold">
+<span class="material-symbols-outlined !text-[12px]">bolt</span>
+                                    Sugerencia: 98%
+                                </span>
+</div>
+</div>
+</div>
+</div>
+</section>
+</div>
+<!-- Action Bar Mobile-friendly Floating -->
+<div class="fixed bottom-24 right-6 lg:right-12">
+<button class="bg-primary text-white size-14 rounded-full shadow-2xl flex items-center justify-center hover:scale-105 transition-transform">
+<span class="material-symbols-outlined">add</span>
+</button>
+</div>
+</main>
+<!-- Bottom Nav Bar Component -->
+<nav class="fixed bottom-0 left-0 right-0 bg-white dark:bg-background-dark border-t border-slate-200 dark:border-white/10 px-4 py-2 z-50">
+<div class="max-w-md mx-auto flex justify-between items-center">
+<a class="flex flex-col items-center gap-0.5 text-slate-400 hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined">home</span>
+<span class="text-[10px] font-medium">Inicio</span>
+</a>
+<a class="flex flex-col items-center gap-0.5 text-primary" href="#">
+<span class="material-symbols-outlined !fill-1">account_balance</span>
+<span class="text-[10px] font-bold">Bancos</span>
+</a>
+<a class="flex flex-col items-center gap-0.5 text-slate-400 hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined">bar_chart</span>
+<span class="text-[10px] font-medium">Informes</span>
+</a>
+<a class="flex flex-col items-center gap-0.5 text-slate-400 hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="text-[10px] font-medium">Ajustes</span>
+</a>
+</div>
+</nav>
+<!-- Spacer for Bottom Nav -->
+<div class="h-24"></div>
+</body></html>

@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+
+<html class="light" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Reporte de Accesos Fallidos - ERP SaaS</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#ec5b13",
+                        "background-light": "#f8f6f6",
+                        "background-dark": "#221610",
+                    },
+                    fontFamily: {
+                        "display": ["Public Sans"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        body { font-family: 'Public Sans', sans-serif; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 min-h-screen flex flex-col">
+<!-- Header / Nav -->
+<header class="bg-white dark:bg-stone-900 border-b border-slate-200 dark:border-stone-800 sticky top-0 z-10">
+<div class="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-slate-500 cursor-pointer">menu</span>
+<h1 class="text-xl font-bold tracking-tight flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">security</span>
+                    Seguridad Acceso
+                </h1>
+</div>
+<div class="flex items-center gap-3">
+<button class="p-2 rounded-full hover:bg-slate-100 dark:hover:bg-stone-800 text-slate-600 dark:text-stone-400 relative">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-2 right-2 w-2 h-2 bg-primary rounded-full"></span>
+</button>
+<div class="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center border border-primary/20">
+<span class="text-primary font-bold text-xs">JS</span>
+</div>
+</div>
+</div>
+</header>
+<main class="flex-1 max-w-7xl w-full mx-auto p-4 md:p-6 space-y-6">
+<!-- Breadcrumbs -->
+<nav class="flex text-sm text-slate-500 dark:text-stone-400 gap-2 items-center">
+<span>Seguridad</span>
+<span class="material-symbols-outlined text-xs">chevron_right</span>
+<span class="text-primary font-medium">Accesos Fallidos</span>
+</nav>
+<!-- Page Title & Actions -->
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+<div>
+<h2 class="text-2xl font-bold text-slate-900 dark:text-slate-50">Reporte de Accesos Fallidos</h2>
+<p class="text-slate-500 dark:text-stone-400">Monitoreo de intentos de inicio de sesión no autorizados</p>
+</div>
+<div class="flex gap-2">
+<button class="flex items-center gap-2 px-4 py-2 border border-slate-200 dark:border-stone-700 rounded-lg bg-white dark:bg-stone-800 font-medium hover:bg-slate-50 dark:hover:bg-stone-700 transition-colors">
+<span class="material-symbols-outlined text-sm">download</span>
+                    Exportar PDF
+                </button>
+<button class="flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-lg font-medium hover:opacity-90 transition-opacity">
+<span class="material-symbols-outlined text-sm">refresh</span>
+                    Actualizar
+                </button>
+</div>
+</div>
+<!-- Filters Section -->
+<div class="bg-white dark:bg-stone-900 p-4 rounded-xl border border-slate-200 dark:border-stone-800 shadow-sm">
+<div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+<div class="space-y-1">
+<label class="text-sm font-semibold text-slate-700 dark:text-stone-300">Rango de Fecha</label>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm">calendar_month</span>
+<input class="w-full pl-10 pr-4 py-2 bg-slate-50 dark:bg-stone-800 border-slate-200 dark:border-stone-700 rounded-lg focus:ring-primary focus:border-primary" placeholder="Últimos 7 días" type="text"/>
+</div>
+</div>
+<div class="space-y-1">
+<label class="text-sm font-semibold text-slate-700 dark:text-stone-300">Usuario / Email</label>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm">person</span>
+<input class="w-full pl-10 pr-4 py-2 bg-slate-50 dark:bg-stone-800 border-slate-200 dark:border-stone-700 rounded-lg focus:ring-primary focus:border-primary" placeholder="Buscar por usuario..." type="text"/>
+</div>
+</div>
+<div class="space-y-1">
+<label class="text-sm font-semibold text-slate-700 dark:text-stone-300">Motivo de Fallo</label>
+<select class="w-full px-4 py-2 bg-slate-50 dark:bg-stone-800 border-slate-200 dark:border-stone-700 rounded-lg focus:ring-primary focus:border-primary">
+<option>Todos los motivos</option>
+<option>Contraseña incorrecta</option>
+<option>2FA fallido</option>
+<option>Usuario bloqueado</option>
+</select>
+</div>
+</div>
+</div>
+<!-- Summary & Chart -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+<!-- Stats -->
+<div class="lg:col-span-1 space-y-4">
+<div class="bg-white dark:bg-stone-900 p-6 rounded-xl border border-slate-200 dark:border-stone-800 shadow-sm">
+<div class="flex items-center justify-between mb-2">
+<span class="text-slate-500 dark:text-stone-400 font-medium">Total Intentos (7d)</span>
+<span class="bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400 text-xs font-bold px-2 py-1 rounded-full">+12%</span>
+</div>
+<div class="text-3xl font-bold text-slate-900 dark:text-slate-50">142</div>
+</div>
+<div class="bg-white dark:bg-stone-900 p-6 rounded-xl border border-slate-200 dark:border-stone-800 shadow-sm">
+<div class="flex items-center justify-between mb-2">
+<span class="text-slate-500 dark:text-stone-400 font-medium">IPs Únicas</span>
+<span class="material-symbols-outlined text-primary/40">public</span>
+</div>
+<div class="text-3xl font-bold text-slate-900 dark:text-slate-50">24</div>
+</div>
+<div class="bg-white dark:bg-stone-900 p-6 rounded-xl border border-slate-200 dark:border-stone-800 shadow-sm border-l-4 border-l-red-500">
+<div class="flex items-center justify-between mb-2">
+<span class="text-slate-500 dark:text-stone-400 font-medium">Usuarios Comprometidos</span>
+<span class="material-symbols-outlined text-red-500">warning</span>
+</div>
+<div class="text-3xl font-bold text-slate-900 dark:text-slate-50">5</div>
+</div>
+</div>
+<!-- Bar Chart Simulation -->
+<div class="lg:col-span-2 bg-white dark:bg-stone-900 p-6 rounded-xl border border-slate-200 dark:border-stone-800 shadow-sm">
+<h3 class="font-bold mb-6 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-sm">bar_chart</span>
+                    Intentos Fallidos por Día
+                </h3>
+<div class="flex items-end justify-between h-48 gap-2">
+<!-- Monday -->
+<div class="flex-1 flex flex-col items-center gap-2">
+<div class="w-full bg-primary/20 dark:bg-primary/10 rounded-t-lg h-[40%] relative group">
+<div class="absolute -top-8 left-1/2 -translate-x-1/2 bg-stone-800 text-white text-xs py-1 px-2 rounded hidden group-hover:block">12</div>
+</div>
+<span class="text-xs text-slate-400">Lun</span>
+</div>
+<!-- Tuesday -->
+<div class="flex-1 flex flex-col items-center gap-2">
+<div class="w-full bg-primary/40 dark:bg-primary/20 rounded-t-lg h-[60%] relative group">
+<div class="absolute -top-8 left-1/2 -translate-x-1/2 bg-stone-800 text-white text-xs py-1 px-2 rounded hidden group-hover:block">18</div>
+</div>
+<span class="text-xs text-slate-400">Mar</span>
+</div>
+<!-- Wednesday -->
+<div class="flex-1 flex flex-col items-center gap-2">
+<div class="w-full bg-primary/30 dark:bg-primary/15 rounded-t-lg h-[50%] relative group">
+<div class="absolute -top-8 left-1/2 -translate-x-1/2 bg-stone-800 text-white text-xs py-1 px-2 rounded hidden group-hover:block">15</div>
+</div>
+<span class="text-xs text-slate-400">Mie</span>
+</div>
+<!-- Thursday -->
+<div class="flex-1 flex flex-col items-center gap-2">
+<div class="w-full bg-primary/80 dark:bg-primary/60 rounded-t-lg h-[85%] relative group">
+<div class="absolute -top-8 left-1/2 -translate-x-1/2 bg-stone-800 text-white text-xs py-1 px-2 rounded hidden group-hover:block">32</div>
+</div>
+<span class="text-xs text-slate-400 font-bold text-primary">Jue</span>
+</div>
+<!-- Friday -->
+<div class="flex-1 flex flex-col items-center gap-2">
+<div class="w-full bg-primary/50 dark:bg-primary/30 rounded-t-lg h-[70%] relative group">
+<div class="absolute -top-8 left-1/2 -translate-x-1/2 bg-stone-800 text-white text-xs py-1 px-2 rounded hidden group-hover:block">22</div>
+</div>
+<span class="text-xs text-slate-400">Vie</span>
+</div>
+<!-- Saturday -->
+<div class="flex-1 flex flex-col items-center gap-2">
+<div class="w-full bg-primary/20 dark:bg-primary/10 rounded-t-lg h-[30%] relative group">
+<div class="absolute -top-8 left-1/2 -translate-x-1/2 bg-stone-800 text-white text-xs py-1 px-2 rounded hidden group-hover:block">8</div>
+</div>
+<span class="text-xs text-slate-400">Sab</span>
+</div>
+<!-- Sunday -->
+<div class="flex-1 flex flex-col items-center gap-2">
+<div class="w-full bg-primary/20 dark:bg-primary/10 rounded-t-lg h-[25%] relative group">
+<div class="absolute -top-8 left-1/2 -translate-x-1/2 bg-stone-800 text-white text-xs py-1 px-2 rounded hidden group-hover:block">6</div>
+</div>
+<span class="text-xs text-slate-400">Dom</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Detailed List Table -->
+<div class="bg-white dark:bg-stone-900 rounded-xl border border-slate-200 dark:border-stone-800 shadow-sm overflow-hidden">
+<div class="p-4 border-b border-slate-200 dark:border-stone-800 flex items-center justify-between">
+<h3 class="font-bold">Listado Detallado de Intentos</h3>
+<span class="text-sm text-slate-500">Mostrando últimos 50 registros</span>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left text-sm">
+<thead class="bg-slate-50 dark:bg-stone-800/50 text-slate-500 dark:text-stone-400 uppercase text-xs font-semibold">
+<tr>
+<th class="px-6 py-4">Usuario</th>
+<th class="px-6 py-4">Fecha y Hora</th>
+<th class="px-6 py-4">Origen IP</th>
+<th class="px-6 py-4">Dispositivo / Navegador</th>
+<th class="px-6 py-4">Motivo</th>
+<th class="px-6 py-4 text-right">Acción</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-slate-100 dark:divide-stone-800">
+<tr class="hover:bg-slate-50 dark:hover:bg-stone-800/50 transition-colors">
+<td class="px-6 py-4">
+<div class="flex flex-col">
+<span class="font-bold">r.gonzalez@empresa.cl</span>
+<span class="text-xs text-slate-400">ID: 4421</span>
+</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="flex flex-col">
+<span>24 May 2024</span>
+<span class="text-xs text-slate-400">14:22:15</span>
+</div>
+</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-2">
+<span class="w-5 h-3.5 bg-slate-200 flex items-center justify-center overflow-hidden rounded-sm" title="Chile">
+<div class="w-full h-full bg-gradient-to-r from-blue-700 via-white to-red-600"></div>
+</span>
+<span>190.161.22.4</span>
+</div>
+</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-slate-400">laptop_mac</span>
+<span>Chrome / macOS</span>
+</div>
+</td>
+<td class="px-6 py-4">
+<span class="px-2 py-1 rounded-full bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400 text-xs font-medium">Contraseña Incorrecta</span>
+</td>
+<td class="px-6 py-4 text-right">
+<button class="text-slate-400 hover:text-primary transition-colors">
+<span class="material-symbols-outlined">more_vert</span>
+</button>
+</td>
+</tr>
+<tr class="hover:bg-slate-50 dark:hover:bg-stone-800/50 transition-colors">
+<td class="px-6 py-4">
+<div class="flex flex-col">
+<span class="font-bold">m.torres@corporativo.cl</span>
+<span class="text-xs text-slate-400">ID: 8892</span>
+</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="flex flex-col">
+<span>24 May 2024</span>
+<span class="text-xs text-slate-400">13:05:40</span>
+</div>
+</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-2">
+<span class="w-5 h-3.5 bg-slate-200 flex items-center justify-center overflow-hidden rounded-sm" title="Rusia">
+<div class="w-full h-full bg-gradient-to-b from-white via-blue-700 to-red-600"></div>
+</span>
+<span>45.143.20.108</span>
+</div>
+</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-slate-400">language</span>
+<span>Desconocido / Linux</span>
+</div>
+</td>
+<td class="px-6 py-4">
+<span class="px-2 py-1 rounded-full bg-orange-100 dark:bg-orange-900/30 text-orange-700 dark:text-orange-400 text-xs font-medium">2FA Fallido</span>
+</td>
+<td class="px-6 py-4 text-right">
+<button class="text-slate-400 hover:text-primary transition-colors">
+<span class="material-symbols-outlined">more_vert</span>
+</button>
+</td>
+</tr>
+<tr class="hover:bg-slate-50 dark:hover:bg-stone-800/50 transition-colors">
+<td class="px-6 py-4">
+<div class="flex flex-col">
+<span class="font-bold text-red-600 dark:text-red-400">admin@demo.cl</span>
+<span class="text-xs text-slate-400">No existe</span>
+</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="flex flex-col">
+<span>24 May 2024</span>
+<span class="text-xs text-slate-400">12:50:11</span>
+</div>
+</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-2">
+<span class="w-5 h-3.5 bg-slate-200 flex items-center justify-center overflow-hidden rounded-sm" title="Estados Unidos">
+<div class="w-full h-full bg-stone-100 flex flex-col">
+<div class="h-1/2 bg-blue-900"></div>
+<div class="h-1/2 bg-red-600"></div>
+</div>
+</span>
+<span>104.21.72.10</span>
+</div>
+</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-slate-400">robot</span>
+<span>Python Requests</span>
+</div>
+</td>
+<td class="px-6 py-4">
+<span class="px-2 py-1 rounded-full bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400 text-xs font-medium">Usuario Inexistente</span>
+</td>
+<td class="px-6 py-4 text-right">
+<button class="text-slate-400 hover:text-primary transition-colors">
+<span class="material-symbols-outlined">more_vert</span>
+</button>
+</td>
+</tr>
+<tr class="hover:bg-slate-50 dark:hover:bg-stone-800/50 transition-colors">
+<td class="px-6 py-4">
+<div class="flex flex-col">
+<span class="font-bold">j.perez@empresa.cl</span>
+<span class="text-xs text-slate-400">ID: 3310</span>
+</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="flex flex-col">
+<span>24 May 2024</span>
+<span class="text-xs text-slate-400">11:10:05</span>
+</div>
+</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-2">
+<span class="w-5 h-3.5 bg-slate-200 flex items-center justify-center overflow-hidden rounded-sm" title="Chile">
+<div class="w-full h-full bg-gradient-to-r from-blue-700 via-white to-red-600"></div>
+</span>
+<span>200.12.55.88</span>
+</div>
+</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-slate-400">smartphone</span>
+<span>Safari / iPhone</span>
+</div>
+</td>
+<td class="px-6 py-4">
+<span class="px-2 py-1 rounded-full bg-stone-100 dark:bg-stone-800 text-slate-600 dark:text-stone-300 text-xs font-medium">Cuenta Bloqueada</span>
+</td>
+<td class="px-6 py-4 text-right">
+<button class="text-slate-400 hover:text-primary transition-colors">
+<span class="material-symbols-outlined">more_vert</span>
+</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="p-4 border-t border-slate-200 dark:border-stone-800 flex items-center justify-between">
+<div class="text-sm text-slate-500">Página 1 de 3</div>
+<div class="flex gap-2">
+<button class="p-2 border border-slate-200 dark:border-stone-800 rounded-lg hover:bg-slate-50 dark:hover:bg-stone-800 disabled:opacity-30" disabled="">
+<span class="material-symbols-outlined text-sm">chevron_left</span>
+</button>
+<button class="p-2 border border-slate-200 dark:border-stone-800 rounded-lg hover:bg-slate-50 dark:hover:bg-stone-800">
+<span class="material-symbols-outlined text-sm">chevron_right</span>
+</button>
+</div>
+</div>
+</div>
+</main>
+<!-- Bottom Nav (Mobile Only Style Component Integration) -->
+<nav class="md:hidden sticky bottom-0 bg-white dark:bg-stone-900 border-t border-slate-200 dark:border-stone-800 flex justify-around p-2">
+<a class="flex flex-col items-center gap-1 text-slate-400 dark:text-stone-500 py-1" href="#">
+<span class="material-symbols-outlined">home</span>
+<span class="text-[10px]">Inicio</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-primary py-1 font-medium" href="#">
+<span class="material-symbols-outlined">shield_lock</span>
+<span class="text-[10px]">Seguridad</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-slate-400 dark:text-stone-500 py-1" href="#">
+<span class="material-symbols-outlined">bar_chart</span>
+<span class="text-[10px]">Reportes</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-slate-400 dark:text-stone-500 py-1" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="text-[10px]">Ajustes</span>
+</a>
+</nav>
+<footer class="p-6 text-center text-slate-400 dark:text-stone-500 text-xs mt-auto">
+        © 2024 CloudERP Chile - Sistema de Gestión de Seguridad
+    </footer>
+</body></html>

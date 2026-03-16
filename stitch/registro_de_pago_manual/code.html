@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+
+<html class="light" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Registrar Pago Manual - ERP</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#ec5b13",
+                        "background-light": "#f8f6f6",
+                        "background-dark": "#221610",
+                    },
+                    fontFamily: {
+                        "display": ["Public Sans"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        body { font-family: "Public Sans", sans-serif; }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 min-h-screen">
+<div class="max-w-2xl mx-auto min-h-screen flex flex-col shadow-sm bg-white dark:bg-zinc-900">
+<!-- TopAppBar Navigation -->
+<div class="flex items-center p-4 border-b border-slate-200 dark:border-zinc-800 justify-between">
+<div class="flex items-center gap-3">
+<div class="text-slate-600 dark:text-slate-400 cursor-pointer hover:text-primary transition-colors">
+<span class="material-symbols-outlined">arrow_back</span>
+</div>
+<h2 class="text-slate-900 dark:text-white text-lg font-bold leading-tight tracking-tight">Registrar Pago Manual</h2>
+</div>
+<div class="flex items-center">
+<button class="flex items-center justify-center rounded-xl h-10 w-10 bg-transparent text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-zinc-800 transition-colors">
+<span class="material-symbols-outlined">more_vert</span>
+</button>
+</div>
+</div>
+<!-- Form Content -->
+<div class="flex-1 overflow-y-auto p-6 space-y-6">
+<!-- Payment Method Toggle -->
+<div class="space-y-3">
+<p class="text-slate-700 dark:text-slate-300 text-sm font-semibold uppercase tracking-wider">Método de Pago</p>
+<div class="flex h-12 w-full items-center justify-center rounded-xl bg-slate-100 dark:bg-zinc-800 p-1">
+<label class="flex cursor-pointer h-full grow items-center justify-center overflow-hidden rounded-lg px-2 has-[:checked]:bg-primary has-[:checked]:text-white text-slate-600 dark:text-slate-400 text-sm font-medium transition-all">
+<span class="truncate">Efectivo</span>
+<input checked="" class="invisible w-0" name="payment_method" type="radio" value="Efectivo"/>
+</label>
+<label class="flex cursor-pointer h-full grow items-center justify-center overflow-hidden rounded-lg px-2 has-[:checked]:bg-primary has-[:checked]:text-white text-slate-600 dark:text-slate-400 text-sm font-medium transition-all">
+<span class="truncate">Transferencia</span>
+<input class="invisible w-0" name="payment_method" type="radio" value="Transferencia"/>
+</label>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<!-- Cliente Selector -->
+<div class="flex flex-col gap-2">
+<label class="text-slate-700 dark:text-slate-300 text-sm font-medium">Cliente</label>
+<div class="relative">
+<select class="form-select block w-full rounded-xl border-slate-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-slate-900 dark:text-slate-100 focus:border-primary focus:ring-primary h-12 pl-4 pr-10 text-base appearance-none">
+<option value="">Seleccionar cliente</option>
+<option value="1">Distribuidora Alimentos S.A.</option>
+<option value="2">Logística Norte Ltda.</option>
+<option value="3">Comercializadora del Sur</option>
+</select>
+<div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-slate-400">
+<span class="material-symbols-outlined">expand_more</span>
+</div>
+</div>
+</div>
+<!-- Monto Input -->
+<div class="flex flex-col gap-2">
+<label class="text-slate-700 dark:text-slate-300 text-sm font-medium">Monto</label>
+<div class="flex w-full items-stretch rounded-xl overflow-hidden border border-slate-200 dark:border-zinc-700">
+<div class="bg-slate-50 dark:bg-zinc-800 flex items-center justify-center px-4 border-r border-slate-200 dark:border-zinc-700 text-slate-500">
+<span class="material-symbols-outlined">payments</span>
+</div>
+<input class="form-input w-full border-none bg-white dark:bg-zinc-800 text-slate-900 dark:text-slate-100 focus:ring-0 h-12 text-base placeholder:text-slate-400" placeholder="0.00" step="0.01" type="number"/>
+</div>
+</div>
+</div>
+<!-- Destino Selector (Caja o Banco) -->
+<div class="flex flex-col gap-2">
+<label class="text-slate-700 dark:text-slate-300 text-sm font-medium">Caja o Cuenta de Destino</label>
+<div class="relative">
+<select class="form-select block w-full rounded-xl border-slate-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-slate-900 dark:text-slate-100 focus:border-primary focus:ring-primary h-12 pl-4 pr-10 text-base appearance-none">
+<option value="">Seleccionar cuenta de destino</option>
+<optgroup label="Cajas">
+<option value="caja-1">Caja Principal - CLP</option>
+<option value="caja-2">Caja Chica Oficina</option>
+</optgroup>
+<optgroup label="Cuentas Bancarias">
+<option value="banco-1">Banco Estado Cta. Corriente ****4521</option>
+<option value="banco-2">Banco Santander Business ****9901</option>
+</optgroup>
+</select>
+<div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-slate-400">
+<span class="material-symbols-outlined">account_balance</span>
+</div>
+</div>
+</div>
+<!-- Date Picker Section -->
+<div class="space-y-3">
+<label class="text-slate-700 dark:text-slate-300 text-sm font-medium">Fecha del Pago</label>
+<div class="bg-slate-50 dark:bg-zinc-800/50 border border-slate-200 dark:border-zinc-700 rounded-xl p-4">
+<div class="flex items-center justify-between mb-4">
+<button class="p-2 hover:bg-slate-200 dark:hover:bg-zinc-700 rounded-full transition-colors">
+<span class="material-symbols-outlined">chevron_left</span>
+</button>
+<p class="text-slate-900 dark:text-white font-bold">Octubre 2023</p>
+<button class="p-2 hover:bg-slate-200 dark:hover:bg-zinc-700 rounded-full transition-colors">
+<span class="material-symbols-outlined">chevron_right</span>
+</button>
+</div>
+<div class="grid grid-cols-7 text-center mb-2">
+<span class="text-slate-400 text-xs font-bold uppercase">Do</span>
+<span class="text-slate-400 text-xs font-bold uppercase">Lu</span>
+<span class="text-slate-400 text-xs font-bold uppercase">Ma</span>
+<span class="text-slate-400 text-xs font-bold uppercase">Mi</span>
+<span class="text-slate-400 text-xs font-bold uppercase">Ju</span>
+<span class="text-slate-400 text-xs font-bold uppercase">Vi</span>
+<span class="text-slate-400 text-xs font-bold uppercase">Sa</span>
+</div>
+<div class="grid grid-cols-7 gap-1">
+<!-- Simplified Calendar Grid -->
+<div class="h-10 flex items-center justify-center text-slate-300">24</div>
+<div class="h-10 flex items-center justify-center text-slate-300">25</div>
+<div class="h-10 flex items-center justify-center text-slate-300">26</div>
+<div class="h-10 flex items-center justify-center text-slate-300">27</div>
+<div class="h-10 flex items-center justify-center text-slate-300">28</div>
+<div class="h-10 flex items-center justify-center text-slate-300">29</div>
+<div class="h-10 flex items-center justify-center text-slate-300">30</div>
+<div class="h-10 flex items-center justify-center hover:bg-slate-200 dark:hover:bg-zinc-700 rounded-lg cursor-pointer">1</div>
+<div class="h-10 flex items-center justify-center hover:bg-slate-200 dark:hover:bg-zinc-700 rounded-lg cursor-pointer">2</div>
+<div class="h-10 flex items-center justify-center hover:bg-slate-200 dark:hover:bg-zinc-700 rounded-lg cursor-pointer">3</div>
+<div class="h-10 flex items-center justify-center hover:bg-slate-200 dark:hover:bg-zinc-700 rounded-lg cursor-pointer">4</div>
+<div class="h-10 flex items-center justify-center bg-primary text-white rounded-lg font-bold shadow-lg shadow-primary/30">5</div>
+<div class="h-10 flex items-center justify-center hover:bg-slate-200 dark:hover:bg-zinc-700 rounded-lg cursor-pointer">6</div>
+<div class="h-10 flex items-center justify-center hover:bg-slate-200 dark:hover:bg-zinc-700 rounded-lg cursor-pointer">7</div>
+</div>
+</div>
+</div>
+<!-- Notes / Reference -->
+<div class="flex flex-col gap-2">
+<label class="text-slate-700 dark:text-slate-300 text-sm font-medium">Referencia / Comentarios</label>
+<textarea class="form-textarea w-full rounded-xl border-slate-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-slate-900 dark:text-slate-100 focus:border-primary focus:ring-primary p-4 text-base placeholder:text-slate-400" placeholder="Ej: Pago factura #4502 - Transferencia realizada por el cliente" rows="3"></textarea>
+</div>
+</div>
+<!-- Action Footer -->
+<div class="p-6 border-t border-slate-200 dark:border-zinc-800 bg-slate-50 dark:bg-zinc-900/50 flex gap-4">
+<button class="flex-1 h-14 rounded-xl border-2 border-slate-200 dark:border-zinc-700 text-slate-700 dark:text-slate-300 font-bold hover:bg-slate-100 dark:hover:bg-zinc-800 transition-colors">
+                Cancelar
+            </button>
+<button class="flex-[2] h-14 rounded-xl bg-primary text-white font-bold hover:brightness-110 shadow-lg shadow-primary/20 transition-all flex items-center justify-center gap-2">
+<span class="material-symbols-outlined">check_circle</span>
+                Confirmar Pago
+            </button>
+</div>
+</div>
+</body></html>

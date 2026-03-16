@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+
+<html lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#ec5b13",
+                        "background-light": "#f8f6f6",
+                        "background-dark": "#221610",
+                    },
+                    fontFamily: {
+                        "display": ["Public Sans"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<title>Gestión de Inventario ERP</title>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 antialiased">
+<!-- Main Container -->
+<div class="relative flex min-h-screen flex-col">
+<!-- Header -->
+<header class="sticky top-0 z-10 border-b border-slate-200 dark:border-slate-800 bg-white/80 dark:bg-background-dark/80 backdrop-blur-md px-4 py-3">
+<div class="flex items-center justify-between max-w-7xl mx-auto w-full">
+<div class="flex items-center gap-3">
+<div class="bg-primary/10 p-2 rounded-lg">
+<span class="material-symbols-outlined text-primary">inventory_2</span>
+</div>
+<div>
+<h1 class="text-xl font-bold tracking-tight">Inventario Central</h1>
+<p class="text-xs text-slate-500 dark:text-slate-400">Panel de Control ERP</p>
+</div>
+</div>
+<div class="flex items-center gap-2">
+<button class="p-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full transition-colors">
+<span class="material-symbols-outlined text-slate-600 dark:text-slate-300">search</span>
+</button>
+<button class="p-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full transition-colors">
+<span class="material-symbols-outlined text-slate-600 dark:text-slate-300">notifications</span>
+</button>
+<div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-white font-bold text-sm">
+                        JD
+                    </div>
+</div>
+</div>
+</header>
+<!-- Main Content -->
+<main class="flex-1 max-w-7xl mx-auto w-full p-4 space-y-6">
+<!-- Summary Stats -->
+<div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+<div class="bg-white dark:bg-slate-900 p-4 rounded-xl border border-slate-200 dark:border-slate-800">
+<p class="text-slate-500 dark:text-slate-400 text-xs font-medium uppercase tracking-wider">Total SKU</p>
+<p class="text-2xl font-bold mt-1">1,284</p>
+</div>
+<div class="bg-white dark:bg-slate-900 p-4 rounded-xl border border-slate-200 dark:border-slate-800">
+<p class="text-slate-500 dark:text-slate-400 text-xs font-medium uppercase tracking-wider">Stock Bajo</p>
+<p class="text-2xl font-bold mt-1 text-orange-500">12</p>
+</div>
+<div class="bg-white dark:bg-slate-900 p-4 rounded-xl border border-slate-200 dark:border-slate-800">
+<p class="text-slate-500 dark:text-slate-400 text-xs font-medium uppercase tracking-wider">Valor Total</p>
+<p class="text-2xl font-bold mt-1">$45.2k</p>
+</div>
+<div class="bg-white dark:bg-slate-900 p-4 rounded-xl border border-slate-200 dark:border-slate-800">
+<p class="text-slate-500 dark:text-slate-400 text-xs font-medium uppercase tracking-wider">Almacenes</p>
+<p class="text-2xl font-bold mt-1">3</p>
+</div>
+</div>
+<!-- Tabs & Filters -->
+<div class="space-y-4">
+<div class="flex border-b border-slate-200 dark:border-slate-800 overflow-x-auto no-scrollbar">
+<button class="px-4 py-2 text-sm font-semibold border-b-2 border-primary text-primary whitespace-nowrap">Todos los Productos</button>
+<button class="px-4 py-2 text-sm font-medium text-slate-500 hover:text-slate-700 dark:hover:text-slate-300 whitespace-nowrap">Stock Crítico</button>
+<button class="px-4 py-2 text-sm font-medium text-slate-500 hover:text-slate-700 dark:hover:text-slate-300 whitespace-nowrap">Por Recibir</button>
+<button class="px-4 py-2 text-sm font-medium text-slate-500 hover:text-slate-700 dark:hover:text-slate-300 whitespace-nowrap">Descatalogados</button>
+</div>
+<div class="flex flex-wrap gap-2">
+<button class="flex items-center gap-2 px-3 py-1.5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-lg text-sm">
+<span class="material-symbols-outlined text-sm">filter_list</span> Categoría
+                    </button>
+<button class="flex items-center gap-2 px-3 py-1.5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-lg text-sm">
+<span class="material-symbols-outlined text-sm">location_on</span> Almacén
+                    </button>
+<button class="flex items-center gap-2 px-3 py-1.5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-lg text-sm">
+<span class="material-symbols-outlined text-sm">sort</span> Ordenar por
+                    </button>
+</div>
+</div>
+<!-- Product List Table (Mobile Friendly) -->
+<div class="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 overflow-hidden">
+<div class="hidden md:grid grid-cols-6 gap-4 p-4 border-b border-slate-200 dark:border-slate-800 text-xs font-bold uppercase text-slate-500 tracking-wider">
+<div class="col-span-2">Producto / SKU</div>
+<div>Precio Unit.</div>
+<div>Estado Stock</div>
+<div>Cantidad</div>
+<div class="text-right">Acciones</div>
+</div>
+<!-- Product Row 1 -->
+<div class="p-4 border-b border-slate-100 dark:border-slate-800 flex flex-col md:grid md:grid-cols-6 md:items-center gap-4">
+<div class="col-span-2 flex items-center gap-4">
+<div class="size-12 rounded-lg bg-slate-100 dark:bg-slate-800 flex-shrink-0 bg-cover bg-center" data-alt="Imagen de smartphone Samsung Galaxy S21" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAGjYQDjqc2GILCXd3_X8QyINxgbzAlwP8xcfypb7ayIwCju6yheaMKqbYbB5_nzTvenSn6b-BgiG13nD9v446_qYnf7vLLa2YhYJFKd9b0nJjjG-JRhPp3khjYEX9Pc809GLWOyR8kTAXlsSyS4XE753AQTfvkutKjchIdfkVagIUerDqwSvjl1soBcI7dvLEZrS5Hdi8ltXrI96j7_SBo3G_EBRYmcWqlb0AUuDE4dhMyxtP9ICMedAYA1lVCbc1UD24QkK_fUzA')"></div>
+<div class="min-w-0">
+<h3 class="font-semibold text-sm truncate">Samsung Galaxy S21 Ultra</h3>
+<p class="text-xs text-slate-500">SKU: SAM-S21-BLK</p>
+</div>
+</div>
+<div class="flex justify-between md:block">
+<span class="md:hidden text-xs text-slate-500 uppercase font-bold">Precio:</span>
+<span class="text-sm font-medium">$899.00</span>
+</div>
+<div class="space-y-2">
+<div class="flex justify-between text-[10px] font-bold uppercase text-slate-500">
+<span>Nivel de Stock</span>
+<span>85%</span>
+</div>
+<div class="h-1.5 w-full bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden">
+<div class="h-full bg-green-500" style="width: 85%"></div>
+</div>
+</div>
+<div class="flex justify-between md:block">
+<span class="md:hidden text-xs text-slate-500 uppercase font-bold">Cant:</span>
+<span class="text-sm">42 uds</span>
+</div>
+<div class="flex justify-end gap-2">
+<button class="p-1.5 hover:bg-slate-100 dark:hover:bg-slate-800 rounded text-primary">
+<span class="material-symbols-outlined text-xl">edit</span>
+</button>
+<button class="p-1.5 hover:bg-slate-100 dark:hover:bg-slate-800 rounded">
+<span class="material-symbols-outlined text-xl">more_vert</span>
+</button>
+</div>
+</div>
+<!-- Product Row 2 (Low Stock Warning) -->
+<div class="p-4 border-b border-slate-100 dark:border-slate-800 flex flex-col md:grid md:grid-cols-6 md:items-center gap-4 bg-orange-50/30 dark:bg-primary/5">
+<div class="col-span-2 flex items-center gap-4">
+<div class="size-12 rounded-lg bg-slate-100 dark:bg-slate-800 flex-shrink-0 bg-cover bg-center" data-alt="Imagen de auriculares Sony WH-1000XM4" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAbkVOt4DteH6G05GpkJwkOAEIA7Tmh9ZMVG9yr0ERiXmhDwKXewghN4CUvXm0Y6l5fwSU_GAlkzxOudDGq9BJNmrcgm7xlZnXdPZz5IMdX4apj_QS2QXU0zGZ6z2mhdye6wp_g9niNhNxgD0ClVVklZIOzzxoCGYbHTLdiPE8noo907YF5StTPAcHpuq9zJfvtgEG8yzhKxsy3hiXrLhDX8P7zMKxVQvHp0kKbyLXjzVqyiy7UHubcYzZ4rbaIOdZUngAupsJFIJs')"></div>
+<div class="min-w-0">
+<h3 class="font-semibold text-sm truncate">Sony WH-1000XM4</h3>
+<p class="text-xs text-slate-500">SKU: SNY-XM4-GRY</p>
+</div>
+</div>
+<div class="flex justify-between md:block">
+<span class="md:hidden text-xs text-slate-500 uppercase font-bold">Precio:</span>
+<span class="text-sm font-medium">$349.99</span>
+</div>
+<div class="space-y-2">
+<div class="flex justify-between text-[10px] font-bold uppercase text-orange-600">
+<span>Bajo Stock</span>
+<span>12%</span>
+</div>
+<div class="h-1.5 w-full bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden">
+<div class="h-full bg-orange-500" style="width: 12%"></div>
+</div>
+</div>
+<div class="flex justify-between md:block">
+<span class="md:hidden text-xs text-slate-500 uppercase font-bold">Cant:</span>
+<span class="text-sm font-bold text-orange-600">3 uds</span>
+</div>
+<div class="flex justify-end gap-2">
+<button class="p-1.5 hover:bg-slate-100 dark:hover:bg-slate-800 rounded text-primary">
+<span class="material-symbols-outlined text-xl">edit</span>
+</button>
+<button class="p-1.5 hover:bg-slate-100 dark:hover:bg-slate-800 rounded">
+<span class="material-symbols-outlined text-xl">more_vert</span>
+</button>
+</div>
+</div>
+<!-- Product Row 3 -->
+<div class="p-4 border-b border-slate-100 dark:border-slate-800 flex flex-col md:grid md:grid-cols-6 md:items-center gap-4">
+<div class="col-span-2 flex items-center gap-4">
+<div class="size-12 rounded-lg bg-slate-100 dark:bg-slate-800 flex-shrink-0 bg-cover bg-center" data-alt="Imagen de cargador MacBook Pro 96W" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuC2T05Zez1S9SohXoQRqTDb0mIdqEyd92GpT8UQ4P_sz4xMNWAyPujhNnl7OxvSje-lCB0Ly64ox6YDHyTxCRhR5EOAtJnwkS_buECzn2otdTKn5HTx7oyxK6DWx-7Z-Af0DJUS-rY7PmkKVipj_Ws2VhvbMV5FqohhohrjvreRoAG_nawGseOUkoqYOQ8BHnBmmHDjA9GS8cBWKPOHd5LZ4o3JwDNfqRO-ToOF-PXXyOQKAPFml7f9yOswxVSIf1bKHJwH0I550E4')"></div>
+<div class="min-w-0">
+<h3 class="font-semibold text-sm truncate">Cargador Apple 96W USB-C</h3>
+<p class="text-xs text-slate-500">SKU: APL-PWR-96W</p>
+</div>
+</div>
+<div class="flex justify-between md:block">
+<span class="md:hidden text-xs text-slate-500 uppercase font-bold">Precio:</span>
+<span class="text-sm font-medium">$79.00</span>
+</div>
+<div class="space-y-2">
+<div class="flex justify-between text-[10px] font-bold uppercase text-slate-500">
+<span>Nivel de Stock</span>
+<span>54%</span>
+</div>
+<div class="h-1.5 w-full bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden">
+<div class="h-full bg-green-500" style="width: 54%"></div>
+</div>
+</div>
+<div class="flex justify-between md:block">
+<span class="md:hidden text-xs text-slate-500 uppercase font-bold">Cant:</span>
+<span class="text-sm">128 uds</span>
+</div>
+<div class="flex justify-end gap-2">
+<button class="p-1.5 hover:bg-slate-100 dark:hover:bg-slate-800 rounded text-primary">
+<span class="material-symbols-outlined text-xl">edit</span>
+</button>
+<button class="p-1.5 hover:bg-slate-100 dark:hover:bg-slate-800 rounded">
+<span class="material-symbols-outlined text-xl">more_vert</span>
+</button>
+</div>
+</div>
+<!-- Product Row 4 (Out of Stock) -->
+<div class="p-4 border-b border-slate-100 dark:border-slate-800 flex flex-col md:grid md:grid-cols-6 md:items-center gap-4 bg-slate-50 dark:bg-slate-900/50 grayscale opacity-80">
+<div class="col-span-2 flex items-center gap-4">
+<div class="size-12 rounded-lg bg-slate-100 dark:bg-slate-800 flex-shrink-0 bg-cover bg-center" data-alt="Imagen de monitor LG UltraWide" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDbkdwK5HAS6YNN-cYIbu003tJLGqzc08DN7WcPnMU3Hkc6pFpeNQJG6L8Mzhb2jkFhc6jpF9ZwfXtVhKleOC2qeHl66_MpcKcFqq5xFDIQu3CiO8ItiRlKuIkpNkx6wpBzabBzmqEsYK0B5ZeutasGko3SOQLLSvFV2wEQm5Xkfw8VvvZLDfZrA-u2CnTGvqvGKt_bcbaccqQu1Cn2s8ZZ_HJHYZHND5Nph5yNb7qUJd-woS3MTml6Q55MjYgU9H1TjrayVPgJT1I')"></div>
+<div class="min-w-0">
+<h3 class="font-semibold text-sm truncate">LG UltraWide 34WL500</h3>
+<p class="text-xs text-slate-500">SKU: LG-34WL-500</p>
+</div>
+</div>
+<div class="flex justify-between md:block">
+<span class="md:hidden text-xs text-slate-500 uppercase font-bold">Precio:</span>
+<span class="text-sm font-medium">$399.99</span>
+</div>
+<div class="space-y-2">
+<div class="flex justify-between text-[10px] font-bold uppercase text-red-600">
+<span>Agotado</span>
+<span>0%</span>
+</div>
+<div class="h-1.5 w-full bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden">
+<div class="h-full bg-red-500" style="width: 0%"></div>
+</div>
+</div>
+<div class="flex justify-between md:block">
+<span class="md:hidden text-xs text-slate-500 uppercase font-bold">Cant:</span>
+<span class="text-sm font-bold text-red-600">0 uds</span>
+</div>
+<div class="flex justify-end gap-2">
+<button class="p-1.5 hover:bg-slate-100 dark:hover:bg-slate-800 rounded text-primary">
+<span class="material-symbols-outlined text-xl">edit</span>
+</button>
+<button class="p-1.5 hover:bg-slate-100 dark:hover:bg-slate-800 rounded">
+<span class="material-symbols-outlined text-xl">more_vert</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Pagination -->
+<div class="flex items-center justify-between pt-4 pb-20">
+<span class="text-sm text-slate-500">Mostrando 4 de 1,284 productos</span>
+<div class="flex gap-1">
+<button class="p-2 border border-slate-200 dark:border-slate-800 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800">
+<span class="material-symbols-outlined text-sm">chevron_left</span>
+</button>
+<button class="px-3 py-1 bg-primary text-white rounded-lg text-sm font-medium">1</button>
+<button class="px-3 py-1 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg text-sm font-medium">2</button>
+<button class="px-3 py-1 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg text-sm font-medium">3</button>
+<button class="p-2 border border-slate-200 dark:border-slate-800 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800">
+<span class="material-symbols-outlined text-sm">chevron_right</span>
+</button>
+</div>
+</div>
+</main>
+<!-- Floating Action Button -->
+<button class="fixed bottom-24 right-6 size-14 bg-primary text-white rounded-full shadow-lg shadow-primary/30 flex items-center justify-center transition-transform hover:scale-110 active:scale-95 z-20">
+<span class="material-symbols-outlined text-3xl">add</span>
+</button>
+<!-- Bottom NavBar -->
+<nav class="fixed bottom-0 left-0 right-0 bg-white dark:bg-background-dark border-t border-slate-200 dark:border-slate-800 px-4 py-2 pb-safe-area flex justify-around items-center z-30">
+<a class="flex flex-col items-center gap-1 text-slate-500 dark:text-slate-400 py-1" href="#">
+<span class="material-symbols-outlined">home</span>
+<span class="text-[10px] font-medium uppercase tracking-tight">Inicio</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-primary py-1 border-t-2 border-primary -mt-[2px]" href="#">
+<span class="material-symbols-outlined">inventory_2</span>
+<span class="text-[10px] font-medium uppercase tracking-tight">Inventario</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-slate-500 dark:text-slate-400 py-1" href="#">
+<span class="material-symbols-outlined">shopping_cart</span>
+<span class="text-[10px] font-medium uppercase tracking-tight">Pedidos</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-slate-500 dark:text-slate-400 py-1" href="#">
+<span class="material-symbols-outlined">analytics</span>
+<span class="text-[10px] font-medium uppercase tracking-tight">Reportes</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-slate-500 dark:text-slate-400 py-1" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="text-[10px] font-medium uppercase tracking-tight">Ajustes</span>
+</a>
+</nav>
+</div>
+</body></html>

@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+
+<html lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#ec5b13",
+                        "background-light": "#f8f6f6",
+                        "background-dark": "#221610",
+                    },
+                    fontFamily: {
+                        "display": ["Public Sans"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<title>Historial de Exportaciones - ERP SaaS</title>
+<style>
+        body {
+          min-height: max(884px, 100dvh);
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 min-h-screen flex flex-col">
+<!-- Header / Navigation Superior -->
+<header class="sticky top-0 z-10 border-b border-slate-200 dark:border-slate-800 bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-md">
+<div class="flex items-center p-4 justify-between max-w-5xl mx-auto w-full">
+<div class="flex items-center gap-3">
+<a class="flex items-center justify-center size-10 rounded-full hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors" href="#">
+<span class="material-symbols-outlined text-slate-700 dark:text-slate-300">arrow_back</span>
+</a>
+<h2 class="text-xl font-bold tracking-tight">Historial de Exportaciones</h2>
+</div>
+<div class="flex items-center gap-2">
+<button class="flex items-center justify-center size-10 rounded-full hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors">
+<span class="material-symbols-outlined text-slate-700 dark:text-slate-300">search</span>
+</button>
+<button class="flex items-center justify-center size-10 rounded-full hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors">
+<span class="material-symbols-outlined text-slate-700 dark:text-slate-300">filter_list</span>
+</button>
+</div>
+</div>
+<!-- Tabs de Filtro -->
+<div class="max-w-5xl mx-auto w-full px-4 overflow-x-auto">
+<div class="flex gap-6 border-b border-slate-200 dark:border-slate-800">
+<a class="flex flex-col items-center justify-center border-b-2 border-primary text-primary pb-3 pt-4 px-1" href="#">
+<p class="text-sm font-bold">Todos</p>
+</a>
+<a class="flex flex-col items-center justify-center border-b-2 border-transparent text-slate-500 dark:text-slate-400 pb-3 pt-4 px-1 hover:text-slate-700 dark:hover:text-slate-200" href="#">
+<p class="text-sm font-medium">Completados</p>
+</a>
+<a class="flex flex-col items-center justify-center border-b-2 border-transparent text-slate-500 dark:text-slate-400 pb-3 pt-4 px-1 hover:text-slate-700 dark:hover:text-slate-200" href="#">
+<p class="text-sm font-medium">En Proceso</p>
+</a>
+<a class="flex flex-col items-center justify-center border-b-2 border-transparent text-slate-500 dark:text-slate-400 pb-3 pt-4 px-1 hover:text-slate-700 dark:hover:text-slate-200" href="#">
+<p class="text-sm font-medium">Expirados</p>
+</a>
+</div>
+</div>
+</header>
+<!-- Filtro de Fecha -->
+<div class="bg-white dark:bg-slate-900/50 border-b border-slate-200 dark:border-slate-800">
+<div class="max-w-5xl mx-auto w-full p-4">
+<div class="flex flex-col sm:flex-row items-center gap-3">
+<div class="flex items-center gap-2 w-full sm:w-auto">
+<div class="relative flex-1 sm:w-40">
+<label class="absolute -top-2 left-2 px-1 bg-white dark:bg-slate-900 text-[10px] font-bold text-slate-500 uppercase tracking-wider">Desde</label>
+<input class="w-full bg-transparent border border-slate-200 dark:border-slate-800 rounded-lg h-10 px-3 text-sm focus:ring-1 focus:ring-primary focus:border-primary outline-none text-slate-700 dark:text-slate-300" type="date" value="2024-05-01"/>
+</div>
+<div class="relative flex-1 sm:w-40">
+<label class="absolute -top-2 left-2 px-1 bg-white dark:bg-slate-900 text-[10px] font-bold text-slate-500 uppercase tracking-wider">Hasta</label>
+<input class="w-full bg-transparent border border-slate-200 dark:border-slate-800 rounded-lg h-10 px-3 text-sm focus:ring-1 focus:ring-primary focus:border-primary outline-none text-slate-700 dark:text-slate-300" type="date" value="2024-05-20"/>
+</div><div class="relative flex-1 sm:w-40">
+<label class="absolute -top-2 left-2 px-1 bg-white dark:bg-slate-900 text-[10px] font-bold text-slate-500 uppercase tracking-wider">Tipo de Archivo</label>
+<select class="w-full bg-transparent border border-slate-200 dark:border-slate-800 rounded-lg h-10 px-3 text-sm focus:ring-1 focus:ring-primary focus:border-primary outline-none text-slate-700 dark:text-slate-300 appearance-none cursor-pointer">
+<option value="todos">Todos</option>
+<option value="excel">Excel</option>
+<option value="pdf">PDF</option>
+<option value="csv">CSV</option>
+</select>
+<span class="material-symbols-outlined absolute right-2 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none text-[20px]">expand_more</span>
+</div>
+</div>
+<button class="flex items-center justify-center w-full sm:w-10 h-10 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors">
+<span class="material-symbols-outlined text-[20px]">filter_alt</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Contenido Principal -->
+<main class="flex-1 max-w-5xl mx-auto w-full p-4 space-y-4">
+<!-- Item de Exportación 1 -->
+<div class="flex flex-col sm:flex-row gap-4 bg-white dark:bg-slate-900/50 p-4 rounded-xl border border-slate-200 dark:border-slate-800 items-start sm:items-center justify-between shadow-sm">
+<div class="flex items-start gap-4 flex-1">
+<div class="flex items-center justify-center rounded-lg bg-primary/10 text-primary shrink-0 size-12">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24">description</span>
+</div>
+<div class="flex flex-1 flex-col">
+<div class="flex items-center gap-2 mb-1">
+<p class="text-slate-900 dark:text-slate-100 font-semibold leading-normal">Cierre_Caja_2024-05-20.xlsx</p>
+<span class="px-2 py-0.5 rounded-full bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 text-[10px] font-bold uppercase tracking-wider">Completado</span>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-y-1 gap-x-4">
+<p class="text-slate-500 dark:text-slate-400 text-xs flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">person</span> Juan Pérez
+                        </p>
+<p class="text-slate-500 dark:text-slate-400 text-xs flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">calendar_today</span> 20/05/2024 18:30
+                        </p>
+<p class="text-slate-500 dark:text-slate-400 text-xs flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">data_table</span> Excel
+                        </p>
+</div>
+</div>
+</div>
+<div class="shrink-0 w-full sm:w-auto">
+<button class="flex w-full sm:min-w-[120px] items-center justify-center rounded-lg h-10 px-4 bg-primary text-white text-sm font-bold hover:bg-primary/90 transition-colors gap-2">
+<span class="material-symbols-outlined text-[18px]">download</span>
+<span>Re-descargar</span>
+</button>
+</div>
+</div>
+<!-- Item de Exportación 2 -->
+<div class="flex flex-col sm:flex-row gap-4 bg-white dark:bg-slate-900/50 p-4 rounded-xl border border-slate-200 dark:border-slate-800 items-start sm:items-center justify-between shadow-sm">
+<div class="flex items-start gap-4 flex-1">
+<div class="flex items-center justify-center rounded-lg bg-primary/10 text-primary shrink-0 size-12">
+<span class="material-symbols-outlined">picture_as_pdf</span>
+</div>
+<div class="flex flex-1 flex-col">
+<div class="flex items-center gap-2 mb-1">
+<p class="text-slate-900 dark:text-slate-100 font-semibold leading-normal">Reporte_Ventas_Anual.pdf</p>
+<span class="px-2 py-0.5 rounded-full bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400 text-[10px] font-bold uppercase tracking-wider">En Proceso</span>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-y-1 gap-x-4">
+<p class="text-slate-500 dark:text-slate-400 text-xs flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">person</span> Maria García
+                        </p>
+<p class="text-slate-500 dark:text-slate-400 text-xs flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">calendar_today</span> 19/05/2024 10:15
+                        </p>
+<p class="text-slate-500 dark:text-slate-400 text-xs flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">picture_as_pdf</span> PDF
+                        </p>
+</div>
+</div>
+</div>
+<div class="shrink-0 w-full sm:w-auto">
+<button class="flex w-full sm:min-w-[120px] items-center justify-center rounded-lg h-10 px-4 bg-slate-100 dark:bg-slate-800 text-slate-400 dark:text-slate-500 text-sm font-bold cursor-not-allowed gap-2" disabled="">
+<span class="material-symbols-outlined text-[18px] animate-pulse">sync</span>
+<span>Procesando</span>
+</button>
+</div>
+</div>
+<!-- Item de Exportación 3 -->
+<div class="flex flex-col sm:flex-row gap-4 bg-white dark:bg-slate-900/50 p-4 rounded-xl border border-slate-200 dark:border-slate-800 items-start sm:items-center justify-between shadow-sm opacity-70">
+<div class="flex items-start gap-4 flex-1">
+<div class="flex items-center justify-center rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-400 shrink-0 size-12">
+<span class="material-symbols-outlined">csv</span>
+</div>
+<div class="flex flex-1 flex-col">
+<div class="flex items-center gap-2 mb-1">
+<p class="text-slate-900 dark:text-slate-100 font-semibold leading-normal">Inventario_Bodega_Norte.csv</p>
+<span class="px-2 py-0.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 text-[10px] font-bold uppercase tracking-wider">Expirado</span>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-y-1 gap-x-4">
+<p class="text-slate-500 dark:text-slate-400 text-xs flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">person</span> Carlos Ruiz
+                        </p>
+<p class="text-slate-500 dark:text-slate-400 text-xs flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">calendar_today</span> 15/05/2024 09:00
+                        </p>
+<p class="text-slate-500 dark:text-slate-400 text-xs flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">list_alt</span> CSV
+                        </p>
+</div>
+</div>
+</div>
+<div class="shrink-0 w-full sm:w-auto">
+<button class="flex w-full sm:min-w-[120px] items-center justify-center rounded-lg h-10 px-4 border border-primary text-primary text-sm font-bold hover:bg-primary hover:text-white transition-colors gap-2">
+<span class="material-symbols-outlined text-[18px]">refresh</span>
+<span>Regenerar</span>
+</button>
+</div>
+</div>
+<!-- Item de Exportación 4 -->
+<div class="flex flex-col sm:flex-row gap-4 bg-white dark:bg-slate-900/50 p-4 rounded-xl border border-slate-200 dark:border-slate-800 items-start sm:items-center justify-between shadow-sm">
+<div class="flex items-start gap-4 flex-1">
+<div class="flex items-center justify-center rounded-lg bg-primary/10 text-primary shrink-0 size-12">
+<span class="material-symbols-outlined">description</span>
+</div>
+<div class="flex flex-1 flex-col">
+<div class="flex items-center gap-2 mb-1">
+<p class="text-slate-900 dark:text-slate-100 font-semibold leading-normal">Nomina_Mensual_Mayo.xlsx</p>
+<span class="px-2 py-0.5 rounded-full bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 text-[10px] font-bold uppercase tracking-wider">Completado</span>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-y-1 gap-x-4">
+<p class="text-slate-500 dark:text-slate-400 text-xs flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">person</span> Ana Martínez
+                        </p>
+<p class="text-slate-500 dark:text-slate-400 text-xs flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">calendar_today</span> 12/05/2024 14:45
+                        </p>
+<p class="text-slate-500 dark:text-slate-400 text-xs flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">data_table</span> Excel
+                        </p>
+</div>
+</div>
+</div>
+<div class="shrink-0 w-full sm:w-auto">
+<button class="flex w-full sm:min-w-[120px] items-center justify-center rounded-lg h-10 px-4 bg-primary text-white text-sm font-bold hover:bg-primary/90 transition-colors gap-2">
+<span class="material-symbols-outlined text-[18px]">download</span>
+<span>Re-descargar</span>
+</button>
+</div>
+</div>
+</main>
+<!-- Bottom Navigation Bar -->
+<nav class="fixed bottom-0 w-full border-t border-slate-200 dark:border-slate-800 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md pb-safe">
+<div class="flex max-w-5xl mx-auto px-4 py-2">
+<a class="flex flex-1 flex-col items-center justify-center gap-1 text-slate-500 dark:text-slate-400 hover:text-primary dark:hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<p class="text-[10px] font-medium leading-none">Dashboard</p>
+</a>
+<a class="flex flex-1 flex-col items-center justify-center gap-1 text-slate-500 dark:text-slate-400 hover:text-primary dark:hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined">payments</span>
+<p class="text-[10px] font-medium leading-none">Ventas</p>
+</a>
+<a class="flex flex-1 flex-col items-center justify-center gap-1 text-primary" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1">download</span>
+<p class="text-[10px] font-bold leading-none">Exportar</p>
+</a>
+<a class="flex flex-1 flex-col items-center justify-center gap-1 text-slate-500 dark:text-slate-400 hover:text-primary dark:hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined">settings</span>
+<p class="text-[10px] font-medium leading-none">Ajustes</p>
+</a>
+</div>
+</nav>
+<!-- Espaciado inferior para el nav fijo -->
+<div class="h-20"></div>
+</body></html>

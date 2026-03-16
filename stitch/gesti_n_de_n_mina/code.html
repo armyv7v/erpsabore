@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+
+<html lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#ec5b13",
+                        "background-light": "#f8f6f6",
+                        "background-dark": "#221610",
+                    },
+                    fontFamily: {
+                        "display": ["Public Sans"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<title>Nómina PYME - Generador de Liquidaciones</title>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 antialiased">
+<!-- Main Container -->
+<div class="relative flex min-h-screen w-full flex-col overflow-x-hidden">
+<!-- Header / Navigation Bar -->
+<header class="sticky top-0 z-50 flex items-center bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 p-4 justify-between shadow-sm">
+<div class="flex items-center gap-3">
+<div class="bg-primary p-2 rounded-lg text-white">
+<span class="material-symbols-outlined block">receipt_long</span>
+</div>
+<div>
+<h1 class="text-lg font-bold leading-tight tracking-tight">Nómina Chile PYME</h1>
+<p class="text-xs text-slate-500 dark:text-slate-400 font-medium">Septiembre 2024</p>
+</div>
+</div>
+<div class="flex gap-2">
+<button class="p-2 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full transition-colors">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="p-2 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full transition-colors">
+<span class="material-symbols-outlined">account_circle</span>
+</button>
+</div>
+</header>
+<!-- Main Content Area -->
+<main class="flex-1 max-w-5xl mx-auto w-full p-4 md:p-6 space-y-6">
+<!-- Welcome and Primary Action -->
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+<div>
+<h2 class="text-2xl font-bold tracking-tight">Resumen Mensual</h2>
+<p class="text-slate-500 dark:text-slate-400">Control de haberes y descuentos legales</p>
+</div>
+<button class="flex items-center justify-center gap-2 bg-primary hover:bg-primary/90 text-white px-6 py-3 rounded-xl font-bold transition-all shadow-lg shadow-primary/20">
+<span class="material-symbols-outlined">auto_awesome</span>
+                    Generar Nómina del Mes
+                </button>
+</div>
+<!-- Financial Summary Cards -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+<div class="flex flex-col gap-2 rounded-xl p-6 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm">
+<div class="flex items-center justify-between">
+<p class="text-slate-500 dark:text-slate-400 text-sm font-medium">Total Haberes</p>
+<span class="material-symbols-outlined text-primary text-xl">payments</span>
+</div>
+<p class="text-2xl font-bold leading-tight">$12.450.000</p>
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-emerald-500 text-sm">trending_up</span>
+<p class="text-emerald-500 text-xs font-semibold">+5.2% vs ago</p>
+</div>
+</div>
+<div class="flex flex-col gap-2 rounded-xl p-6 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm">
+<div class="flex items-center justify-between">
+<p class="text-slate-500 dark:text-slate-400 text-sm font-medium">Descuentos Legales</p>
+<span class="material-symbols-outlined text-primary text-xl">account_balance</span>
+</div>
+<p class="text-2xl font-bold leading-tight">$2.340.500</p>
+<div class="flex items-center gap-1 text-slate-400">
+<span class="material-symbols-outlined text-sm">info</span>
+<p class="text-xs">AFP, Salud, AFC</p>
+</div>
+</div>
+<div class="flex flex-col gap-2 rounded-xl p-6 bg-primary/10 border-2 border-primary/20">
+<div class="flex items-center justify-between">
+<p class="text-primary font-bold text-sm">Sueldo Líquido</p>
+<span class="material-symbols-outlined text-primary text-xl">account_balance_wallet</span>
+</div>
+<p class="text-primary text-2xl font-extrabold leading-tight">$10.109.500</p>
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-primary text-sm">verified</span>
+<p class="text-primary/80 text-xs font-semibold">Monto neto a transferir</p>
+</div>
+</div>
+</div>
+<!-- Specific Breakdown Section -->
+<div class="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 overflow-hidden">
+<div class="px-6 py-4 border-b border-slate-100 dark:border-slate-800 flex justify-between items-center">
+<h3 class="font-bold text-lg">Detalle de Empleados</h3>
+<div class="flex gap-2">
+<button class="text-sm font-medium text-primary hover:underline flex items-center gap-1">
+<span class="material-symbols-outlined text-base">download</span> Exportar
+                        </button>
+</div>
+</div>
+<!-- Table of Employees -->
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead class="bg-slate-50 dark:bg-slate-800/50">
+<tr>
+<th class="px-6 py-3 text-xs font-bold text-slate-500 uppercase">Empleado</th>
+<th class="px-6 py-3 text-xs font-bold text-slate-500 uppercase">Cargo</th>
+<th class="px-6 py-3 text-xs font-bold text-slate-500 uppercase text-right">Monto Líquido</th>
+<th class="px-6 py-3 text-xs font-bold text-slate-500 uppercase text-center">Estado</th>
+<th class="px-6 py-3 text-xs font-bold text-slate-500 uppercase text-right">Acción</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-slate-100 dark:divide-slate-800">
+<!-- Row 1 -->
+<tr class="hover:bg-slate-50/50 dark:hover:bg-slate-800/30 transition-colors">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="size-8 rounded-full bg-slate-200 dark:bg-slate-700 flex items-center justify-center font-bold text-xs">RM</div>
+<span class="font-semibold text-sm">Ricardo Molina</span>
+</div>
+</td>
+<td class="px-6 py-4 text-sm text-slate-600 dark:text-slate-400">Analista Senior</td>
+<td class="px-6 py-4 text-sm font-bold text-right">$1.450.000</td>
+<td class="px-6 py-4 text-center">
+<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-100 text-emerald-800 dark:bg-emerald-900/30 dark:text-emerald-400">
+<span class="size-1.5 rounded-full bg-emerald-500"></span> Pagada
+                                    </span>
+</td>
+<td class="px-6 py-4 text-right">
+<button class="text-primary hover:text-primary/80"><span class="material-symbols-outlined">visibility</span></button>
+</td>
+</tr>
+<!-- Row 2 -->
+<tr class="hover:bg-slate-50/50 dark:hover:bg-slate-800/30 transition-colors">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="size-8 rounded-full bg-slate-200 dark:bg-slate-700 flex items-center justify-center font-bold text-xs">SP</div>
+<span class="font-semibold text-sm">Sofía Pérez</span>
+</div>
+</td>
+<td class="px-6 py-4 text-sm text-slate-600 dark:text-slate-400">Desarrollador Web</td>
+<td class="px-6 py-4 text-sm font-bold text-right">$2.100.000</td>
+<td class="px-6 py-4 text-center">
+<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400">
+<span class="size-1.5 rounded-full bg-blue-500"></span> Generada
+                                    </span>
+</td>
+<td class="px-6 py-4 text-right">
+<button class="text-primary hover:text-primary/80"><span class="material-symbols-outlined">payments</span></button>
+</td>
+</tr>
+<!-- Row 3 -->
+<tr class="hover:bg-slate-50/50 dark:hover:bg-slate-800/30 transition-colors">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="size-8 rounded-full bg-slate-200 dark:bg-slate-700 flex items-center justify-center font-bold text-xs">CG</div>
+<span class="font-semibold text-sm">Carlos González</span>
+</div>
+</td>
+<td class="px-6 py-4 text-sm text-slate-600 dark:text-slate-400">Diseñador UI/UX</td>
+<td class="px-6 py-4 text-sm font-bold text-right">$1.850.000</td>
+<td class="px-6 py-4 text-center">
+<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-medium bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-400">
+<span class="size-1.5 rounded-full bg-amber-500"></span> Pendiente
+                                    </span>
+</td>
+<td class="px-6 py-4 text-right">
+<button class="text-primary hover:text-primary/80"><span class="material-symbols-outlined">edit_square</span></button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<!-- Detailed Breakdown of Discounts (Chile focus) -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<div class="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
+<h3 class="font-bold mb-4 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">pie_chart</span> Distribución Descuentos Legales
+                    </h3>
+<div class="space-y-4">
+<div class="flex flex-col gap-1">
+<div class="flex justify-between text-sm mb-1">
+<span>AFP (10% + Comisión)</span>
+<span class="font-bold">$1.245.000</span>
+</div>
+<div class="w-full bg-slate-100 dark:bg-slate-800 h-2 rounded-full overflow-hidden">
+<div class="bg-primary h-full w-[53%]"></div>
+</div>
+</div>
+<div class="flex flex-col gap-1">
+<div class="flex justify-between text-sm mb-1">
+<span>Salud (7% Fonasa/Isapre)</span>
+<span class="font-bold">$871.500</span>
+</div>
+<div class="w-full bg-slate-100 dark:bg-slate-800 h-2 rounded-full overflow-hidden">
+<div class="bg-primary/70 h-full w-[37%]"></div>
+</div>
+</div>
+<div class="flex flex-col gap-1">
+<div class="flex justify-between text-sm mb-1">
+<span>Seguro Cesantía (AFC)</span>
+<span class="font-bold">$224.000</span>
+</div>
+<div class="w-full bg-slate-100 dark:bg-slate-800 h-2 rounded-full overflow-hidden">
+<div class="bg-primary/40 h-full w-[10%]"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Next Milestones -->
+<div class="bg-primary/5 p-6 rounded-xl border border-primary/10 shadow-sm">
+<h3 class="font-bold mb-4 flex items-center gap-2 text-primary">
+<span class="material-symbols-outlined">event</span> Próximos Vencimientos
+                    </h3>
+<ul class="space-y-4">
+<li class="flex items-start gap-3">
+<div class="size-6 rounded-full bg-primary/20 flex items-center justify-center text-primary text-xs shrink-0 font-bold">1</div>
+<div>
+<p class="text-sm font-bold">Pago Previred</p>
+<p class="text-xs text-slate-500">Vence el 13 de Septiembre</p>
+</div>
+</li>
+<li class="flex items-start gap-3 opacity-60">
+<div class="size-6 rounded-full bg-slate-200 flex items-center justify-center text-slate-500 text-xs shrink-0 font-bold">2</div>
+<div>
+<p class="text-sm font-bold">Declaración F29</p>
+<p class="text-xs text-slate-500">Vence el 20 de Septiembre</p>
+</div>
+</li>
+</ul>
+</div>
+</div>
+<!-- Spacing for bottom nav -->
+<div class="h-16"></div>
+</main>
+<!-- Bottom Navigation Bar -->
+<nav class="fixed bottom-0 left-0 right-0 z-50 bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 flex items-center justify-around px-4 pb-4 pt-3 safe-area-inset-bottom">
+<a class="flex flex-col items-center gap-1 text-primary" href="#">
+<span class="material-symbols-outlined fill-1">dashboard</span>
+<span class="text-[10px] font-bold">Dashboard</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-slate-400" href="#">
+<span class="material-symbols-outlined">group</span>
+<span class="text-[10px] font-medium">Empleados</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-slate-400" href="#">
+<span class="material-symbols-outlined">description</span>
+<span class="text-[10px] font-medium">Reportes</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-slate-400" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="text-[10px] font-medium">Ajustes</span>
+</a>
+</nav>
+</div>
+</body></html>

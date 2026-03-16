@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+
+<html class="light" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Portal del Empleado - Auto-consulta</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#ec5b13",
+                        "background-light": "#f8f6f6",
+                        "background-dark": "#221610",
+                    },
+                    fontFamily: {
+                        "display": ["Public Sans"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 transition-colors duration-300">
+<div class="relative flex min-h-screen w-full max-w-[480px] mx-auto flex-col bg-background-light dark:bg-background-dark shadow-xl overflow-x-hidden">
+<!-- Header -->
+<header class="sticky top-0 z-20 flex items-center justify-between bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-md p-4 border-b border-slate-200 dark:border-slate-800">
+<div class="flex items-center gap-3">
+<div class="size-10 rounded-full bg-primary/10 flex items-center justify-center overflow-hidden border-2 border-primary">
+<img class="w-full h-full object-cover" data-alt="Foto de perfil del empleado sonriente" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA5J9wUot4w-sYhAk2yYS8E3mV1UYiorxJWWg20Y8X1My1_WyxbMRMkF7zuO-nat50lB7q5EhKVv0pmuPTgNA1DLG-xvX61LnkeGtZ07WVE53hljBEEheABHkfvhPafEmncbs6GRCcZaWTsqsj8UfNDjSgaKvhrq1Gn6tX9iO6hQ-HKBaQr3Y4o5QW5xmAgSw3XPkG1ed4E85trfKP5VPfSUpTdARgzSmUXBO3vc8MvAWqmqfAhK6PuxUNi9jqBeqtNF0XvHg64y-c"/>
+</div>
+<div>
+<p class="text-[10px] uppercase tracking-wider text-slate-500 dark:text-slate-400 font-bold">Hola, Carlos</p>
+<h2 class="text-sm font-bold leading-tight">Portal Empleado</h2>
+</div>
+</div>
+<div class="flex gap-2">
+<button class="relative p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-2 right-2 size-2 bg-primary rounded-full border-2 border-background-light dark:border-background-dark"></span>
+</button>
+<button class="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300">
+<span class="material-symbols-outlined">settings</span>
+</button>
+</div>
+</header>
+<!-- Main Content -->
+<main class="flex-1 pb-24">
+<!-- Welcome Card -->
+<section class="p-4">
+<div class="relative overflow-hidden rounded-xl bg-primary p-6 text-white shadow-lg shadow-primary/20">
+<div class="relative z-10">
+<h3 class="text-xl font-bold mb-1">¡Buen día, Carlos!</h3>
+<p class="text-white/80 text-sm">Tienes 15 días de vacaciones disponibles.</p>
+<button class="mt-4 bg-white text-primary px-4 py-2 rounded-lg text-sm font-bold flex items-center gap-2">
+                            Pedir Vacaciones
+                            <span class="material-symbols-outlined text-sm">arrow_forward</span>
+</button>
+</div>
+<div class="absolute -right-8 -bottom-8 opacity-20 transform rotate-12">
+<span class="material-symbols-outlined !text-[120px]">beach_access</span>
+</div>
+</div>
+</section>
+<!-- Quick Access Grid -->
+<section class="px-4 py-2">
+<h3 class="text-slate-900 dark:text-slate-100 text-lg font-bold mb-4">Accesos Directos</h3>
+<div class="grid grid-cols-2 gap-3">
+<button class="flex flex-col items-start gap-3 p-4 bg-white dark:bg-slate-800/50 rounded-xl border border-slate-200 dark:border-slate-800 hover:border-primary transition-colors text-left group">
+<div class="size-10 rounded-lg bg-orange-100 dark:bg-orange-900/30 text-primary flex items-center justify-center group-hover:bg-primary group-hover:text-white transition-colors">
+<span class="material-symbols-outlined">payments</span>
+</div>
+<div>
+<p class="font-bold text-sm">Mis Liquidaciones</p>
+<p class="text-[10px] text-slate-500">Última: Octubre 2023</p>
+</div>
+</button>
+<button class="flex flex-col items-start gap-3 p-4 bg-white dark:bg-slate-800/50 rounded-xl border border-slate-200 dark:border-slate-800 hover:border-primary transition-colors text-left group">
+<div class="size-10 rounded-lg bg-blue-100 dark:bg-blue-900/30 text-blue-600 flex items-center justify-center group-hover:bg-primary group-hover:text-white transition-colors">
+<span class="material-symbols-outlined">description</span>
+</div>
+<div>
+<p class="font-bold text-sm">Mis Certificados</p>
+<p class="text-[10px] text-slate-500">Antigüedad, Renta</p>
+</div>
+</button>
+<button class="flex flex-col items-start gap-3 p-4 bg-white dark:bg-slate-800/50 rounded-xl border border-slate-200 dark:border-slate-800 hover:border-primary transition-colors text-left group">
+<div class="size-10 rounded-lg bg-green-100 dark:bg-green-900/30 text-green-600 flex items-center justify-center group-hover:bg-primary group-hover:text-white transition-colors">
+<span class="material-symbols-outlined">event_available</span>
+</div>
+<div>
+<p class="font-bold text-sm">Saldo Vacaciones</p>
+<p class="text-[10px] text-slate-500">15 días pendientes</p>
+</div>
+</button>
+<button class="flex flex-col items-start gap-3 p-4 bg-white dark:bg-slate-800/50 rounded-xl border border-slate-200 dark:border-slate-800 hover:border-primary transition-colors text-left group">
+<div class="size-10 rounded-lg bg-purple-100 dark:bg-purple-900/30 text-purple-600 flex items-center justify-center group-hover:bg-primary group-hover:text-white transition-colors">
+<span class="material-symbols-outlined">person_pin</span>
+</div>
+<div>
+<p class="font-bold text-sm">Mis Datos</p>
+<p class="text-[10px] text-slate-500">Actualizar perfil</p>
+</div>
+</button>
+</div>
+</section>
+<!-- News / Announcements Section -->
+<section class="px-4 py-6">
+<div class="flex items-center justify-between mb-4">
+<h3 class="text-slate-900 dark:text-slate-100 text-lg font-bold">Comunicados</h3>
+<button class="text-primary text-xs font-bold uppercase tracking-wider">Ver todos</button>
+</div>
+<div class="space-y-4">
+<div class="flex gap-4 p-3 bg-white dark:bg-slate-800/50 rounded-xl border border-slate-200 dark:border-slate-800">
+<div class="w-24 h-24 rounded-lg overflow-hidden shrink-0">
+<img class="w-full h-full object-cover" data-alt="Oficina moderna con equipo de trabajo" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBcGIVk3HrCZL5Eeb2Q7Oi9GV8cVjgPDo05uVaOmZJMDR33QLFf47TVk-k21MUbJYZ786Y5wm-pewqYP-zdit7ISa0f9SFkg1lPN9xMYTIj6wHG-H789ahFGQaNZFrIBE9JrXVYyQObFgxqEpzBiHSwbUJ0hrzCVHgklyPjUwmbujfL4Q2he4uE4k4GPxHdVZJRtu0cKlKM3HVrRjuJf5fegypd7Gg4qg-bIxqTRTrfk7zWEjqaOIlI1avEqhwDcsz_FUsR28YjGDM"/>
+</div>
+<div class="flex flex-col justify-center gap-1">
+<span class="text-[10px] font-bold text-primary uppercase">Empresa</span>
+<h4 class="text-sm font-bold leading-snug line-clamp-2">Nuevos beneficios de salud para el 2024</h4>
+<p class="text-xs text-slate-500 line-clamp-1">Hace 2 horas</p>
+</div>
+</div>
+<div class="flex gap-4 p-3 bg-white dark:bg-slate-800/50 rounded-xl border border-slate-200 dark:border-slate-800">
+<div class="w-24 h-24 rounded-lg overflow-hidden shrink-0">
+<img class="w-full h-full object-cover" data-alt="Evento de capacitación corporativa" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDrw0NFGZ0GgT2GIJaq7-yPWghBAHJRhq_AiHqpjnj85VAAHiZSkzfw0rnGc2aaLLeHZ-IzhwOEfMtBJ0tq_z0MYcz9w7aeVJKqlj3aYk4Hq-9ZHueGv_nwJxs4R1c2MQQqC9zEVegVnV4cdWZmUF6zEpXL4Zd-wxZoapEd_Axjsql6b_r8NvZ2pXSZEWPw18VkjipG0G4Z3hkoTDyJHU74xi1A027BxnCgK0wAGYvUBKrTA19OKdTVCnVzfch6hNsW8U_xEjzMxWg"/>
+</div>
+<div class="flex flex-col justify-center gap-1">
+<span class="text-[10px] font-bold text-green-600 uppercase">Capacitación</span>
+<h4 class="text-sm font-bold leading-snug line-clamp-2">Taller de Liderazgo Consciente: Inscripciones abiertas</h4>
+<p class="text-xs text-slate-500 line-clamp-1">Ayer</p>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Bottom Navigation Bar -->
+<nav class="fixed bottom-0 w-full max-w-[480px] z-30">
+<div class="flex gap-2 border-t border-slate-200 dark:border-slate-800 bg-white/90 dark:bg-slate-900/90 backdrop-blur-lg px-4 pb-6 pt-3">
+<a class="flex flex-1 flex-col items-center justify-center gap-1 text-primary" href="#">
+<div class="flex h-8 items-center justify-center">
+<span class="material-symbols-outlined !text-[28px] fill-1">home</span>
+</div>
+<p class="text-[10px] font-bold leading-normal tracking-tight">Inicio</p>
+</a>
+<a class="flex flex-1 flex-col items-center justify-center gap-1 text-slate-400 dark:text-slate-500 hover:text-primary transition-colors" href="#">
+<div class="flex h-8 items-center justify-center">
+<span class="material-symbols-outlined !text-[28px]">article</span>
+</div>
+<p class="text-[10px] font-bold leading-normal tracking-tight">Documentos</p>
+</a>
+<a class="flex flex-1 flex-col items-center justify-center gap-1 text-slate-400 dark:text-slate-500 hover:text-primary transition-colors" href="#">
+<div class="flex h-8 items-center justify-center">
+<span class="material-symbols-outlined !text-[28px]">campaign</span>
+</div>
+<p class="text-[10px] font-bold leading-normal tracking-tight">Noticias</p>
+</a>
+<a class="flex flex-1 flex-col items-center justify-center gap-1 text-slate-400 dark:text-slate-500 hover:text-primary transition-colors" href="#">
+<div class="flex h-8 items-center justify-center">
+<span class="material-symbols-outlined !text-[28px]">account_circle</span>
+</div>
+<p class="text-[10px] font-bold leading-normal tracking-tight">Perfil</p>
+</a>
+</div>
+</nav>
+</div>
+</body></html>

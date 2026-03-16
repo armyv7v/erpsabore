@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+
+<html lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Aprobaciones de Gastos - ERP SaaS</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#ec5b13",
+                        "background-light": "#f8f6f6",
+                        "background-dark": "#221610",
+                    },
+                    fontFamily: {
+                        "display": ["Public Sans"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Public Sans', sans-serif;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 font-display">
+<div class="relative flex h-screen w-full flex-col overflow-hidden max-w-md mx-auto border-x border-slate-200 dark:border-slate-800">
+<!-- Header Section -->
+<header class="flex items-center bg-background-light dark:bg-background-dark p-4 border-b border-slate-200 dark:border-slate-800 justify-between sticky top-0 z-10">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary cursor-pointer">menu</span>
+<h2 class="text-slate-900 dark:text-slate-100 text-lg font-bold leading-tight tracking-tight">Aprobaciones de Gastos</h2>
+</div>
+<div class="flex items-center gap-2">
+<button class="flex size-10 items-center justify-center rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+<span class="material-symbols-outlined">search</span>
+</button>
+<button class="flex size-10 items-center justify-center rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors relative">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-2 right-2 size-2 bg-primary rounded-full"></span>
+</button>
+</div>
+</header>
+<!-- Tabs Section -->
+<div class="bg-background-light dark:bg-background-dark">
+<div class="flex border-b border-slate-200 dark:border-slate-800 px-4">
+<button class="flex flex-1 flex-col items-center justify-center border-b-2 border-primary text-primary pb-3 pt-4">
+<span class="text-sm font-bold tracking-tight">Pendientes</span>
+</button>
+<button class="flex flex-1 flex-col items-center justify-center border-b-2 border-transparent text-slate-500 dark:text-slate-400 pb-3 pt-4 hover:text-primary transition-colors">
+<span class="text-sm font-bold tracking-tight">Aprobados</span>
+</button>
+</div>
+</div>
+<!-- Quick Filters -->
+<div class="flex gap-2 p-3 overflow-x-auto no-scrollbar bg-background-light dark:bg-background-dark">
+<button class="flex h-9 shrink-0 items-center justify-center gap-x-2 rounded-xl bg-primary/10 dark:bg-primary/20 border border-primary/20 px-4">
+<span class="text-primary text-xs font-semibold uppercase">Esta semana</span>
+<span class="material-symbols-outlined text-sm">expand_more</span>
+</button>
+<button class="flex h-9 shrink-0 items-center justify-center gap-x-2 rounded-xl bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 px-4">
+<span class="text-slate-600 dark:text-slate-300 text-xs font-semibold uppercase">Importe</span>
+<span class="material-symbols-outlined text-sm">expand_more</span>
+</button>
+<button class="flex h-9 shrink-0 items-center justify-center gap-x-2 rounded-xl bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 px-4">
+<span class="text-slate-600 dark:text-slate-300 text-xs font-semibold uppercase">Categoría</span>
+<span class="material-symbols-outlined text-sm">expand_more</span>
+</button>
+</div>
+<!-- Scrollable Content -->
+<main class="flex-1 overflow-y-auto p-4 space-y-4 pb-24">
+<!-- Expense Card 1 -->
+<div class="flex flex-col gap-3 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-4 shadow-sm">
+<div class="flex justify-between items-start">
+<div class="flex gap-3">
+<div class="bg-primary/10 dark:bg-primary/20 flex items-center justify-center rounded-lg size-12 text-primary">
+<span class="material-symbols-outlined text-2xl">receipt_long</span>
+</div>
+<div>
+<p class="text-slate-900 dark:text-slate-100 text-base font-bold">Carlos Mendoza</p>
+<p class="text-slate-500 dark:text-slate-400 text-xs">Ventas • Logística</p>
+</div>
+</div>
+<div class="text-right">
+<p class="text-slate-900 dark:text-slate-100 text-lg font-extrabold">$145.50</p>
+<p class="text-slate-400 dark:text-slate-500 text-xs">18 Oct, 2023</p>
+</div>
+</div>
+<div class="bg-slate-50 dark:bg-slate-800/50 rounded-lg p-3 flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-slate-400 text-sm">description</span>
+<p class="text-slate-600 dark:text-slate-300 text-sm truncate max-w-[150px]">Almuerzo con cliente corporativo</p>
+</div>
+<button class="text-primary text-xs font-bold uppercase tracking-wider flex items-center gap-1">
+                        Ver Recibo
+                        <span class="material-symbols-outlined text-xs">open_in_new</span>
+</button>
+</div>
+<div class="flex gap-3 pt-1">
+<button class="flex-1 flex items-center justify-center gap-2 h-11 bg-primary text-white rounded-lg font-bold shadow-lg shadow-primary/20 hover:brightness-110 active:scale-[0.98] transition-all">
+<span class="material-symbols-outlined">check_circle</span>
+                        Aprobar
+                    </button>
+<button class="flex-1 flex items-center justify-center gap-2 h-11 bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-200 rounded-lg font-bold hover:bg-red-50 dark:hover:bg-red-900/20 hover:text-red-600 transition-all">
+<span class="material-symbols-outlined">cancel</span>
+                        Rechazar
+                    </button>
+</div>
+</div>
+<!-- Expense Card 2 -->
+<div class="flex flex-col gap-3 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-4 shadow-sm">
+<div class="flex justify-between items-start">
+<div class="flex gap-3">
+<div class="bg-primary/10 dark:bg-primary/20 flex items-center justify-center rounded-lg size-12 text-primary">
+<span class="material-symbols-outlined text-2xl">commute</span>
+</div>
+<div>
+<p class="text-slate-900 dark:text-slate-100 text-base font-bold">Andrea Valdés</p>
+<p class="text-slate-500 dark:text-slate-400 text-xs">Recursos Humanos • Viaje</p>
+</div>
+</div>
+<div class="text-right">
+<p class="text-slate-900 dark:text-slate-100 text-lg font-extrabold">$45.00</p>
+<p class="text-slate-400 dark:text-slate-500 text-xs">17 Oct, 2023</p>
+</div>
+</div>
+<div class="bg-slate-50 dark:bg-slate-800/50 rounded-lg p-3 flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-slate-400 text-sm">description</span>
+<p class="text-slate-600 dark:text-slate-300 text-sm">Transporte Aeropuerto</p>
+</div>
+<button class="text-primary text-xs font-bold uppercase tracking-wider flex items-center gap-1">
+                        Ver Recibo
+                        <span class="material-symbols-outlined text-xs">open_in_new</span>
+</button>
+</div>
+<div class="flex gap-3 pt-1">
+<button class="flex-1 flex items-center justify-center gap-2 h-11 bg-primary text-white rounded-lg font-bold shadow-lg shadow-primary/20 hover:brightness-110 active:scale-[0.98] transition-all">
+<span class="material-symbols-outlined">check_circle</span>
+                        Aprobar
+                    </button>
+<button class="flex-1 flex items-center justify-center gap-2 h-11 bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-200 rounded-lg font-bold hover:bg-red-50 dark:hover:bg-red-900/20 hover:text-red-600 transition-all">
+<span class="material-symbols-outlined">cancel</span>
+                        Rechazar
+                    </button>
+</div>
+</div>
+<!-- Expense Card 3 -->
+<div class="flex flex-col gap-3 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-4 shadow-sm">
+<div class="flex justify-between items-start">
+<div class="flex gap-3">
+<div class="bg-primary/10 dark:bg-primary/20 flex items-center justify-center rounded-lg size-12 text-primary">
+<span class="material-symbols-outlined text-2xl">laptop_mac</span>
+</div>
+<div>
+<p class="text-slate-900 dark:text-slate-100 text-base font-bold">Roberto Díaz</p>
+<p class="text-slate-500 dark:text-slate-400 text-xs">TI • Equipamiento</p>
+</div>
+</div>
+<div class="text-right">
+<p class="text-slate-900 dark:text-slate-100 text-lg font-extrabold">$1,250.00</p>
+<p class="text-slate-400 dark:text-slate-500 text-xs">15 Oct, 2023</p>
+</div>
+</div>
+<div class="bg-slate-50 dark:bg-slate-800/50 rounded-lg p-3 flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-slate-400 text-sm">description</span>
+<p class="text-slate-600 dark:text-slate-300 text-sm">Nueva Laptop de Desarrollo</p>
+</div>
+<button class="text-primary text-xs font-bold uppercase tracking-wider flex items-center gap-1">
+                        Ver Recibo
+                        <span class="material-symbols-outlined text-xs">open_in_new</span>
+</button>
+</div>
+<div class="flex gap-3 pt-1">
+<button class="flex-1 flex items-center justify-center gap-2 h-11 bg-primary text-white rounded-lg font-bold shadow-lg shadow-primary/20 hover:brightness-110 active:scale-[0.98] transition-all">
+<span class="material-symbols-outlined">check_circle</span>
+                        Aprobar
+                    </button>
+<button class="flex-1 flex items-center justify-center gap-2 h-11 bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-200 rounded-lg font-bold hover:bg-red-50 dark:hover:bg-red-900/20 hover:text-red-600 transition-all">
+<span class="material-symbols-outlined">cancel</span>
+                        Rechazar
+                    </button>
+</div>
+</div>
+</main>
+<!-- Bottom Navigation Bar -->
+<nav class="fixed bottom-0 left-0 right-0 max-w-md mx-auto bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 flex justify-around items-center px-4 pb-6 pt-2 z-20">
+<a class="flex flex-col items-center gap-1 text-slate-400 dark:text-slate-500" href="#">
+<span class="material-symbols-outlined">home</span>
+<span class="text-[10px] font-medium uppercase tracking-tighter">Inicio</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-slate-400 dark:text-slate-500" href="#">
+<span class="material-symbols-outlined">receipt</span>
+<span class="text-[10px] font-medium uppercase tracking-tighter">Gastos</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-primary" href="#">
+<div class="bg-primary/10 rounded-full p-2 flex items-center justify-center -mt-8 shadow-md border border-primary/20 bg-white dark:bg-slate-900">
+<span class="material-symbols-outlined text-3xl font-bold">fact_check</span>
+</div>
+<span class="text-[10px] font-bold uppercase tracking-tighter">Aprobaciones</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-slate-400 dark:text-slate-500" href="#">
+<span class="material-symbols-outlined">analytics</span>
+<span class="text-[10px] font-medium uppercase tracking-tighter">Reportes</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-slate-400 dark:text-slate-500" href="#">
+<span class="material-symbols-outlined">person</span>
+<span class="text-[10px] font-medium uppercase tracking-tighter">Perfil</span>
+</a>
+</nav>
+</div>
+</body></html>

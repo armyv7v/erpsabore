@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+
+<html class="light" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#ec5b13",
+                        "background-light": "#f8f6f6",
+                        "background-dark": "#221610",
+                    },
+                    fontFamily: {
+                        "display": ["Public Sans", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        body { font-family: 'Public Sans', sans-serif; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        .material-fill { font-variation-settings: 'FILL' 1; }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 min-h-screen flex flex-col">
+<!-- Header / App Bar -->
+<header class="sticky top-0 z-50 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 px-4 h-16 flex items-center justify-between">
+<div class="flex items-center gap-3">
+<button class="p-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full transition-colors">
+<span class="material-symbols-outlined text-slate-600 dark:text-slate-400">arrow_back</span>
+</button>
+<h1 class="text-lg font-bold tracking-tight">Mis Liquidaciones</h1>
+</div>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-slate-600 dark:text-slate-400">notifications</span>
+<div class="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center">
+<span class="material-symbols-outlined text-primary text-sm">person</span>
+</div>
+</div>
+</header>
+<main class="flex-1 max-w-2xl mx-auto w-full p-4 space-y-6 pb-24">
+<!-- Status Card -->
+<section class="bg-white dark:bg-slate-900 rounded-xl p-5 shadow-sm border border-slate-100 dark:border-slate-800">
+<div class="flex items-center justify-between mb-4">
+<div>
+<h2 class="text-2xl font-bold text-slate-900 dark:text-white">Octubre 2023</h2>
+<p class="text-slate-500 dark:text-slate-400 text-sm">Liquidación de Sueldo</p>
+</div>
+<div class="bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400 px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider">
+                    Pendiente de Firma
+                </div>
+</div>
+<div class="flex flex-col gap-3">
+<button class="w-full bg-primary hover:bg-primary/90 text-white font-bold py-4 rounded-xl flex items-center justify-center gap-2 shadow-lg shadow-primary/20 transition-all">
+<span class="material-symbols-outlined">draw</span>
+                    Firmar con Firma Electrónica
+                </button>
+<button class="w-full border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 font-medium py-3 rounded-xl flex items-center justify-center gap-2 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors">
+<span class="material-symbols-outlined">download</span>
+                    Descargar PDF Original
+                </button>
+</div>
+</section>
+<!-- Document Preview (Conceptual) -->
+<section class="space-y-3">
+<h3 class="text-sm font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-widest px-1">Previsualización del Documento</h3>
+<div class="bg-white dark:bg-slate-800 border-2 border-slate-200 dark:border-slate-700 rounded-xl overflow-hidden shadow-inner">
+<!-- Mockup of a Chilean Payslip -->
+<div class="p-6 text-[10px] sm:text-xs text-slate-800 dark:text-slate-200 leading-tight">
+<div class="flex justify-between border-b pb-4 mb-4 border-slate-200 dark:border-slate-700">
+<div>
+<p class="font-bold uppercase">Empresa de Servicios SpA</p>
+<p>RUT: 76.123.456-7</p>
+<p>Av. Providencia 1234, Santiago</p>
+</div>
+<div class="text-right">
+<p class="font-bold uppercase">Liquidación de Sueldo</p>
+<p>Mes: Octubre 2023</p>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-4 mb-4 bg-slate-50 dark:bg-slate-900/50 p-3 rounded-lg">
+<div>
+<p><span class="font-semibold">Empleado:</span> Juan Pérez González</p>
+<p><span class="font-semibold">RUT:</span> 15.678.910-1</p>
+<p><span class="font-semibold">Cargo:</span> Analista Senior</p>
+</div>
+<div>
+<p><span class="font-semibold">AFP:</span> Habitat (11,27%)</p>
+<p><span class="font-semibold">Isapre:</span> Colmena (7% + Pactado)</p>
+<p><span class="font-semibold">Días Trab.:</span> 30</p>
+</div>
+</div>
+<div class="space-y-4">
+<!-- Haberes -->
+<div>
+<p class="font-bold border-b border-slate-200 dark:border-slate-700 pb-1 mb-2 text-primary">HABERES</p>
+<div class="flex justify-between py-1"><span>Sueldo Base</span><span>$ 1.500.000</span></div>
+<div class="flex justify-between py-1"><span>Gratificación Legal</span><span>$ 167.312</span></div>
+<div class="flex justify-between py-1"><span>Bono Desempeño</span><span>$ 250.000</span></div>
+<div class="flex justify-between py-1 italic text-slate-500"><span>Movilización (No Imponible)</span><span>$ 45.000</span></div>
+<div class="flex justify-between py-1 font-bold border-t mt-1 border-slate-100 dark:border-slate-700 pt-1">
+<span>TOTAL HABERES</span><span>$ 1.962.312</span>
+</div>
+</div>
+<!-- Descuentos -->
+<div>
+<p class="font-bold border-b border-slate-200 dark:border-slate-700 pb-1 mb-2 text-red-600">DESCUENTOS LEGALES</p>
+<div class="flex justify-between py-1"><span>Previsión (AFP)</span><span>$ 185.955</span></div>
+<div class="flex justify-between py-1"><span>Salud (7% Isapre)</span><span>$ 115.500</span></div>
+<div class="flex justify-between py-1"><span>Seguro Cesantía (0,6%)</span><span>$ 9.900</span></div>
+<div class="flex justify-between py-1"><span>Impuesto Único</span><span>$ 42.150</span></div>
+<div class="flex justify-between py-1 font-bold border-t mt-1 border-slate-100 dark:border-slate-700 pt-1">
+<span>TOTAL DESCUENTOS</span><span>$ 353.505</span>
+</div>
+</div>
+</div>
+<div class="mt-8 bg-primary/10 dark:bg-primary/20 p-4 rounded-xl border border-primary/20 flex justify-between items-center">
+<div>
+<p class="text-[10px] uppercase font-bold text-primary">Alcance Líquido a Pago</p>
+<p class="text-2xl font-bold text-slate-900 dark:text-white">$ 1.608.807</p>
+</div>
+<div class="text-right">
+<p class="text-[8px] text-slate-500">Son: Un millón seiscientos ocho mil ochocientos siete pesos.</p>
+</div>
+</div>
+<div class="mt-10 pt-10 border-t border-dashed border-slate-300 dark:border-slate-600 flex justify-center">
+<div class="text-center opacity-40">
+<span class="material-symbols-outlined text-4xl">fingerprint</span>
+<p class="text-[8px]">DOCUMENTO PENDIENTE DE FIRMA ELECTRÓNICA</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Past History Shortcut -->
+<section class="space-y-3">
+<div class="flex items-center justify-between px-1">
+<h3 class="text-sm font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-widest">Liquidaciones Anteriores</h3>
+<a class="text-primary text-xs font-bold hover:underline" href="#">Ver todas</a>
+</div>
+<div class="grid grid-cols-1 gap-2">
+<div class="flex items-center justify-between p-3 bg-white dark:bg-slate-900 rounded-lg border border-slate-100 dark:border-slate-800 shadow-sm">
+<div class="flex items-center gap-3">
+<div class="bg-green-100 dark:bg-green-900/30 p-2 rounded-lg">
+<span class="material-symbols-outlined text-green-600 dark:text-green-400 text-xl material-fill">verified</span>
+</div>
+<div>
+<p class="font-bold text-sm">Septiembre 2023</p>
+<p class="text-xs text-slate-500">Firmado el 02/10/2023</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-slate-400">chevron_right</span>
+</div>
+<div class="flex items-center justify-between p-3 bg-white dark:bg-slate-900 rounded-lg border border-slate-100 dark:border-slate-800 shadow-sm">
+<div class="flex items-center gap-3">
+<div class="bg-green-100 dark:bg-green-900/30 p-2 rounded-lg">
+<span class="material-symbols-outlined text-green-600 dark:text-green-400 text-xl material-fill">verified</span>
+</div>
+<div>
+<p class="font-bold text-sm">Agosto 2023</p>
+<p class="text-xs text-slate-500">Firmado el 01/09/2023</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-slate-400">chevron_right</span>
+</div>
+</div>
+</section>
+</main>
+<!-- Bottom Navigation Bar -->
+<nav class="fixed bottom-0 left-0 right-0 bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 px-4 pb-safe pt-2">
+<div class="max-w-md mx-auto flex justify-between items-center">
+<a class="flex flex-col items-center gap-1 text-slate-400 dark:text-slate-500 py-1 flex-1" href="#">
+<span class="material-symbols-outlined">home</span>
+<span class="text-[10px] font-medium">Inicio</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-primary py-1 flex-1" href="#">
+<span class="material-symbols-outlined material-fill">receipt_long</span>
+<span class="text-[10px] font-bold">Liquidaciones</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-slate-400 dark:text-slate-500 py-1 flex-1" href="#">
+<span class="material-symbols-outlined">beach_access</span>
+<span class="text-[10px] font-medium">Vacaciones</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-slate-400 dark:text-slate-500 py-1 flex-1" href="#">
+<span class="material-symbols-outlined">person</span>
+<span class="text-[10px] font-medium">Perfil</span>
+</a>
+</div>
+</nav>
+</body></html>

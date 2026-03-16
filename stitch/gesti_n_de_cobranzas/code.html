@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+
+<html class="light" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Gestión de Cobranzas - ERP SaaS</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#ec5b13",
+                        "background-light": "#f8f6f6",
+                        "background-dark": "#221610",
+                    },
+                    fontFamily: {
+                        "display": ["Public Sans", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 min-h-screen flex flex-col">
+<header class="sticky top-0 z-50 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 px-4 py-3">
+<div class="max-w-7xl mx-auto flex items-center justify-between">
+<div class="flex items-center gap-4">
+<div class="bg-primary/10 p-2 rounded-lg">
+<span class="material-symbols-outlined text-primary">account_balance_wallet</span>
+</div>
+<div>
+<h1 class="text-xl font-bold tracking-tight">Gestión de Cobranzas</h1>
+<p class="text-xs text-slate-500 dark:text-slate-400">ERP Chile - Panel de Control</p>
+</div>
+</div>
+<div class="flex items-center gap-2">
+<button class="p-2 text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg">
+<span class="material-symbols-outlined">search</span>
+</button>
+<button class="p-2 text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg relative">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-2 right-2 w-2 h-2 bg-primary rounded-full border-2 border-white dark:border-slate-900"></span>
+</button>
+<div class="h-8 w-8 rounded-full bg-primary/20 flex items-center justify-center border border-primary/30 ml-2">
+<span class="text-xs font-bold text-primary">JP</span>
+</div>
+</div>
+</div>
+</header>
+<nav class="bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800">
+<div class="max-w-7xl mx-auto px-4 flex gap-8">
+<a class="border-b-2 border-primary text-primary py-4 text-sm font-semibold" href="#">Resumen de Cartera</a>
+<a class="border-b-2 border-transparent text-slate-500 hover:text-slate-700 dark:hover:text-slate-300 py-4 text-sm font-medium" href="#">Facturas Pendientes</a>
+<a class="border-b-2 border-transparent text-slate-500 hover:text-slate-700 dark:hover:text-slate-300 py-4 text-sm font-medium" href="#">Clientes Deudores</a>
+<a class="border-b-2 border-transparent text-slate-500 hover:text-slate-700 dark:hover:text-slate-300 py-4 text-sm font-medium" href="#">Reportes de Pago</a>
+</div>
+</nav>
+<main class="flex-1 max-w-7xl mx-auto w-full p-4 lg:p-6 space-y-6">
+<section class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+<div class="flex flex-wrap gap-2">
+<div class="flex items-center gap-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 px-3 py-1.5 rounded-xl shadow-sm">
+<span class="material-symbols-outlined text-sm text-slate-400">calendar_today</span>
+<span class="text-sm font-medium">Este Mes</span>
+<span class="material-symbols-outlined text-sm">expand_more</span>
+</div>
+<div class="flex items-center gap-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 px-3 py-1.5 rounded-xl shadow-sm">
+<span class="material-symbols-outlined text-sm text-slate-400">filter_list</span>
+<span class="text-sm font-medium">Todos los Estados</span>
+<span class="material-symbols-outlined text-sm">expand_more</span>
+</div>
+</div>
+<button class="bg-primary hover:bg-primary/90 text-white px-4 py-2 rounded-xl text-sm font-bold flex items-center justify-center gap-2 transition-colors">
+<span class="material-symbols-outlined text-sm">add_circle</span>
+                Registrar Cobro
+            </button>
+</section>
+<section class="grid grid-cols-1 md:grid-cols-3 gap-4">
+<div class="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm group">
+<div class="flex justify-between items-start mb-4">
+<div class="p-2 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
+<span class="material-symbols-outlined text-blue-600 dark:text-blue-400">pending_actions</span>
+</div>
+<span class="text-blue-600 dark:text-blue-400 text-xs font-bold px-2 py-1 bg-blue-50 dark:bg-blue-900/20 rounded-full">+4.2%</span>
+</div>
+<p class="text-slate-500 dark:text-slate-400 text-sm font-medium">Total Pendientes</p>
+<p class="text-2xl font-bold mt-1 text-slate-900 dark:text-slate-100">$45.680.000 CLP</p>
+<div class="mt-4 h-1.5 w-full bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden">
+<div class="h-full bg-blue-500 rounded-full" style="width: 65%"></div>
+</div>
+</div>
+<div class="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
+<div class="flex justify-between items-start mb-4">
+<div class="p-2 bg-red-50 dark:bg-red-900/20 rounded-lg">
+<span class="material-symbols-outlined text-red-600 dark:text-red-400">error</span>
+</div>
+<span class="text-red-600 dark:text-red-400 text-xs font-bold px-2 py-1 bg-red-50 dark:bg-red-900/20 rounded-full">+12.5%</span>
+</div>
+<p class="text-slate-500 dark:text-slate-400 text-sm font-medium">Total Vencidas</p>
+<p class="text-2xl font-bold mt-1 text-slate-900 dark:text-slate-100">$12.430.500 CLP</p>
+<div class="mt-4 h-1.5 w-full bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden">
+<div class="h-full bg-red-500 rounded-full" style="width: 35%"></div>
+</div>
+</div>
+<div class="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
+<div class="flex justify-between items-start mb-4">
+<div class="p-2 bg-amber-50 dark:bg-amber-900/20 rounded-lg">
+<span class="material-symbols-outlined text-amber-600 dark:text-amber-400">schedule</span>
+</div>
+<span class="text-amber-600 dark:text-amber-400 text-xs font-bold px-2 py-1 bg-amber-50 dark:bg-amber-900/20 rounded-full">-2.1%</span>
+</div>
+<p class="text-slate-500 dark:text-slate-400 text-sm font-medium">Por Vencer (7 días)</p>
+<p class="text-2xl font-bold mt-1 text-slate-900 dark:text-slate-100">$8.920.000 CLP</p>
+<div class="mt-4 h-1.5 w-full bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden">
+<div class="h-full bg-amber-500 rounded-full" style="width: 50%"></div>
+</div>
+</div>
+</section>
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+<div class="lg:col-span-2 bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden">
+<div class="px-6 py-4 border-b border-slate-200 dark:border-slate-800 flex justify-between items-center">
+<h3 class="font-bold text-slate-900 dark:text-slate-100">Clientes con Mayor Deuda</h3>
+<a class="text-primary text-sm font-semibold hover:underline" href="#">Ver todos</a>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-slate-50 dark:bg-slate-800/50">
+<th class="px-6 py-3 text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Cliente</th>
+<th class="px-6 py-3 text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">RUT</th>
+<th class="px-6 py-3 text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider text-right">Monto Total</th>
+<th class="px-6 py-3 text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Estado Crítico</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-slate-100 dark:divide-slate-800">
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="h-8 w-8 rounded bg-slate-100 dark:bg-slate-800 flex items-center justify-center">
+<span class="text-xs font-bold">TC</span>
+</div>
+<span class="text-sm font-semibold">TecnoChile S.A.</span>
+</div>
+</td>
+<td class="px-6 py-4 text-sm">76.452.120-K</td>
+<td class="px-6 py-4 text-sm font-bold text-right">$12.450.000</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400">
+                                        +60 días
+                                    </span>
+</td>
+</tr>
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="h-8 w-8 rounded bg-slate-100 dark:bg-slate-800 flex items-center justify-center">
+<span class="text-xs font-bold">AL</span>
+</div>
+<span class="text-sm font-semibold">Alimentos del Sur SpA</span>
+</div>
+</td>
+<td class="px-6 py-4 text-sm">94.120.300-4</td>
+<td class="px-6 py-4 text-sm font-bold text-right">$8.200.500</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-400">
+                                        30-60 días
+                                    </span>
+</td>
+</tr>
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="h-8 w-8 rounded bg-slate-100 dark:bg-slate-800 flex items-center justify-center">
+<span class="text-xs font-bold">ML</span>
+</div>
+<span class="text-sm font-semibold">Minera Los Andes</span>
+</div>
+</td>
+<td class="px-6 py-4 text-sm">77.890.100-2</td>
+<td class="px-6 py-4 text-sm font-bold text-right">$5.600.000</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400">
+                                        Vence hoy
+                                    </span>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm p-6">
+<h3 class="font-bold text-slate-900 dark:text-slate-100 mb-6">Próximos Vencimientos</h3>
+<div class="space-y-6">
+<div class="relative pl-6 border-l-2 border-primary/20">
+<div class="absolute -left-[5px] top-0 h-2 w-2 rounded-full bg-primary"></div>
+<p class="text-xs font-bold text-primary uppercase">Mañana - 24 Oct</p>
+<p class="text-sm font-semibold mt-1">Constructora Andes</p>
+<p class="text-lg font-bold text-slate-900 dark:text-slate-100">$2.400.000</p>
+</div>
+<div class="relative pl-6 border-l-2 border-slate-200 dark:border-slate-800">
+<div class="absolute -left-[5px] top-0 h-2 w-2 rounded-full bg-slate-300 dark:bg-slate-600"></div>
+<p class="text-xs font-bold text-slate-500 uppercase">26 Octubre</p>
+<p class="text-sm font-semibold mt-1">Retail Global Ltda</p>
+<p class="text-lg font-bold text-slate-900 dark:text-slate-100">$1.150.000</p>
+</div>
+<div class="relative pl-6 border-l-2 border-slate-200 dark:border-slate-800">
+<div class="absolute -left-[5px] top-0 h-2 w-2 rounded-full bg-slate-300 dark:bg-slate-600"></div>
+<p class="text-xs font-bold text-slate-500 uppercase">28 Octubre</p>
+<p class="text-sm font-semibold mt-1">Servicios Integrales Chile</p>
+<p class="text-lg font-bold text-slate-900 dark:text-slate-100">$4.320.000</p>
+</div>
+</div>
+<button class="w-full mt-8 border border-primary text-primary hover:bg-primary/5 py-2.5 rounded-xl text-sm font-bold transition-colors">
+                    Ver Calendario Completo
+                </button>
+</div>
+</div>
+</main>
+<footer class="mt-auto bg-white dark:bg-slate-950 border-t border-slate-200 dark:border-slate-800 lg:hidden">
+<div class="flex justify-around items-center p-2">
+<a class="flex flex-col items-center p-2 text-primary" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="text-[10px] font-medium mt-1">Inicio</span>
+</a>
+<a class="flex flex-col items-center p-2 text-slate-400" href="#">
+<span class="material-symbols-outlined">receipt_long</span>
+<span class="text-[10px] font-medium mt-1">Facturas</span>
+</a>
+<a class="flex flex-col items-center p-2 text-slate-400" href="#">
+<span class="material-symbols-outlined">group</span>
+<span class="text-[10px] font-medium mt-1">Clientes</span>
+</a>
+<a class="flex flex-col items-center p-2 text-slate-400" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="text-[10px] font-medium mt-1">Config</span>
+</a>
+</div>
+</footer>
+</body></html>

@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+
+<html class="light" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#ec5b13",
+                        "background-light": "#f8f6f6",
+                        "background-dark": "#221610",
+                    },
+                    fontFamily: {
+                        "display": ["Public Sans", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="font-display bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 antialiased">
+<div class="relative flex min-h-screen flex-col overflow-x-hidden">
+<!-- Header Section -->
+<header class="sticky top-0 z-10 border-b border-slate-200 dark:border-slate-800 bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-md">
+<div class="flex items-center p-4 justify-between">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-slate-600 dark:text-slate-400">arrow_back</span>
+<h1 class="text-lg font-bold tracking-tight">Reporte de Auditoría</h1>
+</div>
+<button class="flex items-center justify-center rounded-xl h-10 w-10 bg-primary/10 text-primary hover:bg-primary/20 transition-colors">
+<span class="material-symbols-outlined">download</span>
+</button>
+</div>
+<!-- Tabs -->
+<div class="flex px-4 gap-8">
+<a class="flex flex-col items-center justify-center border-b-2 border-primary text-primary pb-3 pt-2 font-semibold text-sm" href="#">
+                    Resumen
+                </a>
+<a class="flex flex-col items-center justify-center border-b-2 border-transparent text-slate-500 dark:text-slate-400 pb-3 pt-2 font-medium text-sm" href="#">
+                    Eventos
+                </a>
+<a class="flex flex-col items-center justify-center border-b-2 border-transparent text-slate-500 dark:text-slate-400 pb-3 pt-2 font-medium text-sm" href="#">
+                    Configuración
+                </a>
+</div>
+</header>
+<main class="flex-1 pb-24">
+<!-- Filter Bar -->
+<div class="flex gap-3 p-4 overflow-x-auto no-scrollbar">
+<button class="flex h-9 shrink-0 items-center justify-center gap-x-2 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 px-3 shadow-sm">
+<span class="material-symbols-outlined text-sm">account_balance</span>
+<p class="text-sm font-medium">Banco de Chile</p>
+<span class="material-symbols-outlined text-sm">expand_more</span>
+</button>
+<button class="flex h-9 shrink-0 items-center justify-center gap-x-2 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 px-3 shadow-sm">
+<span class="material-symbols-outlined text-sm">calendar_today</span>
+<p class="text-sm font-medium">Últimos 30 días</p>
+<span class="material-symbols-outlined text-sm">expand_more</span>
+</button>
+</div>
+<!-- Key Metrics Cards -->
+<div class="grid grid-cols-2 gap-4 px-4 mb-6">
+<div class="flex flex-col gap-1 rounded-xl p-4 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-sm">
+<p class="text-slate-500 dark:text-slate-400 text-xs font-medium uppercase tracking-wider">Integridad</p>
+<div class="flex items-baseline gap-2">
+<p class="text-2xl font-bold tracking-tight">99.8%</p>
+<span class="text-emerald-500 text-xs font-bold">+0.2%</span>
+</div>
+</div>
+<div class="flex flex-col gap-1 rounded-xl p-4 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-sm">
+<p class="text-slate-500 dark:text-slate-400 text-xs font-medium uppercase tracking-wider">Conciliados</p>
+<div class="flex items-baseline gap-2">
+<p class="text-2xl font-bold tracking-tight">1.240</p>
+<span class="text-primary text-xs font-bold">88%</span>
+</div>
+</div>
+<div class="col-span-2 flex flex-col gap-1 rounded-xl p-4 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-sm">
+<p class="text-slate-500 dark:text-slate-400 text-xs font-medium uppercase tracking-wider">Discrepancias Detectadas</p>
+<div class="flex items-center justify-between">
+<p class="text-2xl font-bold tracking-tight text-primary">$45.200</p>
+<span class="px-2 py-1 bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400 text-[10px] font-bold rounded uppercase">Crítico</span>
+</div>
+</div>
+</div>
+<!-- Historical Chart Placeholder -->
+<div class="px-4 mb-6">
+<div class="rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 p-4 shadow-sm">
+<h3 class="text-sm font-bold mb-4">Tendencia de Conciliación</h3>
+<div class="h-32 w-full flex items-end justify-between gap-1">
+<!-- Simple CSS Bar Chart Representation -->
+<div class="w-full bg-primary/20 rounded-t h-1/2"></div>
+<div class="w-full bg-primary/20 rounded-t h-2/3"></div>
+<div class="w-full bg-primary rounded-t h-3/4"></div>
+<div class="w-full bg-primary/20 rounded-t h-1/2"></div>
+<div class="w-full bg-primary rounded-t h-full"></div>
+<div class="w-full bg-primary/20 rounded-t h-3/4"></div>
+<div class="w-full bg-primary/20 rounded-t h-1/2"></div>
+<div class="w-full bg-primary rounded-t h-2/3"></div>
+</div>
+<div class="flex justify-between mt-2 text-[10px] text-slate-400 uppercase font-medium">
+<span>Sem 1</span>
+<span>Sem 2</span>
+<span>Sem 3</span>
+<span>Sem 4</span>
+</div>
+</div>
+</div>
+<!-- Audit Events List -->
+<div class="px-4">
+<div class="flex items-center justify-between mb-3">
+<h3 class="text-sm font-bold">Eventos de Auditoría</h3>
+<span class="text-xs text-primary font-medium">Ver todos</span>
+</div>
+<div class="space-y-3">
+<!-- Event Item -->
+<div class="flex gap-3 p-3 bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700">
+<div class="h-10 w-10 rounded-full bg-slate-100 dark:bg-slate-700 flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-slate-500">person</span>
+</div>
+<div class="flex-1">
+<div class="flex justify-between items-start mb-1">
+<p class="text-sm font-bold text-slate-800 dark:text-slate-200">R. Figueroa</p>
+<span class="text-[10px] text-slate-400">Hace 2h</span>
+</div>
+<p class="text-xs text-slate-500 dark:text-slate-400 mb-2">Concilió <span class="font-medium text-slate-700 dark:text-slate-300">#TRX-9042</span> en BCI</p>
+<div class="flex items-center gap-2">
+<span class="flex items-center gap-1 text-[10px] font-bold text-emerald-600 bg-emerald-50 dark:bg-emerald-900/20 px-1.5 py-0.5 rounded">
+<span class="material-symbols-outlined text-[12px]">check_circle</span> EXITOSO
+                                </span>
+</div>
+</div>
+</div>
+<!-- Event Item with Discrepancy -->
+<div class="flex gap-3 p-3 bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700">
+<div class="h-10 w-10 rounded-full bg-slate-100 dark:bg-slate-700 flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-slate-500">person</span>
+</div>
+<div class="flex-1">
+<div class="flex justify-between items-start mb-1">
+<p class="text-sm font-bold text-slate-800 dark:text-slate-200">M. Tapia</p>
+<span class="text-[10px] text-slate-400">Ayer 15:30</span>
+</div>
+<p class="text-xs text-slate-500 dark:text-slate-400 mb-2">Validó cartola <span class="font-medium text-slate-700 dark:text-slate-300">Mayo_2024</span></p>
+<div class="flex items-center gap-2">
+<span class="flex items-center gap-1 text-[10px] font-bold text-primary bg-primary/10 px-1.5 py-0.5 rounded">
+<span class="material-symbols-outlined text-[12px]">warning</span> DISCREPANCIA ($12.500)
+                                </span>
+</div>
+</div>
+</div>
+<!-- Event Item System -->
+<div class="flex gap-3 p-3 bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700">
+<div class="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-primary">robot_2</span>
+</div>
+<div class="flex-1">
+<div class="flex justify-between items-start mb-1">
+<p class="text-sm font-bold text-slate-800 dark:text-slate-200">Sistema (Auto)</p>
+<span class="text-[10px] text-slate-400">Ayer 01:00</span>
+</div>
+<p class="text-xs text-slate-500 dark:text-slate-400 mb-2">Sincronización automática de saldos</p>
+<div class="flex items-center gap-2">
+<span class="flex items-center gap-1 text-[10px] font-bold text-slate-500 bg-slate-100 dark:bg-slate-700 px-1.5 py-0.5 rounded uppercase">
+                                    Finalizado
+                                </span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Bottom Navigation Bar -->
+<nav class="fixed bottom-0 left-0 right-0 border-t border-slate-200 dark:border-slate-800 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md pb-safe">
+<div class="flex h-16 items-center justify-around px-2">
+<a class="flex flex-1 flex-col items-center justify-center gap-1 text-slate-400 dark:text-slate-500" href="#">
+<span class="material-symbols-outlined">grid_view</span>
+<p class="text-[10px] font-medium">Panel</p>
+</a>
+<a class="flex flex-1 flex-col items-center justify-center gap-1 text-slate-400 dark:text-slate-500" href="#">
+<span class="material-symbols-outlined">account_balance</span>
+<p class="text-[10px] font-medium">Bancos</p>
+</a>
+<a class="flex flex-1 flex-col items-center justify-center gap-1 text-primary" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1">history_edu</span>
+<p class="text-[10px] font-bold">Auditoría</p>
+</a>
+<a class="flex flex-1 flex-col items-center justify-center gap-1 text-slate-400 dark:text-slate-500" href="#">
+<span class="material-symbols-outlined">settings</span>
+<p class="text-[10px] font-medium">Ajustes</p>
+</a>
+</div>
+</nav>
+</div>
+</body></html>

@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+
+<html lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Reporte de Comisiones - ERP SaaS</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#ec5b13",
+                        "background-light": "#f8f6f6",
+                        "background-dark": "#221610",
+                    },
+                    fontFamily: {
+                        "display": ["Public Sans", "sans-serif"]
+                    },
+                    borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" },
+                },
+            },
+        }
+    </script>
+<style>
+        body { font-family: 'Public Sans', sans-serif; }
+        .material-symbols-outlined { font-size: 24px; }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 min-h-screen font-display">
+<div class="max-w-5xl mx-auto pb-24">
+<!-- Header -->
+<header class="flex items-center justify-between p-4 md:p-6 bg-white dark:bg-background-dark/50 border-b border-primary/10">
+<div class="flex items-center gap-4">
+<div class="text-primary cursor-pointer">
+<span class="material-symbols-outlined">arrow_back</span>
+</div>
+<h1 class="text-xl md:text-2xl font-bold tracking-tight">Reporte de Comisiones</h1>
+</div>
+<div class="flex gap-2">
+<button class="flex items-center justify-center p-2 rounded-xl bg-primary/10 text-primary hover:bg-primary/20 transition-colors">
+<span class="material-symbols-outlined">download</span>
+</button>
+</div>
+</header>
+<!-- Filters Section -->
+<div class="p-4 md:px-6 flex flex-wrap gap-3 mt-4">
+<button class="flex items-center gap-2 px-4 py-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl shadow-sm hover:border-primary transition-colors">
+<span class="material-symbols-outlined text-primary text-sm">calendar_month</span>
+<span class="text-sm font-medium">Período: Octubre 2023</span>
+<span class="material-symbols-outlined text-slate-400">expand_more</span>
+</button>
+<button class="flex items-center gap-2 px-4 py-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl shadow-sm hover:border-primary transition-colors">
+<span class="material-symbols-outlined text-primary text-sm">store</span>
+<span class="text-sm font-medium">Sucursal: Santiago Centro</span>
+<span class="material-symbols-outlined text-slate-400">expand_more</span>
+</button>
+</div>
+<!-- Executive Summary Cards -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4 p-4 md:px-6">
+<div class="flex flex-col gap-2 rounded-xl p-6 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-sm relative overflow-hidden group">
+<div class="absolute top-0 right-0 w-24 h-24 bg-primary/5 rounded-bl-full -mr-8 -mt-8 transition-transform group-hover:scale-110"></div>
+<p class="text-slate-500 dark:text-slate-400 text-sm font-medium">Total Comisiones Mes</p>
+<div class="flex items-baseline gap-2">
+<p class="text-2xl font-bold tracking-tight">$4.250.000 CLP</p>
+<span class="text-emerald-500 text-sm font-semibold flex items-center">
+<span class="material-symbols-outlined text-xs">trending_up</span> 12%
+                    </span>
+</div>
+<p class="text-xs text-slate-400">Calculado sobre $85.000.000 en ventas netas</p>
+</div>
+<div class="flex flex-col gap-2 rounded-xl p-6 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-sm relative overflow-hidden group">
+<div class="absolute top-0 right-0 w-24 h-24 bg-primary/5 rounded-bl-full -mr-8 -mt-8 transition-transform group-hover:scale-110"></div>
+<p class="text-slate-500 dark:text-slate-400 text-sm font-medium">Vendedor con Mayor Comisión</p>
+<div class="flex items-center gap-3">
+<img class="w-10 h-10 rounded-full object-cover border-2 border-primary/20" data-alt="Profile photo of the top sales representative" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBCb5GRM0k8reC2bp2ZiX8q7XPUm-pX57TC17BgIR5xztXmdHUhBw-WkcTxJMCIlSxGavPvIxjy9e_4V9_gfOag6yQPk9bcvgNsUVHQAaQ4qzUoJxEmQGjL1TT5Hl24j1tAHJukFGinDpHvynLHiy63sXaBJsohqx9cL5vNovgdfPKNLfuhXynSAN4LgutRvX_CYNv6VSLscvfPOkBcKN3KwSZWa7Z9TTdptFz95PpdJmiEKCxFaIaGhfRntjdxRFEywKKLsvipFE8"/>
+<div>
+<p class="text-lg font-bold">Juan Pérez</p>
+<p class="text-primary font-semibold text-sm">$842.500 CLP</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Sales Representatives Table -->
+<div class="p-4 md:px-6">
+<div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl overflow-hidden shadow-sm">
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-slate-50 dark:bg-slate-900/50 border-b border-slate-200 dark:border-slate-700">
+<th class="px-6 py-4 text-xs font-bold uppercase tracking-wider text-slate-500">Vendedor</th>
+<th class="px-6 py-4 text-xs font-bold uppercase tracking-wider text-slate-500">Total Ventas</th>
+<th class="px-6 py-4 text-xs font-bold uppercase tracking-wider text-slate-500 text-center">% Comisión</th>
+<th class="px-6 py-4 text-xs font-bold uppercase tracking-wider text-slate-500">Monto a Pagar</th>
+<th class="px-6 py-4 text-xs font-bold uppercase tracking-wider text-slate-500">Estado</th>
+<th class="px-6 py-4 text-xs font-bold uppercase tracking-wider text-slate-500 text-right">Acción</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-slate-100 dark:divide-slate-700">
+<!-- Row 1 -->
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<img class="w-8 h-8 rounded-full" data-alt="Headshot of Juan Perez" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAj8_kVITcyCnZbKGIgczRVpu38Q6QjnbFgSaiNgM4zPKm0LDAVa9GDODhY2f6xYRTDo_6dw3efqXdEKDX7fJdXgPrXMhG5-MK1Q7Ouk1glmok81Rx2UMPiGrM751brW5MARHjbvHh4g3sjzYqLUhUkz5CYv42QA6wtCG9t48V342TdamQHBw-LRca5ajK5-K1B4GiwBri2mnFinsB7mk5F3Pz7S1VKgB0liMj-ruZz-6S2Gw6JfvrkzgF6aCryVzU9FfPL7154nIc"/>
+<span class="font-medium">Juan Pérez</span>
+</div>
+</td>
+<td class="px-6 py-4 text-sm">$16.850.000</td>
+<td class="px-6 py-4 text-sm text-center">5.0%</td>
+<td class="px-6 py-4 text-sm font-bold text-slate-900 dark:text-white">$842.500</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-100 text-emerald-800 dark:bg-emerald-900/30 dark:text-emerald-400">
+                                        Pagado
+                                    </span>
+</td>
+<td class="px-6 py-4 text-right">
+<button class="text-primary hover:text-primary/80"><span class="material-symbols-outlined">visibility</span></button>
+</td>
+</tr>
+<!-- Row 2 -->
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<img class="w-8 h-8 rounded-full" data-alt="Headshot of Maria Garcia" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB9C9C86ZjDJeK1mY0xWvxEdlDRWD3bUq1mgsp0NK-Ty-NV8LoB2IBZv1_yBGKJRQxzozTngLzuv-nqLhz4a0jNsL44kfnlDdTwx1JY0_mZIbHlViTCfF7I0ETIMPVjqBLDeWs58o9VrxNJU68tGJXM8L7k3DacRggmEOHbhHBkgLUdDZQ2cWB5FPEBvJoX_XvVFKA-QZLj2NbEFnkHFmC0bMzRdgp1ST1VJokapoCeShCA1d4nWNqCl-RcLpbnAcSRzVIoxGSGpn0"/>
+<span class="font-medium">María García</span>
+</div>
+</td>
+<td class="px-6 py-4 text-sm">$14.200.000</td>
+<td class="px-6 py-4 text-sm text-center">4.5%</td>
+<td class="px-6 py-4 text-sm font-bold text-slate-900 dark:text-white">$639.000</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-400">
+                                        Pendiente
+                                    </span>
+</td>
+<td class="px-6 py-4 text-right">
+<button class="text-primary hover:text-primary/80"><span class="material-symbols-outlined">visibility</span></button>
+</td>
+</tr>
+<!-- Row 3 -->
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<img class="w-8 h-8 rounded-full" data-alt="Headshot of Carlos Ruiz" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAigKtUDtDz6H6xq3_Mtc9yx2kqUVjX2vg0uP1yHl7OAdnYlxVkeVaVm5_obvBxg0Wx3397kWBbJdFcdlVjfQWS2jGxXo2aYXUzaVcxeBgotj02ccAu872nEtpLE2QKceEc46kqUrX3g76TYyhqNkBttzDA6eOvoJTDxtWUBFxduSWBjC9q1nVWbcsXBKTG4dHKDp82krRs_AXpW0Iv8ZissHoUKcUi05arjQzsJAo75r-a09cFUSCfWBM5dQSrHRg4ZmqmjOb-n-U"/>
+<span class="font-medium">Carlos Ruiz</span>
+</div>
+</td>
+<td class="px-6 py-4 text-sm">$12.900.000</td>
+<td class="px-6 py-4 text-sm text-center">4.5%</td>
+<td class="px-6 py-4 text-sm font-bold text-slate-900 dark:text-white">$580.500</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-400">
+                                        Pendiente
+                                    </span>
+</td>
+<td class="px-6 py-4 text-right">
+<button class="text-primary hover:text-primary/80"><span class="material-symbols-outlined">visibility</span></button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<!-- Sticky Bottom Actions -->
+<div class="fixed bottom-20 left-1/2 -translate-x-1/2 w-full max-w-xl px-4 z-10">
+<div class="bg-white/80 dark:bg-background-dark/80 backdrop-blur-lg border border-primary/20 p-3 rounded-2xl shadow-2xl flex gap-3">
+<button class="flex-1 bg-primary text-white font-bold py-3 px-4 rounded-xl flex items-center justify-center gap-2 shadow-lg shadow-primary/20 hover:bg-primary/90 transition-all active:scale-95">
+<span class="material-symbols-outlined">receipt_long</span>
+                    Generar Nómina
+                </button>
+<button class="px-4 py-3 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 font-bold rounded-xl flex items-center justify-center gap-2 hover:bg-slate-200 transition-all">
+<span class="material-symbols-outlined">ios_share</span>
+                    Exportar
+                </button>
+</div>
+</div>
+</div>
+<!-- Bottom Nav Bar -->
+<nav class="fixed bottom-0 w-full border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-background-dark px-4 pb-4 pt-2 z-20">
+<div class="max-w-md mx-auto flex justify-between gap-1">
+<a class="flex flex-1 flex-col items-center justify-center gap-1 text-slate-400 dark:text-slate-500" href="#">
+<span class="material-symbols-outlined">bar_chart</span>
+<p class="text-[10px] font-medium leading-normal tracking-wide">Ventas</p>
+</a>
+<a class="flex flex-1 flex-col items-center justify-center gap-1 text-slate-400 dark:text-slate-500" href="#">
+<span class="material-symbols-outlined">trophy</span>
+<p class="text-[10px] font-medium leading-normal tracking-wide">Ranking</p>
+</a>
+<a class="flex flex-1 flex-col items-center justify-center gap-1 text-primary" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1">description</span>
+<p class="text-[10px] font-medium leading-normal tracking-wide">Reportes</p>
+</a>
+<a class="flex flex-1 flex-col items-center justify-center gap-1 text-slate-400 dark:text-slate-500" href="#">
+<span class="material-symbols-outlined">settings</span>
+<p class="text-[10px] font-medium leading-normal tracking-wide">Ajustes</p>
+</a>
+</div>
+</nav>
+</body></html>

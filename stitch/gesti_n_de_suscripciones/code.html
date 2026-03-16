@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+
+<html class="light" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Gestión de Suscripciones ERP</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#ec5b13",
+                        "background-light": "#f8f6f6",
+                        "background-dark": "#221610",
+                    },
+                    fontFamily: {
+                        "display": ["Public Sans"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 min-h-screen">
+<div class="flex flex-col min-h-screen">
+<!-- Header -->
+<header class="flex items-center justify-between px-6 py-4 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800">
+<div class="flex items-center gap-4">
+<div class="p-2 bg-primary/10 rounded-lg">
+<span class="material-symbols-outlined text-primary text-2xl">account_balance_wallet</span>
+</div>
+<h1 class="text-xl font-bold tracking-tight">Panel de Suscripciones</h1>
+</div>
+<div class="flex items-center gap-3">
+<button class="p-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full transition-colors">
+<span class="material-symbols-outlined text-slate-600 dark:text-slate-400">notifications</span>
+</button>
+<div class="h-10 w-10 rounded-full bg-primary flex items-center justify-center text-white font-bold">
+                    JD
+                </div>
+</div>
+</header>
+<!-- Main Content -->
+<main class="flex-1 p-6 max-w-7xl mx-auto w-full space-y-8">
+<!-- Quick Stats -->
+<section class="grid grid-cols-1 md:grid-cols-3 gap-6">
+<div class="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
+<div class="flex justify-between items-start mb-4">
+<p class="text-sm font-medium text-slate-500 dark:text-slate-400">MRR Actual</p>
+<span class="material-symbols-outlined text-primary">trending_up</span>
+</div>
+<p class="text-3xl font-bold text-slate-900 dark:text-slate-50">€45.200,00</p>
+<div class="mt-2 flex items-center gap-1 text-emerald-600 dark:text-emerald-400 text-sm font-semibold">
+<span class="material-symbols-outlined text-sm">arrow_upward</span>
+                        12% vs mes anterior
+                    </div>
+</div>
+<div class="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
+<div class="flex justify-between items-start mb-4">
+<p class="text-sm font-medium text-slate-500 dark:text-slate-400">Tasa de Churn</p>
+<span class="material-symbols-outlined text-primary">group_remove</span>
+</div>
+<p class="text-3xl font-bold text-slate-900 dark:text-slate-50">2,4%</p>
+<div class="mt-2 flex items-center gap-1 text-orange-600 dark:text-orange-400 text-sm font-semibold">
+<span class="material-symbols-outlined text-sm">arrow_downward</span>
+                        0.5% mejora
+                    </div>
+</div>
+<div class="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
+<div class="flex justify-between items-start mb-4">
+<p class="text-sm font-medium text-slate-500 dark:text-slate-400">Suscripciones Activas</p>
+<span class="material-symbols-outlined text-primary">verified</span>
+</div>
+<p class="text-3xl font-bold text-slate-900 dark:text-slate-50">1.240</p>
+<div class="mt-2 flex items-center gap-1 text-emerald-600 dark:text-emerald-400 text-sm font-semibold">
+<span class="material-symbols-outlined text-sm">add</span>
+                        48 nuevas este mes
+                    </div>
+</div>
+</section>
+<!-- Chart and Plans Section -->
+<section class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+<!-- Revenue Chart -->
+<div class="lg:col-span-2 bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
+<div class="flex items-center justify-between mb-8">
+<div>
+<h2 class="text-lg font-bold">Evolución de Ingresos</h2>
+<p class="text-sm text-slate-500">Histórico de los últimos 6 meses</p>
+</div>
+<select class="bg-slate-50 dark:bg-slate-800 border-none rounded-lg text-sm px-3 py-2">
+<option>Semestral</option>
+<option>Anual</option>
+</select>
+</div>
+<div class="w-full">
+<svg fill="none" height="200" preserveaspectratio="none" viewbox="-3 0 478 150" width="100%" xmlns="http://www.w3.org/2000/svg">
+<path d="M0 109C18.1538 109 18.1538 21 36.3077 21C54.4615 21 54.4615 41 72.6154 41C90.7692 41 90.7692 93 108.923 93C127.077 93 127.077 33 145.231 33C163.385 33 163.385 101 181.538 101C199.692 101 199.692 61 217.846 61C236 61 236 45 254.154 45C272.308 45 272.308 121 290.462 121C308.615 121 308.615 149 326.769 149C344.923 149 344.923 110 363.077 110C381.231 110 381.231 81 399.385 81C417.538 81 417.538 129 435.692 129C453.846 129 453.846 25 472 25V149H326.769H0V109Z" fill="url(#chart_gradient)"></path>
+<path d="M0 109C18.1538 109 18.1538 21 36.3077 21C54.4615 21 54.4615 41 72.6154 41C90.7692 41 90.7692 93 108.923 93C127.077 93 127.077 33 145.231 33C163.385 33 163.385 101 181.538 101C199.692 101 199.692 61 217.846 61C236 61 236 45 254.154 45C272.308 45 272.308 121 290.462 121C308.615 121 308.615 149 326.769 149C344.923 149 344.923 110 363.077 110C381.231 110 381.231 81 399.385 81C417.538 81 417.538 129 435.692 129C453.846 129 453.846 25 472 25" stroke="#ec5b13" stroke-linecap="round" stroke-width="3"></path>
+<defs>
+<lineargradient gradientunits="userSpaceOnUse" id="chart_gradient" x1="236" x2="236" y1="1" y2="149">
+<stop stop-color="#ec5b13" stop-opacity="0.3"></stop>
+<stop offset="1" stop-color="#ec5b13" stop-opacity="0"></stop>
+</lineargradient>
+</defs>
+</svg>
+<div class="flex justify-between mt-4 px-2 text-xs font-bold text-slate-400 uppercase tracking-widest">
+<span>Ene</span>
+<span>Feb</span>
+<span>Mar</span>
+<span>Abr</span>
+<span>May</span>
+<span>Jun</span>
+</div>
+</div>
+</div>
+<!-- Plan Management -->
+<div class="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col">
+<h2 class="text-lg font-bold mb-4">Gestión de Planes</h2>
+<div class="space-y-4 flex-1">
+<div class="p-4 rounded-lg bg-slate-50 dark:bg-slate-800 border border-slate-100 dark:border-slate-700">
+<div class="flex justify-between items-center">
+<span class="text-sm font-bold">Plan Basic</span>
+<span class="text-xs bg-slate-200 dark:bg-slate-700 px-2 py-1 rounded text-slate-700 dark:text-slate-300">450 users</span>
+</div>
+<p class="text-xl font-bold mt-1 text-primary">€29/mes</p>
+</div>
+<div class="p-4 rounded-lg bg-primary/10 border border-primary/20">
+<div class="flex justify-between items-center">
+<span class="text-sm font-bold">Plan Pro</span>
+<span class="text-xs bg-primary text-white px-2 py-1 rounded">680 users</span>
+</div>
+<p class="text-xl font-bold mt-1 text-primary">€79/mes</p>
+</div>
+<div class="p-4 rounded-lg bg-slate-50 dark:bg-slate-800 border border-slate-100 dark:border-slate-700">
+<div class="flex justify-between items-center">
+<span class="text-sm font-bold">Enterprise</span>
+<span class="text-xs bg-slate-200 dark:bg-slate-700 px-2 py-1 rounded text-slate-700 dark:text-slate-300">110 users</span>
+</div>
+<p class="text-xl font-bold mt-1 text-primary">Personalizado</p>
+</div>
+</div>
+<button class="w-full mt-6 bg-primary hover:bg-primary/90 text-white font-bold py-3 rounded-lg flex items-center justify-center gap-2 transition-all">
+<span class="material-symbols-outlined">add_circle</span>
+                        Crear Nuevo Plan
+                    </button>
+</div>
+</section>
+<!-- Upcoming Renewals List -->
+<section class="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden">
+<div class="p-6 border-b border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+<h2 class="text-lg font-bold">Próximas Renovaciones</h2>
+<div class="flex items-center gap-2">
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm">search</span>
+<input class="pl-9 pr-4 py-2 bg-slate-50 dark:bg-slate-800 border-none rounded-lg text-sm w-full sm:w-64 focus:ring-1 focus:ring-primary" placeholder="Buscar cliente..." type="text"/>
+</div>
+<button class="p-2 bg-slate-50 dark:bg-slate-800 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700">
+<span class="material-symbols-outlined text-slate-600 dark:text-slate-400">filter_list</span>
+</button>
+</div>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left">
+<thead class="bg-slate-50 dark:bg-slate-800/50 text-slate-500 dark:text-slate-400 text-xs uppercase tracking-wider">
+<tr>
+<th class="px-6 py-4 font-semibold">Cliente</th>
+<th class="px-6 py-4 font-semibold">Estado</th>
+<th class="px-6 py-4 font-semibold">Plan Actual</th>
+<th class="px-6 py-4 font-semibold">Fecha Renovación</th>
+<th class="px-6 py-4 font-semibold">Importe</th>
+<th class="px-6 py-4 font-semibold text-right">Acciones</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-slate-100 dark:divide-slate-800">
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="size-8 rounded-full bg-slate-200 dark:bg-slate-700 flex items-center justify-center font-bold text-slate-600 dark:text-slate-300 text-xs">TC</div>
+<div>
+<p class="font-bold text-sm">TechCorp Solutions</p>
+<p class="text-xs text-slate-500">facturacion@techcorp.com</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-4">
+<span class="px-2.5 py-1 rounded-full text-[10px] font-bold uppercase bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400">Activo</span>
+</td>
+<td class="px-6 py-4 text-sm font-medium">Enterprise</td>
+<td class="px-6 py-4 text-sm">12 Oct, 2023</td>
+<td class="px-6 py-4 text-sm font-bold">€1.200,00</td>
+<td class="px-6 py-4 text-right">
+<button class="text-slate-400 hover:text-primary transition-colors">
+<span class="material-symbols-outlined">more_vert</span>
+</button>
+</td>
+</tr>
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="size-8 rounded-full bg-primary/20 flex items-center justify-center font-bold text-primary text-xs">GL</div>
+<div>
+<p class="font-bold text-sm">Global Logistics</p>
+<p class="text-xs text-slate-500">admin@global-log.es</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-4">
+<span class="px-2.5 py-1 rounded-full text-[10px] font-bold uppercase bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400">Pendiente</span>
+</td>
+<td class="px-6 py-4 text-sm font-medium">Plan Pro</td>
+<td class="px-6 py-4 text-sm">15 Oct, 2023</td>
+<td class="px-6 py-4 text-sm font-bold">€79,00</td>
+<td class="px-6 py-4 text-right">
+<button class="text-slate-400 hover:text-primary transition-colors">
+<span class="material-symbols-outlined">more_vert</span>
+</button>
+</td>
+</tr>
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="size-8 rounded-full bg-slate-200 dark:bg-slate-700 flex items-center justify-center font-bold text-slate-600 dark:text-slate-300 text-xs">MA</div>
+<div>
+<p class="font-bold text-sm">Media Agencia</p>
+<p class="text-xs text-slate-500">media@agencia.com</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-4">
+<span class="px-2.5 py-1 rounded-full text-[10px] font-bold uppercase bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400">Activo</span>
+</td>
+<td class="px-6 py-4 text-sm font-medium">Plan Basic</td>
+<td class="px-6 py-4 text-sm">18 Oct, 2023</td>
+<td class="px-6 py-4 text-sm font-bold">€29,00</td>
+<td class="px-6 py-4 text-right">
+<button class="text-slate-400 hover:text-primary transition-colors">
+<span class="material-symbols-outlined">more_vert</span>
+</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="p-4 bg-slate-50 dark:bg-slate-800/50 flex items-center justify-center">
+<button class="text-primary font-bold text-sm hover:underline">Ver todas las renovaciones</button>
+</div>
+</section>
+</main>
+<!-- Bottom Navigation (Mobile) -->
+<nav class="sticky bottom-0 w-full md:hidden bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 px-4 pb-4 pt-2 flex justify-around">
+<a class="flex flex-col items-center gap-1 text-primary" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="text-[10px] font-bold">Inicio</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-slate-400" href="#">
+<span class="material-symbols-outlined">subscriptions</span>
+<span class="text-[10px] font-bold">Suscrip.</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-slate-400" href="#">
+<span class="material-symbols-outlined">group</span>
+<span class="text-[10px] font-bold">Clientes</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-slate-400" href="#">
+<span class="material-symbols-outlined">bar_chart</span>
+<span class="text-[10px] font-bold">Reportes</span>
+</a>
+</nav>
+</div>
+</body></html>

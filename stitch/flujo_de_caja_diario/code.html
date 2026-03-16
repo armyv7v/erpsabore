@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+
+<html class="light" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#ec5b13",
+                        "background-light": "#f8f6f6",
+                        "background-dark": "#221610",
+                    },
+                    fontFamily: {
+                        "display": ["Public Sans", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        body { font-family: 'Public Sans', sans-serif; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        .filled { font-variation-settings: 'FILL' 1; }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 min-h-screen">
+<div class="relative flex h-full w-full flex-col overflow-x-hidden">
+<!-- Top Header -->
+<div class="flex items-center bg-white dark:bg-slate-900 p-4 border-b border-slate-200 dark:border-slate-800 sticky top-0 z-10">
+<div class="flex size-10 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
+<span class="material-symbols-outlined">menu</span>
+</div>
+<h2 class="text-slate-900 dark:text-slate-100 text-lg font-bold leading-tight px-4 flex-1">Flujo de Caja Diario</h2>
+<div class="flex size-10 items-center justify-end">
+<button class="relative flex items-center justify-center text-slate-600 dark:text-slate-400">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-0 right-0 block h-2 w-2 rounded-full bg-primary ring-2 ring-white"></span>
+</button>
+</div>
+</div>
+<!-- Balance Card -->
+<div class="p-4">
+<div class="flex flex-col gap-2 rounded-xl p-6 bg-white dark:bg-slate-900 shadow-sm border border-slate-100 dark:border-slate-800">
+<div class="flex justify-between items-start">
+<p class="text-slate-500 dark:text-slate-400 text-sm font-medium uppercase tracking-wider">Saldo Total Actual</p>
+<span class="material-symbols-outlined text-primary">account_balance_wallet</span>
+</div>
+<p class="text-slate-900 dark:text-white tracking-tight text-3xl font-bold mt-1">$12.450.000 CLP</p>
+<div class="flex items-center gap-1 mt-2">
+<span class="material-symbols-outlined text-emerald-500 text-sm">trending_up</span>
+<p class="text-emerald-500 text-sm font-semibold">+2.4% <span class="text-slate-400 font-normal ml-1">vs cierre ayer</span></p>
+</div>
+</div>
+</div>
+<!-- Main Chart Section -->
+<div class="px-4 pb-4">
+<div class="bg-white dark:bg-slate-900 rounded-xl p-5 border border-slate-100 dark:border-slate-800 shadow-sm">
+<div class="flex items-center justify-between mb-4">
+<h3 class="text-slate-900 dark:text-white text-base font-bold">Movimiento Intradía</h3>
+<p class="text-slate-400 text-xs font-medium">Hoy, 24 May</p>
+</div>
+<div class="flex items-baseline gap-2 mb-6">
+<p class="text-slate-900 dark:text-white text-2xl font-bold">$4.200.000</p>
+<p class="text-emerald-500 text-xs font-medium">+15% flujo neto</p>
+</div>
+<div class="h-[140px] w-full relative">
+<!-- Simple SVG Chart Representation -->
+<svg fill="none" height="100%" preserveaspectratio="none" viewbox="0 0 400 120" width="100%" xmlns="http://www.w3.org/2000/svg">
+<path d="M0 100 Q 50 80, 80 90 T 150 40 T 220 70 T 300 20 T 400 50" fill="none" stroke="#ec5b13" stroke-linecap="round" stroke-width="3"></path>
+<path d="M0 100 Q 50 80, 80 90 T 150 40 T 220 70 T 300 20 T 400 50 V 120 H 0 Z" fill="url(#chartGradient)" opacity="0.1"></path>
+<defs>
+<lineargradient id="chartGradient" x1="0" x2="0" y1="0" y2="1">
+<stop offset="0%" stop-color="#ec5b13"></stop>
+<stop offset="100%" stop-color="#ec5b13" stop-opacity="0"></stop>
+</lineargradient>
+</defs>
+</svg>
+<div class="flex justify-between mt-2">
+<p class="text-slate-400 text-[10px] font-bold">09:00</p>
+<p class="text-slate-400 text-[10px] font-bold">12:00</p>
+<p class="text-slate-400 text-[10px] font-bold">15:00</p>
+<p class="text-slate-400 text-[10px] font-bold">18:00</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Quick Actions -->
+<div class="flex gap-3 px-4 pb-6">
+<button class="flex-1 bg-primary text-white font-bold py-3 rounded-xl flex items-center justify-center gap-2 shadow-lg shadow-primary/20">
+<span class="material-symbols-outlined text-lg">add_circle</span>
+                Ingreso
+            </button>
+<button class="flex-1 bg-slate-900 dark:bg-slate-100 text-white dark:text-slate-900 font-bold py-3 rounded-xl flex items-center justify-center gap-2 shadow-sm">
+<span class="material-symbols-outlined text-lg">remove_circle</span>
+                Egreso
+            </button>
+</div>
+<!-- Recent Transactions -->
+<div class="flex-1 bg-white dark:bg-slate-900 rounded-t-[2rem] p-6 shadow-2xl">
+<div class="flex items-center justify-between mb-6">
+<h3 class="text-slate-900 dark:text-white text-lg font-bold">Movimientos Recientes</h3>
+<button class="text-primary text-sm font-bold">Ver Todo</button>
+</div>
+<div class="space-y-6">
+<!-- Transaction Item -->
+<div class="flex items-center gap-4">
+<div class="size-12 rounded-full bg-emerald-100 dark:bg-emerald-500/10 text-emerald-600 flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined filled">point_of_sale</span>
+</div>
+<div class="flex-1">
+<p class="text-slate-900 dark:text-white font-bold text-sm">Venta POS Terminal 01</p>
+<p class="text-slate-400 text-xs">Ventas • 14:25</p>
+</div>
+<p class="text-emerald-600 font-bold">+$158.000</p>
+</div>
+<!-- Transaction Item -->
+<div class="flex items-center gap-4">
+<div class="size-12 rounded-full bg-rose-100 dark:bg-rose-500/10 text-rose-600 flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined filled">shopping_cart</span>
+</div>
+<div class="flex-1">
+<p class="text-slate-900 dark:text-white font-bold text-sm">Proveedor Frutas S.A.</p>
+<p class="text-slate-400 text-xs">Compras • 13:10</p>
+</div>
+<p class="text-rose-600 font-bold">-$450.000</p>
+</div>
+<!-- Transaction Item -->
+<div class="flex items-center gap-4">
+<div class="size-12 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined filled">bolt</span>
+</div>
+<div class="flex-1">
+<p class="text-slate-900 dark:text-white font-bold text-sm">Pago Enel Distribución</p>
+<p class="text-slate-400 text-xs">Servicios • 10:45</p>
+</div>
+<p class="text-rose-600 font-bold">-$120.500</p>
+</div>
+<!-- Transaction Item -->
+<div class="flex items-center gap-4">
+<div class="size-12 rounded-full bg-emerald-100 dark:bg-emerald-500/10 text-emerald-600 flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined filled">payments</span>
+</div>
+<div class="flex-1">
+<p class="text-slate-900 dark:text-white font-bold text-sm">Transferencia Recibida</p>
+<p class="text-slate-400 text-xs">Ventas • 09:20</p>
+</div>
+<p class="text-emerald-600 font-bold">+$850.000</p>
+</div>
+</div>
+</div>
+<!-- Bottom Navbar -->
+<div class="sticky bottom-0 w-full flex gap-2 border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 px-4 pb-6 pt-2">
+<a class="flex flex-1 flex-col items-center justify-center gap-1 text-primary" href="#">
+<span class="material-symbols-outlined filled">home</span>
+<p class="text-[10px] font-bold uppercase tracking-tight">Inicio</p>
+</a>
+<a class="flex flex-1 flex-col items-center justify-center gap-1 text-slate-400" href="#">
+<span class="material-symbols-outlined">account_balance_wallet</span>
+<p class="text-[10px] font-medium uppercase tracking-tight">Caja</p>
+</a>
+<a class="flex flex-1 flex-col items-center justify-center gap-1 text-slate-400" href="#">
+<span class="material-symbols-outlined">bar_chart</span>
+<p class="text-[10px] font-medium uppercase tracking-tight">Reportes</p>
+</a>
+<a class="flex flex-1 flex-col items-center justify-center gap-1 text-slate-400" href="#">
+<span class="material-symbols-outlined">settings</span>
+<p class="text-[10px] font-medium uppercase tracking-tight">Ajustes</p>
+</a>
+</div>
+</div>
+</body></html>

@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+
+<html class="light" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Gestión de Tareas ERP</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#ec5b13",
+                        "background-light": "#f8f6f6",
+                        "background-dark": "#221610",
+                    },
+                    fontFamily: {
+                        "display": ["Public Sans"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 antialiased">
+<!-- Header / Navigation -->
+<header class="sticky top-0 z-30 w-full border-b border-primary/10 bg-white/80 dark:bg-background-dark/80 backdrop-blur-md">
+<div class="flex items-center justify-between px-4 py-3">
+<div class="flex items-center gap-3">
+<div class="flex size-10 items-center justify-center rounded-lg bg-primary text-white">
+<span class="material-symbols-outlined">assignment</span>
+</div>
+<div>
+<h1 class="text-lg font-bold leading-tight tracking-tight">ERP Proyectos</h1>
+<p class="text-xs text-slate-500 dark:text-slate-400">Panel de Control de Tareas</p>
+</div>
+</div>
+<div class="flex items-center gap-2">
+<button class="flex size-10 items-center justify-center rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300">
+<span class="material-symbols-outlined">search</span>
+</button>
+<button class="flex size-10 items-center justify-center rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<img class="size-10 rounded-full border-2 border-primary/20 object-cover" data-alt="User profile avatar of a project manager" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCfzB9JXl2C5PfKF8sPia8dAdpi0M7C44aHgbwITc6CJnovP4_o-GqVONnNPDEIpCBOnhhFgKVS4icGftqEXapZ4fEBVau4mrOpAMj_O7D-DvpxnUVHRYIJCZz4bHEPWwDPpPo3XWP4jXZV2-S-uPEa-2YnBR58J45lVQjCpR43gkQ3STskvLWobRbAORIRvBsVsfpDqSAahzljUaJ6Y02ZoZj7qWzyv0WkG9DFAu427UeafiWkhUmk8ifDGsNoSzPccazNb7G1_m0"/>
+</div>
+</div>
+<!-- Tabs -->
+<nav class="flex px-4 gap-6 border-t border-slate-100 dark:border-slate-800 overflow-x-auto scrollbar-hide">
+<a class="flex flex-col items-center justify-center border-b-2 border-primary text-primary px-1 py-3 whitespace-nowrap" href="#">
+<span class="text-sm font-bold tracking-wide">Todas</span>
+</a>
+<a class="flex flex-col items-center justify-center border-b-2 border-transparent text-slate-500 dark:text-slate-400 px-1 py-3 whitespace-nowrap" href="#">
+<span class="text-sm font-medium tracking-wide">Por Hacer</span>
+</a>
+<a class="flex flex-col items-center justify-center border-b-2 border-transparent text-slate-500 dark:text-slate-400 px-1 py-3 whitespace-nowrap" href="#">
+<span class="text-sm font-medium tracking-wide">En Progreso</span>
+</a>
+<a class="flex flex-col items-center justify-center border-b-2 border-transparent text-slate-500 dark:text-slate-400 px-1 py-3 whitespace-nowrap" href="#">
+<span class="text-sm font-medium tracking-wide">Completadas</span>
+</a>
+</nav>
+</header>
+<main class="p-4 pb-24 space-y-4 max-w-3xl mx-auto">
+<!-- Filters Section -->
+<section class="flex gap-2 overflow-x-auto pb-2">
+<button class="flex h-9 shrink-0 items-center justify-center gap-2 rounded-xl bg-primary/10 dark:bg-primary/20 px-4 text-primary border border-primary/20">
+<span class="material-symbols-outlined text-lg">filter_list</span>
+<span class="text-sm font-semibold">Prioridad</span>
+<span class="material-symbols-outlined text-sm">expand_more</span>
+</button>
+<button class="flex h-9 shrink-0 items-center justify-center gap-2 rounded-xl bg-white dark:bg-slate-800 px-4 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700">
+<span class="material-symbols-outlined text-lg">calendar_month</span>
+<span class="text-sm font-semibold">Vencimiento</span>
+<span class="material-symbols-outlined text-sm">expand_more</span>
+</button>
+<button class="flex h-9 shrink-0 items-center justify-center gap-2 rounded-xl bg-white dark:bg-slate-800 px-4 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700">
+<span class="material-symbols-outlined text-lg">group</span>
+<span class="text-sm font-semibold">Responsable</span>
+<span class="material-symbols-outlined text-sm">expand_more</span>
+</button>
+</section>
+<!-- Task List Items -->
+<div class="space-y-3">
+<!-- Task Item 1 -->
+<div class="group relative flex flex-col gap-3 rounded-xl bg-white dark:bg-slate-800 p-4 shadow-sm border border-slate-100 dark:border-slate-700/50 hover:border-primary/30 transition-colors">
+<div class="flex justify-between items-start">
+<div class="flex gap-3">
+<div class="mt-1">
+<input class="h-5 w-5 rounded border-slate-300 dark:border-slate-600 bg-transparent text-primary focus:ring-primary focus:ring-offset-0 transition-all cursor-pointer" type="checkbox"/>
+</div>
+<div>
+<h3 class="font-semibold text-slate-900 dark:text-slate-100">Actualizar Informe de Costos Q3</h3>
+<p class="text-sm text-slate-500 dark:text-slate-400 mt-1">ERP - Módulo Financiero</p>
+</div>
+</div>
+<span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-bold bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400">URGENTE</span>
+</div>
+<div class="flex items-center justify-between border-t border-slate-50 dark:border-slate-700/50 pt-3">
+<div class="flex -space-x-2">
+<img class="size-7 rounded-full border-2 border-white dark:border-slate-800" data-alt="Team member avatar 1" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA5h1MvEXKbDnhvgYz_ov6mvfGYaA911eTu9_acLzwlN1pqrSSfVJXIy-pE2UPExgc0S25rV3JleDQIufPjlBz6Ky-O2sCzyedexKoVulA1P4ihE-CFFa24757b35uNiZS4CbGpnhX9RxgT64GaRl7WATOf6IAGu9cto_6PsKpU4cHxZRFNWK0ogJXy4f8ltanuyGQ6SjNpzppTgRpEhJ6tgn8fQqV60FvEjEdCf1NjLwNPs6ibXxY9Az0S-u5wzIh7gcA_47ig390"/>
+<img class="size-7 rounded-full border-2 border-white dark:border-slate-800" data-alt="Team member avatar 2" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDPwoafd6HKsXy_STK4hpG7l4_cLeLfLisE0zRfJEkrGQzrxwR2kASrttTkchFdc5gBDR12kCCGOp_uK_MzDswMOT3_8pMPQhFPfquSQ8zUgXyBnNwpt08lMhZPbaI0wTI9kIdJfukJh5u1S9LA7nLfDfe3ZDzrNu4eKJjwOpzkFLIKcKvU9mUe_Mc8VqZ8r3qYZ--kyr8d1ETLJtALcBYCsuhiy9HPOI7n2CX2BqLFaPRLRkImjc1avg1zUZ3sFQfqFYvuBRZHQnA"/>
+</div>
+<div class="flex items-center gap-4">
+<div class="flex items-center gap-1 text-slate-400">
+<span class="material-symbols-outlined text-base">calendar_today</span>
+<span class="text-xs font-medium">25 Oct</span>
+</div>
+<div class="flex items-center gap-1 text-primary">
+<span class="material-symbols-outlined text-base">chat_bubble</span>
+<span class="text-xs font-bold">4</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Task Item 2 -->
+<div class="group relative flex flex-col gap-3 rounded-xl bg-white dark:bg-slate-800 p-4 shadow-sm border border-slate-100 dark:border-slate-700/50 hover:border-primary/30 transition-colors">
+<div class="flex justify-between items-start">
+<div class="flex gap-3">
+<div class="mt-1">
+<input class="h-5 w-5 rounded border-slate-300 dark:border-slate-600 bg-transparent text-primary focus:ring-primary focus:ring-offset-0 transition-all cursor-pointer" type="checkbox"/>
+</div>
+<div>
+<h3 class="font-semibold text-slate-900 dark:text-slate-100">Configuración Nómina Clientes</h3>
+<p class="text-sm text-slate-500 dark:text-slate-400 mt-1">Soporte Técnico - Nivel 2</p>
+</div>
+</div>
+<span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-bold bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400">MEDIA</span>
+</div>
+<div class="flex items-center justify-between border-t border-slate-50 dark:border-slate-700/50 pt-3">
+<div class="flex -space-x-2">
+<img class="size-7 rounded-full border-2 border-white dark:border-slate-800" data-alt="Team member avatar 3" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAF_U3qF7NLgRVk6Fuj-lxoj-gEMhaJPvpCiVr5R8VLo2uowlOfbXOiOefG-E010aNKXFntRCzTv2G5QdDD4JZB-Su-2RMAZ9Oi7oGmfL8GZqdD7Lv3Jt0WD6WeR4RaKm1zD33ePzPz_LOGWOylasdiVRh7QZWzOmc8sfIS_09PHCc48HiPu5ppQnR-f7qfzp0KAi0yS7QGttcH2OSL4wDFXA2QVscZLZApg4lGi8-ieuKLJqCuAnlSICg5M4fu6I5HcmaO61KM-S8"/>
+</div>
+<div class="flex items-center gap-4">
+<div class="flex items-center gap-1 text-slate-400">
+<span class="material-symbols-outlined text-base">calendar_today</span>
+<span class="text-xs font-medium">28 Oct</span>
+</div>
+<div class="flex items-center gap-1 text-slate-400">
+<span class="material-symbols-outlined text-base">chat_bubble</span>
+<span class="text-xs font-bold">0</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Task Item 3 (In Progress) -->
+<div class="group relative flex flex-col gap-3 rounded-xl bg-white dark:bg-slate-800 p-4 shadow-sm border-l-4 border-primary border-t border-r border-b border-primary/20">
+<div class="flex justify-between items-start">
+<div class="flex gap-3">
+<div class="mt-1">
+<input class="h-5 w-5 rounded border-slate-300 dark:border-slate-600 bg-transparent text-primary focus:ring-primary focus:ring-offset-0 transition-all cursor-pointer" type="checkbox"/>
+</div>
+<div>
+<h3 class="font-semibold text-slate-900 dark:text-slate-100">Revisión KPI Logística</h3>
+<p class="text-sm text-slate-500 dark:text-slate-400 mt-1">Módulo Inventarios</p>
+</div>
+</div>
+<span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-bold bg-orange-100 dark:bg-orange-900/30 text-primary uppercase">En Proceso</span>
+</div>
+<div class="flex items-center justify-between border-t border-slate-50 dark:border-slate-700/50 pt-3">
+<div class="flex -space-x-2">
+<img class="size-7 rounded-full border-2 border-white dark:border-slate-800" data-alt="Team member avatar 4" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDNlKNBHVTZ33n6k4x9puLDSxCN7o7ynMBTb63jZU2RN_8x2Lc3p5Z2vVYtX4Pc0UP-mR6J-xxM7LIszOMonRdsjP-2QAWw9oE3Ao2gxjgDEVH4UEcPlaWQ35koK7PmnWbx3HRfBGJaQqztcS3VvIwTKG3n6S4j9B6YMatiXlOKt0ZRdGH0ukmb7FBrg1yhgBgWq6UdOviWUSCwMmjj8VaVFqR5vE-OZBq2JlE8qL59CTL8vJV5hEea6ZILkw2jAMvZbLc2YmTZMh4"/>
+<img class="size-7 rounded-full border-2 border-white dark:border-slate-800" data-alt="Team member avatar 5" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB5fNgnTh7WwznSlEws87jQj-nu-oDF4vbF81q_0nyMN3EZPwYRf0q8g9hsgcjf0DFbbZAoW7KDgHeP5sLpmJib0-VhtCxAu7kydNPfYEXTSOmsSQEMURy1uWOy2Qbr_MWcePfPH9EA8KmOXn225SFBbiLPPAkinEVyhb7RA5qMJhAV03EDiFgQ2JUMMcTWDtmC5GerIFefsH46OEBDp4MelQhX1mebys58YXNSD-4ac--dZvdEQqPVNTGABgohsuIysY5traYV3lg"/>
+<img class="size-7 rounded-full border-2 border-white dark:border-slate-800" data-alt="Team member avatar 6" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAJe0acskpYbk6kDy-p3noopvOp7-syeznOxPzTlr_TEa48yA_EB7tkGLMpewuFyqjCeR-4OERSxJO3cExumbVjwV1XXrkbWN1W2pXjx5d2Ojxll0pUVubiF7bIzeDDdzOXYVbshbTHLCk3BE-Jp1zZXfXje9Y3c6rnIStu20WQ01jvOJeh80HyzGGhv58iAJ0Ca-hplgaffs4ZRab2zVB5-7tNRicIzTTkO0yWZYJ7nTu9PUWL3Lqsp7IZy0XOzhirMU0b0a6gGvw"/>
+</div>
+<div class="flex items-center gap-4">
+<div class="flex items-center gap-1 text-primary">
+<span class="material-symbols-outlined text-base">calendar_today</span>
+<span class="text-xs font-bold">Hoy</span>
+</div>
+<div class="flex items-center gap-1 text-primary">
+<span class="material-symbols-outlined text-base">chat_bubble</span>
+<span class="text-xs font-bold">12</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Task Item 4 (Done) -->
+<div class="group relative flex flex-col gap-3 rounded-xl bg-slate-50 dark:bg-slate-800/40 p-4 shadow-sm border border-slate-200 dark:border-slate-700/30 opacity-70">
+<div class="flex justify-between items-start">
+<div class="flex gap-3">
+<div class="mt-1">
+<input checked="" class="h-5 w-5 rounded border-slate-300 dark:border-slate-600 bg-primary/20 text-primary focus:ring-primary focus:ring-offset-0 transition-all cursor-pointer" type="checkbox"/>
+</div>
+<div>
+<h3 class="font-semibold text-slate-500 dark:text-slate-400 line-through">Cierre Mensual Septiembre</h3>
+<p class="text-sm text-slate-400 dark:text-slate-500 mt-1">Finanzas Generales</p>
+</div>
+</div>
+<span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-bold bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400 uppercase">Terminado</span>
+</div>
+<div class="flex items-center justify-between border-t border-slate-100 dark:border-slate-700/30 pt-3">
+<div class="flex -space-x-2">
+<img class="size-7 rounded-full border-2 border-white dark:border-slate-800" data-alt="Team member avatar 7" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAF64sldT1p79Ia1rfY19BqLXtGnAZYbMMl_g__sS4pJJWwVZsDu9g1lhMBNDIKxutCPE2nN-EtD4mKPTog1-RzonopzwJnu5TqxvhHe4orboa4UPfxNosnMAw9vCN1vmZNR0wJ8CqS029guVfPEgEITdVST6aJFLqOerOK82MjCfscsKwZSObvVPM358LL2wcCHCttb_p08FQuONOkJmQHAUQ1LDr1G4zGv5zYLdFFBxv-yPx6d5sn5UEFZ8GUW_Gwpg-Xzii3Ln4"/>
+</div>
+<div class="flex items-center gap-4">
+<div class="flex items-center gap-1 text-slate-400">
+<span class="material-symbols-outlined text-base">calendar_today</span>
+<span class="text-xs font-medium">30 Sep</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Floating Action Button -->
+<button class="fixed bottom-24 right-6 flex size-14 items-center justify-center rounded-full bg-primary text-white shadow-lg shadow-primary/40 active:scale-95 transition-transform">
+<span class="material-symbols-outlined text-3xl">add</span>
+</button>
+<!-- Bottom Navigation Bar -->
+<div class="fixed bottom-0 left-0 right-0 z-50 flex h-auto flex-col border-t border-slate-200 dark:border-slate-800 bg-white/95 dark:bg-background-dark/95 backdrop-blur-md">
+<div class="flex gap-2 px-4 pb-3 pt-2">
+<a class="flex flex-1 flex-col items-center justify-end gap-1 text-slate-400 dark:text-slate-500" href="#">
+<div class="flex h-8 items-center justify-center">
+<span class="material-symbols-outlined">dashboard</span>
+</div>
+<p class="text-[10px] font-bold leading-normal tracking-[0.05em] uppercase">Panel</p>
+</a>
+<a class="flex flex-1 flex-col items-center justify-end gap-1 text-primary" href="#">
+<div class="flex h-8 items-center justify-center">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1">list_alt</span>
+</div>
+<p class="text-[10px] font-bold leading-normal tracking-[0.05em] uppercase">Tareas</p>
+</a>
+<a class="flex flex-1 flex-col items-center justify-end gap-1 text-slate-400 dark:text-slate-500" href="#">
+<div class="flex h-8 items-center justify-center">
+<span class="material-symbols-outlined">folder</span>
+</div>
+<p class="text-[10px] font-bold leading-normal tracking-[0.05em] uppercase">Proyectos</p>
+</a>
+<a class="flex flex-1 flex-col items-center justify-end gap-1 text-slate-400 dark:text-slate-500" href="#">
+<div class="flex h-8 items-center justify-center">
+<span class="material-symbols-outlined">more_horiz</span>
+</div>
+<p class="text-[10px] font-bold leading-normal tracking-[0.05em] uppercase">Menú</p>
+</a>
+</div>
+</div>
+</body></html>

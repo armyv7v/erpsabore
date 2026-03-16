@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+
+<html lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#ec5b13",
+                        "background-light": "#f8f6f6",
+                        "background-dark": "#221610",
+                    },
+                    fontFamily: {
+                        "display": ["Public Sans"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<title>Configuración de Alertas IP</title>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 min-h-screen">
+<div class="max-w-5xl mx-auto p-4 sm:p-6 lg:p-8">
+<header class="flex items-center justify-between mb-8">
+<div class="flex items-center gap-4">
+<div class="flex size-10 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
+<span class="material-symbols-outlined">shield_lock</span>
+</div>
+<div>
+<h1 class="text-2xl font-bold tracking-tight">Seguridad de Red</h1>
+<p class="text-slate-500 dark:text-slate-400 text-sm">Gestiona las notificaciones de bloqueo de IP</p>
+</div>
+</div>
+<button class="bg-primary text-white px-6 py-2 rounded-lg font-medium hover:bg-primary/90 transition-colors">
+                Guardar Cambios
+            </button>
+</header>
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+<div class="lg:col-span-2 space-y-6">
+<section class="bg-white dark:bg-slate-900/50 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
+<div class="flex items-center justify-between gap-4">
+<div class="flex flex-col gap-1">
+<h2 class="text-lg font-bold">Estado de Alertas</h2>
+<p class="text-slate-500 dark:text-slate-400 text-sm">Activar o desactivar el envío automático de correos electrónicos ante detecciones de seguridad.</p>
+</div>
+<label class="relative flex h-[31px] w-[51px] cursor-pointer items-center rounded-full border-none bg-slate-200 dark:bg-slate-700 p-0.5 has-[:checked]:justify-end has-[:checked]:bg-primary transition-all">
+<div class="h-full w-[27px] rounded-full bg-white shadow-md"></div>
+<input checked="" class="invisible absolute" type="checkbox"/>
+</label>
+</div>
+</section>
+<section class="bg-white dark:bg-slate-900/50 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
+<h3 class="text-lg font-bold mb-4">Configuración de Envío</h3>
+<div class="space-y-6">
+<div>
+<label class="block text-sm font-medium mb-2">Destinatarios de Correo</label>
+<p class="text-xs text-slate-500 mb-3">Separa las direcciones de correo con comas.</p>
+<textarea class="w-full min-h-[100px] rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/50 p-4 text-sm focus:ring-primary focus:border-primary" placeholder="ejemplo@empresa.com, admin@empresa.com">seguridad@miempresa.com, it-admin@miempresa.com</textarea>
+</div>
+<div>
+<label class="block text-sm font-medium mb-3">Nivel de Criticidad</label>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+<label class="relative flex items-start gap-3 p-4 rounded-lg border border-primary bg-primary/5 cursor-pointer">
+<input checked="" class="mt-1 text-primary focus:ring-primary" name="crit" type="radio"/>
+<div>
+<span class="block font-bold text-sm">Solo Bloqueos Permanentes</span>
+<span class="block text-xs text-slate-500">Notificar solo cuando una IP sea baneada definitivamente.</span>
+</div>
+</label>
+<label class="relative flex items-start gap-3 p-4 rounded-lg border border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800/50 cursor-pointer">
+<input class="mt-1 text-primary focus:ring-primary" name="crit" type="radio"/>
+<div>
+<span class="block font-bold text-sm">Todos los Bloqueos</span>
+<span class="block text-xs text-slate-500">Notificar bloqueos temporales e intentos fallidos.</span>
+</div>
+</label>
+</div>
+</div>
+</div>
+</section>
+<section class="bg-white dark:bg-slate-900/50 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
+<div class="flex items-center gap-2 mb-4">
+<span class="material-symbols-outlined text-primary">mail</span>
+<h3 class="text-lg font-bold">Vista Previa del Correo</h3>
+</div>
+<div class="rounded-lg overflow-hidden border border-slate-100 dark:border-slate-800">
+<div class="bg-slate-100 dark:bg-slate-800 p-3 text-xs text-slate-500 flex justify-between">
+<span>De: ERP Security System &lt;no-reply@erp.com&gt;</span>
+<span>Hoy, 14:20</span>
+</div>
+<div class="bg-white dark:bg-slate-900 p-6 space-y-4">
+<div class="border-l-4 border-primary pl-4">
+<h4 class="font-bold text-primary text-base">ALERTA DE SEGURIDAD: IP BLOQUEADA</h4>
+<p class="text-xs text-slate-500">Se ha detectado una actividad sospechosa y se ha procedido al bloqueo.</p>
+</div>
+<div class="grid grid-cols-2 gap-y-3 text-sm">
+<div class="text-slate-500 uppercase text-[10px] font-bold tracking-wider">Dirección IP</div>
+<div class="font-mono">192.168.1.155</div>
+<div class="text-slate-500 uppercase text-[10px] font-bold tracking-wider">Ubicación Est.</div>
+<div>Madrid, España</div>
+<div class="text-slate-500 uppercase text-[10px] font-bold tracking-wider">Tipo de Bloqueo</div>
+<div class="text-red-500 font-bold">PERMANENTE</div>
+<div class="text-slate-500 uppercase text-[10px] font-bold tracking-wider">Motivo</div>
+<div>Múltiples intentos de login fallidos (Brute Force)</div>
+</div>
+<div class="pt-4 border-t border-slate-100 dark:border-slate-800 text-center">
+<button class="bg-slate-900 dark:bg-white dark:text-slate-900 text-white text-xs px-4 py-2 rounded font-medium">
+                                    Ver detalles en el Panel
+                                </button>
+</div>
+</div>
+</div>
+</section>
+</div>
+<aside class="space-y-6">
+<div class="bg-primary/5 border border-primary/20 p-6 rounded-xl">
+<h4 class="font-bold text-primary mb-2 flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">info</span>
+                        Información Adicional
+                    </h4>
+<p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+                        Las alertas se envían en tiempo real. Si nota un volumen inusual de correos, le recomendamos revisar la configuración de su firewall o ajustar el nivel de criticidad.
+                    </p>
+</div>
+<div class="bg-white dark:bg-slate-900/50 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
+<h4 class="font-bold mb-4">Últimos Bloqueos</h4>
+<div class="space-y-4">
+<div class="flex items-center justify-between text-sm">
+<div class="flex flex-col">
+<span class="font-mono text-xs">45.12.88.3</span>
+<span class="text-[10px] text-slate-500">Hace 5 min</span>
+</div>
+<span class="text-red-500 font-bold text-[10px] bg-red-500/10 px-2 py-0.5 rounded">Permanente</span>
+</div>
+<div class="flex items-center justify-between text-sm">
+<div class="flex flex-col">
+<span class="font-mono text-xs">102.33.1.25</span>
+<span class="text-[10px] text-slate-500">Hace 12 min</span>
+</div>
+<span class="text-amber-500 font-bold text-[10px] bg-amber-500/10 px-2 py-0.5 rounded">Temporal</span>
+</div>
+<div class="flex items-center justify-between text-sm">
+<div class="flex flex-col">
+<span class="font-mono text-xs">88.204.1.12</span>
+<span class="text-[10px] text-slate-500">Hace 1 hora</span>
+</div>
+<span class="text-red-500 font-bold text-[10px] bg-red-500/10 px-2 py-0.5 rounded">Permanente</span>
+</div>
+</div>
+<button class="w-full mt-6 text-xs text-primary font-bold hover:underline">
+                        Ver todo el historial
+                    </button>
+</div>
+</aside>
+</div>
+</div>
+</body></html>

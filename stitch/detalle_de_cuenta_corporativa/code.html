@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Corporate Account Detail - CRM</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#ec5b13",
+                        "background-light": "#f8f6f6",
+                        "background-dark": "#221610",
+                    },
+                    fontFamily: {
+                        "display": ["Public Sans", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="font-display bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 antialiased">
+<div class="relative flex min-h-screen flex-col overflow-x-hidden">
+<header class="sticky top-0 z-10 flex items-center bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-md p-4 border-b border-slate-200 dark:border-slate-800 justify-between">
+<div class="flex items-center gap-3">
+<button class="flex h-10 w-10 items-center justify-center rounded-full hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors">
+<span class="material-symbols-outlined">arrow_back</span>
+</button>
+<div>
+<h1 class="text-lg font-bold leading-tight">Acme Global Tech</h1>
+<p class="text-xs text-slate-500 dark:text-slate-400">Account ID: AC-98442</p>
+</div>
+</div>
+<div class="flex gap-2">
+<button class="flex h-10 w-10 items-center justify-center rounded-full hover:bg-slate-200 dark:hover:bg-slate-800">
+<span class="material-symbols-outlined">edit</span>
+</button>
+<button class="flex h-10 w-10 items-center justify-center rounded-full hover:bg-slate-200 dark:hover:bg-slate-800">
+<span class="material-symbols-outlined">more_vert</span>
+</button>
+</div>
+</header>
+<main class="flex-1 pb-24">
+<section class="p-4 @container">
+<div class="flex flex-col gap-6 md:flex-row md:items-start">
+<div class="h-24 w-24 shrink-0 rounded-xl bg-primary/10 flex items-center justify-center border border-primary/20">
+<span class="material-symbols-outlined text-primary text-4xl">domain</span>
+</div>
+<div class="flex flex-col gap-1 flex-1">
+<div class="flex items-center gap-2">
+<h2 class="text-2xl font-bold tracking-tight">Acme Global Technologies</h2>
+<span class="bg-primary/20 text-primary text-[10px] uppercase font-bold px-2 py-0.5 rounded-full">Strategic Partner</span>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-y-1 gap-x-8 mt-2">
+<div class="flex items-center gap-2 text-slate-600 dark:text-slate-400">
+<span class="material-symbols-outlined text-sm">fingerprint</span>
+<span class="text-sm">RUT: 76.123.456-K</span>
+</div>
+<div class="flex items-center gap-2 text-slate-600 dark:text-slate-400">
+<span class="material-symbols-outlined text-sm">work</span>
+<span class="text-sm">Giro: Software &amp; Cloud Infrastructure</span>
+</div>
+<div class="flex items-center gap-2 text-slate-600 dark:text-slate-400">
+<span class="material-symbols-outlined text-sm">location_on</span>
+<span class="text-sm">Santiago, Chile</span>
+</div>
+<div class="flex items-center gap-2 text-slate-600 dark:text-slate-400">
+<span class="material-symbols-outlined text-sm">language</span>
+<span class="text-sm">www.acme-global.tech</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section class="px-4 py-2 grid grid-cols-2 gap-3">
+<div class="flex flex-col gap-1 rounded-xl p-4 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm">
+<p class="text-slate-500 dark:text-slate-400 text-xs font-medium uppercase tracking-wider">Active Deals Value</p>
+<div class="flex items-baseline gap-2">
+<p class="text-2xl font-bold text-slate-900 dark:text-white">$450,000</p>
+<p class="text-emerald-600 text-xs font-bold">+12%</p>
+</div>
+</div>
+<div class="flex flex-col gap-1 rounded-xl p-4 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm">
+<p class="text-slate-500 dark:text-slate-400 text-xs font-medium uppercase tracking-wider">Relationship Score</p>
+<div class="flex items-baseline gap-2">
+<p class="text-2xl font-bold text-slate-900 dark:text-white">92%</p>
+<p class="text-emerald-600 text-xs font-bold">Stable</p>
+</div>
+</div>
+</section>
+<section class="p-4">
+<div class="flex items-center justify-between mb-4">
+<h3 class="text-lg font-bold">Quick Actions</h3>
+</div>
+<div class="grid grid-cols-4 gap-2">
+<button class="flex flex-col items-center gap-2 rounded-xl py-3 hover:bg-primary/5 transition-colors group">
+<div class="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-all">
+<span class="material-symbols-outlined">event</span>
+</div>
+<span class="text-xs font-medium">Meeting</span>
+</button>
+<button class="flex flex-col items-center gap-2 rounded-xl py-3 hover:bg-primary/5 transition-colors group">
+<div class="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-all">
+<span class="material-symbols-outlined">call</span>
+</div>
+<span class="text-xs font-medium">Call</span>
+</button>
+<button class="flex flex-col items-center gap-2 rounded-xl py-3 hover:bg-primary/5 transition-colors group">
+<div class="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-all">
+<span class="material-symbols-outlined">mail</span>
+</div>
+<span class="text-xs font-medium">Email</span>
+</button>
+<button class="flex flex-col items-center gap-2 rounded-xl py-3 hover:bg-primary/5 transition-colors group">
+<div class="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-all">
+<span class="material-symbols-outlined">description</span>
+</div>
+<span class="text-xs font-medium">Quote</span>
+</button>
+</div>
+</section>
+<section class="p-4">
+<div class="flex items-center justify-between mb-4">
+<h3 class="text-lg font-bold">Key Contacts</h3>
+<button class="text-primary text-sm font-bold">Add Contact</button>
+</div>
+<div class="flex flex-col gap-3">
+<div class="flex items-center gap-4 p-4 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl">
+<div class="h-12 w-12 rounded-full bg-slate-200 dark:bg-slate-800 overflow-hidden">
+<img class="h-full w-full object-cover" data-alt="Professional headshot of a male executive" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCLqii-AfSm7218g_iA9h5ke_dkr5BGIOvDx9UOAnBUiH5LWjda1Khkkkukmgob2Dk03ZohYR3fzSPh1Lohl3jtoHzsh9gt49TCP4NCOuF62NomxxVZXz2xhsdQfu-NDiuhBvqSu0LOEtnelWWiNsqz7xskBugkJ65OK-czCJtndIqK91Zi9hmi7htnNOjZbPB3fso6X6V5YaqLeJlOjR5dkiNU_Ru6FisHHuLtedURdbMZLSbJpZqtHqHEgF0rbEPXfwVNAhmmKLk"/>
+</div>
+<div class="flex-1">
+<div class="flex items-center gap-2">
+<p class="font-bold text-sm">Carlos Rodriguez</p>
+<span class="bg-blue-100 dark:bg-blue-900/30 text-blue-600 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase">Decision Maker</span>
+</div>
+<p class="text-xs text-slate-500 dark:text-slate-400">Chief Technology Officer</p>
+</div>
+<button class="text-slate-400 hover:text-primary">
+<span class="material-symbols-outlined">chat</span>
+</button>
+</div>
+<div class="flex items-center gap-4 p-4 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl">
+<div class="h-12 w-12 rounded-full bg-slate-200 dark:bg-slate-800 overflow-hidden">
+<img class="h-full w-full object-cover" data-alt="Professional headshot of a female manager" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA2bO8tEXSgi6dFJvx_no1wSUIkoIIuKec8NNwXjttpRCdml3FDWBDEttVW7TCtzUgqTHVrEq0Wqea85unrJlqdQQQkbq833Q1E_JejP_CGzcz-DLWmX3-TsvqwtVWbVRFz3dVrsA0FRb9pZ4kWWvLebkuPIFKgtVrM8BZPyGkdqaVTYS1Znel7rf521d60Hw-R-GOjEhiDJ09untrD745x2iRdMd97hoZKd3DHdCBo67cht7fk_xBV6wgpLtmJZ8WE6YlWo44Djy8"/>
+</div>
+<div class="flex-1">
+<div class="flex items-center gap-2">
+<p class="font-bold text-sm">Elena Valdes</p>
+<span class="bg-purple-100 dark:bg-purple-900/30 text-purple-600 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase">Influencer</span>
+</div>
+<p class="text-xs text-slate-500 dark:text-slate-400">IT Infrastructure Manager</p>
+</div>
+<button class="text-slate-400 hover:text-primary">
+<span class="material-symbols-outlined">chat</span>
+</button>
+</div>
+<div class="flex items-center gap-4 p-4 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl">
+<div class="h-12 w-12 rounded-full bg-slate-200 dark:bg-slate-800 overflow-hidden">
+<img class="h-full w-full object-cover" data-alt="Professional headshot of a male director" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDgk4Q4zEdf1BeZq2o_lKJVQzwQKgVznFYXVRU0g7rlkTj9-IPFFFF0ZmldMtNSXKNF1bVxdoOpIrFuGHPHmtG4BTBf-0CrHr30rDS8BrOo1BYvqOH4GALLp08W0zpgLKsZKANZFwnedARMyu9hsoQtCxhZLiy2n9Z7Hb1T02lmRH2YkFQmAWnpZnMEnN0-llb8E6EN861ccKzFXAwN4say7LDCfVn9iw5-jUiUIpA9nPJwyrum9AecGK_5T7gIptCe9sWsUdutOxo"/>
+</div>
+<div class="flex-1">
+<div class="flex items-center gap-2">
+<p class="font-bold text-sm">Mark Thompson</p>
+<span class="bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase">User</span>
+</div>
+<p class="text-xs text-slate-500 dark:text-slate-400">Head of Operations</p>
+</div>
+<button class="text-slate-400 hover:text-primary">
+<span class="material-symbols-outlined">chat</span>
+</button>
+</div>
+</div>
+</section>
+</main>
+<nav class="fixed bottom-0 left-0 right-0 z-20 flex bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 px-4 pb-6 pt-2">
+<a class="flex flex-1 flex-col items-center justify-center gap-1 text-primary" href="#">
+<span class="material-symbols-outlined">business</span>
+<p class="text-[10px] font-bold uppercase tracking-wider">Account</p>
+</a>
+<a class="flex flex-1 flex-col items-center justify-center gap-1 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200" href="#">
+<span class="material-symbols-outlined">handshake</span>
+<p class="text-[10px] font-bold uppercase tracking-wider">Deals</p>
+</a>
+<a class="flex flex-1 flex-col items-center justify-center gap-1 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200" href="#">
+<span class="material-symbols-outlined">checklist</span>
+<p class="text-[10px] font-bold uppercase tracking-wider">Tasks</p>
+</a>
+<a class="flex flex-1 flex-col items-center justify-center gap-1 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200" href="#">
+<span class="material-symbols-outlined">monitoring</span>
+<p class="text-[10px] font-bold uppercase tracking-wider">Analytics</p>
+</a>
+<a class="flex flex-1 flex-col items-center justify-center gap-1 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200" href="#">
+<span class="material-symbols-outlined">more_horiz</span>
+<p class="text-[10px] font-bold uppercase tracking-wider">Menu</p>
+</a>
+</nav>
+</div>
+</body></html>

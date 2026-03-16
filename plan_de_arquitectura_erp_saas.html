@@ -1,0 +1,21 @@
+# Propuesta Técnica: ERP SaaS para PYME Chilena
+
+## 1. Arquitectura Recomendada
+*   **Frontend & API:** Next.js (App Router)
+*   **Lenguaje:** TypeScript
+*   **Estilos:** Tailwind CSS + Shadcn/UI
+*   **Base de Datos:** PostgreSQL (Alojado en Supabase o Neon - Nivel Gratuito)
+*   **Autenticación:** NextAuth.js o Supabase Auth
+*   **Despliegue:** Vercel (Hobby Plan) o Cloudflare Pages
+
+## 2. Estructura de Módulos (Estilo Odoo)
+1.  **Dashboard:** Resumen financiero y métricas clave.
+2.  **Ventas/Facturación:** Integración con formato de factura chilena (DTE).
+3.  **Inventario:** Control de existencias y bodegas.
+4.  **CRM:** Gestión de clientes y prospectos.
+5.  **Configuración:** Datos de la empresa (RUT, Giro, etc.).
+
+## 3. Ventajas del Stack
+*   **Costo $0 inicial:** Todos los servicios mencionados tienen capas gratuitas robustas.
+*   **Escalabilidad:** Puedes pasar a planes pagos solo cuando el tráfico crezca.
+*   **Velocidad de desarrollo:** Uso de componentes pre-construidos.

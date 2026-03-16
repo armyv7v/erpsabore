@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+
+<html lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Catálogo Digital de Ventas</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#ec5b13",
+                        "background-light": "#f8f6f6",
+                        "background-dark": "#221610",
+                    },
+                    fontFamily: {
+                        "display": ["Public Sans"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 antialiased">
+<div class="relative flex min-h-screen w-full flex-col overflow-x-hidden">
+<header class="sticky top-0 z-50 flex items-center bg-white/80 dark:bg-background-dark/80 backdrop-blur-md p-4 justify-between border-b border-slate-200 dark:border-slate-800">
+<div class="flex items-center gap-3">
+<div class="text-primary flex size-10 items-center justify-center rounded-lg bg-primary/10">
+<span class="material-symbols-outlined">inventory_2</span>
+</div>
+<h1 class="text-slate-900 dark:text-slate-100 text-xl font-bold leading-tight tracking-tight">Catálogo Digital</h1>
+</div>
+<div class="flex items-center gap-2">
+<button class="relative flex size-12 cursor-pointer items-center justify-center rounded-full bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300">
+<span class="material-symbols-outlined">shopping_cart</span>
+<span class="absolute top-2 right-2 flex h-4 w-4 items-center justify-center rounded-full bg-primary text-[10px] font-bold text-white">3</span>
+</button>
+</div>
+</header>
+<main class="flex-1 pb-24">
+<div class="px-4 py-4">
+<label class="flex flex-col w-full group">
+<div class="flex w-full items-stretch rounded-xl h-12 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 focus-within:border-primary transition-colors shadow-sm">
+<div class="text-slate-400 flex items-center justify-center pl-4">
+<span class="material-symbols-outlined">search</span>
+</div>
+<input class="form-input flex w-full border-none bg-transparent focus:ring-0 px-3 text-base placeholder:text-slate-400 dark:text-slate-100" placeholder="Buscar por nombre o SKU..." value=""/>
+<button class="px-4 text-primary font-medium">Filtrar</button>
+</div>
+</label>
+</div>
+<div class="flex gap-2 p-4 overflow-x-auto no-scrollbar pt-0">
+<button class="flex h-9 shrink-0 items-center justify-center px-4 rounded-full bg-primary text-white text-sm font-semibold shadow-md shadow-primary/20">Todos</button>
+<button class="flex h-9 shrink-0 items-center justify-center px-4 rounded-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 text-sm font-medium">Electrónica</button>
+<button class="flex h-9 shrink-0 items-center justify-center px-4 rounded-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 text-sm font-medium">Ferretería</button>
+<button class="flex h-9 shrink-0 items-center justify-center px-4 rounded-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 text-sm font-medium">Ofertas</button>
+</div>
+<div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 p-4">
+<!-- Product Card 1 -->
+<div class="flex flex-col bg-white dark:bg-slate-900 rounded-xl overflow-hidden border border-slate-200 dark:border-slate-800 shadow-sm">
+<div class="relative w-full aspect-square bg-slate-100 dark:bg-slate-800 overflow-hidden">
+<div class="absolute inset-0 bg-center bg-cover" data-alt="High-end smartphone displayed on a clean white surface" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBjN_z7OSMr7ZkmLQvd2z4eewGz0GVp1KUGLN-n3QntVe27t_2fKQ8e3hn_asyPq98vka3b6U54fl8tqvNNXFuhv2a0YFTFT9yQJARlNncwf5q9cSgSsxadlUhJM63z2n7AlN-Uxqw0O5xlthp5JAwqEKeSDUjFyVSj827Nn1fxKOnUNVEs6Ll8kPkqCkoYo0s0twyEmyMq6lWFKkt2FVgPEXBPWvAtuY-2jAYo0xatzqrgUl_cavBJsDLXJ48UDBniQy07V3hYwWw");'></div>
+<div class="absolute top-2 right-2 px-2 py-1 rounded bg-green-500/90 text-[10px] font-bold text-white uppercase tracking-wider">Stock: 12</div>
+</div>
+<div class="p-3 flex flex-col flex-1">
+<p class="text-slate-500 dark:text-slate-400 text-[10px] font-bold uppercase tracking-widest">ELEC-001</p>
+<h3 class="text-slate-900 dark:text-slate-100 text-sm font-bold leading-tight mt-1 mb-2 line-clamp-1">Smartphone X1 Pro</h3>
+<p class="text-primary text-lg font-bold leading-none mt-auto">$499.990 <span class="text-[10px] text-slate-400 font-normal">CLP</span></p>
+<button class="mt-3 w-full bg-primary hover:bg-primary/90 text-white py-2.5 rounded-lg text-xs font-bold flex items-center justify-center gap-1 transition-all active:scale-95">
+<span class="material-symbols-outlined text-sm">add_shopping_cart</span>
+                            AÑADIR
+                        </button>
+</div>
+</div>
+<!-- Product Card 2 -->
+<div class="flex flex-col bg-white dark:bg-slate-900 rounded-xl overflow-hidden border border-slate-200 dark:border-slate-800 shadow-sm opacity-80">
+<div class="relative w-full aspect-square bg-slate-100 dark:bg-slate-800 overflow-hidden">
+<div class="absolute inset-0 bg-center bg-cover" data-alt="Professional laptop pro 15 version on a desk" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBOErbYgWdJp1hd-9eGxyOh19kVb1Wciv6tSviLUkKOb0KnzY9Dcfa5y-qyOYwKNx9hf2m_3aTy0ARdPSI3dL76fEl23amShoAdR3-S34RxHdyMB9XCzGxkvVJ-y_VF48YqziWk8AThSrqsXsrC3oA2RJqOKS-KiB-scxqhSntxHGi3oEs3TdM3xSUpeXGnGd4wAHjZDKVIn2Um5tG7zDO6LMvJMDb-ynqwuE8R3jdp124T-bmKChd2GsklyXGozMJrBBrXBhGKO_g");'></div>
+<div class="absolute top-2 right-2 px-2 py-1 rounded bg-orange-500/90 text-[10px] font-bold text-white uppercase tracking-wider">Stock: 3</div>
+</div>
+<div class="p-3 flex flex-col flex-1">
+<p class="text-slate-500 dark:text-slate-400 text-[10px] font-bold uppercase tracking-widest">COMP-042</p>
+<h3 class="text-slate-900 dark:text-slate-100 text-sm font-bold leading-tight mt-1 mb-2 line-clamp-1">Laptop Pro 15" M2</h3>
+<p class="text-primary text-lg font-bold leading-none mt-auto">$850.000 <span class="text-[10px] text-slate-400 font-normal">CLP</span></p>
+<button class="mt-3 w-full bg-primary hover:bg-primary/90 text-white py-2.5 rounded-lg text-xs font-bold flex items-center justify-center gap-1 transition-all">
+<span class="material-symbols-outlined text-sm">add_shopping_cart</span>
+                            AÑADIR
+                        </button>
+</div>
+</div>
+<!-- Product Card 3 -->
+<div class="flex flex-col bg-white dark:bg-slate-900 rounded-xl overflow-hidden border border-slate-200 dark:border-slate-800 shadow-sm">
+<div class="relative w-full aspect-square bg-slate-100 dark:bg-slate-800 overflow-hidden">
+<div class="absolute inset-0 bg-center bg-cover" data-alt="Modern wireless bluetooth headphones product photography" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBOp9CBRPUyHa6OLL4DGDirHrcXVfQXHBon3cwE9iW7m_5NQjLdPRfHx1Zq_WIwtrXGg-JxfH0YCulObpwvGlwj_T8AA2iRwrlvgrdyKD6TVGsWvIiF8iIP8Obmg0g0PaYi2f4BIKvJmr-LydYDXPH2QsfMWmjDwVdwFPLuhXyHHQmnB3JKqxtHddrRtkESXq7p_Vtq8Zx6EiYxeMppO2wRvI_Ay172bbHcPSyJyFdFiC94y5FaCL3aw9qnjezyJDq-svdH-13HWdk");'></div>
+<div class="absolute top-2 right-2 px-2 py-1 rounded bg-green-500/90 text-[10px] font-bold text-white uppercase tracking-wider">Stock: 48</div>
+</div>
+<div class="p-3 flex flex-col flex-1">
+<p class="text-slate-500 dark:text-slate-400 text-[10px] font-bold uppercase tracking-widest">AUDI-099</p>
+<h3 class="text-slate-900 dark:text-slate-100 text-sm font-bold leading-tight mt-1 mb-2 line-clamp-1">Audífonos BT Noise</h3>
+<p class="text-primary text-lg font-bold leading-none mt-auto">$45.000 <span class="text-[10px] text-slate-400 font-normal">CLP</span></p>
+<button class="mt-3 w-full bg-primary hover:bg-primary/90 text-white py-2.5 rounded-lg text-xs font-bold flex items-center justify-center gap-1 transition-all active:scale-95">
+<span class="material-symbols-outlined text-sm">add_shopping_cart</span>
+                            AÑADIR
+                        </button>
+</div>
+</div>
+<!-- Product Card 4 -->
+<div class="flex flex-col bg-white dark:bg-slate-900 rounded-xl overflow-hidden border border-slate-200 dark:border-slate-800 shadow-sm">
+<div class="relative w-full aspect-square bg-slate-100 dark:bg-slate-800 overflow-hidden">
+<div class="absolute inset-0 bg-center bg-cover" data-alt="Professional 4K camera with lens kit" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBb-agoEE2EeYXu3WbG4TwKkd8HEltKk7i7wnegZGca0w1glvVLJlZpa09ow0W9beYe5XGXOJm30TxfoTR7D3IGsrAIq60B_dAaPV_IU67hZ7MqmwzNxG8IwT9IdDYjvzrsMIj9U3VrdH7zQIvkCpyLMZ_TYWJ_1SDmriQt7OlijLaNHztcRpjTiPJxlKW0cm8QqnlhGhgWHbyY9fhnhdqduzbgbhO9JSsqErTiymGub8poVI1yIIgRm1rgRHPpKPiUaHeVzmfzfto");'></div>
+<div class="absolute top-2 right-2 px-2 py-1 rounded bg-green-500/90 text-[10px] font-bold text-white uppercase tracking-wider">Stock: 8</div>
+</div>
+<div class="p-3 flex flex-col flex-1">
+<p class="text-slate-500 dark:text-slate-400 text-[10px] font-bold uppercase tracking-widest">FOTO-015</p>
+<h3 class="text-slate-900 dark:text-slate-100 text-sm font-bold leading-tight mt-1 mb-2 line-clamp-1">Cámara Pro 4K Kit</h3>
+<p class="text-primary text-lg font-bold leading-none mt-auto">$320.000 <span class="text-[10px] text-slate-400 font-normal">CLP</span></p>
+<button class="mt-3 w-full bg-primary hover:bg-primary/90 text-white py-2.5 rounded-lg text-xs font-bold flex items-center justify-center gap-1 transition-all active:scale-95">
+<span class="material-symbols-outlined text-sm">add_shopping_cart</span>
+                            AÑADIR
+                        </button>
+</div>
+</div>
+<!-- Product Card 5 -->
+<div class="flex flex-col bg-white dark:bg-slate-900 rounded-xl overflow-hidden border border-slate-200 dark:border-slate-800 shadow-sm">
+<div class="relative w-full aspect-square bg-slate-100 dark:bg-slate-800 overflow-hidden">
+<div class="absolute inset-0 bg-center bg-cover" data-alt="Powerful cordless impact drill for construction" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBNPvF48B_zZAJDeJDb5tTwgKVaiANM6MudPCjrjRVBIfm9BkDKQQCom6sgHKYQQM_BC1WvybUrqB_AmQ55uoxjPajIQS_4da-DxjZzuaI5nuGLj0zG9ufDDtWqi8tME0BGuKQKgGA3Ilz_Men_WkrtvSc4MtFmITs07JIC00szRr7PQywtWuTxtyhXAEFyeUBEAFURVEmsZKqRiYOPhI_ciMfr0-kl1s9wLi2O76cnKNjuRq_kmVJSz8cMJx9BaBXZYZhm9zGqFBE");'></div>
+<div class="absolute top-2 right-2 px-2 py-1 rounded bg-green-500/90 text-[10px] font-bold text-white uppercase tracking-wider">Stock: 21</div>
+</div>
+<div class="p-3 flex flex-col flex-1">
+<p class="text-slate-500 dark:text-slate-400 text-[10px] font-bold uppercase tracking-widest">HERR-221</p>
+<h3 class="text-slate-900 dark:text-slate-100 text-sm font-bold leading-tight mt-1 mb-2 line-clamp-1">Taladro Impacto 20V</h3>
+<p class="text-primary text-lg font-bold leading-none mt-auto">$125.990 <span class="text-[10px] text-slate-400 font-normal">CLP</span></p>
+<button class="mt-3 w-full bg-primary hover:bg-primary/90 text-white py-2.5 rounded-lg text-xs font-bold flex items-center justify-center gap-1 transition-all active:scale-95">
+<span class="material-symbols-outlined text-sm">add_shopping_cart</span>
+                            AÑADIR
+                        </button>
+</div>
+</div>
+<!-- Product Card 6 -->
+<div class="flex flex-col bg-white dark:bg-slate-900 rounded-xl overflow-hidden border border-slate-200 dark:border-slate-800 shadow-sm grayscale opacity-60">
+<div class="relative w-full aspect-square bg-slate-100 dark:bg-slate-800 overflow-hidden">
+<div class="absolute inset-0 bg-center bg-cover" data-alt="Large smart TV with ultra thin bezels" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBRtOPbK0fgAgKk7pSef-nD-qX-SXMYsEMjVwYFmoiNfGs-38LomvUeeMyYnWDh6Gb6paAxBfmcBfZ6JFUfLKMI-rs67177cZuHmRJj1AyZPZId0-klGgd1x9cwFsjkzTv7z-ObuLbEdihk2GYlKENxd5qPWxoDfkH6ngLNPgNPOnJ8xdiKRFLQS47MczntWz0s8YBzxIbFLkVaxpkRgalUB83FhClVTT5opQryxFONTIMvb63x6zlfeLZvnWTMt_ZPYxRf2xJmPpQ");'></div>
+<div class="absolute top-2 right-2 px-2 py-1 rounded bg-red-500/90 text-[10px] font-bold text-white uppercase tracking-wider">Sin Stock</div>
+</div>
+<div class="p-3 flex flex-col flex-1">
+<p class="text-slate-500 dark:text-slate-400 text-[10px] font-bold uppercase tracking-widest">ELEC-088</p>
+<h3 class="text-slate-900 dark:text-slate-100 text-sm font-bold leading-tight mt-1 mb-2 line-clamp-1">Smart TV 65" UHD</h3>
+<p class="text-slate-400 text-lg font-bold leading-none mt-auto">$549.990 <span class="text-[10px] text-slate-400 font-normal">CLP</span></p>
+<button class="mt-3 w-full bg-slate-300 dark:bg-slate-700 text-slate-500 py-2.5 rounded-lg text-xs font-bold flex items-center justify-center gap-1 cursor-not-allowed" disabled="">
+<span class="material-symbols-outlined text-sm">block</span>
+                            AGOTADO
+                        </button>
+</div>
+</div>
+</div>
+</main>
+<!-- Bottom Navigation Bar -->
+<nav class="fixed bottom-0 left-0 right-0 z-50 bg-white dark:bg-background-dark border-t border-slate-200 dark:border-slate-800 px-4 pb-6 pt-2 flex items-center justify-between shadow-[0_-4px_10px_rgba(0,0,0,0.05)]">
+<a class="flex flex-1 flex-col items-center justify-center gap-1 text-primary" href="#">
+<span class="material-symbols-outlined text-[24px]">grid_view</span>
+<p class="text-[10px] font-bold uppercase tracking-tight">Catálogo</p>
+</a>
+<a class="flex flex-1 flex-col items-center justify-center gap-1 text-slate-400 dark:text-slate-500" href="#">
+<span class="material-symbols-outlined text-[24px]">receipt_long</span>
+<p class="text-[10px] font-medium uppercase tracking-tight">Ventas</p>
+</a>
+<a class="flex flex-1 flex-col items-center justify-center gap-1 text-slate-400 dark:text-slate-500" href="#">
+<span class="material-symbols-outlined text-[24px]">group</span>
+<p class="text-[10px] font-medium uppercase tracking-tight">Clientes</p>
+</a>
+<a class="flex flex-1 flex-col items-center justify-center gap-1 text-slate-400 dark:text-slate-500" href="#">
+<span class="material-symbols-outlined text-[24px]">person_outline</span>
+<p class="text-[10px] font-medium uppercase tracking-tight">Perfil</p>
+</a>
+</nav>
+</div>
+</body></html>

@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+
+<html lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#ec5b13",
+                        "background-light": "#f8f6f6",
+                        "background-dark": "#221610",
+                    },
+                    fontFamily: {
+                        "display": ["Public Sans"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<title>Gestión de Nómina - ERP Chile</title>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 min-h-screen">
+<div class="relative flex min-h-screen flex-col">
+<!-- Header -->
+<header class="sticky top-0 z-10 border-b border-primary/10 bg-white/80 dark:bg-background-dark/80 backdrop-blur-md px-4 py-3">
+<div class="flex items-center justify-between max-w-7xl mx-auto">
+<div class="flex items-center gap-3">
+<div class="bg-primary p-2 rounded-lg text-white">
+<span class="material-symbols-outlined block">payments</span>
+</div>
+<div>
+<h1 class="text-lg font-bold leading-tight">Gestión de Nómina</h1>
+<p class="text-xs text-slate-500 dark:text-slate-400">Periodo: Septiembre 2024</p>
+</div>
+</div>
+<div class="flex gap-2">
+<button class="p-2 text-slate-600 dark:text-slate-300 hover:bg-primary/10 rounded-full transition-colors">
+<span class="material-symbols-outlined">search</span>
+</button>
+<button class="p-2 text-slate-600 dark:text-slate-300 hover:bg-primary/10 rounded-full transition-colors">
+<span class="material-symbols-outlined">filter_list</span>
+</button>
+</div>
+</div>
+</header>
+<!-- KPI Summary -->
+<div class="max-w-7xl mx-auto w-full p-4">
+<div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+<div class="flex flex-col gap-2 rounded-xl p-5 border border-primary/10 bg-white dark:bg-background-dark shadow-sm">
+<div class="flex items-center justify-between">
+<p class="text-slate-500 dark:text-slate-400 text-sm font-medium">Total Empleados</p>
+<span class="material-symbols-outlined text-primary/60 text-xl">group</span>
+</div>
+<p class="text-2xl font-bold">156</p>
+</div>
+<div class="flex flex-col gap-2 rounded-xl p-5 border border-primary/10 bg-white dark:bg-background-dark shadow-sm">
+<div class="flex items-center justify-between">
+<p class="text-slate-500 dark:text-slate-400 text-sm font-medium">Pendientes Firma</p>
+<span class="material-symbols-outlined text-amber-500/60 text-xl">pending_actions</span>
+</div>
+<p class="text-2xl font-bold">42</p>
+</div>
+<div class="flex flex-col gap-2 rounded-xl p-5 border border-primary/10 bg-white dark:bg-background-dark shadow-sm">
+<div class="flex items-center justify-between">
+<p class="text-slate-500 dark:text-slate-400 text-sm font-medium">Completados</p>
+<span class="material-symbols-outlined text-emerald-500/60 text-xl">verified</span>
+</div>
+<p class="text-2xl font-bold">114</p>
+</div>
+</div>
+</div>
+<!-- Call to Action Section -->
+<div class="px-4 py-2 max-w-7xl mx-auto w-full">
+<div class="bg-primary/5 border border-primary/20 rounded-xl p-4 flex flex-col sm:flex-row items-center justify-between gap-4">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary text-3xl">draw</span>
+<div>
+<h3 class="font-bold text-slate-800 dark:text-white">Firma Electrónica Masiva</h3>
+<p class="text-sm text-slate-600 dark:text-slate-400">Hay 38 liquidaciones generadas listas para envío.</p>
+</div>
+</div>
+<button class="w-full sm:w-auto bg-primary hover:bg-primary/90 text-white font-bold py-3 px-6 rounded-xl flex items-center justify-center gap-2 shadow-lg shadow-primary/20 transition-all active:scale-95">
+<span class="material-symbols-outlined">send</span>
+                    Enviar a Firma Masiva
+                </button>
+</div>
+</div>
+<!-- Navigation Tabs -->
+<div class="px-4 mt-4 border-b border-primary/10">
+<div class="flex gap-8 max-w-7xl mx-auto">
+<a class="border-b-2 border-primary text-primary pb-3 text-sm font-bold" href="#">Todos</a>
+<a class="border-b-2 border-transparent text-slate-500 hover:text-primary pb-3 text-sm font-bold transition-colors" href="#">Generadas</a>
+<a class="border-b-2 border-transparent text-slate-500 hover:text-primary pb-3 text-sm font-bold transition-colors" href="#">Enviadas</a>
+<a class="border-b-2 border-transparent text-slate-500 hover:text-primary pb-3 text-sm font-bold transition-colors" href="#">Firmadas</a>
+</div>
+</div>
+<!-- Employee List -->
+<main class="flex-1 max-w-7xl mx-auto w-full p-4 space-y-3">
+<!-- Table Header (Desktop) -->
+<div class="hidden md:grid grid-cols-12 gap-4 px-4 py-2 text-xs font-bold text-slate-400 uppercase tracking-wider">
+<div class="col-span-1 flex items-center"><input class="rounded border-slate-300 text-primary focus:ring-primary" type="checkbox"/></div>
+<div class="col-span-4">Empleado</div>
+<div class="col-span-2 text-center">RUT</div>
+<div class="col-span-3">Estado Liquidación</div>
+<div class="col-span-2 text-right">Acciones</div>
+</div>
+<!-- List Item 1 -->
+<div class="group bg-white dark:bg-background-dark border border-primary/10 rounded-xl p-4 md:grid md:grid-cols-12 md:items-center gap-4 hover:shadow-md transition-shadow">
+<div class="hidden md:flex col-span-1 items-center">
+<input checked="" class="rounded border-slate-300 text-primary focus:ring-primary" type="checkbox"/>
+</div>
+<div class="col-span-4 flex items-center gap-3">
+<div class="size-10 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold">SM</div>
+<div>
+<p class="font-bold text-sm">Sofía Morales</p>
+<p class="text-xs text-slate-500">Analista de Marketing</p>
+</div>
+</div>
+<div class="hidden md:block col-span-2 text-center text-sm font-medium">18.452.123-K</div>
+<div class="col-span-3 mt-2 md:mt-0">
+<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400">
+<span class="size-1.5 rounded-full bg-blue-500"></span>
+                        Generada
+                    </span>
+</div>
+<div class="col-span-2 flex justify-end gap-2 mt-4 md:mt-0">
+<button class="p-2 text-slate-400 hover:text-primary rounded-lg transition-colors">
+<span class="material-symbols-outlined text-xl">visibility</span>
+</button>
+<button class="p-2 text-slate-400 hover:text-primary rounded-lg transition-colors">
+<span class="material-symbols-outlined text-xl">send</span>
+</button>
+</div>
+</div>
+<!-- List Item 2 -->
+<div class="group bg-white dark:bg-background-dark border border-primary/10 rounded-xl p-4 md:grid md:grid-cols-12 md:items-center gap-4 hover:shadow-md transition-shadow">
+<div class="hidden md:flex col-span-1 items-center">
+<input class="rounded border-slate-300 text-primary focus:ring-primary" type="checkbox"/>
+</div>
+<div class="col-span-4 flex items-center gap-3">
+<div class="size-10 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold">RC</div>
+<div>
+<p class="font-bold text-sm">Ricardo Canales</p>
+<p class="text-xs text-slate-500">Desarrollador Senior</p>
+</div>
+</div>
+<div class="hidden md:block col-span-2 text-center text-sm font-medium">15.932.884-3</div>
+<div class="col-span-3 mt-2 md:mt-0">
+<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400">
+<span class="size-1.5 rounded-full bg-amber-500 animate-pulse"></span>
+                        Enviada a Firma
+                    </span>
+</div>
+<div class="col-span-2 flex justify-end gap-2 mt-4 md:mt-0">
+<button class="p-2 text-slate-400 hover:text-primary rounded-lg transition-colors">
+<span class="material-symbols-outlined text-xl">history</span>
+</button>
+<button class="p-2 text-slate-400 hover:text-primary rounded-lg transition-colors">
+<span class="material-symbols-outlined text-xl">mail_outline</span>
+</button>
+</div>
+</div>
+<!-- List Item 3 -->
+<div class="group bg-white dark:bg-background-dark border border-primary/10 rounded-xl p-4 md:grid md:grid-cols-12 md:items-center gap-4 hover:shadow-md transition-shadow">
+<div class="hidden md:flex col-span-1 items-center">
+<input class="rounded border-slate-300 text-primary focus:ring-primary" type="checkbox"/>
+</div>
+<div class="col-span-4 flex items-center gap-3">
+<div class="size-10 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold">AV</div>
+<div>
+<p class="font-bold text-sm">Andrea Valdés</p>
+<p class="text-xs text-slate-500">Jefa de Operaciones</p>
+</div>
+</div>
+<div class="hidden md:block col-span-2 text-center text-sm font-medium">17.221.405-2</div>
+<div class="col-span-3 mt-2 md:mt-0">
+<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400">
+<span class="size-1.5 rounded-full bg-emerald-500"></span>
+                        Firmada
+                    </span>
+</div>
+<div class="col-span-2 flex justify-end gap-2 mt-4 md:mt-0">
+<button class="p-2 text-slate-400 hover:text-primary rounded-lg transition-colors">
+<span class="material-symbols-outlined text-xl">download</span>
+</button>
+<button class="p-2 text-slate-400 hover:text-primary rounded-lg transition-colors">
+<span class="material-symbols-outlined text-xl">check_circle</span>
+</button>
+</div>
+</div>
+<!-- List Item 4 -->
+<div class="group bg-white dark:bg-background-dark border border-primary/10 rounded-xl p-4 md:grid md:grid-cols-12 md:items-center gap-4 hover:shadow-md transition-shadow">
+<div class="hidden md:flex col-span-1 items-center">
+<input checked="" class="rounded border-slate-300 text-primary focus:ring-primary" type="checkbox"/>
+</div>
+<div class="col-span-4 flex items-center gap-3">
+<div class="size-10 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold">JL</div>
+<div>
+<p class="font-bold text-sm">Jorge Lagos</p>
+<p class="text-xs text-slate-500">Contador</p>
+</div>
+</div>
+<div class="hidden md:block col-span-2 text-center text-sm font-medium">12.112.564-9</div>
+<div class="col-span-3 mt-2 md:mt-0">
+<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400">
+<span class="size-1.5 rounded-full bg-blue-500"></span>
+                        Generada
+                    </span>
+</div>
+<div class="col-span-2 flex justify-end gap-2 mt-4 md:mt-0">
+<button class="p-2 text-slate-400 hover:text-primary rounded-lg transition-colors">
+<span class="material-symbols-outlined text-xl">visibility</span>
+</button>
+<button class="p-2 text-slate-400 hover:text-primary rounded-lg transition-colors">
+<span class="material-symbols-outlined text-xl">send</span>
+</button>
+</div>
+</div>
+</main>
+<!-- Bottom Navigation -->
+<nav class="sticky bottom-0 z-10 border-t border-primary/10 bg-white dark:bg-background-dark px-4 pb-6 pt-2">
+<div class="flex max-w-7xl mx-auto gap-2">
+<a class="flex flex-1 flex-col items-center justify-center gap-1 text-slate-400 hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined">home</span>
+<p class="text-xs font-medium">Inicio</p>
+</a>
+<a class="flex flex-1 flex-col items-center justify-center gap-1 text-primary" href="#">
+<span class="material-symbols-outlined">description</span>
+<p class="text-xs font-medium">Nómina</p>
+</a>
+<a class="flex flex-1 flex-col items-center justify-center gap-1 text-slate-400 hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined">group</span>
+<p class="text-xs font-medium">Empleados</p>
+</a>
+<a class="flex flex-1 flex-col items-center justify-center gap-1 text-slate-400 hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined">settings</span>
+<p class="text-xs font-medium">Ajustes</p>
+</a>
+</div>
+</nav>
+</div>
+</body></html>

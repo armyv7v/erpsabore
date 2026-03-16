@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+
+<html lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Vista Previa Notificación Push</title>
+<!-- BEGIN: External Scripts -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- END: External Scripts -->
+<!-- BEGIN: Custom Styles -->
+<style data-purpose="font-imports">
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
+    body {
+      font-family: 'Inter', sans-serif;
+    }
+  </style>
+<style data-purpose="layout-styling">
+    .phone-container {
+      aspect-ratio: 9 / 19.5;
+      max-height: 850px;
+    }
+    .blur-backdrop {
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+    }
+    .notch {
+      width: 120px;
+      height: 30px;
+      background: #000;
+      border-bottom-left-radius: 18px;
+      border-bottom-right-radius: 18px;
+    }
+  </style>
+<!-- END: Custom Styles -->
+</head>
+<body class="bg-gray-900 flex items-center justify-center min-h-screen p-4">
+<!-- BEGIN: Smartphone Container -->
+<main class="phone-container relative bg-cover bg-center rounded-[3rem] border-[8px] border-gray-800 shadow-2xl overflow-hidden w-full max-w-sm" data-purpose="device-frame" id="smartphone-mockup" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuB6ie54wNYwX9r7jdxVA-YND_RUqaLaafYIPdACXe4GdbSrGxxVN5TWeJIU3Dt92MvRxWlK-wZvCIQXhx2B75GjDW5IptNGp67YJb8Pz7ATZe-vsnWP4nDYhyJ2G67Aozy1Dy-6wGbr7UQ3m5t3jWjIn5xWPCsJNj1D9KuhvczkBx-sIo9grVl0gIXGpZOrN8MoHZmAw-raNz4VUpFztpFYdnMk2j4o-UkpTRl4LRifimtgOvCjS_Eu59TbiS9TkxDlKO8dbjcRPhA');">
+<!-- BEGIN: Status Bar & Notch -->
+<header class="absolute top-0 w-full flex justify-center z-20 px-6 pt-2" data-purpose="status-bar">
+<div class="notch"></div>
+<div class="absolute left-8 top-4 text-white text-xs font-semibold">9:41</div>
+<div class="absolute right-8 top-4 flex gap-1.5 items-center">
+<svg class="w-4 h-4 text-white" fill="currentColor" viewbox="0 0 24 24"><path d="M12 21l-12-18h24z"></path></svg>
+<svg class="w-4 h-4 text-white" fill="currentColor" viewbox="0 0 24 24"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2z"></path></svg>
+</div>
+</header>
+<!-- END: Status Bar & Notch -->
+<!-- BEGIN: Lock Screen Content -->
+<section class="flex flex-col items-center pt-24 h-full relative z-10" data-purpose="lock-screen-ui">
+<!-- Date and Time -->
+<div class="text-center text-white mb-8" data-purpose="clock-display">
+<p class="text-lg font-medium opacity-90">Lunes, 21 de Octubre</p>
+<h1 class="text-7xl font-bold mt-1 tracking-tight">09:41</h1>
+</div>
+<!-- BEGIN: Push Notification -->
+<article class="w-[92%] mx-auto mt-12 animate-bounce-short" data-purpose="push-notification">
+<div class="blur-backdrop bg-white/70 rounded-3xl p-4 shadow-lg border border-white/20">
+<!-- Notification Header -->
+<div class="flex items-center justify-between mb-2">
+<div class="flex items-center gap-2">
+<!-- Portal de Proveedores Logo Placeholder -->
+<div class="w-6 h-6 bg-blue-600 rounded-md flex items-center justify-center shadow-sm" data-purpose="app-icon">
+<svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+<path d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+</div>
+<span class="text-[11px] font-semibold text-gray-800 tracking-wide uppercase">PORTAL DE PROVEEDORES</span>
+</div>
+<span class="text-[11px] text-gray-600">ahora</span>
+</div>
+<!-- Notification Body -->
+<div class="flex flex-col gap-1">
+<h2 class="text-sm font-bold text-gray-900">¡Pago Recibido!</h2>
+<p class="text-sm text-gray-800 leading-snug">
+              Se ha liberado el pago de tu Factura <span class="font-semibold">#INV-2024-001</span> por <span class="font-semibold">$1.250.000 CLP</span>. 
+            </p>
+<p class="text-[11px] text-gray-500 mt-1 italic">Toca para ver el comprobante.</p>
+</div>
+</div>
+</article>
+<!-- END: Push Notification -->
+<!-- BEGIN: Bottom Controls -->
+<footer class="absolute bottom-12 w-full px-12 flex justify-between items-center" data-purpose="quick-actions">
+<div class="w-12 h-12 rounded-full blur-backdrop bg-white/20 flex items-center justify-center text-white">
+<svg class="w-6 h-6" fill="currentColor" viewbox="0 0 24 24"><path d="M12 18a6 6 0 100-12 6 6 0 000 12zM22 12l-4 4V8l4 4zM2 12l4-4v8l-4-4z"></path></svg>
+</div>
+<div class="w-12 h-12 rounded-full blur-backdrop bg-white/20 flex items-center justify-center text-white">
+<svg class="w-6 h-6" fill="currentColor" viewbox="0 0 24 24"><path d="M12 17a2 2 0 002-2V9a2 2 0 00-2-2 2 2 0 00-2 2v6a2 2 0 002 2z"></path><path d="M12 22a10 10 0 110-20 10 10 0 010 20zm0-2a8 8 0 100-16 8 8 0 000 16z"></path></svg>
+</div>
+</footer>
+<div class="absolute bottom-2 w-32 h-1.5 bg-white rounded-full opacity-50" data-purpose="home-indicator"></div>
+<!-- END: Bottom Controls -->
+</section>
+<!-- END: Lock Screen Content -->
+</main>
+<!-- END: Smartphone Container -->
+<!-- BEGIN: Animations -->
+<style data-purpose="animations">
+    @keyframes bounce-short {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-5px); }
+    }
+    .animate-bounce-short {
+      animation: bounce-short 2s ease-in-out infinite;
+    }
+  </style>
+<!-- END: Animations -->
+</body></html>

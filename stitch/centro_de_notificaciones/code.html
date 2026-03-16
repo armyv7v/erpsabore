@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+
+<html class="light" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,100..900;1,100..900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#ec5b13",
+                        "background-light": "#f8f6f6",
+                        "background-dark": "#221610",
+                    },
+                    fontFamily: {
+                        "display": ["Public Sans"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<title>Centro de Notificaciones - ERP SaaS</title>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 antialiased">
+<div class="relative flex min-h-screen w-full flex-col overflow-x-hidden">
+<!-- Header Section -->
+<header class="sticky top-0 z-10 flex items-center bg-background-light dark:bg-background-dark border-b border-slate-200 dark:border-slate-800 p-4 justify-between">
+<div class="flex items-center gap-4">
+<div class="text-slate-600 dark:text-slate-400 flex size-10 items-center justify-center cursor-pointer hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg">
+<span class="material-symbols-outlined">arrow_back</span>
+</div>
+<h2 class="text-slate-900 dark:text-slate-100 text-xl font-bold leading-tight tracking-tight">Notificaciones</h2>
+</div>
+<div class="flex items-center gap-2">
+<button class="flex size-10 items-center justify-center rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+<span class="material-symbols-outlined text-slate-600 dark:text-slate-400">filter_list</span>
+</button>
+<button class="flex size-10 items-center justify-center rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+<span class="material-symbols-outlined text-slate-600 dark:text-slate-400">more_vert</span>
+</button>
+</div>
+</header>
+<!-- Tabs Navigation -->
+<div class="bg-background-light dark:bg-background-dark sticky top-[73px] z-10 border-b border-slate-200 dark:border-slate-800">
+<div class="flex px-4 gap-8">
+<a class="flex flex-col items-center justify-center border-b-[3px] border-primary text-primary pb-[13px] pt-4 px-1" href="#">
+<p class="text-sm font-bold leading-normal">Todas</p>
+</a>
+<a class="flex flex-col items-center justify-center border-b-[3px] border-transparent text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 pb-[13px] pt-4 px-1" href="#">
+<p class="text-sm font-bold leading-normal">No leídas</p>
+</a>
+<a class="flex flex-col items-center justify-center border-b-[3px] border-transparent text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 pb-[13px] pt-4 px-1" href="#">
+<p class="text-sm font-bold leading-normal">Sistema</p>
+</a>
+</div>
+</div>
+<!-- Notifications List -->
+<main class="flex-1 overflow-y-auto pb-24">
+<!-- Alert 1: Overdue Invoice -->
+<div class="flex gap-4 border-b border-slate-100 dark:border-slate-800 bg-background-light dark:bg-background-dark px-4 py-5 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors group">
+<div class="flex items-start gap-4 flex-1">
+<div class="flex items-center justify-center rounded-xl bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400 shrink-0 size-12">
+<span class="material-symbols-outlined">warning</span>
+</div>
+<div class="flex flex-1 flex-col justify-center">
+<div class="flex justify-between items-start">
+<p class="text-slate-900 dark:text-slate-100 text-base font-bold leading-snug">Factura vencida</p>
+<span class="text-slate-400 dark:text-slate-500 text-xs">Hace 10 min</span>
+</div>
+<p class="text-slate-600 dark:text-slate-400 text-sm font-normal mt-1 leading-relaxed">
+                            La factura <span class="font-semibold text-slate-700 dark:text-slate-200">#F-2024-01</span> para el cliente Inversiones ABC ha excedido la fecha límite de pago.
+                        </p>
+<div class="mt-4 flex gap-2">
+<button class="flex min-w-[100px] cursor-pointer items-center justify-center rounded-lg h-9 px-4 bg-primary text-white text-sm font-semibold hover:bg-primary/90 transition-colors shadow-sm">
+                                Ver factura
+                            </button>
+<button class="flex items-center justify-center rounded-lg h-9 px-4 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-sm font-medium hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors">
+                                Recordar
+                            </button>
+</div>
+</div>
+</div>
+</div>
+<!-- Alert 2: Vacation Request -->
+<div class="flex gap-4 border-b border-slate-100 dark:border-slate-800 bg-background-light dark:bg-background-dark px-4 py-5 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors group">
+<div class="flex items-start gap-4 flex-1">
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full h-12 w-12 border-2 border-primary/20" data-alt="User profile picture of Juan Perez" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuD0iVz0VpKA0C-w-Nvdy71ZiP3THCDuqFFaPtYpjv6S1qa67d4nXBrFJ2jYyfAp_n2QNb-02UfxsXcrzuiE4ZY-KJwODikeiAp-UsRWDH3M0M9Kp2EjeSY3v1KbcCSM7OriMUSPJ-i4NTHhUMpqncYxZxI3DPtAo7XgeDHrD4zz9dnOqk3SslEMMdCJ_hajpcCYUFT40GsuZBWhWx2dYodHnp2EQuRmfEgsCDM_SktYmj79pUuEeABdsUtq0ltBWGnUTe3l-bggSLo");'></div>
+<div class="flex flex-1 flex-col justify-center">
+<div class="flex justify-between items-start">
+<p class="text-slate-900 dark:text-slate-100 text-base font-bold leading-snug">Nueva solicitud de vacaciones</p>
+<span class="text-slate-400 dark:text-slate-500 text-xs">Hace 2 horas</span>
+</div>
+<p class="text-slate-600 dark:text-slate-400 text-sm font-normal mt-1 leading-relaxed">
+<span class="font-semibold text-slate-700 dark:text-slate-200">Juan Pérez</span> ha solicitado 5 días de vacaciones del 15 al 20 de mayo para su revisión.
+                        </p>
+<div class="mt-4 flex gap-2">
+<button class="flex min-w-[100px] cursor-pointer items-center justify-center rounded-lg h-9 px-4 bg-primary text-white text-sm font-semibold hover:bg-primary/90 transition-colors shadow-sm">
+                                Revisar
+                            </button>
+<button class="flex items-center justify-center rounded-lg h-9 px-4 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-sm font-medium hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors">
+                                Ignorar
+                            </button>
+</div>
+</div>
+</div>
+</div>
+<!-- Alert 3: Low Stock -->
+<div class="flex gap-4 border-b border-slate-100 dark:border-slate-800 bg-orange-50/30 dark:bg-primary/5 px-4 py-5 hover:bg-orange-50/50 dark:hover:bg-primary/10 transition-colors group relative">
+<div class="absolute left-0 top-0 bottom-0 w-1 bg-primary"></div>
+<div class="flex items-start gap-4 flex-1">
+<div class="flex items-center justify-center rounded-xl bg-primary/10 text-primary shrink-0 size-12">
+<span class="material-symbols-outlined">inventory_2</span>
+</div>
+<div class="flex flex-1 flex-col justify-center">
+<div class="flex justify-between items-start">
+<p class="text-slate-900 dark:text-slate-100 text-base font-bold leading-snug">Stock bajo en Bodega central</p>
+<span class="text-slate-400 dark:text-slate-500 text-xs">Ayer</span>
+</div>
+<p class="text-slate-600 dark:text-slate-400 text-sm font-normal mt-1 leading-relaxed">
+                            Quedan menos de <span class="font-bold text-primary">10 unidades</span> de Laptop Workstation Z2. Se sugiere realizar reposición inmediata.
+                        </p>
+<div class="mt-4 flex gap-2">
+<button class="flex min-w-[100px] cursor-pointer items-center justify-center rounded-lg h-9 px-4 bg-primary text-white text-sm font-semibold hover:bg-primary/90 transition-colors shadow-sm">
+                                Generar Orden
+                            </button>
+</div>
+</div>
+</div>
+<div class="size-2 rounded-full bg-primary mt-2"></div>
+</div>
+<!-- Alert 4: Monthly Report -->
+<div class="flex gap-4 border-b border-slate-100 dark:border-slate-800 bg-background-light dark:bg-background-dark px-4 py-5 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors group">
+<div class="flex items-start gap-4 flex-1">
+<div class="flex items-center justify-center rounded-xl bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 shrink-0 size-12">
+<span class="material-symbols-outlined">analytics</span>
+</div>
+<div class="flex flex-1 flex-col justify-center">
+<div class="flex justify-between items-start">
+<p class="text-slate-900 dark:text-slate-100 text-base font-bold leading-snug">Reporte mensual generado</p>
+<span class="text-slate-400 dark:text-slate-500 text-xs">2 días</span>
+</div>
+<p class="text-slate-600 dark:text-slate-400 text-sm font-normal mt-1 leading-relaxed">
+                            El reporte consolidado de ventas del mes de Abril ya está disponible para su descarga en formato PDF y Excel.
+                        </p>
+<div class="mt-4 flex gap-2">
+<button class="flex min-w-[100px] cursor-pointer items-center justify-center rounded-lg h-9 px-4 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-sm font-semibold hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors">
+<span class="material-symbols-outlined text-sm mr-2">download</span> Descargar
+                            </button>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Bottom Navigation Bar -->
+<nav class="fixed bottom-0 left-0 right-0 border-t border-slate-200 dark:border-slate-800 bg-background-light dark:bg-background-dark px-4 pb-6 pt-2 z-20">
+<div class="flex gap-2 max-w-xl mx-auto">
+<a class="flex flex-1 flex-col items-center justify-center gap-1 text-slate-500 dark:text-slate-400 hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined">home</span>
+<p class="text-[10px] font-medium leading-none">Inicio</p>
+</a>
+<a class="flex flex-1 flex-col items-center justify-center gap-1 text-slate-500 dark:text-slate-400 hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined">receipt_long</span>
+<p class="text-[10px] font-medium leading-none">Ventas</p>
+</a>
+<a class="flex flex-1 flex-col items-center justify-center gap-1 text-primary" href="#">
+<div class="relative">
+<span class="material-symbols-outlined fill-[1]">notifications</span>
+<span class="absolute -top-1 -right-1 flex h-3 w-3">
+<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
+<span class="relative inline-flex rounded-full h-3 w-3 bg-primary"></span>
+</span>
+</div>
+<p class="text-[10px] font-bold leading-none">Avisos</p>
+</a>
+<a class="flex flex-1 flex-col items-center justify-center gap-1 text-slate-500 dark:text-slate-400 hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined">inventory</span>
+<p class="text-[10px] font-medium leading-none">Stock</p>
+</a>
+<a class="flex flex-1 flex-col items-center justify-center gap-1 text-slate-500 dark:text-slate-400 hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined">more_horiz</span>
+<p class="text-[10px] font-medium leading-none">Más</p>
+</a>
+</div>
+</nav>
+</div>
+</body></html>

@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+
+<html class="light" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#ec5b13",
+                        "background-light": "#f8f6f6",
+                        "background-dark": "#221610",
+                    },
+                    fontFamily: {
+                        "display": ["Public Sans", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: "Public Sans", sans-serif;
+        }
+        /* Hide spin buttons for number inputs */
+        input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        input[type=number] {
+            -moz-appearance: textfield;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark min-h-screen flex flex-col items-center justify-center p-4">
+<!-- Main Container -->
+<div class="w-full max-w-md bg-white dark:bg-slate-900 shadow-xl rounded-xl overflow-hidden border border-slate-200 dark:border-slate-800">
+<!-- Header / TopAppBar Equivalent -->
+<div class="flex items-center p-4 border-b border-slate-100 dark:border-slate-800">
+<button class="text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 p-2 rounded-full transition-colors">
+<span class="material-symbols-outlined block">arrow_back</span>
+</button>
+<h2 class="text-slate-900 dark:text-slate-100 text-lg font-bold leading-tight tracking-tight flex-1 ml-2">Verificación en Dos Pasos</h2>
+<div class="size-10 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-3xl">verified_user</span>
+</div>
+</div>
+<div class="p-8 flex flex-col items-center">
+<!-- Icon and Titles -->
+<div class="bg-primary/10 dark:bg-primary/20 p-4 rounded-full mb-6">
+<span class="material-symbols-outlined text-primary text-4xl">shield_person</span>
+</div>
+<h3 class="text-slate-900 dark:text-slate-100 tracking-tight text-2xl font-bold leading-tight text-center pb-2">Introduce el código</h3>
+<p class="text-slate-500 dark:text-slate-400 text-base font-normal leading-normal pb-6 text-center">
+                Hemos enviado un código de 6 dígitos para asegurar tu acceso al ERP.
+            </p>
+<!-- Toggle Selector -->
+<div class="flex w-full p-1 bg-slate-100 dark:bg-slate-800 rounded-xl mb-8">
+<label class="flex cursor-pointer flex-1 items-center justify-center py-2.5 rounded-lg transition-all text-slate-500 dark:text-slate-400 font-medium text-sm has-[:checked]:bg-white dark:has-[:checked]:bg-slate-700 has-[:checked]:text-primary has-[:checked]:shadow-sm">
+<span class="truncate">App Autenticadora</span>
+<input checked="" class="hidden" name="auth_method" type="radio" value="app"/>
+</label>
+<label class="flex cursor-pointer flex-1 items-center justify-center py-2.5 rounded-lg transition-all text-slate-500 dark:text-slate-400 font-medium text-sm has-[:checked]:bg-white dark:has-[:checked]:bg-slate-700 has-[:checked]:text-primary has-[:checked]:shadow-sm">
+<span class="truncate">SMS</span>
+<input class="hidden" name="auth_method" type="radio" value="sms"/>
+</label>
+</div>
+<!-- OTP Input Fields -->
+<div class="flex justify-center gap-2 sm:gap-3 mb-8 w-full">
+<input class="w-12 h-14 text-center text-2xl font-bold rounded-lg border-2 border-slate-200 dark:border-slate-700 bg-transparent focus:border-primary focus:ring-0 dark:text-white transition-colors" maxlength="1" placeholder="·" type="number"/>
+<input class="w-12 h-14 text-center text-2xl font-bold rounded-lg border-2 border-slate-200 dark:border-slate-700 bg-transparent focus:border-primary focus:ring-0 dark:text-white transition-colors" maxlength="1" placeholder="·" type="number"/>
+<input class="w-12 h-14 text-center text-2xl font-bold rounded-lg border-2 border-slate-200 dark:border-slate-700 bg-transparent focus:border-primary focus:ring-0 dark:text-white transition-colors" maxlength="1" placeholder="·" type="number"/>
+<input class="w-12 h-14 text-center text-2xl font-bold rounded-lg border-2 border-slate-200 dark:border-slate-700 bg-transparent focus:border-primary focus:ring-0 dark:text-white transition-colors" maxlength="1" placeholder="·" type="number"/>
+<input class="w-12 h-14 text-center text-2xl font-bold rounded-lg border-2 border-slate-200 dark:border-slate-700 bg-transparent focus:border-primary focus:ring-0 dark:text-white transition-colors" maxlength="1" placeholder="·" type="number"/>
+<input class="w-12 h-14 text-center text-2xl font-bold rounded-lg border-2 border-slate-200 dark:border-slate-700 bg-transparent focus:border-primary focus:ring-0 dark:text-white transition-colors" maxlength="1" placeholder="·" type="number"/>
+</div>
+<!-- Verify Button -->
+<button class="w-full bg-primary hover:bg-primary/90 text-white font-bold py-4 rounded-xl shadow-lg shadow-primary/20 transition-all active:scale-[0.98] mb-6">
+                Verificar
+            </button>
+<!-- Resend Section -->
+<div class="flex flex-col items-center gap-2">
+<p class="text-slate-500 dark:text-slate-400 text-sm">¿No has recibido el código?</p>
+<button class="text-primary font-semibold text-sm hover:underline flex items-center gap-1">
+<span class="material-symbols-outlined text-sm">refresh</span>
+                    Reenviar código
+                </button>
+</div>
+</div>
+<!-- Footer Info -->
+<div class="p-4 bg-slate-50 dark:bg-slate-800/50 border-t border-slate-100 dark:border-slate-800 text-center">
+<p class="text-slate-400 dark:text-slate-500 text-xs flex items-center justify-center gap-1">
+<span class="material-symbols-outlined text-xs">lock</span>
+                Conexión segura cifrada de punto a punto
+            </p>
+</div>
+</div>
+<!-- Background Decoration -->
+<div class="fixed top-0 left-0 w-full h-full -z-10 opacity-40 pointer-events-none">
+<div class="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] rounded-full bg-primary/10 blur-[100px]"></div>
+<div class="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] rounded-full bg-primary/5 blur-[100px]"></div>
+</div>
+</body></html>

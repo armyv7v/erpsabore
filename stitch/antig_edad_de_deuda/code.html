@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+
+<html class="light" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Reporte de Antigüedad de Deuda - ERP SaaS</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#ec5b13",
+                        "background-light": "#f8f6f6",
+                        "background-dark": "#221610",
+                    },
+                    fontFamily: {
+                        "display": ["Public Sans"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 min-h-screen">
+<div class="flex flex-col min-h-screen">
+<!-- Header -->
+<header class="sticky top-0 z-10 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800">
+<div class="flex items-center p-4 justify-between max-w-7xl mx-auto w-full">
+<div class="flex items-center gap-4">
+<div class="text-slate-600 dark:text-slate-400 cursor-pointer">
+<span class="material-symbols-outlined">arrow_back</span>
+</div>
+<h2 class="text-lg font-bold leading-tight tracking-tight">Antigüedad de Deuda</h2>
+</div>
+<div class="flex gap-2">
+<button class="flex items-center justify-center rounded-xl h-10 px-4 bg-primary/10 text-primary hover:bg-primary/20 transition-colors gap-2 text-sm font-bold">
+<span class="material-symbols-outlined text-xl">download</span>
+                        Exportar
+                    </button>
+<button class="flex items-center justify-center rounded-xl h-10 w-10 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400">
+<span class="material-symbols-outlined">filter_list</span>
+</button>
+</div>
+</div>
+<!-- Tabs -->
+<div class="max-w-7xl mx-auto w-full">
+<div class="flex px-4 gap-8">
+<a class="flex flex-col items-center justify-center border-b-2 border-primary text-primary pb-3 pt-4" href="#">
+<p class="text-sm font-bold">Resumen</p>
+</a>
+<a class="flex flex-col items-center justify-center border-b-2 border-transparent text-slate-500 dark:text-slate-400 pb-3 pt-4 hover:text-primary transition-colors" href="#">
+<p class="text-sm font-bold">Detalle</p>
+</a>
+<a class="flex flex-col items-center justify-center border-b-2 border-transparent text-slate-500 dark:text-slate-400 pb-3 pt-4 hover:text-primary transition-colors" href="#">
+<p class="text-sm font-bold">Acciones</p>
+</a>
+</div>
+</div>
+</header>
+<main class="flex-1 max-w-7xl mx-auto w-full p-4 space-y-6">
+<!-- Summary Cards -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+<div class="flex flex-col gap-2 rounded-xl p-6 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm">
+<p class="text-slate-500 dark:text-slate-400 text-sm font-medium">Deuda Total</p>
+<p class="text-2xl font-bold leading-tight">$450,230.00</p>
+<div class="flex items-center gap-1 text-emerald-600 dark:text-emerald-400 text-sm font-medium">
+<span class="material-symbols-outlined text-sm">trending_up</span>
+<span>+5.2% vs mes ant.</span>
+</div>
+</div>
+<div class="flex flex-col gap-2 rounded-xl p-6 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm">
+<p class="text-slate-500 dark:text-slate-400 text-sm font-medium">Clientes con Deuda</p>
+<p class="text-2xl font-bold leading-tight">124</p>
+<div class="flex items-center gap-1 text-slate-500 text-sm font-medium">
+<span class="material-symbols-outlined text-sm">group</span>
+<span>8% del total</span>
+</div>
+</div>
+<div class="flex flex-col gap-2 rounded-xl p-6 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm">
+<p class="text-slate-500 dark:text-slate-400 text-sm font-medium">Vencido +90 días</p>
+<p class="text-2xl font-bold leading-tight text-red-500">$84,120.00</p>
+<div class="flex items-center gap-1 text-red-500 text-sm font-medium">
+<span class="material-symbols-outlined text-sm">warning</span>
+<span>Crítico</span>
+</div>
+</div>
+<div class="flex flex-col gap-2 rounded-xl p-6 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm">
+<p class="text-slate-500 dark:text-slate-400 text-sm font-medium">Promedio Cobro</p>
+<p class="text-2xl font-bold leading-tight">42 días</p>
+<div class="flex items-center gap-1 text-orange-500 text-sm font-medium">
+<span class="material-symbols-outlined text-sm">schedule</span>
+<span>+3 días de retraso</span>
+</div>
+</div>
+</div>
+<!-- Chart & Distribution -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+<!-- Circular Chart Visualization (Simplified UI representation) -->
+<div class="lg:col-span-1 bg-white dark:bg-slate-900 rounded-xl p-6 border border-slate-200 dark:border-slate-800 shadow-sm">
+<h3 class="text-lg font-bold mb-6">Distribución por Tramos</h3>
+<div class="relative flex items-center justify-center py-8">
+<div class="w-48 h-48 rounded-full border-[16px] border-slate-100 dark:border-slate-800 flex items-center justify-center relative">
+<!-- SVG for Circular Progress/Chart -->
+<svg class="absolute inset-0 w-full h-full -rotate-90">
+<circle class="transition-all duration-500" cx="50%" cy="50%" fill="transparent" r="42%" stroke="#ec5b13" stroke-dasharray="264" stroke-dashoffset="60" stroke-width="16"></circle>
+<circle class="transition-all duration-500" cx="50%" cy="50%" fill="transparent" r="42%" stroke="#fb923c" stroke-dasharray="264" stroke-dashoffset="140" stroke-width="16"></circle>
+<circle class="transition-all duration-500" cx="50%" cy="50%" fill="transparent" r="42%" stroke="#fdba74" stroke-dasharray="264" stroke-dashoffset="200" stroke-width="16"></circle>
+</svg>
+<div class="text-center">
+<p class="text-3xl font-bold">100%</p>
+<p class="text-xs text-slate-500 uppercase tracking-widest">Cartera</p>
+</div>
+</div>
+</div>
+<div class="mt-6 space-y-3">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<div class="size-3 rounded-full bg-primary"></div>
+<span class="text-sm font-medium">0-30 días</span>
+</div>
+<span class="text-sm font-bold">$180,000</span>
+</div>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<div class="size-3 rounded-full bg-orange-400"></div>
+<span class="text-sm font-medium">31-60 días</span>
+</div>
+<span class="text-sm font-bold">$120,000</span>
+</div>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<div class="size-3 rounded-full bg-orange-300"></div>
+<span class="text-sm font-medium">61-90 días</span>
+</div>
+<span class="text-sm font-bold">$66,110</span>
+</div>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<div class="size-3 rounded-full bg-red-500"></div>
+<span class="text-sm font-medium">+90 días</span>
+</div>
+<span class="text-sm font-bold text-red-500">$84,120</span>
+</div>
+</div>
+</div>
+<!-- Detail Table -->
+<div class="lg:col-span-2 bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden">
+<div class="p-6 border-b border-slate-200 dark:border-slate-800 flex justify-between items-center">
+<h3 class="text-lg font-bold">Principales Clientes Deudores</h3>
+<button class="text-primary text-sm font-bold hover:underline">Ver todos</button>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left">
+<thead class="bg-slate-50 dark:bg-slate-800/50 text-slate-500 dark:text-slate-400 text-xs uppercase font-bold">
+<tr>
+<th class="px-6 py-4">Cliente</th>
+<th class="px-6 py-4">Total</th>
+<th class="px-6 py-4 text-red-500">+90 días</th>
+<th class="px-6 py-4">Último Pago</th>
+<th class="px-6 py-4">Estado</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-slate-100 dark:divide-slate-800">
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="size-8 rounded-full bg-slate-200 dark:bg-slate-700 flex items-center justify-center font-bold text-slate-600 dark:text-slate-300 text-xs">AC</div>
+<div>
+<p class="font-bold text-sm">Acme Corp S.A.</p>
+<p class="text-xs text-slate-500">ID: 2038491</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-4 font-bold text-sm">$45,200.00</td>
+<td class="px-6 py-4 font-bold text-sm text-red-500">$12,000.00</td>
+<td class="px-6 py-4 text-xs text-slate-500">12 Oct, 2023</td>
+<td class="px-6 py-4">
+<span class="px-2 py-1 rounded-full bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400 text-[10px] font-bold uppercase">En Mora</span>
+</td>
+</tr>
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="size-8 rounded-full bg-slate-200 dark:bg-slate-700 flex items-center justify-center font-bold text-slate-600 dark:text-slate-300 text-xs">GT</div>
+<div>
+<p class="font-bold text-sm">Global Tech Inc</p>
+<p class="text-xs text-slate-500">ID: 1029384</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-4 font-bold text-sm">$32,150.00</td>
+<td class="px-6 py-4 font-bold text-sm text-red-500">$0.00</td>
+<td class="px-6 py-4 text-xs text-slate-500">05 Nov, 2023</td>
+<td class="px-6 py-4">
+<span class="px-2 py-1 rounded-full bg-orange-100 dark:bg-orange-900/30 text-orange-600 dark:text-orange-400 text-[10px] font-bold uppercase">Aviso</span>
+</td>
+</tr>
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="size-8 rounded-full bg-slate-200 dark:bg-slate-700 flex items-center justify-center font-bold text-slate-600 dark:text-slate-300 text-xs">LS</div>
+<div>
+<p class="font-bold text-sm">Logistics Solutions</p>
+<p class="text-xs text-slate-500">ID: 4492013</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-4 font-bold text-sm">$28,900.00</td>
+<td class="px-6 py-4 font-bold text-sm text-red-500">$8,400.00</td>
+<td class="px-6 py-4 text-xs text-slate-500">22 Oct, 2023</td>
+<td class="px-6 py-4">
+<span class="px-2 py-1 rounded-full bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400 text-[10px] font-bold uppercase">En Mora</span>
+</td>
+</tr>
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="size-8 rounded-full bg-slate-200 dark:bg-slate-700 flex items-center justify-center font-bold text-slate-600 dark:text-slate-300 text-xs">MN</div>
+<div>
+<p class="font-bold text-sm">Mercados del Norte</p>
+<p class="text-xs text-slate-500">ID: 3381029</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-4 font-bold text-sm">$15,400.00</td>
+<td class="px-6 py-4 font-bold text-sm text-red-500">$0.00</td>
+<td class="px-6 py-4 text-xs text-slate-500">10 Nov, 2023</td>
+<td class="px-6 py-4">
+<span class="px-2 py-1 rounded-full bg-emerald-100 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400 text-[10px] font-bold uppercase">Vigente</span>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</main>
+<!-- Bottom Navigation (Mobile/Compact context) -->
+<nav class="sticky bottom-0 bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 lg:hidden">
+<div class="flex max-w-7xl mx-auto">
+<a class="flex flex-1 flex-col items-center justify-center gap-1 py-3 text-slate-500 dark:text-slate-400 hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<p class="text-[10px] font-medium uppercase tracking-wider">Dashboard</p>
+</a>
+<a class="flex flex-1 flex-col items-center justify-center gap-1 py-3 text-slate-500 dark:text-slate-400 hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined">trending_up</span>
+<p class="text-[10px] font-medium uppercase tracking-wider">Ventas</p>
+</a>
+<a class="flex flex-1 flex-col items-center justify-center gap-1 py-3 text-primary" href="#">
+<span class="material-symbols-outlined fill-[1]">pie_chart</span>
+<p class="text-[10px] font-bold uppercase tracking-wider">Cartera</p>
+</a>
+<a class="flex flex-1 flex-col items-center justify-center gap-1 py-3 text-slate-500 dark:text-slate-400 hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined">settings</span>
+<p class="text-[10px] font-medium uppercase tracking-wider">Config</p>
+</a>
+</div>
+</nav>
+</div>
+</body></html>

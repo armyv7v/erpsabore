@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ERP Sales Pro - Vendedor Login</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#ec5b13",
+                        "background-light": "#f8f6f6",
+                        "background-dark": "#221610",
+                    },
+                    fontFamily: {
+                        "display": ["Public Sans"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 min-h-screen">
+<div class="relative flex h-auto min-h-screen w-full flex-col overflow-x-hidden">
+<!-- Header / Logo Area -->
+<div class="flex items-center p-6 justify-between max-w-7xl mx-auto w-full">
+<div class="flex items-center gap-2">
+<div class="text-primary flex size-10 shrink-0 items-center justify-center bg-primary/10 rounded-lg">
+<span class="material-symbols-outlined" style="font-size: 28px;">cloud_done</span>
+</div>
+<h2 class="text-slate-900 dark:text-slate-100 text-xl font-bold leading-tight tracking-tight">ERP Sales Pro</h2>
+</div>
+<div class="hidden md:flex items-center gap-4">
+<span class="text-slate-500 dark:text-slate-400 text-sm font-medium">Need help?</span>
+<a class="text-primary text-sm font-bold hover:underline" href="#">Support</a>
+</div>
+</div>
+<main class="flex-1 flex flex-col items-center justify-center px-4 py-8">
+<div class="w-full max-w-4xl grid grid-cols-1 md:grid-cols-2 bg-white dark:bg-slate-900 rounded-xl shadow-xl overflow-hidden border border-slate-200 dark:border-slate-800">
+<!-- Left Side: Visual & Stats -->
+<div class="relative hidden md:flex flex-col justify-between p-10 bg-gradient-to-br from-primary to-orange-700 text-white">
+<div>
+<div class="mb-6 flex items-center justify-center w-12 h-12 bg-white/20 rounded-xl backdrop-blur-md">
+<span class="material-symbols-outlined text-white">trending_up</span>
+</div>
+<h1 class="text-3xl font-bold mb-4">Welcome Back, Champion!</h1>
+<p class="text-white/80 leading-relaxed max-w-xs">Log in to manage your pipeline, close deals, and track your performance in real-time.</p>
+</div>
+<div class="space-y-4">
+<div class="bg-white/10 backdrop-blur-md p-4 rounded-xl border border-white/20">
+<div class="flex justify-between items-center mb-1">
+<p class="text-xs font-medium uppercase tracking-wider text-white/70">Monthly Goal</p>
+<p class="text-xs font-bold">85%</p>
+</div>
+<div class="w-full bg-white/20 h-2 rounded-full overflow-hidden">
+<div class="bg-white h-full" style="width: 85%"></div>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-4">
+<div class="bg-white/10 backdrop-blur-md p-4 rounded-xl border border-white/20">
+<p class="text-xs text-white/70">Daily Sales</p>
+<p class="text-xl font-bold">$1,200</p>
+<span class="text-[10px] text-green-300 font-bold">+12% vs yesterday</span>
+</div>
+<div class="bg-white/10 backdrop-blur-md p-4 rounded-xl border border-white/20">
+<p class="text-xs text-white/70">Active Leads</p>
+<p class="text-xl font-bold">24</p>
+<span class="text-[10px] text-orange-200 font-bold">4 urgent</span>
+</div>
+</div>
+</div>
+<!-- Decorative Graphic -->
+<div class="absolute inset-0 opacity-10 pointer-events-none overflow-hidden">
+<div class="absolute -right-20 -bottom-20 w-80 h-80 rounded-full border-[40px] border-white"></div>
+</div>
+</div>
+<!-- Right Side: Login Form -->
+<div class="p-8 md:p-12 flex flex-col justify-center">
+<div class="mb-8">
+<div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-bold uppercase tracking-wider mb-4">
+<span class="material-symbols-outlined text-xs">person</span>
+                            Vendedor Portal
+                        </div>
+<h2 class="text-2xl font-bold text-slate-900 dark:text-slate-100">Access your dashboard</h2>
+<p class="text-slate-500 dark:text-slate-400 mt-2">Enter your credentials below to get started.</p>
+</div>
+<form action="#" class="space-y-5">
+<div class="space-y-2">
+<label class="text-sm font-semibold text-slate-700 dark:text-slate-300" for="email">Email Address</label>
+<div class="relative">
+<div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+<span class="material-symbols-outlined text-slate-400 text-xl">mail</span>
+</div>
+<input class="w-full pl-11 pr-4 py-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all text-slate-900 dark:text-slate-100 placeholder:text-slate-400" id="email" placeholder="vendedor@company.com" type="email"/>
+</div>
+</div>
+<div class="space-y-2">
+<div class="flex justify-between items-center">
+<label class="text-sm font-semibold text-slate-700 dark:text-slate-300" for="password">Password</label>
+<a class="text-xs font-bold text-primary hover:underline" href="#">Forgot?</a>
+</div>
+<div class="relative">
+<div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+<span class="material-symbols-outlined text-slate-400 text-xl">lock</span>
+</div>
+<input class="w-full pl-11 pr-4 py-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all text-slate-900 dark:text-slate-100 placeholder:text-slate-400" id="password" placeholder="••••••••" type="password"/>
+</div>
+</div>
+<div class="flex items-center gap-2 py-1">
+<input class="w-4 h-4 text-primary bg-slate-50 border-slate-300 rounded focus:ring-primary" id="remember" type="checkbox"/>
+<label class="text-sm text-slate-600 dark:text-slate-400" for="remember">Keep me logged in</label>
+</div>
+<button class="w-full bg-primary hover:bg-orange-600 text-white font-bold py-4 rounded-xl shadow-lg shadow-primary/20 transition-all transform hover:-translate-y-0.5 active:translate-y-0 flex items-center justify-center gap-2 group" type="submit">
+                            Log In to Sales Dashboard
+                            <span class="material-symbols-outlined text-xl group-hover:translate-x-1 transition-transform">arrow_forward</span>
+</button>
+</form>
+<div class="mt-8 pt-8 border-t border-slate-100 dark:border-slate-800 text-center">
+<p class="text-sm text-slate-500 dark:text-slate-400">
+                            Not registered with your company yet? 
+                            <a class="text-primary font-bold hover:underline" href="#">Contact Administrator</a>
+</p>
+</div>
+</div>
+</div>
+<!-- Mobile Motivational Snippet (Only visible on mobile) -->
+<div class="md:hidden mt-8 text-center px-6">
+<p class="text-slate-500 dark:text-slate-400 italic text-sm">"The harder you work, the luckier you get."</p>
+<div class="flex justify-center gap-6 mt-4">
+<div class="text-center">
+<p class="text-lg font-bold text-primary">$1.2k</p>
+<p class="text-[10px] uppercase text-slate-400">Today</p>
+</div>
+<div class="text-center">
+<p class="text-lg font-bold text-primary">85%</p>
+<p class="text-[10px] uppercase text-slate-400">Goal</p>
+</div>
+</div>
+</div>
+</main>
+<!-- Footer -->
+<footer class="p-6 text-center">
+<p class="text-slate-400 text-xs">© 2024 ERP Sales Pro Inc. All rights reserved. Built for champions.</p>
+</footer>
+</div>
+</body></html>

@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+
+<html lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>CRM Sales Pipeline - Corporate ERP</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#ec5b13",
+                        "background-light": "#f8f6f6",
+                        "background-dark": "#221610",
+                    },
+                    fontFamily: {
+                        "display": ["Public Sans", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Public Sans', sans-serif;
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            height: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #ec5b1344;
+            border-radius: 10px;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 min-h-screen flex flex-col">
+<!-- Header / Top Bar -->
+<header class="border-b border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/50 sticky top-0 z-50">
+<div class="flex items-center justify-between p-4 max-w-7xl mx-auto w-full">
+<div class="flex items-center gap-4">
+<div class="bg-primary p-2 rounded-lg text-white">
+<span class="material-symbols-outlined block">business_center</span>
+</div>
+<div>
+<h1 class="text-xl font-bold leading-tight tracking-tight">CRM Ventas Corporativas</h1>
+<p class="text-xs text-slate-500 dark:text-slate-400 uppercase tracking-wider font-semibold">Pipeline Comercial Chile</p>
+</div>
+</div>
+<div class="flex items-center gap-3">
+<div class="hidden md:flex bg-slate-100 dark:bg-slate-800 rounded-full px-4 py-2 items-center gap-2">
+<span class="material-symbols-outlined text-slate-400 text-sm">search</span>
+<input class="bg-transparent border-none text-sm focus:ring-0 w-64" placeholder="Buscar empresas o tratos..." type="text"/>
+</div>
+<button class="p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 relative">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-2 right-2 flex h-2 w-2">
+<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
+<span class="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
+</span>
+</button>
+<div class="h-10 w-10 rounded-full bg-primary/20 border-2 border-primary flex items-center justify-center font-bold text-primary">
+                    JD
+                </div>
+</div>
+</div>
+</header>
+<!-- Main Content Area -->
+<main class="flex-1 overflow-hidden flex flex-col">
+<!-- Pipeline Navigation / Stages Summary -->
+<div class="bg-white dark:bg-slate-900 shadow-sm border-b border-slate-200 dark:border-slate-800 overflow-x-auto custom-scrollbar">
+<div class="flex px-4 gap-2 min-w-max max-w-7xl mx-auto">
+<a class="flex flex-col items-start min-w-[180px] border-b-4 border-primary px-4 py-4 bg-primary/5" href="#">
+<p class="text-primary text-xs font-bold uppercase">Qualification</p>
+<p class="text-slate-900 dark:text-slate-100 text-lg font-bold">$142.500.000 <span class="text-xs font-normal">CLP</span></p>
+<p class="text-slate-500 text-xs">8 Oportunidades</p>
+</a>
+<a class="flex flex-col items-start min-w-[180px] border-b-4 border-transparent hover:border-slate-300 px-4 py-4" href="#">
+<p class="text-slate-500 text-xs font-bold uppercase">Needs Analysis</p>
+<p class="text-slate-900 dark:text-slate-100 text-lg font-bold">$85.000.000 <span class="text-xs font-normal">CLP</span></p>
+<p class="text-slate-500 text-xs">5 Oportunidades</p>
+</a>
+<a class="flex flex-col items-start min-w-[180px] border-b-4 border-transparent hover:border-slate-300 px-4 py-4" href="#">
+<p class="text-slate-500 text-xs font-bold uppercase">Value Prop</p>
+<p class="text-slate-900 dark:text-slate-100 text-lg font-bold">$210.300.000 <span class="text-xs font-normal">CLP</span></p>
+<p class="text-slate-500 text-xs">12 Oportunidades</p>
+</a>
+<a class="flex flex-col items-start min-w-[180px] border-b-4 border-transparent hover:border-slate-300 px-4 py-4" href="#">
+<p class="text-slate-500 text-xs font-bold uppercase">Negotiation</p>
+<p class="text-slate-900 dark:text-slate-100 text-lg font-bold">$45.000.000 <span class="text-xs font-normal">CLP</span></p>
+<p class="text-slate-500 text-xs">3 Oportunidades</p>
+</a>
+<a class="flex flex-col items-start min-w-[180px] border-b-4 border-transparent hover:border-slate-300 px-4 py-4" href="#">
+<p class="text-slate-500 text-xs font-bold uppercase">Closed Won</p>
+<p class="text-green-600 text-lg font-bold">$320.000.000 <span class="text-xs font-normal">CLP</span></p>
+<p class="text-slate-500 text-xs">24 Este mes</p>
+</a>
+</div>
+</div>
+<!-- Deal List Section -->
+<div class="p-4 md:p-8 max-w-7xl mx-auto w-full flex-1">
+<div class="flex items-center justify-between mb-6">
+<h2 class="text-2xl font-bold tracking-tight">Qualification <span class="text-slate-400 font-normal">(8 Tratos)</span></h2>
+<div class="flex gap-2">
+<button class="flex items-center justify-center gap-2 rounded-lg border border-slate-300 dark:border-slate-700 px-4 py-2 text-sm font-medium hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors">
+<span class="material-symbols-outlined text-lg">filter_list</span>
+                        Filtros
+                    </button>
+<button class="flex items-center justify-center gap-2 rounded-lg bg-primary px-4 py-2 text-white text-sm font-bold shadow-sm hover:bg-primary/90 transition-colors">
+<span class="material-symbols-outlined text-lg">add</span>
+                        Nuevo Trato
+                    </button>
+</div>
+</div>
+<!-- Cards Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+<!-- Card 1 -->
+<div class="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-md transition-shadow group overflow-hidden">
+<div class="h-2 bg-primary"></div>
+<div class="p-5 flex flex-col h-full">
+<div class="flex justify-between items-start mb-4">
+<div class="bg-primary/10 text-primary text-[10px] font-bold px-2 py-0.5 rounded-full uppercase">Alta Prioridad</div>
+<span class="material-symbols-outlined text-slate-400 cursor-pointer hover:text-primary">more_vert</span>
+</div>
+<h3 class="text-lg font-bold leading-tight group-hover:text-primary transition-colors">Inversiones Agrícolas S.A.</h3>
+<p class="text-slate-500 text-sm mt-1 mb-6">Proyecto Modernización Riego</p>
+<div class="mt-auto flex flex-col gap-4">
+<div class="flex justify-between items-end border-t border-slate-100 dark:border-slate-800 pt-4">
+<div class="flex flex-col">
+<span class="text-xs text-slate-400 font-medium">Valor Estimado</span>
+<p class="text-xl font-bold text-slate-900 dark:text-slate-100">$45.000.000 <span class="text-xs font-normal">CLP</span></p>
+</div>
+<div class="flex flex-col items-end">
+<span class="text-xs text-slate-400 font-medium">Permanencia</span>
+<p class="text-sm font-semibold text-primary">12 días en etapa</p>
+</div>
+</div>
+<button class="w-full flex items-center justify-center gap-2 rounded-lg bg-slate-100 dark:bg-slate-800 hover:bg-primary hover:text-white dark:hover:bg-primary px-4 py-2.5 text-sm font-semibold transition-all">
+                                Ver Detalle
+                                <span class="material-symbols-outlined text-sm">arrow_forward</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Card 2 -->
+<div class="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-md transition-shadow group overflow-hidden">
+<div class="h-2 bg-primary/40"></div>
+<div class="p-5 flex flex-col h-full">
+<div class="flex justify-between items-start mb-4">
+<div class="bg-slate-100 dark:bg-slate-800 text-slate-500 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase">Media</div>
+<span class="material-symbols-outlined text-slate-400 cursor-pointer hover:text-primary">more_vert</span>
+</div>
+<h3 class="text-lg font-bold leading-tight group-hover:text-primary transition-colors">Transportes del Sur Ltda.</h3>
+<p class="text-slate-500 text-sm mt-1 mb-6">Software Logística v2.0</p>
+<div class="mt-auto flex flex-col gap-4">
+<div class="flex justify-between items-end border-t border-slate-100 dark:border-slate-800 pt-4">
+<div class="flex flex-col">
+<span class="text-xs text-slate-400 font-medium">Valor Estimado</span>
+<p class="text-xl font-bold text-slate-900 dark:text-slate-100">$12.800.000 <span class="text-xs font-normal">CLP</span></p>
+</div>
+<div class="flex flex-col items-end">
+<span class="text-xs text-slate-400 font-medium">Permanencia</span>
+<p class="text-sm font-semibold text-slate-600 dark:text-slate-400">4 días en etapa</p>
+</div>
+</div>
+<button class="w-full flex items-center justify-center gap-2 rounded-lg bg-slate-100 dark:bg-slate-800 hover:bg-primary hover:text-white dark:hover:bg-primary px-4 py-2.5 text-sm font-semibold transition-all">
+                                Ver Detalle
+                                <span class="material-symbols-outlined text-sm">arrow_forward</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Card 3 -->
+<div class="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-md transition-shadow group overflow-hidden">
+<div class="h-2 bg-primary"></div>
+<div class="p-5 flex flex-col h-full">
+<div class="flex justify-between items-start mb-4">
+<div class="bg-primary/10 text-primary text-[10px] font-bold px-2 py-0.5 rounded-full uppercase">Alta Prioridad</div>
+<span class="material-symbols-outlined text-slate-400 cursor-pointer hover:text-primary">more_vert</span>
+</div>
+<h3 class="text-lg font-bold leading-tight group-hover:text-primary transition-colors">Constructora Andes SpA</h3>
+<p class="text-slate-500 text-sm mt-1 mb-6">Servicios de Consultoría TI</p>
+<div class="mt-auto flex flex-col gap-4">
+<div class="flex justify-between items-end border-t border-slate-100 dark:border-slate-800 pt-4">
+<div class="flex flex-col">
+<span class="text-xs text-slate-400 font-medium">Valor Estimado</span>
+<p class="text-xl font-bold text-slate-900 dark:text-slate-100">$84.700.000 <span class="text-xs font-normal">CLP</span></p>
+</div>
+<div class="flex flex-col items-end">
+<span class="text-xs text-slate-400 font-medium">Permanencia</span>
+<p class="text-sm font-semibold text-primary">21 días en etapa</p>
+</div>
+</div>
+<button class="w-full flex items-center justify-center gap-2 rounded-lg bg-slate-100 dark:bg-slate-800 hover:bg-primary hover:text-white dark:hover:bg-primary px-4 py-2.5 text-sm font-semibold transition-all">
+                                Ver Detalle
+                                <span class="material-symbols-outlined text-sm">arrow_forward</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Bottom Navigation Bar -->
+<nav class="border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 px-4 pb-safe pt-2 sticky bottom-0">
+<div class="flex max-w-7xl mx-auto">
+<a class="flex flex-1 flex-col items-center justify-center gap-1 py-1 text-primary" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1">monitoring</span>
+<p class="text-[10px] font-bold leading-normal uppercase">Pipeline</p>
+</a>
+<a class="flex flex-1 flex-col items-center justify-center gap-1 py-1 text-slate-400 dark:text-slate-500 hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined">corporate_fare</span>
+<p class="text-[10px] font-bold leading-normal uppercase">Empresas</p>
+</a>
+<a class="flex flex-1 flex-col items-center justify-center gap-1 py-1 text-slate-400 dark:text-slate-500 hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined">contacts</span>
+<p class="text-[10px] font-bold leading-normal uppercase">Contactos</p>
+</a>
+<a class="flex flex-1 flex-col items-center justify-center gap-1 py-1 text-slate-400 dark:text-slate-500 hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined">bar_chart</span>
+<p class="text-[10px] font-bold leading-normal uppercase">Reportes</p>
+</a>
+<a class="flex flex-1 flex-col items-center justify-center gap-1 py-1 text-slate-400 dark:text-slate-500 hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined">settings</span>
+<p class="text-[10px] font-bold leading-normal uppercase">Config</p>
+</a>
+</div>
+</nav>
+</body></html>

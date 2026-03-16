@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+
+<html lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#ec5b13",
+                        "background-light": "#f8f6f6",
+                        "background-dark": "#221610",
+                    },
+                    fontFamily: {
+                        "display": ["Public Sans"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        body { font-family: 'Public Sans', sans-serif; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 min-h-screen font-display">
+<div class="flex h-auto min-h-screen w-full flex-col">
+<!-- Header -->
+<div class="flex items-center bg-white dark:bg-background-dark/50 border-b border-slate-200 dark:border-slate-800 p-4 justify-between sticky top-0 z-10">
+<div class="flex items-center gap-4">
+<div class="text-primary flex size-10 shrink-0 items-center justify-center hover:bg-primary/10 rounded-full cursor-pointer transition-colors">
+<span class="material-symbols-outlined">arrow_back</span>
+</div>
+<h2 class="text-slate-900 dark:text-white text-lg font-bold leading-tight tracking-tight">Editor de Plantilla de Cobranza</h2>
+</div>
+<div class="flex gap-2">
+<button class="flex items-center gap-2 px-4 py-2 rounded-lg border border-primary text-primary font-medium hover:bg-primary/5 transition-all">
+<span class="material-symbols-outlined text-[20px]">visibility</span>
+                    Previsualizar
+                </button>
+<button class="flex items-center gap-2 px-4 py-2 rounded-lg bg-primary text-white font-medium hover:bg-primary/90 shadow-md shadow-primary/20 transition-all">
+<span class="material-symbols-outlined text-[20px]">save</span>
+                    Guardar
+                </button>
+</div>
+</div>
+<div class="flex-1 overflow-y-auto px-4 py-6 max-w-4xl mx-auto w-full">
+<!-- Alert / Info -->
+<div class="mb-6 p-4 bg-primary/10 border-l-4 border-primary rounded-r-lg flex gap-3">
+<span class="material-symbols-outlined text-primary">info</span>
+<p class="text-sm text-slate-700 dark:text-slate-300">
+                    Utiliza las etiquetas dinámicas para personalizar el mensaje automáticamente con los datos de cada cliente.
+                </p>
+</div>
+<!-- Subject Section -->
+<div class="space-y-4 mb-8">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">subject</span>
+<h3 class="text-slate-900 dark:text-white text-lg font-bold leading-tight">Detalles del Correo</h3>
+</div>
+<div class="flex flex-col gap-2">
+<label class="text-slate-600 dark:text-slate-400 text-sm font-medium">Asunto del correo</label>
+<input class="form-input w-full rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 focus:ring-2 focus:ring-primary/50 focus:border-primary h-12 px-4 text-base transition-all" placeholder="Ej: Aviso de pago pendiente - Factura {numero_factura}" value="Recordatorio de pago: Factura {numero_factura} - {nombre_cliente}"/>
+</div>
+</div>
+<!-- Editor Section -->
+<div class="space-y-4 mb-8">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">edit_note</span>
+<h3 class="text-slate-900 dark:text-white text-lg font-bold leading-tight">Cuerpo del Mensaje</h3>
+</div>
+</div>
+<!-- Toolbar Minimalist -->
+<div class="flex flex-wrap gap-2 p-2 bg-slate-100 dark:bg-slate-800 rounded-t-xl border-x border-t border-slate-200 dark:border-slate-700">
+<button class="p-1.5 hover:bg-white dark:hover:bg-slate-700 rounded transition-colors"><span class="material-symbols-outlined">format_bold</span></button>
+<button class="p-1.5 hover:bg-white dark:hover:bg-slate-700 rounded transition-colors"><span class="material-symbols-outlined">format_italic</span></button>
+<button class="p-1.5 hover:bg-white dark:hover:bg-slate-700 rounded transition-colors"><span class="material-symbols-outlined">format_list_bulleted</span></button>
+<div class="w-px h-6 bg-slate-300 dark:bg-slate-600 mx-1"></div>
+<button class="p-1.5 hover:bg-white dark:hover:bg-slate-700 rounded transition-colors"><span class="material-symbols-outlined">link</span></button>
+</div>
+<textarea class="form-textarea w-full min-h-[300px] rounded-b-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 focus:ring-2 focus:ring-primary/50 focus:border-primary p-4 text-base leading-relaxed resize-y" placeholder="Escribe el contenido aquí...">Hola {nombre_cliente},
+
+Le informamos que la factura {numero_factura} por un monto de {monto_deuda} ha vencido el pasado {fecha_vencimiento}.
+
+Le agradecemos regularizar su situación a la brevedad posible para evitar cargos adicionales. Si ya realizó el pago, por favor ignore este mensaje.
+
+Atentamente,
+Departamento de Cobranzas</textarea>
+</div>
+<!-- Variables Helper -->
+<div class="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 p-6">
+<h4 class="text-slate-900 dark:text-white font-bold mb-4 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">data_object</span>
+                    Variables Disponibles
+                </h4>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+<button class="flex items-center justify-between p-3 rounded-lg border border-slate-100 dark:border-slate-800 hover:border-primary/30 hover:bg-primary/5 transition-all text-left group">
+<span class="text-sm font-mono text-primary font-bold">{nombre_cliente}</span>
+<span class="text-xs text-slate-500 group-hover:text-primary">Insertar</span>
+</button>
+<button class="flex items-center justify-between p-3 rounded-lg border border-slate-100 dark:border-slate-800 hover:border-primary/30 hover:bg-primary/5 transition-all text-left group">
+<span class="text-sm font-mono text-primary font-bold">{monto_deuda}</span>
+<span class="text-xs text-slate-500 group-hover:text-primary">Insertar</span>
+</button>
+<button class="flex items-center justify-between p-3 rounded-lg border border-slate-100 dark:border-slate-800 hover:border-primary/30 hover:bg-primary/5 transition-all text-left group">
+<span class="text-sm font-mono text-primary font-bold">{fecha_vencimiento}</span>
+<span class="text-xs text-slate-500 group-hover:text-primary">Insertar</span>
+</button>
+<button class="flex items-center justify-between p-3 rounded-lg border border-slate-100 dark:border-slate-800 hover:border-primary/30 hover:bg-primary/5 transition-all text-left group">
+<span class="text-sm font-mono text-primary font-bold">{numero_factura}</span>
+<span class="text-xs text-slate-500 group-hover:text-primary">Insertar</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Bottom Navigation Mobile/Compact -->
+<div class="fixed bottom-0 left-0 right-0 lg:hidden border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-background-dark px-4 pb-6 pt-2 flex gap-2">
+<a class="flex flex-1 flex-col items-center justify-center gap-1 text-primary" href="#">
+<span class="material-symbols-outlined">edit_document</span>
+<p class="text-[10px] font-medium">Editor</p>
+</a>
+<a class="flex flex-1 flex-col items-center justify-center gap-1 text-slate-400 dark:text-slate-600" href="#">
+<span class="material-symbols-outlined">history</span>
+<p class="text-[10px] font-medium">Historial</p>
+</a>
+<a class="flex flex-1 flex-col items-center justify-center gap-1 text-slate-400 dark:text-slate-600" href="#">
+<span class="material-symbols-outlined">settings</span>
+<p class="text-[10px] font-medium">Ajustes</p>
+</a>
+</div>
+</div>
+</body></html>

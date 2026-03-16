@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+
+<html class="light" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Gestión de Caja Chica - ERP PYME</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#ec5b13",
+                        "background-light": "#f8f6f6",
+                        "background-dark": "#221610",
+                    },
+                    fontFamily: {
+                        "display": ["Public Sans", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="font-display bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 min-h-screen">
+<div class="relative flex min-h-screen w-full flex-col overflow-x-hidden">
+<header class="flex items-center bg-white dark:bg-background-dark/50 border-b border-slate-200 dark:border-slate-800 p-4 justify-between sticky top-0 z-10 backdrop-blur-md">
+<div class="flex items-center gap-3">
+<div class="text-primary flex size-10 items-center justify-center rounded-lg bg-primary/10">
+<span class="material-symbols-outlined">account_balance_wallet</span>
+</div>
+<div>
+<h2 class="text-slate-900 dark:text-white text-lg font-bold leading-tight tracking-tight">Caja Chica</h2>
+<p class="text-slate-500 dark:text-slate-400 text-xs">Administración de gastos menores</p>
+</div>
+</div>
+<div class="flex items-center gap-2">
+<button class="flex size-10 items-center justify-center rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="flex size-10 items-center justify-center rounded-full bg-primary text-white">
+<span class="material-symbols-outlined">person</span>
+</button>
+</div>
+</header>
+<main class="flex-1 overflow-y-auto pb-24">
+<section class="p-4">
+<div class="flex flex-wrap gap-4">
+<div class="flex min-w-[240px] flex-1 flex-col gap-2 rounded-xl p-6 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-sm relative overflow-hidden">
+<div class="absolute top-0 right-0 p-4 opacity-10">
+<span class="material-symbols-outlined text-6xl">payments</span>
+</div>
+<p class="text-slate-500 dark:text-slate-400 text-sm font-medium">Saldo Disponible</p>
+<div class="flex items-baseline gap-2">
+<p class="text-slate-900 dark:text-white text-3xl font-bold leading-tight">$450.000</p>
+<span class="text-emerald-600 dark:text-emerald-400 text-sm font-bold flex items-center">
+<span class="material-symbols-outlined text-sm">trending_up</span> 5.2%
+                            </span>
+</div>
+<div class="mt-4 h-1.5 w-full bg-slate-100 dark:bg-slate-700 rounded-full overflow-hidden">
+<div class="bg-primary h-full w-3/4"></div>
+</div>
+<p class="text-slate-400 text-[10px] mt-2">75% del presupuesto mensual asignado</p>
+</div>
+</div>
+</section>
+<section class="px-4 py-2">
+<div class="flex gap-3">
+<button class="flex-1 flex items-center justify-center gap-2 bg-primary hover:bg-primary/90 text-white font-bold py-3 px-4 rounded-xl transition-colors shadow-lg shadow-primary/20">
+<span class="material-symbols-outlined">add_circle</span>
+<span>Nuevo Gasto</span>
+</button>
+<button class="flex items-center justify-center gap-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-200 font-semibold py-3 px-6 rounded-xl transition-colors">
+<span class="material-symbols-outlined">download</span>
+<span>Reporte</span>
+</button>
+</div>
+</section>
+<section class="p-4">
+<div class="flex items-center justify-between mb-4">
+<h3 class="text-slate-900 dark:text-white text-lg font-bold">Movimientos Recientes</h3>
+<button class="text-primary text-sm font-semibold">Ver todos</button>
+</div>
+<div class="space-y-3">
+<div class="flex items-center gap-4 bg-white dark:bg-slate-800 p-4 rounded-xl border border-slate-100 dark:border-slate-700 shadow-sm">
+<div class="flex size-12 shrink-0 items-center justify-center rounded-full bg-orange-100 dark:bg-orange-900/30 text-orange-600 dark:text-orange-400">
+<span class="material-symbols-outlined">restaurant</span>
+</div>
+<div class="flex flex-1 flex-col">
+<p class="text-slate-900 dark:text-white font-bold text-sm">Colaciones Equipo Ventas</p>
+<p class="text-slate-500 dark:text-slate-400 text-xs">Carlos Pérez • Hace 2 horas</p>
+</div>
+<div class="text-right">
+<p class="text-slate-900 dark:text-white font-bold text-sm">-$12.500</p>
+<span class="inline-flex items-center rounded-full bg-slate-100 dark:bg-slate-700 px-2 py-0.5 text-[10px] font-medium text-slate-600 dark:text-slate-300">Insumos</span>
+</div>
+</div>
+<div class="flex items-center gap-4 bg-white dark:bg-slate-800 p-4 rounded-xl border border-slate-100 dark:border-slate-700 shadow-sm">
+<div class="flex size-12 shrink-0 items-center justify-center rounded-full bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400">
+<span class="material-symbols-outlined">print</span>
+</div>
+<div class="flex flex-1 flex-col">
+<p class="text-slate-900 dark:text-white font-bold text-sm">Resmas de Papel A4</p>
+<p class="text-slate-500 dark:text-slate-400 text-xs">Ana Martínez • Hoy, 10:30 AM</p>
+</div>
+<div class="text-right">
+<p class="text-slate-900 dark:text-white font-bold text-sm">-$8.200</p>
+<span class="inline-flex items-center rounded-full bg-slate-100 dark:bg-slate-700 px-2 py-0.5 text-[10px] font-medium text-slate-600 dark:text-slate-300">Oficina</span>
+</div>
+</div>
+<div class="flex items-center gap-4 bg-white dark:bg-slate-800 p-4 rounded-xl border border-slate-100 dark:border-slate-700 shadow-sm">
+<div class="flex size-12 shrink-0 items-center justify-center rounded-full bg-emerald-100 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400">
+<span class="material-symbols-outlined">add_card</span>
+</div>
+<div class="flex flex-1 flex-col">
+<p class="text-slate-900 dark:text-white font-bold text-sm">Reposición de Fondo</p>
+<p class="text-slate-500 dark:text-slate-400 text-xs">Admin • Ayer</p>
+</div>
+<div class="text-right">
+<p class="text-emerald-600 dark:text-emerald-400 font-bold text-sm">+$100.000</p>
+<span class="inline-flex items-center rounded-full bg-emerald-50 dark:bg-emerald-900/20 px-2 py-0.5 text-[10px] font-medium text-emerald-600 dark:text-emerald-400">Ingreso</span>
+</div>
+</div>
+<div class="flex items-center gap-4 bg-white dark:bg-slate-800 p-4 rounded-xl border border-slate-100 dark:border-slate-700 shadow-sm">
+<div class="flex size-12 shrink-0 items-center justify-center rounded-full bg-purple-100 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400">
+<span class="material-symbols-outlined">local_shipping</span>
+</div>
+<div class="flex flex-1 flex-col">
+<p class="text-slate-900 dark:text-white font-bold text-sm">Envío Urgente Cliente</p>
+<p class="text-slate-500 dark:text-slate-400 text-xs">Carlos Pérez • 15 Oct</p>
+</div>
+<div class="text-right">
+<p class="text-slate-900 dark:text-white font-bold text-sm">-$5.500</p>
+<span class="inline-flex items-center rounded-full bg-slate-100 dark:bg-slate-700 px-2 py-0.5 text-[10px] font-medium text-slate-600 dark:text-slate-300">Logística</span>
+</div>
+</div>
+</div>
+</section>
+</main>
+<nav class="fixed bottom-0 left-0 right-0 flex border-t border-slate-200 dark:border-slate-800 bg-white/95 dark:bg-background-dark/95 backdrop-blur-md px-4 pb-6 pt-2 z-20">
+<a class="flex flex-1 flex-col items-center justify-center gap-1 text-slate-400 dark:text-slate-500" href="#">
+<span class="material-symbols-outlined">home</span>
+<p class="text-[10px] font-medium">Inicio</p>
+</a>
+<a class="flex flex-1 flex-col items-center justify-center gap-1 text-primary" href="#">
+<span class="material-symbols-outlined fill-[1]">receipt_long</span>
+<p class="text-[10px] font-bold">Gastos</p>
+</a>
+<a class="flex flex-1 flex-col items-center justify-center gap-1 text-slate-400 dark:text-slate-500" href="#">
+<span class="material-symbols-outlined">analytics</span>
+<p class="text-[10px] font-medium">Reportes</p>
+</a>
+<a class="flex flex-1 flex-col items-center justify-center gap-1 text-slate-400 dark:text-slate-500" href="#">
+<span class="material-symbols-outlined">settings</span>
+<p class="text-[10px] font-medium">Ajustes</p>
+</a>
+</nav>
+</div>
+</body></html>

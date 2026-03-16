@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+
+<html class="light" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Informe de Flujo de Caja - ERP PYME</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#ec5b13",
+                        "background-light": "#f8f6f6",
+                        "background-dark": "#221610",
+                    },
+                    fontFamily: {
+                        "display": ["Public Sans"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100">
+<div class="relative flex min-h-screen flex-col overflow-x-hidden">
+<!-- Header / Navigation Top -->
+<header class="flex items-center justify-between bg-white dark:bg-slate-900 px-6 py-4 border-b border-slate-200 dark:border-slate-800 sticky top-0 z-10">
+<div class="flex items-center gap-4">
+<div class="p-2 bg-primary/10 rounded-lg">
+<span class="material-symbols-outlined text-primary text-2xl">account_balance_wallet</span>
+</div>
+<div>
+<h1 class="text-xl font-bold leading-tight tracking-tight">Flujo de Caja</h1>
+<p class="text-xs text-slate-500 dark:text-slate-400">Actualizado hace 5 minutos</p>
+</div>
+</div>
+<div class="flex items-center gap-3">
+<button class="flex items-center justify-center p-2 rounded-lg border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors">
+<span class="material-symbols-outlined">download</span>
+</button>
+<button class="bg-primary text-white px-4 py-2 rounded-lg font-semibold text-sm flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">add</span> Nuevo Movimiento
+                </button>
+</div>
+</header>
+<!-- Tabs Navigation -->
+<nav class="bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 px-6">
+<div class="flex gap-8">
+<a class="border-b-2 border-primary py-4 text-sm font-bold text-primary" href="#">Resumen</a>
+<a class="border-b-2 border-transparent py-4 text-sm font-medium text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200" href="#">Ingresos</a>
+<a class="border-b-2 border-transparent py-4 text-sm font-medium text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200" href="#">Egresos</a>
+<a class="border-b-2 border-transparent py-4 text-sm font-medium text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200" href="#">Proyecciones</a>
+</div>
+</nav>
+<main class="p-6 space-y-6 max-w-7xl mx-auto w-full">
+<!-- Key Metrics -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+<div class="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
+<p class="text-slate-500 dark:text-slate-400 text-sm font-medium">Saldo Disponible</p>
+<h3 class="text-2xl font-bold mt-1">$12.450.000 CLP</h3>
+<div class="mt-2 flex items-center gap-1 text-emerald-600 dark:text-emerald-400 text-sm">
+<span class="material-symbols-outlined text-sm">trending_up</span>
+<span>+5.2% vs mes ant.</span>
+</div>
+</div>
+<div class="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
+<p class="text-slate-500 dark:text-slate-400 text-sm font-medium">Entradas (Mes)</p>
+<h3 class="text-2xl font-bold mt-1 text-emerald-600 dark:text-emerald-500">$8.200.000 CLP</h3>
+<p class="text-xs text-slate-400 mt-2">128 Facturas emitidas</p>
+</div>
+<div class="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
+<p class="text-slate-500 dark:text-slate-400 text-sm font-medium">Salidas (Mes)</p>
+<h3 class="text-2xl font-bold mt-1 text-rose-600 dark:text-rose-500">$5.100.000 CLP</h3>
+<p class="text-xs text-slate-400 mt-2">Pagos a proveedores y sueldos</p>
+</div>
+<div class="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
+<p class="text-slate-500 dark:text-slate-400 text-sm font-medium">Flujo Neto</p>
+<h3 class="text-2xl font-bold mt-1 text-primary">$3.100.000 CLP</h3>
+<div class="mt-2 flex items-center gap-1 text-emerald-600 text-sm">
+<span class="material-symbols-outlined text-sm">check_circle</span>
+<span>Superávit</span>
+</div>
+</div>
+</div>
+<!-- Projection Chart Section -->
+<div class="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
+<div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
+<div>
+<h4 class="text-lg font-bold">Proyección de Caja 30 Días</h4>
+<p class="text-sm text-slate-500 dark:text-slate-400">Basado en facturas por cobrar y compromisos de pago</p>
+</div>
+<div class="bg-primary/5 px-4 py-2 rounded-lg">
+<p class="text-xs text-primary font-bold uppercase tracking-wider">Saldo Proyectado</p>
+<p class="text-xl font-bold text-primary">$15.800.000 CLP</p>
+</div>
+</div>
+<div class="w-full h-[240px] relative mt-4">
+<!-- Placeholder for Chart -->
+<svg class="w-full h-full" fill="none" preserveaspectratio="none" viewbox="0 0 478 150" xmlns="http://www.w3.org/2000/svg">
+<path d="M0 109C18.1538 109 18.1538 21 36.3077 21C54.4615 21 54.4615 41 72.6154 41C90.7692 41 90.7692 93 108.923 93C127.077 93 127.077 33 145.231 33C163.385 33 163.385 101 181.538 101C199.692 101 199.692 61 217.846 61C236 61 236 45 254.154 45C272.308 45 272.308 121 290.462 121C308.615 121 308.615 149 326.769 149C344.923 149 344.923 1 363.077 1C381.231 1 381.231 81 399.385 81C417.538 81 417.538 129 435.692 129C453.846 129 453.846 25 472 25V149H326.769H0V109Z" fill="rgba(236, 91, 19, 0.05)"></path>
+<path d="M0 109C18.1538 109 18.1538 21 36.3077 21C54.4615 21 54.4615 41 72.6154 41C90.7692 41 90.7692 93 108.923 93C127.077 93 127.077 33 145.231 33C163.385 33 163.385 101 181.538 101C199.692 101 199.692 61 217.846 61C236 61 236 45 254.154 45C272.308 45 272.308 121 290.462 121C308.615 121 308.615 149 326.769 149C344.923 149 344.923 1 363.077 1C381.231 1 381.231 81 399.385 81C417.538 81 417.538 129 435.692 129C453.846 129 453.846 25 472 25" stroke="#ec5b13" stroke-linecap="round" stroke-width="3"></path>
+</svg>
+<div class="flex justify-between mt-4 border-t border-slate-100 dark:border-slate-800 pt-2 px-2">
+<p class="text-slate-400 text-xs font-bold uppercase">Hoy</p>
+<p class="text-slate-400 text-xs font-bold uppercase">10 Jun</p>
+<p class="text-slate-400 text-xs font-bold uppercase">20 Jun</p>
+<p class="text-slate-400 text-xs font-bold uppercase">30 Jun</p>
+</div>
+</div>
+</div>
+<!-- Recent Large Movements & Categories -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+<!-- Transactions Table -->
+<div class="lg:col-span-2 bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden">
+<div class="p-6 border-b border-slate-100 dark:border-slate-800 flex justify-between items-center">
+<h4 class="text-lg font-bold">Movimientos Recientes</h4>
+<button class="text-primary text-sm font-semibold hover:underline">Ver todo</button>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left">
+<thead class="bg-slate-50 dark:bg-slate-800/50 text-slate-500 dark:text-slate-400 text-xs uppercase font-bold">
+<tr>
+<th class="px-6 py-3">Fecha</th>
+<th class="px-6 py-3">Concepto</th>
+<th class="px-6 py-3 text-right">Monto (CLP)</th>
+<th class="px-6 py-3 text-center">Estado</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-slate-100 dark:divide-slate-800">
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+<td class="px-6 py-4 text-sm">05 Jun</td>
+<td class="px-6 py-4">
+<div class="flex flex-col">
+<span class="font-semibold">Venta Webpay - Pedido #4432</span>
+<span class="text-xs text-slate-400">Ingreso Operacional</span>
+</div>
+</td>
+<td class="px-6 py-4 text-right font-bold text-emerald-600 dark:text-emerald-500">+$1.250.000</td>
+<td class="px-6 py-4">
+<div class="flex justify-center">
+<span class="px-2 py-1 bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 rounded-full text-[10px] font-bold uppercase">Conciliado</span>
+</div>
+</td>
+</tr>
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+<td class="px-6 py-4 text-sm">04 Jun</td>
+<td class="px-6 py-4">
+<div class="flex flex-col">
+<span class="font-semibold">Pago Sueldos Mayo</span>
+<span class="text-xs text-slate-400">Gastos de Personal</span>
+</div>
+</td>
+<td class="px-6 py-4 text-right font-bold text-rose-600 dark:text-rose-500">-$4.200.000</td>
+<td class="px-6 py-4">
+<div class="flex justify-center">
+<span class="px-2 py-1 bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 rounded-full text-[10px] font-bold uppercase">Conciliado</span>
+</div>
+</td>
+</tr>
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+<td class="px-6 py-4 text-sm">03 Jun</td>
+<td class="px-6 py-4">
+<div class="flex flex-col">
+<span class="font-semibold">Proveedor Insumos S.A.</span>
+<span class="text-xs text-slate-400">Pago Proveedores</span>
+</div>
+</td>
+<td class="px-6 py-4 text-right font-bold text-rose-600 dark:text-rose-500">-$850.000</td>
+<td class="px-6 py-4">
+<div class="flex justify-center">
+<span class="px-2 py-1 bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400 rounded-full text-[10px] font-bold uppercase">Pendiente</span>
+</div>
+</td>
+</tr>
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+<td class="px-6 py-4 text-sm">01 Jun</td>
+<td class="px-6 py-4">
+<div class="flex flex-col">
+<span class="font-semibold">Cobro Factura #990</span>
+<span class="text-xs text-slate-400">Servicios Logísticos</span>
+</div>
+</td>
+<td class="px-6 py-4 text-right font-bold text-emerald-600 dark:text-emerald-500">+$2.100.000</td>
+<td class="px-6 py-4">
+<div class="flex justify-center">
+<span class="px-2 py-1 bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 rounded-full text-[10px] font-bold uppercase">Conciliado</span>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<!-- Category Breakdown -->
+<div class="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm p-6">
+<h4 class="text-lg font-bold mb-6">Distribución de Egresos</h4>
+<div class="space-y-6">
+<div>
+<div class="flex justify-between text-sm mb-2">
+<span class="text-slate-600 dark:text-slate-400">Sueldos y Previsión</span>
+<span class="font-bold">62%</span>
+</div>
+<div class="w-full bg-slate-100 dark:bg-slate-800 rounded-full h-2">
+<div class="bg-primary h-2 rounded-full" style="width: 62%"></div>
+</div>
+</div>
+<div>
+<div class="flex justify-between text-sm mb-2">
+<span class="text-slate-600 dark:text-slate-400">Proveedores</span>
+<span class="font-bold">25%</span>
+</div>
+<div class="w-full bg-slate-100 dark:bg-slate-800 rounded-full h-2">
+<div class="bg-primary/70 h-2 rounded-full" style="width: 25%"></div>
+</div>
+</div>
+<div>
+<div class="flex justify-between text-sm mb-2">
+<span class="text-slate-600 dark:text-slate-400">Servicios Básicos y Arriendos</span>
+<span class="font-bold">10%</span>
+</div>
+<div class="w-full bg-slate-100 dark:bg-slate-800 rounded-full h-2">
+<div class="bg-primary/40 h-2 rounded-full" style="width: 10%"></div>
+</div>
+</div>
+<div>
+<div class="flex justify-between text-sm mb-2">
+<span class="text-slate-600 dark:text-slate-400">Otros Gastos</span>
+<span class="font-bold">3%</span>
+</div>
+<div class="w-full bg-slate-100 dark:bg-slate-800 rounded-full h-2">
+<div class="bg-primary/20 h-2 rounded-full" style="width: 3%"></div>
+</div>
+</div>
+</div>
+<div class="mt-8 p-4 bg-primary/5 rounded-xl border border-primary/10">
+<div class="flex gap-3 items-start">
+<span class="material-symbols-outlined text-primary">lightbulb</span>
+<div class="text-xs">
+<p class="font-bold text-primary mb-1">Tip de Ahorro</p>
+<p class="text-slate-600 dark:text-slate-400 leading-relaxed">Sus costos de proveedores subieron 12% este mes. Considere re-negociar términos de pago.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Bottom Navigation Bar (Mobile) -->
+<footer class="md:hidden mt-auto sticky bottom-0 bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 px-4 pb-3 pt-2">
+<div class="flex gap-2">
+<a class="flex flex-1 flex-col items-center justify-end gap-1 text-primary" href="#">
+<div class="flex h-8 items-center justify-center">
+<span class="material-symbols-outlined">dashboard</span>
+</div>
+<p class="text-xs font-bold leading-normal tracking-[0.015em]">Inicio</p>
+</a>
+<a class="flex flex-1 flex-col items-center justify-end gap-1 text-slate-400 dark:text-slate-500" href="#">
+<div class="flex h-8 items-center justify-center">
+<span class="material-symbols-outlined">receipt_long</span>
+</div>
+<p class="text-xs font-medium leading-normal tracking-[0.015em]">Ventas</p>
+</a>
+<a class="flex flex-1 flex-col items-center justify-end gap-1 text-slate-400 dark:text-slate-500" href="#">
+<div class="flex h-8 items-center justify-center">
+<span class="material-symbols-outlined">payments</span>
+</div>
+<p class="text-xs font-medium leading-normal tracking-[0.015em]">Gastos</p>
+</a>
+<a class="flex flex-1 flex-col items-center justify-end gap-1 text-slate-400 dark:text-slate-500" href="#">
+<div class="flex h-8 items-center justify-center">
+<span class="material-symbols-outlined">account_balance_wallet</span>
+</div>
+<p class="text-xs font-medium leading-normal tracking-[0.015em]">Caja</p>
+</a>
+</div>
+</footer>
+</div>
+</body></html>

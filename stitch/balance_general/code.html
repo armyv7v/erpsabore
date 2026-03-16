@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+
+<html class="light" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#ec5b13",
+                        "background-light": "#f8f6f6",
+                        "background-dark": "#221610",
+                    },
+                    fontFamily: {
+                        "display": ["Public Sans"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<title>Balance General - ERP Chile</title>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 antialiased">
+<div class="relative flex min-h-screen w-full flex-col overflow-x-hidden">
+<header class="sticky top-0 z-10 flex items-center bg-background-light dark:bg-background-dark p-4 border-b border-slate-200 dark:border-slate-800 justify-between">
+<div class="flex items-center gap-3">
+<button class="flex size-10 items-center justify-center rounded-full hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors">
+<span class="material-symbols-outlined text-slate-700 dark:text-slate-300">arrow_back</span>
+</button>
+<div>
+<h1 class="text-lg font-bold leading-tight tracking-tight">Balance General</h1>
+<p class="text-xs text-slate-500 dark:text-slate-400">Pyme Digital SpA • Al 31 Oct 2023</p>
+</div>
+</div>
+<div class="flex items-center gap-2">
+<button class="flex size-10 items-center justify-center rounded-full bg-primary/10 text-primary hover:bg-primary/20 transition-colors">
+<span class="material-symbols-outlined">download</span>
+</button>
+<button class="flex size-10 items-center justify-center rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300">
+<span class="material-symbols-outlined">more_vert</span>
+</button>
+</div>
+</header>
+<div class="bg-background-light dark:bg-background-dark sticky top-[73px] z-10">
+<div class="flex border-b border-slate-200 dark:border-slate-800 px-4 gap-6 overflow-x-auto no-scrollbar">
+<a class="flex flex-col items-center justify-center border-b-2 border-primary text-primary pb-3 pt-4 px-2" href="#">
+<p class="text-sm font-bold whitespace-nowrap">Activos</p>
+</a>
+<a class="flex flex-col items-center justify-center border-b-2 border-transparent text-slate-500 dark:text-slate-400 pb-3 pt-4 px-2" href="#">
+<p class="text-sm font-bold whitespace-nowrap">Pasivos</p>
+</a>
+<a class="flex flex-col items-center justify-center border-b-2 border-transparent text-slate-500 dark:text-slate-400 pb-3 pt-4 px-2" href="#">
+<p class="text-sm font-bold whitespace-nowrap">Patrimonio</p>
+</a>
+</div>
+</div>
+<main class="flex-1 flex flex-col gap-6 p-4 pb-24">
+<section class="grid grid-cols-1 gap-4">
+<div class="flex flex-col gap-2 rounded-xl p-5 bg-primary text-white shadow-lg shadow-primary/20">
+<div class="flex justify-between items-start">
+<p class="text-primary-100 text-sm font-medium opacity-90">Total Activos</p>
+<span class="bg-white/20 px-2 py-1 rounded text-[10px] font-bold uppercase tracking-wider">Corriente</span>
+</div>
+<p class="text-3xl font-bold leading-tight">$45.230.000 <span class="text-lg font-normal opacity-80">CLP</span></p>
+<div class="flex items-center gap-1 text-white/90 text-sm mt-1">
+<span class="material-symbols-outlined text-sm">trending_up</span>
+<span>+5.2% vs mes anterior</span>
+</div>
+</div>
+</section>
+<section class="flex flex-col gap-3">
+<h2 class="text-sm font-bold uppercase tracking-widest text-slate-500 dark:text-slate-400 px-1">Disponibilidad y Corriente</h2>
+<div class="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 divide-y divide-slate-100 dark:divide-slate-800 overflow-hidden shadow-sm">
+<div class="flex items-center justify-between p-4">
+<div class="flex items-center gap-3">
+<div class="size-10 rounded-lg bg-blue-50 dark:bg-blue-900/30 flex items-center justify-center">
+<span class="material-symbols-outlined text-blue-600 dark:text-blue-400">account_balance</span>
+</div>
+<div>
+<p class="text-sm font-bold">Caja y Bancos</p>
+<p class="text-xs text-slate-500">Banco Estado / Santander</p>
+</div>
+</div>
+<p class="text-sm font-bold">$12.450.000</p>
+</div>
+<div class="flex items-center justify-between p-4">
+<div class="flex items-center gap-3">
+<div class="size-10 rounded-lg bg-emerald-50 dark:bg-emerald-900/30 flex items-center justify-center">
+<span class="material-symbols-outlined text-emerald-600 dark:text-emerald-400">payments</span>
+</div>
+<div>
+<p class="text-sm font-bold">Cuentas por Cobrar</p>
+<p class="text-xs text-slate-500">Facturas vigentes</p>
+</div>
+</div>
+<div class="text-right">
+<p class="text-sm font-bold">$18.230.500</p>
+<p class="text-[10px] text-primary font-medium">12 vencidas</p>
+</div>
+</div>
+<div class="flex items-center justify-between p-4">
+<div class="flex items-center gap-3">
+<div class="size-10 rounded-lg bg-amber-50 dark:bg-amber-900/30 flex items-center justify-center">
+<span class="material-symbols-outlined text-amber-600 dark:text-amber-400">inventory_2</span>
+</div>
+<div>
+<p class="text-sm font-bold">Inventario</p>
+<p class="text-xs text-slate-500">Valorizado costo</p>
+</div>
+</div>
+<p class="text-sm font-bold">$14.549.500</p>
+</div>
+</div>
+</section>
+<section class="flex flex-col gap-3">
+<div class="flex justify-between items-center px-1">
+<h2 class="text-sm font-bold uppercase tracking-widest text-slate-500 dark:text-slate-400">Activos No Corrientes</h2>
+<span class="text-xs font-semibold text-slate-400">Inmovilizado</span>
+</div>
+<div class="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 divide-y divide-slate-100 dark:divide-slate-800 overflow-hidden shadow-sm">
+<div class="flex items-center justify-between p-4">
+<div class="flex items-center gap-3">
+<div class="size-10 rounded-lg bg-slate-50 dark:bg-slate-800 flex items-center justify-center">
+<span class="material-symbols-outlined text-slate-600 dark:text-slate-400">precision_manufacturing</span>
+</div>
+<div>
+<p class="text-sm font-bold">Maquinaria y Equipos</p>
+<p class="text-xs text-slate-500">Depreciación aplicada</p>
+</div>
+</div>
+<p class="text-sm font-bold">$8.500.000</p>
+</div>
+<div class="flex items-center justify-between p-4">
+<div class="flex items-center gap-3">
+<div class="size-10 rounded-lg bg-slate-50 dark:bg-slate-800 flex items-center justify-center">
+<span class="material-symbols-outlined text-slate-600 dark:text-slate-400">directions_car</span>
+</div>
+<div>
+<p class="text-sm font-bold">Vehículos</p>
+<p class="text-xs text-slate-500">Furgón reparto</p>
+</div>
+</div>
+<p class="text-sm font-bold">$11.000.000</p>
+</div>
+</div>
+</section>
+<section class="mt-2 bg-slate-100 dark:bg-slate-800/50 rounded-xl p-4 border border-dashed border-slate-300 dark:border-slate-700">
+<div class="flex justify-between items-center">
+<span class="text-sm font-medium text-slate-600 dark:text-slate-400">Resumen Comparativo</span>
+<span class="material-symbols-outlined text-slate-400">info</span>
+</div>
+<div class="mt-4 flex gap-4">
+<div class="flex-1">
+<div class="h-2 w-full bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden flex">
+<div class="h-full bg-primary" style="width: 65%"></div>
+</div>
+<div class="flex justify-between mt-2">
+<p class="text-[10px] text-slate-500">Liquidez</p>
+<p class="text-[10px] font-bold">1.82 Ratio</p>
+</div>
+</div>
+<div class="flex-1">
+<div class="h-2 w-full bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden flex">
+<div class="h-full bg-emerald-500" style="width: 40%"></div>
+</div>
+<div class="flex justify-between mt-2">
+<p class="text-[10px] text-slate-500">Endeudamiento</p>
+<p class="text-[10px] font-bold">0.42 Ratio</p>
+</div>
+</div>
+</div>
+</section>
+</main>
+<nav class="fixed bottom-0 left-0 right-0 z-20 flex border-t border-slate-200 dark:border-slate-800 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md px-4 pb-6 pt-2">
+<a class="flex flex-1 flex-col items-center justify-center gap-1 text-slate-400 dark:text-slate-500" href="#">
+<span class="material-symbols-outlined">home</span>
+<p class="text-[10px] font-medium leading-normal tracking-wide">Inicio</p>
+</a>
+<a class="flex flex-1 flex-col items-center justify-center gap-1 text-primary" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1">pie_chart</span>
+<p class="text-[10px] font-medium leading-normal tracking-wide">Reportes</p>
+</a>
+<a class="flex flex-1 flex-col items-center justify-center gap-1 text-slate-400 dark:text-slate-500" href="#">
+<span class="material-symbols-outlined">point_of_sale</span>
+<p class="text-[10px] font-medium leading-normal tracking-wide">Ventas</p>
+</a>
+<a class="flex flex-1 flex-col items-center justify-center gap-1 text-slate-400 dark:text-slate-500" href="#">
+<span class="material-symbols-outlined">settings</span>
+<p class="text-[10px] font-medium leading-normal tracking-wide">Config</p>
+</a>
+</nav>
+</div>
+</body></html>

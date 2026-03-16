@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+
+<html class="light" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ERP - Dashboard de Metas</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#ec5b13",
+                        "background-light": "#f8f6f6",
+                        "background-dark": "#221610",
+                    },
+                    fontFamily: {
+                        "display": ["Public Sans"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Public Sans', sans-serif;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 min-h-screen">
+<div class="max-w-7xl mx-auto pb-24 lg:pb-8">
+<!-- Top Navigation -->
+<header class="flex items-center bg-white dark:bg-background-dark/50 border-b border-slate-200 dark:border-slate-800 p-4 sticky top-0 z-10 backdrop-blur-md">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary text-3xl">analytics</span>
+<h2 class="text-lg font-bold leading-tight tracking-tight">ERP Ventas</h2>
+</div>
+<div class="flex-1 flex justify-center">
+<div class="hidden md:flex bg-slate-100 dark:bg-slate-800 rounded-lg p-1">
+<button class="px-4 py-1.5 text-sm font-medium rounded-md bg-white dark:bg-slate-700 shadow-sm">Dashboard</button>
+<button class="px-4 py-1.5 text-sm font-medium text-slate-500 dark:text-slate-400">Reportes</button>
+<button class="px-4 py-1.5 text-sm font-medium text-slate-500 dark:text-slate-400">Configuración</button>
+</div>
+</div>
+<div class="flex gap-2">
+<button class="p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<div class="size-10 rounded-full bg-primary/20 flex items-center justify-center border border-primary/30">
+<span class="text-primary font-bold">JD</span>
+</div>
+</div>
+</header>
+<!-- Branch Selection Tabs -->
+<div class="px-4 pt-6">
+<div class="flex border-b border-slate-200 dark:border-slate-800 gap-6 overflow-x-auto no-scrollbar">
+<a class="flex flex-col items-center justify-center border-b-2 border-transparent text-slate-500 dark:text-slate-400 pb-3 whitespace-nowrap" href="#">
+<p class="text-sm font-bold">Global</p>
+</a>
+<a class="flex flex-col items-center justify-center border-b-2 border-primary text-primary pb-3 whitespace-nowrap" href="#">
+<p class="text-sm font-bold">Sucursal Norte</p>
+</a>
+<a class="flex flex-col items-center justify-center border-b-2 border-transparent text-slate-500 dark:text-slate-400 pb-3 whitespace-nowrap" href="#">
+<p class="text-sm font-bold">Sucursal Sur</p>
+</a>
+<a class="flex flex-col items-center justify-center border-b-2 border-transparent text-slate-500 dark:text-slate-400 pb-3 whitespace-nowrap" href="#">
+<p class="text-sm font-bold">Sucursal Centro</p>
+</a>
+</div>
+</div>
+<main class="p-4 space-y-6">
+<!-- Hero Stats: Sucursal Progress -->
+<section class="bg-white dark:bg-slate-900 rounded-xl p-6 border border-slate-200 dark:border-slate-800 shadow-sm">
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
+<div class="space-y-2 flex-1">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">location_on</span>
+<h1 class="text-2xl font-bold tracking-tight">Sucursal Norte</h1>
+</div>
+<p class="text-slate-500 dark:text-slate-400 text-sm">Resumen de cumplimiento mensual - Mayo 2024</p>
+<div class="mt-6 space-y-3">
+<div class="flex justify-between items-end">
+<div>
+<p class="text-sm text-slate-500 dark:text-slate-400">Progreso actual</p>
+<p class="text-3xl font-black text-slate-900 dark:text-slate-100">$750,000 <span class="text-sm font-normal text-slate-400">/ $1,000,000</span></p>
+</div>
+<div class="text-right">
+<span class="bg-primary/10 text-primary text-xs font-bold px-2.5 py-1 rounded-full">75% Completado</span>
+</div>
+</div>
+<div class="h-4 w-full bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden">
+<div class="h-full bg-primary rounded-full" style="width: 75%;"></div>
+</div>
+</div>
+</div>
+<!-- Gauge Replacement / Visual Highlight -->
+<div class="flex items-center justify-center px-4">
+<div class="relative size-40 md:size-48 flex items-center justify-center">
+<svg class="size-full transform -rotate-90" viewbox="0 0 100 100">
+<circle class="text-slate-100 dark:text-slate-800" cx="50" cy="50" fill="transparent" r="40" stroke="currentColor" stroke-width="8"></circle>
+<circle class="text-primary" cx="50" cy="50" fill="transparent" r="40" stroke="currentColor" stroke-dasharray="251.2" stroke-dashoffset="62.8" stroke-linecap="round" stroke-width="8"></circle>
+</svg>
+<div class="absolute inset-0 flex flex-col items-center justify-center">
+<span class="text-4xl font-black">75%</span>
+<span class="text-[10px] uppercase font-bold text-slate-400">Meta alcanzada</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Secondary Metrics -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+<!-- Comparative Card -->
+<div class="bg-white dark:bg-slate-900 p-5 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
+<div class="flex items-center justify-between mb-4">
+<p class="text-sm font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Vs. Mes Anterior</p>
+<span class="material-symbols-outlined text-green-500">trending_up</span>
+</div>
+<div class="flex items-baseline gap-2">
+<span class="text-2xl font-bold">+12.5%</span>
+<span class="text-sm text-slate-400">crecimiento</span>
+</div>
+<p class="text-xs text-slate-500 mt-2">Mes anterior: $666,500 totales</p>
+</div>
+<!-- Days Left Card -->
+<div class="bg-white dark:bg-slate-900 p-5 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
+<div class="flex items-center justify-between mb-4">
+<p class="text-sm font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Días Restantes</p>
+<span class="material-symbols-outlined text-primary">calendar_month</span>
+</div>
+<div class="flex items-baseline gap-2">
+<span class="text-2xl font-bold">11 días</span>
+<span class="text-sm text-slate-400">para cierre</span>
+</div>
+<p class="text-xs text-slate-500 mt-2">Tendencia proyectada: 104% de la meta</p>
+</div>
+<!-- Ticket Promedio -->
+<div class="bg-white dark:bg-slate-900 p-5 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
+<div class="flex items-center justify-between mb-4">
+<p class="text-sm font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Ticket Promedio</p>
+<span class="material-symbols-outlined text-blue-500">receipt_long</span>
+</div>
+<div class="flex items-baseline gap-2">
+<span class="text-2xl font-bold">$4,250</span>
+<span class="text-sm text-slate-400">por venta</span>
+</div>
+<p class="text-xs text-slate-500 mt-2">-2.1% respecto a la semana pasada</p>
+</div>
+</div>
+<!-- Top Sellers Desglose -->
+<section class="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden">
+<div class="p-5 border-b border-slate-200 dark:border-slate-800 flex justify-between items-center">
+<h3 class="font-bold text-lg">Top Vendedores - Desempeño</h3>
+<button class="text-primary text-sm font-medium hover:underline">Ver ranking completo</button>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left">
+<thead>
+<tr class="bg-slate-50 dark:bg-slate-800/50">
+<th class="px-6 py-3 text-xs font-bold text-slate-400 uppercase">Vendedor</th>
+<th class="px-6 py-3 text-xs font-bold text-slate-400 uppercase">Ventas</th>
+<th class="px-6 py-3 text-xs font-bold text-slate-400 uppercase">Meta Indiv.</th>
+<th class="px-6 py-3 text-xs font-bold text-slate-400 uppercase">Aporte %</th>
+<th class="px-6 py-3 text-xs font-bold text-slate-400 uppercase text-right">Acción</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-slate-100 dark:divide-slate-800">
+<!-- Seller 1 -->
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="size-8 rounded-full bg-primary/10 text-primary flex items-center justify-center text-xs font-bold">RM</div>
+<div>
+<p class="text-sm font-bold">Ricardo Mendez</p>
+<p class="text-xs text-slate-400">ID: #00421</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-4 text-sm">$245,000</td>
+<td class="px-6 py-4">
+<div class="w-32 bg-slate-100 dark:bg-slate-800 h-2 rounded-full">
+<div class="bg-green-500 h-full rounded-full" style="width: 98%;"></div>
+</div>
+</td>
+<td class="px-6 py-4 text-sm font-bold text-primary">32.6%</td>
+<td class="px-6 py-4 text-right">
+<span class="material-symbols-outlined text-slate-400 cursor-pointer">visibility</span>
+</td>
+</tr>
+<!-- Seller 2 -->
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="size-8 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center text-xs font-bold">AL</div>
+<div>
+<p class="text-sm font-bold">Ana López</p>
+<p class="text-xs text-slate-400">ID: #00455</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-4 text-sm">$180,000</td>
+<td class="px-6 py-4">
+<div class="w-32 bg-slate-100 dark:bg-slate-800 h-2 rounded-full">
+<div class="bg-primary h-full rounded-full" style="width: 72%;"></div>
+</div>
+</td>
+<td class="px-6 py-4 text-sm font-bold text-primary">24.0%</td>
+<td class="px-6 py-4 text-right">
+<span class="material-symbols-outlined text-slate-400 cursor-pointer">visibility</span>
+</td>
+</tr>
+<!-- Seller 3 -->
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="size-8 rounded-full bg-slate-100 text-slate-600 flex items-center justify-center text-xs font-bold">JS</div>
+<div>
+<p class="text-sm font-bold">Juan Sánchez</p>
+<p class="text-xs text-slate-400">ID: #00512</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-4 text-sm">$125,000</td>
+<td class="px-6 py-4">
+<div class="w-32 bg-slate-100 dark:bg-slate-800 h-2 rounded-full">
+<div class="bg-yellow-500 h-full rounded-full" style="width: 50%;"></div>
+</div>
+</td>
+<td class="px-6 py-4 text-sm font-bold text-primary">16.7%</td>
+<td class="px-6 py-4 text-right">
+<span class="material-symbols-outlined text-slate-400 cursor-pointer">visibility</span>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+</main>
+</div>
+<!-- Bottom Navigation Mobile -->
+<nav class="fixed bottom-0 left-0 right-0 bg-white dark:bg-background-dark border-t border-slate-200 dark:border-slate-800 px-4 pb-4 pt-2 flex justify-around items-center md:hidden z-20">
+<a class="flex flex-col items-center gap-1 text-slate-400" href="#">
+<span class="material-symbols-outlined">home</span>
+<p class="text-[10px] font-medium">Inicio</p>
+</a>
+<a class="flex flex-col items-center gap-1 text-slate-400" href="#">
+<span class="material-symbols-outlined">monitoring</span>
+<p class="text-[10px] font-medium">Ventas</p>
+</a>
+<a class="flex flex-col items-center gap-1 text-primary" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1">target</span>
+<p class="text-[10px] font-medium">Metas</p>
+</a>
+<a class="flex flex-col items-center gap-1 text-slate-400" href="#">
+<span class="material-symbols-outlined">settings</span>
+<p class="text-[10px] font-medium">Ajustes</p>
+</a>
+</nav>
+</body></html>

@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+
+<html class="light" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#ec5b13",
+                        "background-light": "#f8f6f6",
+                        "background-dark": "#221610",
+                    },
+                    fontFamily: {
+                        "display": ["Public Sans", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        body { font-family: 'Public Sans', sans-serif; }
+        .pdf-shadow { box-shadow: 0 4px 20px rgba(0,0,0,0.08); }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 min-h-screen flex flex-col">
+<!-- Header / Navigation -->
+<header class="sticky top-0 z-50 bg-white/80 dark:bg-background-dark/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-800">
+<div class="flex items-center p-4 justify-between max-w-5xl mx-auto w-full">
+<div class="flex items-center gap-3">
+<div class="text-slate-600 dark:text-slate-400 flex size-10 shrink-0 items-center justify-center hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full cursor-pointer">
+<span class="material-symbols-outlined">arrow_back</span>
+</div>
+<div>
+<h1 class="text-slate-900 dark:text-slate-100 text-lg font-bold leading-tight tracking-tight">Contrato de Trabajo</h1>
+<p class="text-xs text-slate-500 dark:text-slate-400">ID: DOC-2024-0892 • RRHH</p>
+</div>
+</div>
+<div class="flex items-center gap-2">
+<button class="flex size-10 items-center justify-center rounded-full text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800">
+<span class="material-symbols-outlined">download</span>
+</button>
+<button class="flex size-10 items-center justify-center rounded-full text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800">
+<span class="material-symbols-outlined">more_vert</span>
+</button>
+</div>
+</div>
+</header>
+<main class="flex-1 max-w-5xl mx-auto w-full p-4 md:p-6 space-y-6">
+<!-- Progress Bar Component -->
+<div class="bg-white dark:bg-slate-900 rounded-xl p-5 border border-slate-200 dark:border-slate-800">
+<div class="flex flex-col gap-3">
+<div class="flex gap-6 justify-between items-center">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-sm">verified_user</span>
+<p class="text-slate-900 dark:text-slate-100 text-sm font-semibold">Proceso de Firma</p>
+</div>
+<p class="text-slate-500 dark:text-slate-400 text-xs font-medium">1 de 2 Firmas pendientes</p>
+</div>
+<div class="w-full h-2 rounded-full bg-slate-100 dark:bg-slate-800 overflow-hidden">
+<div class="h-full bg-primary" style="width: 50%;"></div>
+</div>
+</div>
+</div>
+<!-- PDF Preview Area -->
+<div class="flex flex-col gap-4">
+<div class="flex items-center justify-between px-2">
+<h2 class="text-slate-900 dark:text-slate-100 text-sm font-bold uppercase tracking-wider">Vista Previa del Documento</h2>
+<div class="flex items-center gap-2 text-xs text-slate-500">
+<span class="material-symbols-outlined text-base">zoom_in</span>
+<span>100%</span>
+</div>
+</div>
+<div class="relative bg-slate-200 dark:bg-slate-800 rounded-xl p-4 md:p-8 min-h-[600px] flex justify-center items-start overflow-hidden border border-slate-200 dark:border-slate-700">
+<!-- PDF Sheet Mockup -->
+<div class="bg-white text-slate-800 w-full max-w-2xl aspect-[1/1.414] pdf-shadow rounded-sm p-10 space-y-6 relative">
+<div class="flex justify-between items-start border-b border-slate-100 pb-6">
+<div class="w-12 h-12 bg-primary/10 rounded flex items-center justify-center">
+<span class="material-symbols-outlined text-primary">business</span>
+</div>
+<div class="text-right">
+<p class="font-bold text-sm">CORP SOLUTIONS S.A.</p>
+<p class="text-xs text-slate-400">NIT: 900.123.456-7</p>
+</div>
+</div>
+<div class="space-y-4">
+<h3 class="text-center font-bold text-lg underline">CONTRATO INDIVIDUAL DE TRABAJO</h3>
+<p class="text-xs leading-relaxed text-justify">
+                            Entre el suscrito, actuando en nombre y representación de <strong>CORP SOLUTIONS S.A.</strong>, que en adelante se denominará EL EMPLEADOR, y por la otra parte <strong>JUAN PÉREZ GARCÍA</strong>, mayor de edad, identificado como aparece al pie de su firma, quien para los efectos del presente contrato se denominará EL TRABAJADOR, se ha convenido celebrar el presente contrato de trabajo regido por las siguientes cláusulas...
+                        </p>
+<div class="h-4 bg-slate-50 rounded w-full"></div>
+<div class="h-4 bg-slate-50 rounded w-5/6"></div>
+<div class="h-4 bg-slate-50 rounded w-4/6"></div>
+<div class="pt-8 border-t border-dashed border-slate-200">
+<p class="text-[10px] text-slate-400 uppercase font-bold mb-8 tracking-widest">Espacio para firma electrónica</p>
+<div class="flex justify-between gap-12">
+<div class="flex-1 border-t border-slate-300 pt-2">
+<p class="text-[9px] font-bold">REPRESENTANTE LEGAL</p>
+<p class="text-[9px] text-slate-400">Firmado digitalmente: 2024-05-20</p>
+</div>
+<div class="flex-1 border-t border-slate-300 pt-2 border-primary/30 bg-primary/5 p-2 rounded-t">
+<p class="text-[9px] font-bold text-primary">EL TRABAJADOR</p>
+<p class="text-[9px] text-primary/60 italic">Pendiente de firma...</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Security Badge -->
+<div class="flex flex-wrap items-center justify-center gap-6 py-4 px-6 rounded-xl bg-slate-50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">encrypted</span>
+<span class="text-xs font-medium text-slate-600 dark:text-slate-400">Firma Electrónica Avanzada</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">gavel</span>
+<span class="text-xs font-medium text-slate-600 dark:text-slate-400">Cumplimiento Legal ISO 27001</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">history_edu</span>
+<span class="text-xs font-medium text-slate-600 dark:text-slate-400">Audit Trail Certificado</span>
+</div>
+</div>
+<!-- Action Section -->
+<div class="flex flex-col gap-4 pb-24">
+<div class="flex flex-col md:flex-row gap-4">
+<button class="flex-1 bg-primary hover:bg-primary/90 text-white font-bold py-4 px-6 rounded-xl flex items-center justify-center gap-2 shadow-lg shadow-primary/20 transition-all active:scale-[0.98]">
+<span class="material-symbols-outlined">draw</span>
+                    Firmar Documento
+                </button>
+<button class="md:w-1/3 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 font-bold py-4 px-6 rounded-xl flex items-center justify-center gap-2 hover:bg-slate-50 dark:hover:bg-slate-700 transition-all">
+<span class="material-symbols-outlined text-red-500">cancel</span>
+                    Rechazar
+                </button>
+</div>
+<p class="text-center text-[11px] text-slate-500 dark:text-slate-400 px-4">
+                Al hacer clic en "Firmar Documento", aceptas que esta firma electrónica tiene la misma validez legal que una firma manuscrita, conforme a la Ley de Comercio Electrónico y Firmas Digitales.
+            </p>
+</div>
+</main>
+<!-- Bottom Navigation Bar -->
+<nav class="fixed bottom-0 left-0 right-0 z-50 bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 px-4 pb-6 pt-2">
+<div class="max-w-md mx-auto flex justify-between items-center">
+<a class="flex flex-1 flex-col items-center gap-1 text-slate-400 dark:text-slate-500" href="#">
+<span class="material-symbols-outlined">home</span>
+<p class="text-[10px] font-medium leading-normal">Inicio</p>
+</a>
+<a class="flex flex-1 flex-col items-center gap-1 text-slate-400 dark:text-slate-500" href="#">
+<span class="material-symbols-outlined text-slate-900 dark:text-slate-100">description</span>
+<p class="text-[10px] font-medium leading-normal text-slate-900 dark:text-slate-100">Documentos</p>
+</a>
+<div class="relative -top-8">
+<button class="flex size-14 items-center justify-center rounded-full bg-primary text-white shadow-xl shadow-primary/30 border-4 border-white dark:border-slate-900">
+<span class="material-symbols-outlined text-3xl">add</span>
+</button>
+</div>
+<a class="flex flex-1 flex-col items-center gap-1 text-primary" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1">edit_document</span>
+<p class="text-[10px] font-medium leading-normal">Firmas</p>
+</a>
+<a class="flex flex-1 flex-col items-center gap-1 text-slate-400 dark:text-slate-500" href="#">
+<span class="material-symbols-outlined">settings</span>
+<p class="text-[10px] font-medium leading-normal">Ajustes</p>
+</a>
+</div>
+</nav>
+</body></html>

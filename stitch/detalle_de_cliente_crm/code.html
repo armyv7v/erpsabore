@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+
+<html lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#ec5b13",
+                        "background-light": "#f8f6f6",
+                        "background-dark": "#221610",
+                    },
+                    fontFamily: {
+                        "display": ["Public Sans", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        body { font-family: 'Public Sans', sans-serif; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        .material-symbols-fill { font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 min-h-screen flex flex-col">
+<!-- Header Section -->
+<header class="bg-white dark:bg-stone-900 border-b border-slate-200 dark:border-stone-800 sticky top-0 z-10">
+<div class="flex items-center p-4 justify-between">
+<button class="text-slate-600 dark:text-slate-400 p-1">
+<span class="material-symbols-outlined">arrow_back</span>
+</button>
+<h2 class="text-lg font-bold flex-1 text-center">Detalle de Cliente</h2>
+<button class="text-slate-600 dark:text-slate-400 p-1">
+<span class="material-symbols-outlined">more_vert</span>
+</button>
+</div>
+</header>
+<main class="flex-1 overflow-y-auto pb-24">
+<!-- Profile Overview -->
+<div class="p-4 bg-white dark:bg-stone-900 mb-2">
+<div class="flex items-center gap-4 mb-4">
+<div class="size-20 rounded-xl bg-primary/10 flex items-center justify-center text-primary border border-primary/20 overflow-hidden" data-alt="Corporate building silhouette for agricultural company profile">
+<span class="material-symbols-outlined text-4xl">agriculture</span>
+</div>
+<div class="flex flex-col">
+<h1 class="text-xl font-bold leading-tight">Agrícola Maipo SpA</h1>
+<div class="flex gap-2 mt-1">
+<span class="bg-primary/10 text-primary text-xs font-semibold px-2.5 py-0.5 rounded-full border border-primary/20">Cliente</span>
+<span class="bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 text-xs font-semibold px-2.5 py-0.5 rounded-full border border-emerald-200 dark:border-emerald-800">Activo</span>
+</div>
+</div>
+</div>
+<!-- Quick Actions Grid -->
+<div class="grid grid-cols-4 gap-2 py-4 border-t border-slate-100 dark:border-stone-800">
+<div class="flex flex-col items-center gap-1.5">
+<button class="bg-primary text-white p-3 rounded-full flex items-center justify-center shadow-lg shadow-primary/20">
+<span class="material-symbols-outlined">call</span>
+</button>
+<span class="text-[11px] font-medium">Llamar</span>
+</div>
+<div class="flex flex-col items-center gap-1.5">
+<button class="bg-emerald-500 text-white p-3 rounded-full flex items-center justify-center shadow-lg shadow-emerald-500/20">
+<span class="material-symbols-outlined">chat</span>
+</button>
+<span class="text-[11px] font-medium">WhatsApp</span>
+</div>
+<div class="flex flex-col items-center gap-1.5">
+<button class="bg-blue-500 text-white p-3 rounded-full flex items-center justify-center shadow-lg shadow-blue-500/20">
+<span class="material-symbols-outlined">mail</span>
+</button>
+<span class="text-[11px] font-medium">Email</span>
+</div>
+<div class="flex flex-col items-center gap-1.5">
+<button class="bg-slate-800 dark:bg-stone-700 text-white p-3 rounded-full flex items-center justify-center shadow-lg shadow-slate-800/20">
+<span class="material-symbols-outlined">add_circle</span>
+</button>
+<span class="text-[11px] font-medium">Oportunidad</span>
+</div>
+</div>
+</div>
+<!-- General Data Section -->
+<section class="p-4 bg-white dark:bg-stone-900 mb-2">
+<div class="flex items-center justify-between mb-3">
+<h3 class="font-bold text-slate-900 dark:text-slate-100">Datos Generales</h3>
+<button class="text-primary text-sm font-semibold">Editar</button>
+</div>
+<div class="space-y-4">
+<div class="flex items-start gap-3">
+<span class="material-symbols-outlined text-slate-400">fingerprint</span>
+<div>
+<p class="text-xs text-slate-500 uppercase tracking-wider">RUT</p>
+<p class="text-sm font-medium">76.123.456-K</p>
+</div>
+</div>
+<div class="flex items-start gap-3">
+<span class="material-symbols-outlined text-slate-400">work</span>
+<div>
+<p class="text-xs text-slate-500 uppercase tracking-wider">Giro</p>
+<p class="text-sm font-medium">Exportadora de Frutas y Hortalizas</p>
+</div>
+</div>
+<div class="flex items-start gap-3">
+<span class="material-symbols-outlined text-slate-400">location_on</span>
+<div>
+<p class="text-xs text-slate-500 uppercase tracking-wider">Dirección Casa Matriz</p>
+<p class="text-sm font-medium" data-location="Paine, Chile">Camino Real 1040, Paine, Región Metropolitana</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Open Opportunities Section -->
+<section class="p-4 bg-white dark:bg-stone-900 mb-2">
+<div class="flex items-center justify-between mb-4">
+<h3 class="font-bold text-slate-900 dark:text-slate-100">Oportunidades Abiertas</h3>
+<span class="bg-primary/10 text-primary text-[10px] px-2 py-0.5 rounded-lg">2 En curso</span>
+</div>
+<div class="space-y-3">
+<div class="p-3 border border-slate-100 dark:border-stone-800 rounded-xl bg-slate-50 dark:bg-stone-800/50">
+<div class="flex justify-between items-start mb-2">
+<h4 class="text-sm font-bold">Implementación ERP Fase 2</h4>
+<span class="text-sm font-bold text-primary">$12.500.000</span>
+</div>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-1.5">
+<span class="size-2 rounded-full bg-blue-500"></span>
+<span class="text-xs text-slate-600 dark:text-slate-400">Negociación</span>
+</div>
+<span class="text-[10px] text-slate-400 italic">Cierre: 15 Oct</span>
+</div>
+</div>
+<div class="p-3 border border-slate-100 dark:border-stone-800 rounded-xl bg-slate-50 dark:bg-stone-800/50">
+<div class="flex justify-between items-start mb-2">
+<h4 class="text-sm font-bold">Mantenimiento Anual</h4>
+<span class="text-sm font-bold text-primary">$1.200.000</span>
+</div>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-1.5">
+<span class="size-2 rounded-full bg-amber-500"></span>
+<span class="text-xs text-slate-600 dark:text-slate-400">Propuesta</span>
+</div>
+<span class="text-[10px] text-slate-400 italic">Cierre: 30 Nov</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Activity Timeline Section -->
+<section class="p-4 bg-white dark:bg-stone-900">
+<h3 class="font-bold text-slate-900 dark:text-slate-100 mb-4">Historial de Actividad</h3>
+<div class="relative pl-6 space-y-6 before:content-[''] before:absolute before:left-[11px] before:top-2 before:bottom-0 before:w-0.5 before:bg-slate-200 dark:before:bg-stone-800">
+<!-- Activity Item -->
+<div class="relative">
+<span class="absolute -left-[23px] top-1 size-4 rounded-full bg-primary border-4 border-white dark:border-stone-900"></span>
+<div class="flex flex-col">
+<div class="flex justify-between items-center">
+<span class="text-xs font-bold">Llamada de Seguimiento</span>
+<span class="text-[10px] text-slate-400">Hoy, 10:30 AM</span>
+</div>
+<p class="text-sm text-slate-600 dark:text-slate-400 mt-1">Se conversa con gerente sobre la propuesta enviada el lunes. Solicita ajuste en presupuesto de capacitación.</p>
+<p class="text-[10px] text-primary font-medium mt-1">Por: Juan Pérez</p>
+</div>
+</div>
+<!-- Activity Item -->
+<div class="relative">
+<span class="absolute -left-[23px] top-1 size-4 rounded-full bg-slate-300 dark:bg-stone-700 border-4 border-white dark:border-stone-900"></span>
+<div class="flex flex-col">
+<div class="flex justify-between items-center">
+<span class="text-xs font-bold">Correo Enviado</span>
+<span class="text-[10px] text-slate-400">Ayer, 16:45 PM</span>
+</div>
+<p class="text-sm text-slate-600 dark:text-slate-400 mt-1">Envío de cotización formal para el proyecto de expansión 2024.</p>
+</div>
+</div>
+</div>
+<button class="w-full mt-6 py-2.5 border border-slate-200 dark:border-stone-800 rounded-xl text-sm font-semibold text-slate-600 dark:text-slate-400">Ver historial completo</button>
+</section>
+</main>
+<!-- Bottom Navigation Bar -->
+<nav class="fixed bottom-0 left-0 right-0 bg-white dark:bg-stone-950 border-t border-slate-200 dark:border-stone-800 px-2 pb-6 pt-2 z-20">
+<div class="flex justify-around items-center">
+<a class="flex flex-col items-center gap-1 group" href="#">
+<span class="material-symbols-outlined text-slate-400 group-hover:text-primary transition-colors">home</span>
+<span class="text-[10px] font-medium text-slate-500">Inicio</span>
+</a>
+<a class="flex flex-col items-center gap-1 group" href="#">
+<span class="material-symbols-outlined text-slate-400 group-hover:text-primary transition-colors">payments</span>
+<span class="text-[10px] font-medium text-slate-500">Ventas</span>
+</a>
+<a class="flex flex-col items-center gap-1 group" href="#">
+<span class="material-symbols-outlined text-primary material-symbols-fill">person_pin_circle</span>
+<span class="text-[10px] font-bold text-primary">CRM</span>
+</a>
+<a class="flex flex-col items-center gap-1 group" href="#">
+<span class="material-symbols-outlined text-slate-400 group-hover:text-primary transition-colors">inventory_2</span>
+<span class="text-[10px] font-medium text-slate-500">Stock</span>
+</a>
+<a class="flex flex-col items-center gap-1 group" href="#">
+<span class="material-symbols-outlined text-slate-400 group-hover:text-primary transition-colors">menu</span>
+<span class="text-[10px] font-medium text-slate-500">Más</span>
+</a>
+</div>
+</nav>
+</body></html>

@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+
+<html lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#ec5b13",
+                        "background-light": "#f8f6f6",
+                        "background-dark": "#221610",
+                    },
+                    fontFamily: {
+                        "display": ["Public Sans"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<title>Reporte de Recaudación Diaria</title>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 antialiased">
+<div class="relative flex min-h-screen w-full flex-col overflow-x-hidden">
+<!-- Header Section -->
+<header class="sticky top-0 z-10 flex items-center bg-background-light dark:bg-background-dark p-4 border-b border-slate-200 dark:border-slate-800 justify-between">
+<div class="flex items-center gap-3">
+<div class="text-primary cursor-pointer">
+<span class="material-symbols-outlined text-2xl">arrow_back</span>
+</div>
+<h1 class="text-lg font-bold leading-tight tracking-tight">Reporte de Recaudación Diaria</h1>
+</div>
+<div class="flex items-center gap-2">
+<button class="flex items-center justify-center rounded-xl p-2 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300">
+<span class="material-symbols-outlined">download</span>
+</button>
+<button class="flex items-center justify-center rounded-xl p-2 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300">
+<span class="material-symbols-outlined">share</span>
+</button>
+</div>
+</header>
+<!-- Main Content -->
+<main class="flex-1 pb-24">
+<!-- Filter Section -->
+<section class="p-4 bg-white dark:bg-slate-900/50 border-b border-slate-200 dark:border-slate-800">
+<div class="flex flex-col gap-1">
+<label class="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">Fecha de Reporte</label>
+<div class="relative">
+<input class="w-full rounded-xl border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-slate-100 h-12 px-4 focus:ring-primary focus:border-primary" type="date" value="2023-10-27"/>
+<div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-slate-400">
+<span class="material-symbols-outlined">calendar_today</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Key Metrics -->
+<section class="grid grid-cols-1 md:grid-cols-3 gap-4 p-4">
+<div class="flex flex-col gap-2 rounded-xl p-5 bg-primary/10 border border-primary/20">
+<div class="flex justify-between items-start">
+<p class="text-slate-600 dark:text-slate-400 text-sm font-medium">Total Recaudado</p>
+<span class="material-symbols-outlined text-primary">account_balance_wallet</span>
+</div>
+<p class="text-2xl font-bold tracking-tight">$4.500.000 CLP</p>
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-emerald-500 text-sm">trending_up</span>
+<p class="text-emerald-500 text-xs font-semibold">+12.5% vs ayer</p>
+</div>
+</div>
+<div class="flex flex-col gap-2 rounded-xl p-5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm">
+<div class="flex justify-between items-start">
+<p class="text-slate-600 dark:text-slate-400 text-sm font-medium">Efectivo en Caja</p>
+<span class="material-symbols-outlined text-slate-400">payments</span>
+</div>
+<p class="text-2xl font-bold tracking-tight">$850.000 CLP</p>
+<p class="text-slate-500 text-xs">Fondo fijo: $100.000</p>
+</div>
+<div class="flex flex-col gap-2 rounded-xl p-5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm">
+<div class="flex justify-between items-start">
+<p class="text-slate-600 dark:text-slate-400 text-sm font-medium">Transferencias</p>
+<span class="material-symbols-outlined text-slate-400">sync_alt</span>
+</div>
+<p class="text-2xl font-bold tracking-tight">$3.650.000 CLP</p>
+<p class="text-slate-500 text-xs">Pendientes: 2 ($120.000)</p>
+</div>
+</section>
+<!-- Breakdown by Payment Method -->
+<section class="px-4 py-2">
+<h3 class="text-base font-bold mb-4">Desglose por Medio de Pago</h3>
+<div class="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 divide-y divide-slate-100 dark:divide-slate-800">
+<div class="flex items-center justify-between p-4">
+<div class="flex items-center gap-3">
+<div class="size-10 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center text-blue-600">
+<span class="material-symbols-outlined">payments</span>
+</div>
+<div>
+<p class="font-semibold text-sm">Efectivo</p>
+<p class="text-xs text-slate-500">14 Transacciones</p>
+</div>
+</div>
+<p class="font-bold">$850.000 CLP</p>
+</div>
+<div class="flex items-center justify-between p-4">
+<div class="flex items-center gap-3">
+<div class="size-10 rounded-full bg-emerald-100 dark:bg-emerald-900/30 flex items-center justify-center text-emerald-600">
+<span class="material-symbols-outlined">sync_alt</span>
+</div>
+<div>
+<p class="font-semibold text-sm">Transferencias</p>
+<p class="text-xs text-slate-500">22 Transacciones</p>
+</div>
+</div>
+<p class="font-bold">$2.150.000 CLP</p>
+</div>
+<div class="flex items-center justify-between p-4">
+<div class="flex items-center gap-3">
+<div class="size-10 rounded-full bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center text-purple-600">
+<span class="material-symbols-outlined">credit_card</span>
+</div>
+<div>
+<p class="font-semibold text-sm">Tarjetas (Débito/Crédito)</p>
+<p class="text-xs text-slate-500">38 Transacciones</p>
+</div>
+</div>
+<p class="font-bold">$1.500.000 CLP</p>
+</div>
+</div>
+</section>
+<!-- Recaudación por Caja/Cuenta -->
+<section class="px-4 py-4">
+<h3 class="text-base font-bold mb-4">Recaudación por Caja/Cuenta</h3>
+<div class="space-y-4">
+<div>
+<div class="flex justify-between text-sm mb-1">
+<span class="text-slate-600 dark:text-slate-400">Caja Central</span>
+<span class="font-bold">$1.200.000 CLP (27%)</span>
+</div>
+<div class="w-full bg-slate-200 dark:bg-slate-800 rounded-full h-2">
+<div class="bg-primary h-2 rounded-full" style="width: 27%"></div>
+</div>
+</div>
+<div>
+<div class="flex justify-between text-sm mb-1">
+<span class="text-slate-600 dark:text-slate-400">Banco Santander (Principal)</span>
+<span class="font-bold">$2.800.000 CLP (62%)</span>
+</div>
+<div class="w-full bg-slate-200 dark:bg-slate-800 rounded-full h-2">
+<div class="bg-primary h-2 rounded-full" style="width: 62%"></div>
+</div>
+</div>
+<div>
+<div class="flex justify-between text-sm mb-1">
+<span class="text-slate-600 dark:text-slate-400">Banco Estado</span>
+<span class="font-bold">$500.000 CLP (11%)</span>
+</div>
+<div class="w-full bg-slate-200 dark:bg-slate-800 rounded-full h-2">
+<div class="bg-primary h-2 rounded-full" style="width: 11%"></div>
+</div>
+</div>
+</div>
+</section>
+<!-- Latest Collections List -->
+<section class="px-4 py-4">
+<div class="flex items-center justify-between mb-4">
+<h3 class="text-base font-bold">Últimas Recaudaciones</h3>
+<button class="text-primary text-sm font-semibold">Ver todas</button>
+</div>
+<div class="space-y-3">
+<!-- Item 1 -->
+<div class="bg-white dark:bg-slate-900 p-4 rounded-xl border border-slate-200 dark:border-slate-800 flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="size-10 rounded-lg bg-slate-100 dark:bg-slate-800 flex items-center justify-center font-bold text-primary">
+                                JS
+                            </div>
+<div>
+<p class="font-bold text-sm">Juan Soto Pérez</p>
+<p class="text-xs text-slate-500">Ref: Factura #2940</p>
+</div>
+</div>
+<div class="text-right">
+<p class="font-bold text-sm">$45.990</p>
+<p class="text-[10px] text-slate-400 uppercase font-bold">Transf. 15:32</p>
+</div>
+</div>
+<!-- Item 2 -->
+<div class="bg-white dark:bg-slate-900 p-4 rounded-xl border border-slate-200 dark:border-slate-800 flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="size-10 rounded-lg bg-slate-100 dark:bg-slate-800 flex items-center justify-center font-bold text-primary">
+                                ML
+                            </div>
+<div>
+<p class="font-bold text-sm">María López G.</p>
+<p class="text-xs text-slate-500">Ref: Nota Venta #122</p>
+</div>
+</div>
+<div class="text-right">
+<p class="font-bold text-sm">$12.500</p>
+<p class="text-[10px] text-slate-400 uppercase font-bold">Efectivo 14:45</p>
+</div>
+</div>
+<!-- Item 3 -->
+<div class="bg-white dark:bg-slate-900 p-4 rounded-xl border border-slate-200 dark:border-slate-800 flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="size-10 rounded-lg bg-slate-100 dark:bg-slate-800 flex items-center justify-center font-bold text-primary">
+                                SC
+                            </div>
+<div>
+<p class="font-bold text-sm">Servicios Constructora SpA</p>
+<p class="text-xs text-slate-500">Ref: Factura #2811</p>
+</div>
+</div>
+<div class="text-right">
+<p class="font-bold text-sm">$1.240.000</p>
+<p class="text-[10px] text-slate-400 uppercase font-bold">Transf. 12:10</p>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Bottom Navigation Bar -->
+<nav class="fixed bottom-0 w-full bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 px-2 py-2 flex items-center justify-around">
+<a class="flex flex-col items-center gap-1 p-2 text-slate-400" href="#">
+<span class="material-symbols-outlined">home</span>
+<span class="text-[10px] font-medium">Inicio</span>
+</a>
+<a class="flex flex-col items-center gap-1 p-2 text-slate-400" href="#">
+<span class="material-symbols-outlined">sell</span>
+<span class="text-[10px] font-medium">Ventas</span>
+</a>
+<a class="flex flex-col items-center gap-1 p-2 text-primary" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1">receipt_long</span>
+<span class="text-[10px] font-bold">Recaudación</span>
+</a>
+<a class="flex flex-col items-center gap-1 p-2 text-slate-400" href="#">
+<span class="material-symbols-outlined">group</span>
+<span class="text-[10px] font-medium">Clientes</span>
+</a>
+<a class="flex flex-col items-center gap-1 p-2 text-slate-400" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="text-[10px] font-medium">Config</span>
+</a>
+</nav>
+</div>
+</body></html>

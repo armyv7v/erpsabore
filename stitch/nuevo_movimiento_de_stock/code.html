@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+
+<html lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#ec5b13",
+                        "background-light": "#f8f6f6",
+                        "background-dark": "#221610",
+                    },
+                    fontFamily: {
+                        "display": ["Public Sans"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<title>Movimiento de Inventario</title>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 min-h-screen">
+<div class="max-w-2xl mx-auto pb-12">
+<!-- TopAppBar -->
+<div class="flex items-center p-4 pb-2 justify-between">
+<div class="text-slate-900 dark:text-slate-100 flex size-12 shrink-0 items-center cursor-pointer">
+<span class="material-symbols-outlined">arrow_back</span>
+</div>
+<h2 class="text-slate-900 dark:text-slate-100 text-lg font-bold leading-tight tracking-tight flex-1 ml-2">Movimiento de Inventario</h2>
+<div class="flex size-12 shrink-0 items-center justify-end">
+<span class="material-symbols-outlined">history</span>
+</div>
+</div>
+<!-- 1. Selector de tipo de movimiento -->
+<div class="flex px-4 py-3">
+<div class="flex h-12 flex-1 items-center justify-center rounded-xl bg-slate-200 dark:bg-slate-800 p-1">
+<label class="flex cursor-pointer h-full grow items-center justify-center overflow-hidden rounded-lg px-2 has-[:checked]:bg-white dark:has-[:checked]:bg-slate-700 has-[:checked]:shadow-sm has-[:checked]:text-primary text-slate-600 dark:text-slate-400 text-sm font-semibold transition-all">
+<span class="truncate">Entrada</span>
+<input class="invisible w-0" name="mov_type" type="radio" value="Entrada"/>
+</label>
+<label class="flex cursor-pointer h-full grow items-center justify-center overflow-hidden rounded-lg px-2 has-[:checked]:bg-white dark:has-[:checked]:bg-slate-700 has-[:checked]:shadow-sm has-[:checked]:text-primary text-slate-600 dark:text-slate-400 text-sm font-semibold transition-all">
+<span class="truncate">Salida</span>
+<input class="invisible w-0" name="mov_type" type="radio" value="Salida"/>
+</label>
+<label class="flex cursor-pointer h-full grow items-center justify-center overflow-hidden rounded-lg px-2 has-[:checked]:bg-white dark:has-[:checked]:bg-slate-700 has-[:checked]:shadow-sm has-[:checked]:text-primary text-slate-600 dark:text-slate-400 text-sm font-semibold transition-all">
+<span class="truncate">Transferencia</span>
+<input checked="" class="invisible w-0" name="mov_type" type="radio" value="Transferencia"/>
+</label>
+</div>
+</div>
+<!-- 2. Selector de bodega origen y destino -->
+<div class="space-y-4 px-4 py-3">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<label class="flex flex-col min-w-40 flex-1">
+<p class="text-slate-700 dark:text-slate-300 text-sm font-medium leading-normal pb-2">Bodega Origen</p>
+<div class="relative">
+<select class="form-input flex w-full appearance-none rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 h-12 px-4 text-base focus:ring-2 focus:ring-primary/50 focus:border-primary outline-none">
+<option value="">Seleccionar origen</option>
+<option value="central">Bodega Central</option>
+<option value="norte">Sucursal Norte</option>
+<option value="sur">Sucursal Sur</option>
+</select>
+<span class="material-symbols-outlined absolute right-3 top-3 pointer-events-none text-slate-400">expand_more</span>
+</div>
+</label>
+<label class="flex flex-col min-w-40 flex-1">
+<p class="text-slate-700 dark:text-slate-300 text-sm font-medium leading-normal pb-2">Bodega Destino</p>
+<div class="relative">
+<select class="form-input flex w-full appearance-none rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 h-12 px-4 text-base focus:ring-2 focus:ring-primary/50 focus:border-primary outline-none">
+<option value="">Seleccionar destino</option>
+<option value="central">Bodega Central</option>
+<option value="norte">Sucursal Norte</option>
+<option value="sur">Sucursal Sur</option>
+</select>
+<span class="material-symbols-outlined absolute right-3 top-3 pointer-events-none text-slate-400">expand_more</span>
+</div>
+</label>
+</div>
+</div>
+<!-- 4. Campo para motivo/referencia -->
+<div class="px-4 py-3">
+<label class="flex flex-col w-full">
+<p class="text-slate-700 dark:text-slate-300 text-sm font-medium leading-normal pb-2">Motivo o Referencia</p>
+<input class="flex w-full rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 h-12 px-4 text-base focus:ring-2 focus:ring-primary/50 focus:border-primary outline-none placeholder:text-slate-400" placeholder="Ej: Guía de Despacho #4521, Ajuste por Merma" type="text"/>
+</label>
+</div>
+<!-- 3. Lista de ítems a mover con buscador -->
+<div class="px-4 pt-6 pb-2">
+<h3 class="text-slate-900 dark:text-slate-100 text-lg font-bold leading-tight">Ítems a mover</h3>
+</div>
+<div class="px-4 py-2">
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-3 text-slate-400">search</span>
+<input class="flex w-full rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 h-12 pl-10 pr-4 text-base focus:ring-2 focus:ring-primary/50 focus:border-primary outline-none placeholder:text-slate-400" placeholder="Buscar producto por nombre o SKU..." type="text"/>
+</div>
+</div>
+<!-- Lista de ítems seleccionados -->
+<div class="px-4 py-2 space-y-3">
+<!-- Item Card -->
+<div class="flex items-center gap-4 p-3 bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm">
+<div class="size-14 rounded-lg bg-slate-100 dark:bg-slate-700 flex items-center justify-center overflow-hidden">
+<img class="object-cover size-full" data-alt="Reloj minimalista blanco sobre fondo neutro" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCD1TQTlhePy0N_QXpKItgnpSbVwoR6t0xk1sy2Vmfp1UoJEVrZpTNGwAa0Jl8HHzXYxOzutjODqAYN7oaGpocKUlGMQF1s5gC2QOswYd_3Nqq1LAJHQVKTSdGBkv1mD1CyxvY0HNtbCa4f72fpXzHl8Z1JK_ZxiBjyWUQfMga1OIzFR8K6w6Zo7RT0Y1YtfL7gtUaqzVDFg3Jn6EutO-d9z4rZOxZFF79sGUVfFBcqObU4iNXnlA3qazyIvr8-LKOaKfOjT6EIxvs"/>
+</div>
+<div class="flex-1 min-w-0">
+<p class="text-sm font-bold text-slate-900 dark:text-slate-100 truncate">Smartwatch Series 7</p>
+<p class="text-xs text-slate-500 dark:text-slate-400">SKU: SW-007-BL</p>
+</div>
+<div class="flex items-center gap-2">
+<button class="size-8 flex items-center justify-center rounded-lg bg-primary/10 text-primary">
+<span class="material-symbols-outlined text-lg">remove</span>
+</button>
+<input class="w-12 text-center bg-transparent border-none p-0 text-sm font-bold focus:ring-0" type="number" value="12"/>
+<button class="size-8 flex items-center justify-center rounded-lg bg-primary/10 text-primary">
+<span class="material-symbols-outlined text-lg">add</span>
+</button>
+</div>
+<button class="text-slate-400 hover:text-red-500 transition-colors">
+<span class="material-symbols-outlined">delete</span>
+</button>
+</div>
+<!-- Item Card 2 -->
+<div class="flex items-center gap-4 p-3 bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm">
+<div class="size-14 rounded-lg bg-slate-100 dark:bg-slate-700 flex items-center justify-center overflow-hidden">
+<img class="object-cover size-full" data-alt="Audífonos inalámbricos negros profesionales" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAdB7FZH_dEs5aB9q7rkq4IOVX0SWe1H5LXwOJ13B5K3rI0MV5803R5zeewPYvRpNtyPEu8NaO4GpbX9oUIcpTdTuVbmzyOdH_tNn_FI-L7ckkgLSLPIEEYAGHn2Hz-hIX5ClY_4w-mQNnq9B1Ib8nRWAkmIsAI8Mh7RQ6dL9BRc-Z4vVWapqpvqjZP0Uexi37Hs4C3Ps1B0zz2VPbXJ04xHr3ZC2Dl4bwUP2aLrWKhvzUXYsJ476lDpEBT2tGeswfO1H7RJcpwYko"/>
+</div>
+<div class="flex-1 min-w-0">
+<p class="text-sm font-bold text-slate-900 dark:text-slate-100 truncate">Audífonos Pro Wireless</p>
+<p class="text-xs text-slate-500 dark:text-slate-400">SKU: AU-990-PR</p>
+</div>
+<div class="flex items-center gap-2">
+<button class="size-8 flex items-center justify-center rounded-lg bg-primary/10 text-primary">
+<span class="material-symbols-outlined text-lg">remove</span>
+</button>
+<input class="w-12 text-center bg-transparent border-none p-0 text-sm font-bold focus:ring-0" type="number" value="5"/>
+<button class="size-8 flex items-center justify-center rounded-lg bg-primary/10 text-primary">
+<span class="material-symbols-outlined text-lg">add</span>
+</button>
+</div>
+<button class="text-slate-400 hover:text-red-500 transition-colors">
+<span class="material-symbols-outlined">delete</span>
+</button>
+</div>
+<!-- Botón Añadir más -->
+<button class="w-full py-3 flex items-center justify-center gap-2 border-2 border-dashed border-slate-300 dark:border-slate-700 rounded-xl text-slate-500 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors">
+<span class="material-symbols-outlined">add_circle</span>
+<span class="text-sm font-medium">Añadir otro producto</span>
+</button>
+</div>
+<!-- 5. Botón principal 'Confirmar Movimiento' -->
+<div class="fixed bottom-0 left-0 right-0 p-4 bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-md border-t border-slate-200 dark:border-slate-800">
+<div class="max-w-2xl mx-auto flex gap-4">
+<button class="flex-1 bg-primary text-white font-bold py-4 rounded-xl shadow-lg shadow-primary/20 hover:bg-primary/90 transition-all active:scale-[0.98]">
+                    Confirmar Movimiento
+                </button>
+</div>
+</div>
+<!-- Espaciador final para el botón fixed -->
+<div class="h-20"></div>
+</div>
+</body></html>

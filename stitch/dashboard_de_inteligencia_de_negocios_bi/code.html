@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Advanced ERP BI Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#ec5b13",
+                        "background-light": "#f8f6f6",
+                        "background-dark": "#221610",
+                    },
+                    fontFamily: {
+                        "display": ["Public Sans", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        body { font-family: 'Public Sans', sans-serif; }
+        .chart-container { position: relative; width: 100%; }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 font-display transition-colors duration-300">
+<div class="flex h-screen flex-col overflow-hidden">
+<!-- Top Navigation / Header -->
+<header class="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 bg-white dark:bg-background-dark px-6 py-4">
+<div class="flex items-center gap-4">
+<div class="flex h-10 w-10 items-center justify-center rounded-lg bg-primary text-white">
+<span class="material-symbols-outlined">analytics</span>
+</div>
+<div>
+<h1 class="text-xl font-bold leading-tight tracking-tight">ERP Intelligence</h1>
+<p class="text-xs text-slate-500 dark:text-slate-400">Enterprise Resource Planning Dashboard</p>
+</div>
+</div>
+<div class="flex items-center gap-3">
+<button class="flex h-10 w-10 items-center justify-center rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+<span class="material-symbols-outlined text-slate-600 dark:text-slate-400">search</span>
+</button>
+<button class="relative flex h-10 w-10 items-center justify-center rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+<span class="material-symbols-outlined text-slate-600 dark:text-slate-400">notifications</span>
+<span class="absolute top-2 right-2 flex h-2 w-2 rounded-full bg-primary"></span>
+</button>
+<div class="ml-2 h-10 w-10 overflow-hidden rounded-full border-2 border-primary/20">
+<img alt="User Profile" data-alt="Professional corporate user profile picture avatar" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDCBrlK11kKpdewe1sTieMgsLfZdGJMJyW1NoKNRN_z7V4H26zFgiBnUnpHCPMxUkRRp1fZ5S26l-V2rlC3gf9EtJrkPTpIt-LcThTkgK-M3MTFoWMlQbG2Wxn-4xHlsrhDvTA_RV3Utl5dAmUztb2f1dT3Ir3Eg6x_SimUcPImwI4rJoY0KjEzB770UU6DqrrsNmHqx5xbn_k56uuLwWxFySSucavlxKf9As5bIGsg9XGMKSugfNdW2p5_O24POxLNHI8IfMxdjWM"/>
+</div>
+</div>
+</header>
+<div class="flex flex-1 overflow-hidden">
+<!-- Sidebar Desktop -->
+<aside class="hidden w-64 flex-col border-r border-slate-200 dark:border-slate-800 bg-white dark:bg-background-dark md:flex">
+<nav class="flex-1 space-y-1 px-3 py-4">
+<a class="flex items-center gap-3 rounded-lg bg-primary/10 px-3 py-2.5 text-primary" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-semibold">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors" href="#">
+<span class="material-symbols-outlined">bar_chart</span>
+<span class="font-medium">Reports</span>
+</a>
+<a class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors" href="#">
+<span class="material-symbols-outlined">inventory_2</span>
+<span class="font-medium">Inventory</span>
+</a>
+<a class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors" href="#">
+<span class="material-symbols-outlined">group</span>
+<span class="font-medium">HR Management</span>
+</a>
+<a class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors" href="#">
+<span class="material-symbols-outlined">account_balance_wallet</span>
+<span class="font-medium">Finance</span>
+</a>
+</nav>
+<div class="border-t border-slate-200 dark:border-slate-800 p-4">
+<a class="flex items-center gap-3 rounded-lg px-3 py-2 text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-medium">Settings</span>
+</a>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="flex-1 overflow-y-auto bg-background-light dark:bg-background-dark p-6">
+<!-- Filters Bar -->
+<div class="mb-8 flex flex-wrap items-center justify-between gap-4">
+<div>
+<h2 class="text-2xl font-bold">Executive Overview</h2>
+<p class="text-sm text-slate-500 dark:text-slate-400">Performance metrics for current fiscal period</p>
+</div>
+<div class="flex items-center gap-3">
+<div class="flex items-center gap-2 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 px-3 py-2 shadow-sm">
+<span class="material-symbols-outlined text-slate-400 text-lg">calendar_today</span>
+<select class="border-none bg-transparent p-0 text-sm font-medium focus:ring-0">
+<option>Last 30 Days</option>
+<option>Last quarter</option>
+<option>Year to date</option>
+</select>
+</div>
+<div class="flex items-center gap-2 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 px-3 py-2 shadow-sm">
+<span class="material-symbols-outlined text-slate-400 text-lg">corporate_fare</span>
+<select class="border-none bg-transparent p-0 text-sm font-medium focus:ring-0">
+<option>All Departments</option>
+<option>Sales</option>
+<option>Marketing</option>
+<option>Production</option>
+</select>
+</div>
+<button class="flex items-center gap-2 rounded-xl bg-primary px-4 py-2 text-sm font-bold text-white shadow-lg shadow-primary/20 hover:bg-primary/90 transition-all">
+<span class="material-symbols-outlined text-lg">file_download</span>
+                            Export
+                        </button>
+</div>
+</div>
+<!-- KPI Cards -->
+<div class="mb-8 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+<div class="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-800 p-6 shadow-sm">
+<div class="flex items-center justify-between">
+<p class="text-sm font-medium text-slate-500 dark:text-slate-400">Total Revenue</p>
+<span class="flex h-8 w-8 items-center justify-center rounded-lg bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400">
+<span class="material-symbols-outlined text-lg">payments</span>
+</span>
+</div>
+<div class="mt-4 flex items-end justify-between">
+<div>
+<h3 class="text-3xl font-bold tracking-tight">$1,284,500</h3>
+<p class="mt-1 flex items-center text-sm font-medium text-green-600 dark:text-green-400">
+<span class="material-symbols-outlined text-base">trending_up</span>
+                                    12.3% <span class="ml-1 text-slate-400">vs last month</span>
+</p>
+</div>
+<div class="h-10 w-24">
+<div class="flex h-full items-end gap-1">
+<div class="w-2 rounded-full bg-primary/20 h-[40%]"></div>
+<div class="w-2 rounded-full bg-primary/20 h-[60%]"></div>
+<div class="w-2 rounded-full bg-primary/20 h-[50%]"></div>
+<div class="w-2 rounded-full bg-primary/20 h-[80%]"></div>
+<div class="w-2 rounded-full bg-primary h-full"></div>
+</div>
+</div>
+</div>
+</div>
+<div class="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-800 p-6 shadow-sm">
+<div class="flex items-center justify-between">
+<p class="text-sm font-medium text-slate-500 dark:text-slate-400">Gross Margin</p>
+<span class="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400">
+<span class="material-symbols-outlined text-lg">percent</span>
+</span>
+</div>
+<div class="mt-4 flex items-end justify-between">
+<div>
+<h3 class="text-3xl font-bold tracking-tight">42.5%</h3>
+<p class="mt-1 flex items-center text-sm font-medium text-green-600 dark:text-green-400">
+<span class="material-symbols-outlined text-base">trending_up</span>
+                                    2.1% <span class="ml-1 text-slate-400">vs last month</span>
+</p>
+</div>
+<div class="h-10 w-24">
+<div class="flex h-full items-end gap-1">
+<div class="w-2 rounded-full bg-primary/20 h-[70%]"></div>
+<div class="w-2 rounded-full bg-primary/20 h-[65%]"></div>
+<div class="w-2 rounded-full bg-primary/20 h-[75%]"></div>
+<div class="w-2 rounded-full bg-primary/20 h-[80%]"></div>
+<div class="w-2 rounded-full bg-primary h-[85%]"></div>
+</div>
+</div>
+</div>
+</div>
+<div class="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-800 p-6 shadow-sm">
+<div class="flex items-center justify-between">
+<p class="text-sm font-medium text-slate-500 dark:text-slate-400">Customer Acquisition Cost</p>
+<span class="flex h-8 w-8 items-center justify-center rounded-lg bg-orange-100 dark:bg-orange-900/30 text-orange-600 dark:text-orange-400">
+<span class="material-symbols-outlined text-lg">ads_click</span>
+</span>
+</div>
+<div class="mt-4 flex items-end justify-between">
+<div>
+<h3 class="text-3xl font-bold tracking-tight">$150.20</h3>
+<p class="mt-1 flex items-center text-sm font-medium text-red-600 dark:text-red-400">
+<span class="material-symbols-outlined text-base">trending_down</span>
+                                    5.4% <span class="ml-1 text-slate-400">improvement</span>
+</p>
+</div>
+<div class="h-10 w-24">
+<div class="flex h-full items-end gap-1">
+<div class="w-2 rounded-full bg-primary/20 h-full"></div>
+<div class="w-2 rounded-full bg-primary/20 h-[90%]"></div>
+<div class="w-2 rounded-full bg-primary/20 h-[80%]"></div>
+<div class="w-2 rounded-full bg-primary/20 h-[70%]"></div>
+<div class="w-2 rounded-full bg-primary h-[60%]"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Charts Grid -->
+<div class="grid grid-cols-1 gap-6 lg:grid-cols-2">
+<!-- Revenue Trends (Line Chart Simulation) -->
+<div class="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-800 p-6 shadow-sm">
+<div class="mb-6 flex items-center justify-between">
+<h4 class="font-bold">Monthly Revenue Trends</h4>
+<span class="material-symbols-outlined text-slate-400 cursor-pointer">more_horiz</span>
+</div>
+<div class="relative h-64 w-full">
+<!-- SVG Path for Line Chart -->
+<svg class="h-full w-full" preserveaspectratio="none" viewbox="0 0 400 200">
+<defs>
+<lineargradient id="lineGradient" x1="0" x2="0" y1="0" y2="1">
+<stop offset="0%" stop-color="#ec5b13" stop-opacity="0.3"></stop>
+<stop offset="100%" stop-color="#ec5b13" stop-opacity="0"></stop>
+</lineargradient>
+</defs>
+<path d="M0,180 L40,160 L80,170 L120,130 L160,140 L200,90 L240,110 L280,60 L320,70 L360,30 L400,45" fill="none" stroke="#ec5b13" stroke-linecap="round" stroke-width="3"></path>
+<path d="M0,180 L40,160 L80,170 L120,130 L160,140 L200,90 L240,110 L280,60 L320,70 L360,30 L400,45 L400,200 L0,200 Z" fill="url(#lineGradient)"></path>
+<!-- Grid Lines -->
+<line class="text-slate-100 dark:text-slate-700" stroke="currentColor" stroke-dasharray="4" x1="0" x2="400" y1="50" y2="50"></line>
+<line class="text-slate-100 dark:text-slate-700" stroke="currentColor" stroke-dasharray="4" x1="0" x2="400" y1="100" y2="100"></line>
+<line class="text-slate-100 dark:text-slate-700" stroke="currentColor" stroke-dasharray="4" x1="0" x2="400" y1="150" y2="150"></line>
+</svg>
+<div class="mt-4 flex justify-between text-xs text-slate-400">
+<span>JAN</span><span>MAR</span><span>MAY</span><span>JUL</span><span>SEP</span><span>NOV</span>
+</div>
+</div>
+</div>
+<!-- Revenue Breakdown (Doughnut Chart Simulation) -->
+<div class="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-800 p-6 shadow-sm">
+<div class="mb-6 flex items-center justify-between">
+<h4 class="font-bold">Revenue by Product Category</h4>
+<span class="material-symbols-outlined text-slate-400 cursor-pointer">more_horiz</span>
+</div>
+<div class="flex h-64 items-center gap-8">
+<div class="relative flex h-48 w-48 items-center justify-center">
+<svg class="h-full w-full rotate-[-90deg]" viewbox="0 0 36 36">
+<circle class="text-slate-100 dark:text-slate-700" cx="18" cy="18" fill="transparent" r="16" stroke="currentColor" stroke-width="4"></circle>
+<circle cx="18" cy="18" fill="transparent" r="16" stroke="#ec5b13" stroke-dasharray="45 100" stroke-linecap="round" stroke-width="4"></circle>
+<circle cx="18" cy="18" fill="transparent" r="16" stroke="#fbd38d" stroke-dasharray="30 100" stroke-dashoffset="-45" stroke-linecap="round" stroke-width="4"></circle>
+<circle cx="18" cy="18" fill="transparent" r="16" stroke="#718096" stroke-dasharray="25 100" stroke-dashoffset="-75" stroke-linecap="round" stroke-width="4"></circle>
+</svg>
+<div class="absolute inset-0 flex flex-col items-center justify-center">
+<span class="text-2xl font-bold">100%</span>
+<span class="text-[10px] uppercase text-slate-400">Share</span>
+</div>
+</div>
+<div class="flex-1 space-y-3">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<div class="h-3 w-3 rounded-full bg-primary"></div>
+<span class="text-sm font-medium">Software</span>
+</div>
+<span class="text-sm font-bold">45%</span>
+</div>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<div class="h-3 w-3 rounded-full bg-orange-200"></div>
+<span class="text-sm font-medium">Hardware</span>
+</div>
+<span class="text-sm font-bold">30%</span>
+</div>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<div class="h-3 w-3 rounded-full bg-slate-400"></div>
+<span class="text-sm font-medium">Services</span>
+</div>
+<span class="text-sm font-bold">25%</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Top Sales Reps (Bar Chart Simulation) -->
+<div class="lg:col-span-2 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-800 p-6 shadow-sm">
+<div class="mb-6 flex items-center justify-between">
+<h4 class="font-bold">Top Performing Sales Reps</h4>
+<div class="flex gap-2">
+<button class="rounded-lg bg-slate-100 dark:bg-slate-700 px-3 py-1 text-xs font-bold">This Month</button>
+<button class="rounded-lg px-3 py-1 text-xs font-medium text-slate-400">All Time</button>
+</div>
+</div>
+<div class="space-y-6">
+<div class="space-y-2">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="h-8 w-8 rounded-full overflow-hidden">
+<img alt="Jane Cooper" data-alt="Female professional business sales manager profile" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAEtXzvsQ_hXUWRpYqcexkdZMNja7NuIlrdo9FPFwVpqks4nkaHQysC-xhQJZkZRn5yIzvU9hvtY8KAJvKB87IXdraT45xO2MvqUYOqkS427LyI8hi_iZ_LvJGgAD7_-Ie6r2BJfmwJetfLepZfcXtho-kMQY5mO33jMh4pI_Qb1n8L9FLh2A9KftGrtv1TT78Jm1J4iHTF0frgiXzlztT1wTDVQiuXocLaaZiTlnGZqpz8N8oMjJ1SSuAlxXI4pbeEMZUDSpJFbV8"/>
+</div>
+<span class="text-sm font-semibold">Jane Cooper</span>
+</div>
+<span class="text-sm font-bold">$245,000</span>
+</div>
+<div class="h-2 w-full rounded-full bg-slate-100 dark:bg-slate-700">
+<div class="h-full w-[95%] rounded-full bg-primary"></div>
+</div>
+</div>
+<div class="space-y-2">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="h-8 w-8 rounded-full overflow-hidden">
+<img alt="Alex Rivera" data-alt="Male professional business sales manager profile" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC5yv6Wy8cE5Z-F4WgK6ejEoqO6YegYhvMdV89-9bwbk9dJJt0mDj_Bo8vHwcVURrmSIfubFQatMRzEmzsTbz3pMUuO7cxECVbgMosnocrNn5UumV1SQqB3LzwpX7yd-0dM9lSavEjyWIfy1Z6ijZHju4GN_HHorJ8uMyPX0_we9dNoWkycq5hGWJVgvsjACgDpTI64M1I9UTHFPmk7-PAuPXI1E-P33rzQWnNB1ZBgTTye5cxowTc99DA-JPT4zeIVlyFYxvC_Gn0"/>
+</div>
+<span class="text-sm font-semibold">Alex Rivera</span>
+</div>
+<span class="text-sm font-bold">$182,300</span>
+</div>
+<div class="h-2 w-full rounded-full bg-slate-100 dark:bg-slate-700">
+<div class="h-full w-[70%] rounded-full bg-primary/80"></div>
+</div>
+</div>
+<div class="space-y-2">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="h-8 w-8 rounded-full overflow-hidden">
+<img alt="Marcus Smith" data-alt="Male professional corporate account executive profile" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAoEoqcbwD6YAyKBWJH6RXXjhCkF0xSJ9H4XCmqYX09z46Pog9KPBPdOIp1GWj5BQ-1hfdLtmkXR1emCx0VpKWPuyqOZQ37tdCakDABQxd5EBOEYQiAH1Rht6Sw2Q7CTetuoMIw15ddqnKRk7cS55x-6swSiwk1FJWFPe_BEMO4wYSja__wuKH35qWf00xJiXZqKTRPSardYGEW1vgr3uB86z-4AOVjzFh6NxpcVCZ2o5q8kXPJNj1sHDC_jBM-5K5_QnBl51zCJzk"/>
+</div>
+<span class="text-sm font-semibold">Marcus Smith</span>
+</div>
+<span class="text-sm font-bold">$142,000</span>
+</div>
+<div class="h-2 w-full rounded-full bg-slate-100 dark:bg-slate-700">
+<div class="h-full w-[55%] rounded-full bg-primary/60"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+<!-- Bottom Navigation Mobile -->
+<nav class="flex border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-background-dark px-4 pb-6 pt-2 md:hidden">
+<a class="flex flex-1 flex-col items-center gap-1 text-primary" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<p class="text-[10px] font-bold">Dashboard</p>
+</a>
+<a class="flex flex-1 flex-col items-center gap-1 text-slate-400" href="#">
+<span class="material-symbols-outlined">chart_data</span>
+<p class="text-[10px] font-medium">Reports</p>
+</a>
+<a class="flex flex-1 flex-col items-center gap-1 text-slate-400" href="#">
+<span class="material-symbols-outlined">inventory</span>
+<p class="text-[10px] font-medium">Inventory</p>
+</a>
+<a class="flex flex-1 flex-col items-center gap-1 text-slate-400" href="#">
+<span class="material-symbols-outlined">settings</span>
+<p class="text-[10px] font-medium">Settings</p>
+</a>
+</nav>
+</div>
+</body></html>

@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+
+<html class="light" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Inventario ERP - Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#ec5b13",
+                        "background-light": "#f8f6f6",
+                        "background-dark": "#221610",
+                    },
+                    fontFamily: {
+                        "display": ["Public Sans", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        body { font-family: 'Public Sans', sans-serif; }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 min-h-screen pb-24">
+<!-- Header -->
+<header class="sticky top-0 z-30 bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 px-4 py-4">
+<div class="flex items-center justify-between max-w-5xl mx-auto">
+<div class="flex items-center gap-3">
+<div class="bg-primary p-2 rounded-lg flex items-center justify-center">
+<span class="material-symbols-outlined text-white">inventory_2</span>
+</div>
+<div>
+<h1 class="text-lg font-bold leading-none tracking-tight">Inventario ERP</h1>
+<p class="text-xs text-slate-500 dark:text-slate-400">Sucursal Santiago Centro</p>
+</div>
+</div>
+<div class="flex items-center gap-2">
+<button class="p-2 rounded-full hover:bg-slate-200 dark:hover:bg-slate-800 relative">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-2 right-2 flex h-2 w-2 rounded-full bg-primary"></span>
+</button>
+<button class="p-2 rounded-full hover:bg-slate-200 dark:hover:bg-slate-800">
+<span class="material-symbols-outlined">account_circle</span>
+</button>
+</div>
+</div>
+</header>
+<main class="max-w-5xl mx-auto p-4 space-y-6">
+<!-- Buscador -->
+<section>
+<div class="relative group">
+<div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+<span class="material-symbols-outlined text-slate-400 group-focus-within:text-primary transition-colors">search</span>
+</div>
+<input class="block w-full pl-11 pr-4 py-3 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all placeholder:text-slate-400" placeholder="Buscar por SKU, nombre o categoría..." type="text"/>
+</div>
+</section>
+<!-- KPIs Resumen -->
+<section class="grid grid-cols-1 md:grid-cols-3 gap-4">
+<div class="bg-white dark:bg-slate-900 p-5 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
+<div class="flex justify-between items-start mb-2">
+<p class="text-sm font-medium text-slate-500 dark:text-slate-400">Valor Total</p>
+<span class="material-symbols-outlined text-slate-400 text-sm">payments</span>
+</div>
+<p class="text-2xl font-bold">$45.280.000 <span class="text-xs font-normal text-slate-500">CLP</span></p>
+<div class="mt-2 flex items-center gap-1 text-emerald-600 dark:text-emerald-400 text-sm font-medium">
+<span class="material-symbols-outlined text-sm">trending_up</span>
+<span>+5.2% este mes</span>
+</div>
+</div>
+<div class="bg-white dark:bg-slate-900 p-5 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm ring-1 ring-red-100 dark:ring-red-900/20">
+<div class="flex justify-between items-start mb-2">
+<p class="text-sm font-medium text-slate-500 dark:text-slate-400">Stock Crítico</p>
+<span class="material-symbols-outlined text-red-500 text-sm">warning</span>
+</div>
+<p class="text-2xl font-bold">12 Alertas</p>
+<div class="mt-2 flex items-center gap-1 text-red-500 text-sm font-medium">
+<span class="material-symbols-outlined text-sm">emergency</span>
+<span>Reposición inmediata</span>
+</div>
+</div>
+<div class="bg-white dark:bg-slate-900 p-5 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
+<div class="flex justify-between items-start mb-2">
+<p class="text-sm font-medium text-slate-500 dark:text-slate-400">Productos Activos</p>
+<span class="material-symbols-outlined text-slate-400 text-sm">category</span>
+</div>
+<p class="text-2xl font-bold">1.240</p>
+<div class="mt-2 flex items-center gap-1 text-slate-500 text-sm font-medium">
+<span class="material-symbols-outlined text-sm">check_circle</span>
+<span>98% disponibles</span>
+</div>
+</div>
+</section>
+<!-- Categorías Principales -->
+<section>
+<div class="flex items-center justify-between mb-4">
+<h2 class="text-lg font-bold tracking-tight">Categorías Principales</h2>
+<button class="text-primary text-sm font-semibold hover:underline">Ver todas</button>
+</div>
+<div class="flex gap-4 overflow-x-auto pb-2 scrollbar-hide">
+<div class="flex-none w-32 bg-white dark:bg-slate-900 p-4 rounded-xl border border-slate-200 dark:border-slate-800 text-center cursor-pointer hover:border-primary transition-colors">
+<div class="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-2">
+<span class="material-symbols-outlined text-primary">computer</span>
+</div>
+<p class="text-xs font-bold">Tecnología</p>
+<p class="text-[10px] text-slate-500">420 items</p>
+</div>
+<div class="flex-none w-32 bg-white dark:bg-slate-900 p-4 rounded-xl border border-slate-200 dark:border-slate-800 text-center cursor-pointer hover:border-primary transition-colors">
+<div class="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-2">
+<span class="material-symbols-outlined text-primary">chair</span>
+</div>
+<p class="text-xs font-bold">Mobiliario</p>
+<p class="text-[10px] text-slate-500">150 items</p>
+</div>
+<div class="flex-none w-32 bg-white dark:bg-slate-900 p-4 rounded-xl border border-slate-200 dark:border-slate-800 text-center cursor-pointer hover:border-primary transition-colors">
+<div class="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-2">
+<span class="material-symbols-outlined text-primary">print</span>
+</div>
+<p class="text-xs font-bold">Suministros</p>
+<p class="text-[10px] text-slate-500">890 items</p>
+</div>
+<div class="flex-none w-32 bg-white dark:bg-slate-900 p-4 rounded-xl border border-slate-200 dark:border-slate-800 text-center cursor-pointer hover:border-primary transition-colors">
+<div class="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-2">
+<span class="material-symbols-outlined text-primary">construction</span>
+</div>
+<p class="text-xs font-bold">Herramientas</p>
+<p class="text-[10px] text-slate-500">312 items</p>
+</div>
+</div>
+</section>
+<!-- Stock Crítico -->
+<section>
+<div class="flex items-center justify-between mb-4">
+<div class="flex items-center gap-2">
+<h2 class="text-lg font-bold tracking-tight">Stock Crítico</h2>
+<span class="bg-red-500 text-white text-[10px] px-2 py-0.5 rounded-full font-bold uppercase">Acción Requerida</span>
+</div>
+</div>
+<div class="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 overflow-hidden shadow-sm">
+<div class="divide-y divide-slate-100 dark:divide-slate-800">
+<!-- Item 1 -->
+<div class="p-4 flex items-center justify-between">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 bg-slate-100 dark:bg-slate-800 rounded-lg flex items-center justify-center">
+<span class="material-symbols-outlined text-slate-400">image</span>
+</div>
+<div>
+<h3 class="text-sm font-bold">Tóner HP LaserJet M404n</h3>
+<p class="text-xs text-slate-500">SKU: HP-TN-M404-BK</p>
+<div class="mt-1 flex items-center gap-2">
+<span class="text-xs font-medium text-red-500">Actual: 2 und.</span>
+<span class="text-[10px] text-slate-400">•</span>
+<span class="text-xs text-slate-500">Mínimo: 10 und.</span>
+</div>
+</div>
+</div>
+<button class="bg-primary text-white text-xs font-bold px-4 py-2 rounded-lg hover:bg-primary/90 transition-colors">Pedir</button>
+</div>
+<!-- Item 2 -->
+<div class="p-4 flex items-center justify-between">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 bg-slate-100 dark:bg-slate-800 rounded-lg flex items-center justify-center">
+<span class="material-symbols-outlined text-slate-400">image</span>
+</div>
+<div>
+<h3 class="text-sm font-bold">Resma Papel Oficio 80g</h3>
+<p class="text-xs text-slate-500">SKU: ACC-PAP-OF-01</p>
+<div class="mt-1 flex items-center gap-2">
+<span class="text-xs font-medium text-red-500">Actual: 5 und.</span>
+<span class="text-[10px] text-slate-400">•</span>
+<span class="text-xs text-slate-500">Mínimo: 50 und.</span>
+</div>
+</div>
+</div>
+<button class="bg-primary text-white text-xs font-bold px-4 py-2 rounded-lg hover:bg-primary/90 transition-colors">Pedir</button>
+</div>
+<!-- Item 3 -->
+<div class="p-4 flex items-center justify-between">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 bg-slate-100 dark:bg-slate-800 rounded-lg flex items-center justify-center">
+<span class="material-symbols-outlined text-slate-400">image</span>
+</div>
+<div>
+<h3 class="text-sm font-bold">Disco Duro Externo 2TB</h3>
+<p class="text-xs text-slate-500">SKU: TEC-DD-EXT-2TB</p>
+<div class="mt-1 flex items-center gap-2">
+<span class="text-xs font-medium text-red-500">Actual: 0 und.</span>
+<span class="text-[10px] text-slate-400">•</span>
+<span class="text-xs text-slate-500">Mínimo: 5 und.</span>
+</div>
+</div>
+</div>
+<button class="bg-primary text-white text-xs font-bold px-4 py-2 rounded-lg hover:bg-primary/90 transition-colors">Pedir</button>
+</div>
+</div>
+<div class="bg-slate-50 dark:bg-slate-800/50 p-3 text-center">
+<button class="text-xs font-bold text-slate-600 dark:text-slate-300">Ver reporte completo de quiebre de stock</button>
+</div>
+</div>
+</section>
+</main>
+<!-- Bottom Navigation Bar -->
+<nav class="fixed bottom-0 left-0 right-0 bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 px-2 pb-6 pt-2 z-50">
+<div class="max-w-5xl mx-auto flex justify-between items-center">
+<a class="flex flex-1 flex-col items-center gap-1 text-slate-400 dark:text-slate-500" href="#">
+<span class="material-symbols-outlined">home</span>
+<span class="text-[10px] font-medium leading-normal">Inicio</span>
+</a>
+<a class="flex flex-1 flex-col items-center gap-1 text-slate-400 dark:text-slate-500" href="#">
+<span class="material-symbols-outlined">receipt_long</span>
+<span class="text-[10px] font-medium leading-normal">Ventas</span>
+</a>
+<a class="flex flex-1 flex-col items-center gap-1 text-slate-400 dark:text-slate-500" href="#">
+<span class="material-symbols-outlined">group</span>
+<span class="text-[10px] font-medium leading-normal">CRM</span>
+</a>
+<a class="flex flex-1 flex-col items-center gap-1 text-primary" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">inventory_2</span>
+<span class="text-[10px] font-bold leading-normal">Stock</span>
+</a>
+<a class="flex flex-1 flex-col items-center gap-1 text-slate-400 dark:text-slate-500" href="#">
+<span class="material-symbols-outlined">more_horiz</span>
+<span class="text-[10px] font-medium leading-normal">Más</span>
+</a>
+</div>
+</nav>
+</body></html>

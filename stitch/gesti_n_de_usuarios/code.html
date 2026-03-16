@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+
+<html class="light" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#ec5b13",
+                        "background-light": "#f8f6f6",
+                        "background-dark": "#221610",
+                    },
+                    fontFamily: {
+                        "display": ["Public Sans", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        body { font-family: 'Public Sans', sans-serif; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 min-h-screen">
+<div class="relative flex min-h-screen w-full flex-col overflow-x-hidden">
+<!-- Header Section -->
+<div class="flex items-center bg-background-light dark:bg-background-dark p-4 sticky top-0 z-10 border-b border-slate-200 dark:border-slate-800">
+<div class="flex size-10 shrink-0 items-center justify-center rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 cursor-pointer">
+<span class="material-symbols-outlined text-slate-600 dark:text-slate-400">arrow_back</span>
+</div>
+<h2 class="text-slate-900 dark:text-white text-lg font-bold leading-tight tracking-tight flex-1 ml-2">Gestión de Usuarios</h2>
+<div class="flex items-center gap-2">
+<button class="flex size-10 items-center justify-center rounded-full hover:bg-slate-100 dark:hover:bg-slate-800">
+<span class="material-symbols-outlined text-slate-600 dark:text-slate-400">search</span>
+</button>
+</div>
+</div>
+<!-- Quick Stats -->
+<div class="flex overflow-x-auto gap-3 p-4 no-scrollbar">
+<div class="flex min-w-[120px] flex-1 flex-col gap-1 rounded-xl p-4 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm">
+<p class="text-slate-500 dark:text-slate-400 text-xs font-medium uppercase tracking-wider">Total</p>
+<p class="text-slate-900 dark:text-white text-2xl font-bold leading-tight">42</p>
+</div>
+<div class="flex min-w-[120px] flex-1 flex-col gap-1 rounded-xl p-4 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm border-l-4 border-l-green-500">
+<p class="text-slate-500 dark:text-slate-400 text-xs font-medium uppercase tracking-wider">Activos</p>
+<p class="text-slate-900 dark:text-white text-2xl font-bold leading-tight">38</p>
+</div>
+<div class="flex min-w-[120px] flex-1 flex-col gap-1 rounded-xl p-4 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm border-l-4 border-l-primary">
+<p class="text-slate-500 dark:text-slate-400 text-xs font-medium uppercase tracking-wider">Pendientes</p>
+<p class="text-slate-900 dark:text-white text-2xl font-bold leading-tight">4</p>
+</div>
+</div>
+<!-- Action Bar -->
+<div class="px-4 py-2 flex items-center justify-between">
+<h3 class="text-slate-900 dark:text-white text-md font-bold leading-tight">Equipo</h3>
+<button class="flex items-center gap-2 bg-primary hover:bg-primary/90 text-white px-4 py-2 rounded-lg font-semibold text-sm transition-colors shadow-sm">
+<span class="material-symbols-outlined text-sm">person_add</span>
+<span>Invitar Usuario</span>
+</button>
+</div>
+<!-- User List -->
+<div class="flex flex-col px-4 pb-24 gap-1">
+<!-- User Item: Admin -->
+<div class="flex items-center gap-4 bg-white dark:bg-slate-900 p-3 rounded-xl border border-slate-100 dark:border-slate-800 shadow-sm mb-2">
+<div class="relative">
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full h-12 w-12 border-2 border-primary/20" data-alt="Avatar de un hombre profesional sonriendo" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuA8nUtUZ1mkQL3PkpK1gnvPcy9tOg1eP-FU-M67ky7kAq4Rf4tOu96GKBkbjqPZvNX1JQNqYYnmsmZ_yqiLprA6Mm-Qg-S8N2nP-MSI4TVMN1laJFm7Sf7BTgCGJCLTXzYD31i866VepKD_-moRIkuJpoEJmlMvYq_I48etH-JgMXODoPEoBzQcnrLQtqCJ-192eFZswcD3w2wRcctLHrxVwScqlhXTW_gpJLWMjlfP_TwxNkbtVD4emTp8YFhFVmF5p4uQcnDhtlY");'>
+</div>
+<div class="absolute bottom-0 right-0 size-3 rounded-full bg-green-500 border-2 border-white dark:border-slate-900"></div>
+</div>
+<div class="flex flex-col flex-1 justify-center">
+<div class="flex items-center gap-2">
+<p class="text-slate-900 dark:text-white text-base font-semibold leading-none">Carlos Rodríguez</p>
+<span class="text-[10px] bg-primary/10 text-primary px-1.5 py-0.5 rounded font-bold uppercase">Admin</span>
+</div>
+<p class="text-slate-500 dark:text-slate-400 text-sm font-normal">carlos.r@empresa.com</p>
+</div>
+<div class="shrink-0">
+<button class="p-2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">
+<span class="material-symbols-outlined">more_vert</span>
+</button>
+</div>
+</div>
+<!-- User Item: Vendedor -->
+<div class="flex items-center gap-4 bg-white dark:bg-slate-900 p-3 rounded-xl border border-slate-100 dark:border-slate-800 shadow-sm mb-2">
+<div class="relative">
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full h-12 w-12" data-alt="Avatar de una mujer profesional sonriendo" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuB_s1spXuudI_ic4mIgluUNqPQDpsqItRsiLn6jWFVYqPnfGb7QZA9WvakiiaETxTL0e2d-f5kElJ_iQrZQSsF9L4ELKLixEofcUacFwjzIhAD8H3RF_zqnuFeCesjDkQfFChfNFssNNFvvo5Xib-tENnL0d7jtR810ItNV2sa8CTZ7SOKwtta_FYgN734Iq0G5iJMj2DKL9XlD7A29AX-Vivt2cKg-bt3Xh72zLzM17G8EmBnre1bonPkDI8rZF_-5VYKNNXUmc3E");'>
+</div>
+<div class="absolute bottom-0 right-0 size-3 rounded-full bg-green-500 border-2 border-white dark:border-slate-900"></div>
+</div>
+<div class="flex flex-col flex-1 justify-center">
+<div class="flex items-center gap-2">
+<p class="text-slate-900 dark:text-white text-base font-semibold leading-none">Ana Martínez</p>
+<span class="text-[10px] bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 px-1.5 py-0.5 rounded font-bold uppercase">Vendedor</span>
+</div>
+<p class="text-slate-500 dark:text-slate-400 text-sm font-normal">ana.m@empresa.com</p>
+</div>
+<div class="shrink-0">
+<button class="p-2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">
+<span class="material-symbols-outlined">more_vert</span>
+</button>
+</div>
+</div>
+<!-- User Item: Contador -->
+<div class="flex items-center gap-4 bg-white dark:bg-slate-900 p-3 rounded-xl border border-slate-100 dark:border-slate-800 shadow-sm mb-2 opacity-70">
+<div class="relative">
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full h-12 w-12 grayscale" data-alt="Avatar de un hombre con expresión seria" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCDllgM1LSN4axZRNzxXRVn3C2uREkgAJCMclWMJs-uN8wYnIBDchvxA62L9Bsb-aCwCkUTvqeiVfJ9ZHiMjDlQ3JGfqAoK3cwkMO8I7mpBZuORYoW02bEnvBGac25FakdAjQSGa4lXPeDIO8ASB5UZhDZLawPMpXo33KhgQDcSZvLZHmNq-u5x90xNLbbJ_dP94rqF7XM0Zp56KRmLHlvy7hhuXtE4cD2x_rxbC8b12MjLLW1yJtnrDBqdD_VL-m_ovoU5prDCGXU");'>
+</div>
+<div class="absolute bottom-0 right-0 size-3 rounded-full bg-slate-400 border-2 border-white dark:border-slate-900"></div>
+</div>
+<div class="flex flex-col flex-1 justify-center">
+<div class="flex items-center gap-2">
+<p class="text-slate-900 dark:text-white text-base font-semibold leading-none line-through">Roberto Gil</p>
+<span class="text-[10px] bg-red-100 text-red-600 px-1.5 py-0.5 rounded font-bold uppercase">Inactivo</span>
+</div>
+<p class="text-slate-500 dark:text-slate-400 text-sm font-normal">roberto.g@empresa.com</p>
+</div>
+<div class="shrink-0">
+<button class="p-2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">
+<span class="material-symbols-outlined">more_vert</span>
+</button>
+</div>
+</div>
+<!-- User Item: Pendiente -->
+<div class="flex items-center gap-4 bg-white dark:bg-slate-900 p-3 rounded-xl border border-slate-100 dark:border-slate-800 shadow-sm mb-2">
+<div class="flex h-12 w-12 items-center justify-center rounded-full bg-primary/10 text-primary">
+<span class="material-symbols-outlined">hourglass_empty</span>
+</div>
+<div class="flex flex-col flex-1 justify-center">
+<div class="flex items-center gap-2">
+<p class="text-slate-900 dark:text-white text-base font-semibold leading-none italic">Invitación enviada</p>
+<span class="text-[10px] bg-primary/20 text-primary px-1.5 py-0.5 rounded font-bold uppercase">Pendiente</span>
+</div>
+<p class="text-slate-500 dark:text-slate-400 text-sm font-normal">lucia.v@empresa.com</p>
+</div>
+<div class="shrink-0">
+<button class="p-2 text-primary hover:bg-primary/10 rounded-full transition-colors">
+<span class="material-symbols-outlined">send</span>
+</button>
+</div>
+</div>
+<!-- User Item: Soporte -->
+<div class="flex items-center gap-4 bg-white dark:bg-slate-900 p-3 rounded-xl border border-slate-100 dark:border-slate-800 shadow-sm mb-2">
+<div class="relative">
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full h-12 w-12" data-alt="Avatar de una mujer joven con cabello oscuro" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDf9n4wZBdHmjixWAqIZVpzbdroE_FEHet2ZvgJXOVlxlXYBtQ72dJWcCB84PeAB8-XyRVIYWDswkbG9dUy6rDeGQHjrPK1sksXa0MhbtWK4_G_1qZH2BGwox6hZueQViln_fiTh4Tt-xEzqsCzyIAgQm2fHsIJGhNU7PUqpaf5MVFYPSG2RKTno0oUToLXekxJqqgagUuJcsMP39eCSnjYPFkmoZdBWrCB3tKJMb-De1fstfTlL7BLZvojmYnSCF6hJxCyNj6Rr3U");'>
+</div>
+<div class="absolute bottom-0 right-0 size-3 rounded-full bg-green-500 border-2 border-white dark:border-slate-900"></div>
+</div>
+<div class="flex flex-col flex-1 justify-center">
+<div class="flex items-center gap-2">
+<p class="text-slate-900 dark:text-white text-base font-semibold leading-none">Marta Sánchez</p>
+<span class="text-[10px] bg-blue-100 text-blue-600 px-1.5 py-0.5 rounded font-bold uppercase">Soporte</span>
+</div>
+<p class="text-slate-500 dark:text-slate-400 text-sm font-normal">marta.s@empresa.com</p>
+</div>
+<div class="shrink-0">
+<button class="p-2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">
+<span class="material-symbols-outlined">more_vert</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Bottom Navigation Bar -->
+<div class="fixed bottom-0 left-0 w-full bg-white dark:bg-slate-950 border-t border-slate-200 dark:border-slate-800 px-4 pb-4 pt-2 flex justify-between items-center z-20">
+<a class="flex flex-1 flex-col items-center justify-center gap-1 text-slate-400 dark:text-slate-500" href="#">
+<span class="material-symbols-outlined">home</span>
+<p class="text-[10px] font-medium leading-normal">Inicio</p>
+</a>
+<a class="flex flex-1 flex-col items-center justify-center gap-1 text-slate-400 dark:text-slate-500" href="#">
+<span class="material-symbols-outlined">bar_chart</span>
+<p class="text-[10px] font-medium leading-normal">Ventas</p>
+</a>
+<a class="flex flex-1 flex-col items-center justify-center gap-1 text-primary" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">group</span>
+<p class="text-[10px] font-bold leading-normal">Usuarios</p>
+</a>
+<a class="flex flex-1 flex-col items-center justify-center gap-1 text-slate-400 dark:text-slate-500" href="#">
+<span class="material-symbols-outlined">settings</span>
+<p class="text-[10px] font-medium leading-normal">Ajustes</p>
+</a>
+</div>
+</div>
+</body></html>

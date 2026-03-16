@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+
+<html lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Portal de Clientes - ERP</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#ec5b13",
+                        "background-light": "#f8f6f6",
+                        "background-dark": "#221610",
+                    },
+                    fontFamily: {
+                        "display": ["Public Sans", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Public Sans', sans-serif;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 min-h-screen font-display">
+<!-- Top Header -->
+<header class="sticky top-0 z-50 bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-md border-b border-primary/10 px-4 py-3">
+<div class="max-w-5xl mx-auto flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="bg-primary p-2 rounded-lg">
+<span class="material-symbols-outlined text-white">account_balance_wallet</span>
+</div>
+<h1 class="text-lg font-bold tracking-tight">Portal de Clientes</h1>
+</div>
+<div class="flex items-center gap-4">
+<button class="p-2 hover:bg-primary/10 rounded-full transition-colors">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<div class="h-8 w-8 rounded-full bg-primary/20 flex items-center justify-center border border-primary/30">
+<span class="material-symbols-outlined text-primary text-sm">person</span>
+</div>
+</div>
+</div>
+</header>
+<main class="max-w-5xl mx-auto p-4 pb-24">
+<!-- Welcome Message -->
+<section class="mb-8">
+<h2 class="text-2xl font-bold">Hola, Distribuidora Solar S.A.</h2>
+<p class="text-slate-500 dark:text-slate-400">Aquí tienes el resumen actualizado de tu estado de cuenta.</p>
+</section>
+<!-- KPI Cards -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+<div class="bg-white dark:bg-slate-900/50 p-6 rounded-xl border border-primary/10 shadow-sm">
+<div class="flex justify-between items-start mb-2">
+<p class="text-sm font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">Deuda Total</p>
+<span class="material-symbols-outlined text-primary">payments</span>
+</div>
+<p class="text-3xl font-bold">$1.450.000</p>
+<div class="flex items-center gap-1 mt-2 text-primary font-semibold text-sm">
+<span class="material-symbols-outlined text-xs">trending_up</span>
+<span>+5.2% vs mes anterior</span>
+</div>
+</div>
+<div class="bg-white dark:bg-slate-900/50 p-6 rounded-xl border border-primary/10 shadow-sm">
+<div class="flex justify-between items-start mb-2">
+<p class="text-sm font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">Facturas Vencidas</p>
+<span class="material-symbols-outlined text-red-500">priority_high</span>
+</div>
+<p class="text-3xl font-bold">2</p>
+<div class="flex items-center gap-1 mt-2 text-red-500 font-semibold text-sm">
+<span>Requiere atención inmediata</span>
+</div>
+</div>
+<div class="bg-white dark:bg-slate-900/50 p-6 rounded-xl border border-primary/10 shadow-sm">
+<div class="flex justify-between items-start mb-2">
+<p class="text-sm font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">Crédito Disponible</p>
+<span class="material-symbols-outlined text-emerald-500">check_circle</span>
+</div>
+<p class="text-3xl font-bold">$3.550.000</p>
+<div class="flex items-center gap-1 mt-2 text-emerald-500 font-semibold text-sm">
+<span>Línea de crédito activa</span>
+</div>
+</div>
+</div>
+<!-- Pending Invoices Section -->
+<section class="mb-8">
+<div class="flex items-center justify-between mb-4">
+<h3 class="text-xl font-bold flex items-center gap-2">
+<span class="material-symbols-outlined">description</span> Facturas Pendientes
+                </h3>
+<button class="text-primary font-semibold text-sm hover:underline">Ver todas</button>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left bg-white dark:bg-slate-900/50 rounded-xl border border-primary/10 overflow-hidden">
+<thead class="bg-primary/5 border-b border-primary/10">
+<tr>
+<th class="px-6 py-4 text-xs font-bold uppercase text-slate-500">Folio</th>
+<th class="px-6 py-4 text-xs font-bold uppercase text-slate-500">Emisión</th>
+<th class="px-6 py-4 text-xs font-bold uppercase text-slate-500">Vencimiento</th>
+<th class="px-6 py-4 text-xs font-bold uppercase text-slate-500">Monto</th>
+<th class="px-6 py-4 text-xs font-bold uppercase text-slate-500">Estado</th>
+<th class="px-6 py-4 text-xs font-bold uppercase text-slate-500 text-center">DTE</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-primary/10">
+<!-- Invoice Item -->
+<tr>
+<td class="px-6 py-4 font-semibold">F-45210</td>
+<td class="px-6 py-4 text-sm">12 Oct 2023</td>
+<td class="px-6 py-4 text-sm text-red-500 font-medium">12 Nov 2023</td>
+<td class="px-6 py-4 font-bold">$850.000</td>
+<td class="px-6 py-4">
+<span class="px-2 py-1 rounded-full bg-red-100 text-red-700 text-xs font-bold">VENCIDA</span>
+</td>
+<td class="px-6 py-4 flex justify-center gap-2">
+<button class="p-2 rounded bg-primary/10 text-primary hover:bg-primary hover:text-white transition-colors" title="Descargar PDF">
+<span class="material-symbols-outlined text-lg">picture_as_pdf</span>
+</button>
+<button class="p-2 rounded bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:bg-slate-200 transition-colors" title="Descargar XML">
+<span class="material-symbols-outlined text-lg">code</span>
+</button>
+</td>
+</tr>
+<!-- Invoice Item -->
+<tr>
+<td class="px-6 py-4 font-semibold">F-45332</td>
+<td class="px-6 py-4 text-sm">05 Nov 2023</td>
+<td class="px-6 py-4 text-sm">05 Dic 2023</td>
+<td class="px-6 py-4 font-bold">$600.000</td>
+<td class="px-6 py-4">
+<span class="px-2 py-1 rounded-full bg-amber-100 text-amber-700 text-xs font-bold">POR VENCER</span>
+</td>
+<td class="px-6 py-4 flex justify-center gap-2">
+<button class="p-2 rounded bg-primary/10 text-primary hover:bg-primary hover:text-white transition-colors" title="Descargar PDF">
+<span class="material-symbols-outlined text-lg">picture_as_pdf</span>
+</button>
+<button class="p-2 rounded bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:bg-slate-200 transition-colors" title="Descargar XML">
+<span class="material-symbols-outlined text-lg">code</span>
+</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<!-- Recent Purchases & Support -->
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+<!-- Recent Purchases -->
+<section>
+<h3 class="text-xl font-bold mb-4 flex items-center gap-2">
+<span class="material-symbols-outlined">shopping_bag</span> Compras Recientes
+                </h3>
+<div class="space-y-3">
+<div class="flex items-center gap-4 bg-white dark:bg-slate-900/50 p-4 rounded-xl border border-primary/10 shadow-sm">
+<div class="bg-primary/10 p-2 rounded-lg text-primary">
+<span class="material-symbols-outlined">inventory_2</span>
+</div>
+<div class="flex-1">
+<p class="font-semibold">Kit Solar 500W Pro</p>
+<p class="text-xs text-slate-500">Orden #ORD-8821 • 15 Nov 2023</p>
+</div>
+<div class="text-right">
+<p class="font-bold">$1.200.000</p>
+<p class="text-xs text-emerald-500 font-medium">Entregado</p>
+</div>
+</div>
+<div class="flex items-center gap-4 bg-white dark:bg-slate-900/50 p-4 rounded-xl border border-primary/10 shadow-sm">
+<div class="bg-primary/10 p-2 rounded-lg text-primary">
+<span class="material-symbols-outlined">bolt</span>
+</div>
+<div class="flex-1">
+<p class="font-semibold">Batería Litio 100Ah</p>
+<p class="text-xs text-slate-500">Orden #ORD-8815 • 10 Nov 2023</p>
+</div>
+<div class="text-right">
+<p class="font-bold">$450.000</p>
+<p class="text-xs text-emerald-500 font-medium">Entregado</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Support Section -->
+<section>
+<h3 class="text-xl font-bold mb-4 flex items-center gap-2">
+<span class="material-symbols-outlined">support_agent</span> Soporte y Ayuda
+                </h3>
+<div class="bg-primary/5 border border-primary/20 rounded-xl p-6">
+<p class="text-sm text-slate-700 dark:text-slate-300 mb-4">
+                        ¿Tienes dudas con tu facturación o necesitas asistencia técnica? Nuestro equipo está disponible para ayudarte.
+                    </p>
+<div class="grid grid-cols-2 gap-3">
+<a class="flex flex-col items-center justify-center p-4 bg-white dark:bg-slate-900 rounded-lg border border-primary/10 hover:border-primary transition-all group" href="#">
+<span class="material-symbols-outlined text-primary mb-2 group-hover:scale-110 transition-transform">chat</span>
+<span class="text-sm font-semibold">Chat en Vivo</span>
+</a>
+<a class="flex flex-col items-center justify-center p-4 bg-white dark:bg-slate-900 rounded-lg border border-primary/10 hover:border-primary transition-all group" href="#">
+<span class="material-symbols-outlined text-primary mb-2 group-hover:scale-110 transition-transform">confirmation_number</span>
+<span class="text-sm font-semibold">Abrir Ticket</span>
+</a>
+<a class="flex flex-col items-center justify-center p-4 bg-white dark:bg-slate-900 rounded-lg border border-primary/10 hover:border-primary transition-all group" href="#">
+<span class="material-symbols-outlined text-primary mb-2 group-hover:scale-110 transition-transform">call</span>
+<span class="text-sm font-semibold">Llamar Soporte</span>
+</a>
+<a class="flex flex-col items-center justify-center p-4 bg-white dark:bg-slate-900 rounded-lg border border-primary/10 hover:border-primary transition-all group" href="#">
+<span class="material-symbols-outlined text-primary mb-2 group-hover:scale-110 transition-transform">help</span>
+<span class="text-sm font-semibold">Base de Conocimiento</span>
+</a>
+</div>
+</div>
+</section>
+</div>
+</main>
+<!-- Navigation Bar (Bottom Mobile) -->
+<nav class="fixed bottom-0 left-0 right-0 bg-white dark:bg-slate-900 border-t border-primary/10 px-4 pb-4 pt-2 lg:hidden">
+<div class="flex justify-between items-center max-w-lg mx-auto">
+<a class="flex flex-col items-center gap-1 text-primary" href="#">
+<span class="material-symbols-outlined">home</span>
+<span class="text-[10px] font-bold uppercase">Inicio</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-slate-400" href="#">
+<span class="material-symbols-outlined">receipt_long</span>
+<span class="text-[10px] font-bold uppercase">Facturas</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-slate-400" href="#">
+<span class="material-symbols-outlined">history</span>
+<span class="text-[10px] font-bold uppercase">Compras</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-slate-400" href="#">
+<span class="material-symbols-outlined">headset_mic</span>
+<span class="text-[10px] font-bold uppercase">Ayuda</span>
+</a>
+</div>
+</nav>
+<!-- Desktop Sidebar (Simulation) -->
+<div class="hidden lg:flex fixed left-0 top-0 h-full w-20 flex-col items-center py-8 bg-white dark:bg-slate-900 border-r border-primary/10 z-[60]">
+<div class="bg-primary w-12 h-12 rounded-xl flex items-center justify-center mb-8">
+<span class="material-symbols-outlined text-white">rocket_launch</span>
+</div>
+<div class="flex flex-col gap-6">
+<button class="w-10 h-10 rounded-lg bg-primary/10 text-primary flex items-center justify-center">
+<span class="material-symbols-outlined">grid_view</span>
+</button>
+<button class="w-10 h-10 rounded-lg hover:bg-primary/5 text-slate-400 hover:text-primary flex items-center justify-center transition-colors">
+<span class="material-symbols-outlined">description</span>
+</button>
+<button class="w-10 h-10 rounded-lg hover:bg-primary/5 text-slate-400 hover:text-primary flex items-center justify-center transition-colors">
+<span class="material-symbols-outlined">shopping_cart</span>
+</button>
+<button class="w-10 h-10 rounded-lg hover:bg-primary/5 text-slate-400 hover:text-primary flex items-center justify-center transition-colors">
+<span class="material-symbols-outlined">settings</span>
+</button>
+</div>
+<div class="mt-auto">
+<button class="w-10 h-10 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center">
+<span class="material-symbols-outlined text-slate-500">logout</span>
+</button>
+</div>
+</div>
+</body></html>

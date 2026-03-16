@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+
+<html lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#ec5b13",
+                        "background-light": "#f8f6f6",
+                        "background-dark": "#221610",
+                    },
+                    fontFamily: {
+                        "display": ["Public Sans"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<title>Configuración de Monedas - ERP Financiero</title>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 antialiased">
+<!-- Main Container -->
+<div class="min-h-screen flex flex-col max-w-4xl mx-auto border-x border-slate-200 dark:border-slate-800 bg-white dark:bg-background-dark shadow-sm">
+<!-- Header -->
+<header class="flex items-center p-4 border-b border-slate-200 dark:border-slate-800 justify-between bg-white dark:bg-background-dark sticky top-0 z-10">
+<div class="flex items-center gap-3">
+<div class="text-slate-600 dark:text-slate-300 flex size-10 items-center justify-center rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 cursor-pointer">
+<span class="material-symbols-outlined">arrow_back</span>
+</div>
+<div>
+<h1 class="text-xl font-bold leading-tight tracking-tight">Monedas y Divisas</h1>
+<p class="text-xs text-slate-500 dark:text-slate-400">Configuración global del sistema ERP</p>
+</div>
+</div>
+<div class="flex items-center gap-2">
+<button class="flex items-center justify-center rounded-lg h-10 w-10 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:text-primary transition-colors">
+<span class="material-symbols-outlined">refresh</span>
+</button>
+<button class="flex items-center justify-center rounded-lg h-10 w-10 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300">
+<span class="material-symbols-outlined">more_vert</span>
+</button>
+</div>
+</header>
+<main class="flex-1 overflow-y-auto pb-24">
+<!-- API Status Section -->
+<section class="p-4 border-b border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-900/30">
+<div class="flex items-center justify-between p-4 bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm">
+<div class="flex items-center gap-4">
+<div class="flex items-center justify-center rounded-full bg-primary/10 text-primary size-10">
+<span class="material-symbols-outlined">api</span>
+</div>
+<div>
+<p class="text-sm font-semibold">Actualización automática via API</p>
+<p class="text-xs text-slate-500 dark:text-slate-400">Conectado con Banco Central &amp; SII</p>
+</div>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox"/>
+<div class="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer dark:bg-slate-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-primary"></div>
+</label>
+</div>
+</section>
+<!-- Moneda Base -->
+<section class="p-4">
+<h2 class="text-lg font-bold mb-4 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-xl">account_balance_wallet</span>
+                    Moneda Base
+                </h2>
+<div class="flex items-center gap-4 bg-white dark:bg-slate-800 p-4 rounded-xl border-2 border-primary shadow-sm">
+<div class="text-white flex items-center justify-center rounded-lg bg-primary shrink-0 size-12">
+<span class="material-symbols-outlined">payments</span>
+</div>
+<div class="flex-1">
+<div class="flex items-center justify-between">
+<p class="text-base font-bold">Peso Chileno (CLP)</p>
+<span class="px-2 py-0.5 rounded bg-primary/10 text-primary text-[10px] font-bold uppercase tracking-wider">Predeterminada</span>
+</div>
+<p class="text-slate-500 dark:text-slate-400 text-sm">Moneda de reporte y contabilidad local para Chile</p>
+</div>
+<div class="shrink-0 flex items-center justify-center">
+<div class="size-3 rounded-full bg-green-500 ring-4 ring-green-500/20"></div>
+</div>
+</div>
+</section>
+<!-- Monedas Secundarias -->
+<section class="p-4 pt-2">
+<div class="flex items-center justify-between mb-4">
+<h2 class="text-lg font-bold flex items-center gap-2">
+<span class="material-symbols-outlined text-slate-400 text-xl">currency_exchange</span>
+                        Monedas Secundarias
+                    </h2>
+<button class="text-primary text-sm font-bold flex items-center gap-1 hover:underline">
+<span class="material-symbols-outlined text-sm">add_circle</span>
+                        Añadir Moneda
+                    </button>
+</div>
+<div class="space-y-3">
+<!-- USD Card -->
+<div class="flex items-center gap-4 bg-white dark:bg-slate-800 p-4 rounded-xl border border-slate-200 dark:border-slate-700 hover:border-primary/50 transition-colors group">
+<div class="text-slate-600 dark:text-slate-300 flex items-center justify-center rounded-lg bg-slate-100 dark:bg-slate-700 shrink-0 size-12 group-hover:bg-primary/10 group-hover:text-primary transition-colors">
+<span class="material-symbols-outlined">attach_money</span>
+</div>
+<div class="flex-1">
+<div class="flex items-center justify-between">
+<p class="text-base font-semibold">Dólar Observado (USD)</p>
+<p class="text-base font-bold text-slate-800 dark:text-slate-100">$942,45</p>
+</div>
+<div class="flex items-center justify-between mt-1">
+<p class="text-xs text-slate-500 dark:text-slate-400">Actualizado: Hoy, 09:15 AM</p>
+<p class="text-[10px] text-green-600 font-bold flex items-center">
+<span class="material-symbols-outlined text-[12px]">trending_up</span> 0.2%
+                                </p>
+</div>
+</div>
+</div>
+<!-- UF Card -->
+<div class="flex items-center gap-4 bg-white dark:bg-slate-800 p-4 rounded-xl border border-slate-200 dark:border-slate-700 hover:border-primary/50 transition-colors group">
+<div class="text-slate-600 dark:text-slate-300 flex items-center justify-center rounded-lg bg-slate-100 dark:bg-slate-700 shrink-0 size-12 group-hover:bg-primary/10 group-hover:text-primary transition-colors">
+<span class="material-symbols-outlined">show_chart</span>
+</div>
+<div class="flex-1">
+<div class="flex items-center justify-between">
+<p class="text-base font-semibold">Unidad de Fomento (UF)</p>
+<p class="text-base font-bold text-slate-800 dark:text-slate-100">$37.542,12</p>
+</div>
+<div class="flex items-center justify-between mt-1">
+<p class="text-xs text-slate-500 dark:text-slate-400">Actualizado: 01 May 2024</p>
+<p class="text-[10px] text-slate-400 font-bold">Sin cambios</p>
+</div>
+</div>
+</div>
+<!-- EUR Card -->
+<div class="flex items-center gap-4 bg-white dark:bg-slate-800 p-4 rounded-xl border border-slate-200 dark:border-slate-700 hover:border-primary/50 transition-colors group">
+<div class="text-slate-600 dark:text-slate-300 flex items-center justify-center rounded-lg bg-slate-100 dark:bg-slate-700 shrink-0 size-12 group-hover:bg-primary/10 group-hover:text-primary transition-colors">
+<span class="material-symbols-outlined">euro</span>
+</div>
+<div class="flex-1">
+<div class="flex items-center justify-between">
+<p class="text-base font-semibold">Euro (EUR)</p>
+<p class="text-base font-bold text-slate-800 dark:text-slate-100">$1.024,30</p>
+</div>
+<div class="flex items-center justify-between mt-1">
+<p class="text-xs text-slate-500 dark:text-slate-400">Actualizado: Ayer, 18:00 PM</p>
+<p class="text-[10px] text-red-600 font-bold flex items-center">
+<span class="material-symbols-outlined text-[12px]">trending_down</span> 0.1%
+                                </p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Info Box -->
+<section class="px-4 mt-4">
+<div class="bg-primary/5 border border-primary/20 rounded-xl p-4 flex gap-3">
+<span class="material-symbols-outlined text-primary">info</span>
+<p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
+                        Los tipos de cambio se utilizan para valorizar transacciones en monedas extranjeras y generar estados financieros consolidados. El sistema prioriza el valor obtenido vía API sobre las actualizaciones manuales.
+                    </p>
+</div>
+</section>
+</main>
+<!-- Bottom Navigation Bar -->
+<nav class="fixed bottom-0 left-0 right-0 max-w-4xl mx-auto bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 px-4 pb-6 pt-2 z-20">
+<div class="flex justify-between items-center">
+<a class="flex flex-1 flex-col items-center gap-1 text-slate-400 dark:text-slate-500" href="#">
+<span class="material-symbols-outlined">home</span>
+<p class="text-[10px] font-medium">Inicio</p>
+</a>
+<a class="flex flex-1 flex-col items-center gap-1 text-slate-400 dark:text-slate-500" href="#">
+<span class="material-symbols-outlined">receipt_long</span>
+<p class="text-[10px] font-medium">Ventas</p>
+</a>
+<a class="flex flex-1 flex-col items-center gap-1 text-slate-400 dark:text-slate-500" href="#">
+<span class="material-symbols-outlined">pie_chart</span>
+<p class="text-[10px] font-medium">Finanzas</p>
+</a>
+<a class="flex flex-1 flex-col items-center gap-1 text-primary" href="#">
+<span class="material-symbols-outlined">settings</span>
+<p class="text-[10px] font-bold">Ajustes</p>
+</a>
+</div>
+</nav>
+</div>
+</body></html>

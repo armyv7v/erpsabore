@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+
+<html class="light" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Conciliación Bancaria - ERP SaaS</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#ec5b13",
+                        "background-light": "#f8f6f6",
+                        "background-dark": "#221610",
+                    },
+                    fontFamily: {
+                        "display": ["Public Sans"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 min-h-screen">
+<div class="flex flex-col min-h-screen">
+<!-- Header Section -->
+<header class="bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 p-4 sticky top-0 z-10">
+<div class="max-w-7xl mx-auto flex flex-col md:flex-row md:items-center justify-between gap-4">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary text-3xl">account_balance</span>
+<h1 class="text-xl font-bold tracking-tight">Conciliación Bancaria</h1>
+</div>
+<div class="flex flex-wrap items-center gap-3">
+<button class="flex items-center gap-2 bg-primary/10 text-primary px-4 py-2 rounded-lg font-semibold hover:bg-primary/20 transition-colors">
+<span class="material-symbols-outlined text-xl">sync</span>
+                        Sincronizar Banco
+                    </button>
+<button class="flex items-center gap-2 bg-primary text-white px-4 py-2 rounded-lg font-semibold shadow-lg shadow-primary/20 hover:bg-primary/90 transition-colors">
+<span class="material-symbols-outlined text-xl">auto_fix_high</span>
+                        Conciliación Automática
+                    </button>
+</div>
+</div>
+</header>
+<!-- Configuration & Period Bar -->
+<section class="p-4 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800">
+<div class="max-w-7xl mx-auto flex flex-wrap gap-6 items-end">
+<div class="flex flex-col gap-1.5 min-w-[280px]">
+<label class="text-xs font-bold uppercase text-slate-500 dark:text-slate-400">Cuenta Bancaria</label>
+<div class="relative">
+<select class="w-full pl-10 pr-4 py-2 bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-lg appearance-none focus:ring-primary focus:border-primary">
+<option>BCI Corriente •••• 1234 (CLP)</option>
+<option>Santander Empresa •••• 5678 (CLP)</option>
+<option>Banco Estado Vista •••• 9012 (CLP)</option>
+</select>
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">payments</span>
+</div>
+</div>
+<div class="flex flex-col gap-1.5">
+<label class="text-xs font-bold uppercase text-slate-500 dark:text-slate-400">Periodo</label>
+<div class="flex items-center bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg p-1">
+<button class="p-1 hover:bg-slate-200 dark:hover:bg-slate-700 rounded"><span class="material-symbols-outlined text-lg">chevron_left</span></button>
+<span class="px-4 font-medium">Octubre 2023</span>
+<button class="p-1 hover:bg-slate-200 dark:hover:bg-slate-700 rounded"><span class="material-symbols-outlined text-lg">chevron_right</span></button>
+</div>
+</div>
+<div class="flex-1 flex justify-end gap-4">
+<div class="text-right">
+<p class="text-xs text-slate-500 font-bold uppercase">Estado Actual</p>
+<p class="text-amber-500 font-bold flex items-center justify-end gap-1">
+<span class="material-symbols-outlined text-sm">pending</span> En Proceso
+                        </p>
+</div>
+</div>
+</div>
+</section>
+<!-- Dashboard Summary -->
+<section class="p-4 max-w-7xl mx-auto w-full">
+<div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+<div class="bg-white dark:bg-slate-900 p-5 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
+<div class="flex justify-between items-start mb-2">
+<p class="text-slate-500 dark:text-slate-400 font-medium">Saldo Bancario</p>
+<span class="material-symbols-outlined text-primary/60">account_balance_wallet</span>
+</div>
+<p class="text-2xl font-bold">$4.500.000 <span class="text-sm font-normal text-slate-400">CLP</span></p>
+<p class="text-xs text-slate-400 mt-1">Última actualización: Hoy, 09:15 AM</p>
+</div>
+<div class="bg-white dark:bg-slate-900 p-5 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
+<div class="flex justify-between items-start mb-2">
+<p class="text-slate-500 dark:text-slate-400 font-medium">Saldo en Libros (ERP)</p>
+<span class="material-symbols-outlined text-primary/60">menu_book</span>
+</div>
+<p class="text-2xl font-bold">$4.450.000 <span class="text-sm font-normal text-slate-400">CLP</span></p>
+<p class="text-xs text-slate-400 mt-1">Registros contables al día</p>
+</div>
+<div class="bg-primary/5 dark:bg-primary/10 p-5 rounded-xl border border-primary/20 shadow-sm">
+<div class="flex justify-between items-start mb-2">
+<p class="text-primary font-bold">Diferencia por Conciliar</p>
+<span class="material-symbols-outlined text-primary">analytics</span>
+</div>
+<p class="text-2xl font-bold text-primary">$50.000 <span class="text-sm font-normal">CLP</span></p>
+<div class="w-full bg-slate-200 dark:bg-slate-700 h-1.5 rounded-full mt-3 overflow-hidden">
+<div class="bg-primary h-full w-[92%]" style="width: 92%;"></div>
+</div>
+<p class="text-xs text-slate-500 dark:text-slate-400 mt-1">92% de transacciones cuadradas</p>
+</div>
+</div>
+</section>
+<!-- Main Content: Dual Column View -->
+<main class="flex-1 p-4 max-w-7xl mx-auto w-full overflow-hidden flex flex-col gap-6">
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-6 h-full min-h-[500px]">
+<!-- Column 1: Movimientos Bancarios -->
+<div class="flex flex-col bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 overflow-hidden shadow-sm">
+<div class="p-4 border-b border-slate-100 dark:border-slate-800 flex justify-between items-center bg-slate-50/50 dark:bg-slate-800/50">
+<h3 class="font-bold flex items-center gap-2 text-slate-700 dark:text-slate-200">
+<span class="material-symbols-outlined text-primary">list_alt</span>
+                            Movimientos Bancarios
+                        </h3>
+<span class="px-2 py-0.5 bg-slate-200 dark:bg-slate-700 rounded text-[10px] font-bold uppercase">Fuente: API Banco</span>
+</div>
+<div class="overflow-y-auto flex-1">
+<table class="w-full text-left border-collapse">
+<thead class="sticky top-0 bg-white dark:bg-slate-900 shadow-sm z-10">
+<tr class="text-slate-500 text-xs font-bold uppercase border-b border-slate-100 dark:border-slate-800">
+<th class="px-4 py-3">Fecha</th>
+<th class="px-4 py-3">Descripción</th>
+<th class="px-4 py-3 text-right">Monto</th>
+<th class="px-4 py-3 text-center w-20">Acción</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-slate-50 dark:divide-slate-800 text-sm">
+<!-- Suggested Match -->
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 bg-primary/5 transition-colors">
+<td class="px-4 py-4 whitespace-nowrap text-slate-500 italic">25 Oct</td>
+<td class="px-4 py-4">
+<p class="font-medium">TRANSFERENCIA RECIBIDA</p>
+<p class="text-xs text-slate-400">RUT: 76.xxx.xxx-k • Juan Pérez</p>
+</td>
+<td class="px-4 py-4 text-right font-bold text-emerald-600">+$150.000</td>
+<td class="px-4 py-4 text-center">
+<div class="flex items-center justify-center text-primary" title="Sugerencia encontrada">
+<span class="material-symbols-outlined">verified</span>
+</div>
+</td>
+</tr>
+<!-- Unmatched -->
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+<td class="px-4 py-4 whitespace-nowrap text-slate-500">24 Oct</td>
+<td class="px-4 py-4">
+<p class="font-medium">GIRO ATM REDBANC</p>
+<p class="text-xs text-slate-400">Sucursal Providencia</p>
+</td>
+<td class="px-4 py-4 text-right font-bold text-slate-700 dark:text-slate-200">-$20.000</td>
+<td class="px-4 py-4 text-center">
+<button class="bg-primary/10 text-primary text-xs font-bold px-2 py-1 rounded hover:bg-primary/20">CONCILIAR</button>
+</td>
+</tr>
+<!-- Already Conciliated -->
+<tr class="opacity-50 grayscale hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+<td class="px-4 py-4 whitespace-nowrap text-slate-500">22 Oct</td>
+<td class="px-4 py-4">
+<p class="font-medium">PAGO SEGUROS VIDA</p>
+<p class="text-xs text-slate-400">Mandato 12903</p>
+</td>
+<td class="px-4 py-4 text-right font-bold text-slate-700 dark:text-slate-200">-$15.500</td>
+<td class="px-4 py-4 text-center">
+<span class="material-symbols-outlined text-emerald-500 text-xl">check_circle</span>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<!-- Column 2: Registros ERP -->
+<div class="flex flex-col bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 overflow-hidden shadow-sm">
+<div class="p-4 border-b border-slate-100 dark:border-slate-800 flex justify-between items-center bg-slate-50/50 dark:bg-slate-800/50">
+<h3 class="font-bold flex items-center gap-2 text-slate-700 dark:text-slate-200">
+<span class="material-symbols-outlined text-primary">data_usage</span>
+                            Registros ERP (Libros)
+                        </h3>
+<span class="px-2 py-0.5 bg-slate-200 dark:bg-slate-700 rounded text-[10px] font-bold uppercase">Módulo: Tesorería</span>
+</div>
+<div class="overflow-y-auto flex-1">
+<table class="w-full text-left border-collapse">
+<thead class="sticky top-0 bg-white dark:bg-slate-900 shadow-sm z-10">
+<tr class="text-slate-500 text-xs font-bold uppercase border-b border-slate-100 dark:border-slate-800">
+<th class="px-4 py-3">Fecha</th>
+<th class="px-4 py-3">Documento / Ref</th>
+<th class="px-4 py-3 text-right">Monto ERP</th>
+<th class="px-4 py-3 text-center w-20">Estado</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-slate-50 dark:divide-slate-800 text-sm">
+<!-- Suggested Match Entry -->
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 bg-primary/5 transition-colors">
+<td class="px-4 py-4 whitespace-nowrap text-slate-500">25 Oct</td>
+<td class="px-4 py-4">
+<p class="font-medium">FACTURA VENTA #4450</p>
+<p class="text-xs text-slate-400">Cliente: Juan Pérez</p>
+</td>
+<td class="px-4 py-4 text-right font-bold text-emerald-600">+$150.000</td>
+<td class="px-4 py-4 text-center">
+<button class="bg-primary text-white text-[10px] font-bold px-2 py-1 rounded shadow-sm hover:bg-primary/90">VINCULAR</button>
+</td>
+</tr>
+<!-- Unlinked -->
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+<td class="px-4 py-4 whitespace-nowrap text-slate-500">23 Oct</td>
+<td class="px-4 py-4">
+<p class="font-medium">COMPRA SUMINISTROS</p>
+<p class="text-xs text-slate-400">Ref: OC-501 • Sodimac</p>
+</td>
+<td class="px-4 py-4 text-right font-bold text-slate-700 dark:text-slate-200">-$34.990</td>
+<td class="px-4 py-4 text-center">
+<span class="text-[10px] text-slate-400 font-bold uppercase">Pendiente</span>
+</td>
+</tr>
+<!-- Already Conciliated -->
+<tr class="opacity-50 grayscale hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+<td class="px-4 py-4 whitespace-nowrap text-slate-500">22 Oct</td>
+<td class="px-4 py-4">
+<p class="font-medium">EGRESO AUTOMÁTICO</p>
+<p class="text-xs text-slate-400">Seguro General - Mes Oct</p>
+</td>
+<td class="px-4 py-4 text-right font-bold text-slate-700 dark:text-slate-200">-$15.500</td>
+<td class="px-4 py-4 text-center">
+<span class="material-symbols-outlined text-emerald-500 text-xl">check_circle</span>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</main>
+<!-- Bottom Navigation -->
+<nav class="bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800">
+<div class="max-w-7xl mx-auto flex justify-between items-center px-4 py-2">
+<a class="flex flex-col items-center gap-1 text-slate-400 hover:text-primary transition-colors py-2 flex-1" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="text-[10px] font-bold uppercase">Inicio</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-primary py-2 flex-1 border-b-2 border-primary" href="#">
+<span class="material-symbols-outlined">account_balance</span>
+<span class="text-[10px] font-bold uppercase tracking-wider">Bancos</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-slate-400 hover:text-primary transition-colors py-2 flex-1" href="#">
+<span class="material-symbols-outlined">description</span>
+<span class="text-[10px] font-bold uppercase">Ventas</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-slate-400 hover:text-primary transition-colors py-2 flex-1" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="text-[10px] font-bold uppercase">Config</span>
+</a>
+</div>
+</nav>
+</div>
+</body></html>

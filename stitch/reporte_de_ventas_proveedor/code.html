@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+
+<html class="light" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#ec5b13",
+                        "background-light": "#f8f6f6",
+                        "background-dark": "#221610",
+                    },
+                    fontFamily: {
+                        "display": ["Public Sans"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 min-h-screen">
+<div class="flex flex-col min-h-screen">
+<!-- Header Section -->
+<header class="sticky top-0 z-10 bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-800">
+<div class="flex items-center p-4 justify-between max-w-5xl mx-auto w-full">
+<div class="flex items-center gap-3">
+<div class="text-primary flex size-10 shrink-0 items-center justify-center rounded-lg bg-primary/10">
+<span class="material-symbols-outlined">arrow_back</span>
+</div>
+<div>
+<h2 class="text-slate-900 dark:text-slate-100 text-lg font-bold leading-tight tracking-tight">Reporte de Ventas</h2>
+<p class="text-xs text-slate-500 dark:text-slate-400">Portal de Proveedores</p>
+</div>
+</div>
+<div class="flex gap-2">
+<button class="flex size-10 items-center justify-center rounded-xl bg-primary text-white shadow-lg shadow-primary/20">
+<span class="material-symbols-outlined">download</span>
+</button>
+</div>
+</div>
+</header>
+<main class="flex-1 max-w-5xl mx-auto w-full p-4 space-y-6">
+<!-- Filters -->
+<section class="flex gap-2 overflow-x-auto pb-2 scrollbar-hide">
+<button class="flex h-10 shrink-0 items-center justify-center gap-x-2 rounded-xl bg-primary px-4 text-white">
+<span class="text-sm font-medium leading-normal">Últimos 30 días</span>
+<span class="material-symbols-outlined text-sm">expand_more</span>
+</button>
+<button class="flex h-10 shrink-0 items-center justify-center gap-x-2 rounded-xl bg-slate-200 dark:bg-slate-800 px-4 text-slate-700 dark:text-slate-300">
+<span class="text-sm font-medium leading-normal">Último trimestre</span>
+<span class="material-symbols-outlined text-sm">expand_more</span>
+</button>
+<button class="flex h-10 shrink-0 items-center justify-center gap-x-2 rounded-xl bg-slate-200 dark:bg-slate-800 px-4 text-slate-700 dark:text-slate-300">
+<span class="text-sm font-medium leading-normal">Personalizado</span>
+<span class="material-symbols-outlined text-sm">calendar_today</span>
+</button>
+</section>
+<!-- Summary Cards -->
+<section class="grid grid-cols-1 md:grid-cols-3 gap-4">
+<div class="flex flex-col gap-2 rounded-xl p-5 border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/50 shadow-sm">
+<div class="flex items-center justify-between">
+<p class="text-slate-500 dark:text-slate-400 text-sm font-medium">Ventas Totales</p>
+<span class="material-symbols-outlined text-primary">payments</span>
+</div>
+<p class="text-slate-900 dark:text-slate-100 tracking-tight text-2xl font-bold">$45,230.00</p>
+<div class="flex items-center gap-1">
+<span class="text-emerald-500 text-sm font-bold flex items-center">
+<span class="material-symbols-outlined text-sm">trending_up</span> +12.5%
+                        </span>
+<span class="text-xs text-slate-400">vs mes anterior</span>
+</div>
+</div>
+<div class="flex flex-col gap-2 rounded-xl p-5 border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/50 shadow-sm">
+<div class="flex items-center justify-between">
+<p class="text-slate-500 dark:text-slate-400 text-sm font-medium">Unidades Vendidas</p>
+<span class="material-symbols-outlined text-primary">inventory_2</span>
+</div>
+<p class="text-slate-900 dark:text-slate-100 tracking-tight text-2xl font-bold">1,240</p>
+<div class="flex items-center gap-1">
+<span class="text-emerald-500 text-sm font-bold flex items-center">
+<span class="material-symbols-outlined text-sm">trending_up</span> +5.2%
+                        </span>
+<span class="text-xs text-slate-400">vs mes anterior</span>
+</div>
+</div>
+<div class="flex flex-col gap-2 rounded-xl p-5 border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/50 shadow-sm">
+<div class="flex items-center justify-between">
+<p class="text-slate-500 dark:text-slate-400 text-sm font-medium">Valor Promedio</p>
+<span class="material-symbols-outlined text-primary">shopping_basket</span>
+</div>
+<p class="text-slate-900 dark:text-slate-100 tracking-tight text-2xl font-bold">$36.48</p>
+<div class="flex items-center gap-1">
+<span class="text-primary text-sm font-bold flex items-center">
+<span class="material-symbols-outlined text-sm">trending_flat</span> +2.1%
+                        </span>
+<span class="text-xs text-slate-400">vs mes anterior</span>
+</div>
+</div>
+</section>
+<!-- Chart Section -->
+<section class="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/50 p-6 shadow-sm">
+<div class="flex items-center justify-between mb-6">
+<h3 class="text-slate-900 dark:text-slate-100 text-lg font-bold leading-tight">Tendencias de Ventas (6 meses)</h3>
+<div class="flex gap-2">
+<span class="flex items-center gap-1 text-xs text-slate-500"><span class="size-2 rounded-full bg-primary"></span> Ventas</span>
+<span class="flex items-center gap-1 text-xs text-slate-500"><span class="size-2 rounded-full bg-slate-300 dark:bg-slate-700"></span> Proyectado</span>
+</div>
+</div>
+<div class="flex h-48 items-end justify-between gap-2 px-2">
+<div class="group relative flex flex-1 flex-col items-center gap-2">
+<div class="w-full bg-primary/20 rounded-t-lg transition-all" style="height: 40%"></div>
+<p class="text-[10px] font-medium text-slate-400 uppercase">Ene</p>
+</div>
+<div class="group relative flex flex-1 flex-col items-center gap-2">
+<div class="w-full bg-primary/40 rounded-t-lg transition-all" style="height: 60%"></div>
+<p class="text-[10px] font-medium text-slate-400 uppercase">Feb</p>
+</div>
+<div class="group relative flex flex-1 flex-col items-center gap-2">
+<div class="w-full bg-primary/60 rounded-t-lg transition-all" style="height: 55%"></div>
+<p class="text-[10px] font-medium text-slate-400 uppercase">Mar</p>
+</div>
+<div class="group relative flex flex-1 flex-col items-center gap-2">
+<div class="w-full bg-primary/80 rounded-t-lg transition-all" style="height: 75%"></div>
+<p class="text-[10px] font-medium text-slate-400 uppercase">Abr</p>
+</div>
+<div class="group relative flex flex-1 flex-col items-center gap-2">
+<div class="w-full bg-primary rounded-t-lg transition-all" style="height: 90%"></div>
+<p class="text-[10px] font-medium text-slate-400 uppercase font-bold">May</p>
+</div>
+<div class="group relative flex flex-1 flex-col items-center gap-2">
+<div class="w-full bg-slate-300 dark:bg-slate-700 rounded-t-lg transition-all" style="height: 45%"></div>
+<p class="text-[10px] font-medium text-slate-400 uppercase">Jun</p>
+</div>
+</div>
+</section>
+<!-- Top Selling Products -->
+<section class="space-y-4">
+<div class="flex items-center justify-between">
+<h3 class="text-slate-900 dark:text-slate-100 text-lg font-bold leading-tight tracking-tight">Productos más vendidos</h3>
+<button class="text-primary text-sm font-semibold">Ver todo</button>
+</div>
+<div class="overflow-hidden rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/50 shadow-sm">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-slate-50 dark:bg-slate-800/50">
+<th class="p-4 text-xs font-bold uppercase text-slate-500">Producto</th>
+<th class="p-4 text-xs font-bold uppercase text-slate-500 text-center">Cant.</th>
+<th class="p-4 text-xs font-bold uppercase text-slate-500 text-right">Ingresos</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-slate-200 dark:divide-slate-800">
+<tr>
+<td class="p-4">
+<div class="flex items-center gap-3">
+<div class="size-10 rounded bg-slate-100 dark:bg-slate-800 flex items-center justify-center">
+<span class="material-symbols-outlined text-slate-400">package_2</span>
+</div>
+<span class="font-medium text-sm">Laptop Pro Ultra 15"</span>
+</div>
+</td>
+<td class="p-4 text-center text-sm">142</td>
+<td class="p-4 text-right font-bold text-sm">$12,450.00</td>
+</tr>
+<tr>
+<td class="p-4">
+<div class="flex items-center gap-3">
+<div class="size-10 rounded bg-slate-100 dark:bg-slate-800 flex items-center justify-center">
+<span class="material-symbols-outlined text-slate-400">package_2</span>
+</div>
+<span class="font-medium text-sm">Monitor Curvo 34" Gaming</span>
+</div>
+</td>
+<td class="p-4 text-center text-sm">85</td>
+<td class="p-4 text-right font-bold text-sm">$8,920.00</td>
+</tr>
+<tr>
+<td class="p-4">
+<div class="flex items-center gap-3">
+<div class="size-10 rounded bg-slate-100 dark:bg-slate-800 flex items-center justify-center">
+<span class="material-symbols-outlined text-slate-400">package_2</span>
+</div>
+<span class="font-medium text-sm">Teclado Mecánico RGB</span>
+</div>
+</td>
+<td class="p-4 text-center text-sm">215</td>
+<td class="p-4 text-right font-bold text-sm">$4,300.00</td>
+</tr>
+<tr>
+<td class="p-4">
+<div class="flex items-center gap-3">
+<div class="size-10 rounded bg-slate-100 dark:bg-slate-800 flex items-center justify-center">
+<span class="material-symbols-outlined text-slate-400">package_2</span>
+</div>
+<span class="font-medium text-sm">Mouse Inalámbrico Pro</span>
+</div>
+</td>
+<td class="p-4 text-center text-sm">198</td>
+<td class="p-4 text-right font-bold text-sm">$2,450.00</td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+</main>
+<!-- Bottom Navigation Bar -->
+<nav class="sticky bottom-0 bg-white dark:bg-background-dark border-t border-slate-200 dark:border-slate-800 pb-safe">
+<div class="flex max-w-5xl mx-auto px-4 py-2">
+<a class="flex flex-1 flex-col items-center justify-center gap-1 text-slate-400 dark:text-slate-500" href="#">
+<span class="material-symbols-outlined">home</span>
+<p class="text-[10px] font-medium leading-normal tracking-wide">Inicio</p>
+</a>
+<a class="flex flex-1 flex-col items-center justify-center gap-1 text-primary" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1">bar_chart</span>
+<p class="text-[10px] font-medium leading-normal tracking-wide">Ventas</p>
+</a>
+<a class="flex flex-1 flex-col items-center justify-center gap-1 text-slate-400 dark:text-slate-500" href="#">
+<span class="material-symbols-outlined">inventory_2</span>
+<p class="text-[10px] font-medium leading-normal tracking-wide">Productos</p>
+</a>
+<a class="flex flex-1 flex-col items-center justify-center gap-1 text-slate-400 dark:text-slate-500" href="#">
+<span class="material-symbols-outlined">person</span>
+<p class="text-[10px] font-medium leading-normal tracking-wide">Perfil</p>
+</a>
+</div>
+</nav>
+</div>
+</body></html>

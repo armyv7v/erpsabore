@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+
+<html class="light" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#ec5b13",
+                        "background-light": "#f8f6f6",
+                        "background-dark": "#221610",
+                    },
+                    fontFamily: {
+                        "display": ["Public Sans"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        body { font-family: 'Public Sans', sans-serif; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 min-h-screen flex flex-col">
+<!-- Header Section -->
+<header class="sticky top-0 z-10 bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-800">
+<div class="flex items-center p-4 justify-between">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-slate-600 dark:text-slate-400">arrow_back</span>
+<h2 class="text-lg font-bold leading-tight tracking-tight">Reporte Consolidado</h2>
+</div>
+<button class="flex items-center justify-center rounded-lg p-2 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+<span class="material-symbols-outlined text-primary">ios_share</span>
+</button>
+</div>
+<!-- Date Filter -->
+<div class="px-4 pb-3">
+<button class="flex h-10 items-center justify-between gap-x-2 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 px-4 w-full shadow-sm">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-sm text-slate-500">calendar_today</span>
+<p class="text-sm font-medium">Hoy, 24 Mayo 2024</p>
+</div>
+<span class="material-symbols-outlined text-slate-400">expand_more</span>
+</button>
+</div>
+</header>
+<!-- Main Content -->
+<main class="flex-1 overflow-y-auto pb-24">
+<!-- Summary Cards -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-3 p-4">
+<div class="flex flex-col gap-1 rounded-xl p-4 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm">
+<p class="text-slate-500 dark:text-slate-400 text-xs font-semibold uppercase tracking-wider">Venta Total</p>
+<p class="text-2xl font-bold leading-tight text-slate-900 dark:text-white">$4.520.000</p>
+<div class="flex items-center gap-1 mt-1">
+<span class="material-symbols-outlined text-emerald-500 text-sm">trending_up</span>
+<p class="text-emerald-500 text-xs font-bold">+12.5% vs ayer</p>
+</div>
+</div>
+<div class="flex flex-col gap-1 rounded-xl p-4 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm">
+<p class="text-slate-500 dark:text-slate-400 text-xs font-semibold uppercase tracking-wider">Cierres Realizados</p>
+<div class="flex items-baseline gap-2">
+<p class="text-2xl font-bold leading-tight text-slate-900 dark:text-white">8/10</p>
+<p class="text-sm text-slate-500">Sucursales</p>
+</div>
+<div class="w-full bg-slate-100 dark:bg-slate-800 h-1.5 rounded-full mt-2">
+<div class="bg-primary h-1.5 rounded-full" style="width: 80%"></div>
+</div>
+</div>
+<div class="flex flex-col gap-1 rounded-xl p-4 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm">
+<p class="text-slate-500 dark:text-slate-400 text-xs font-semibold uppercase tracking-wider">Diferencia Neta</p>
+<p class="text-2xl font-bold leading-tight text-red-500">-$15.200</p>
+<p class="text-slate-400 text-xs font-medium mt-1">Sobrantes vs Faltantes</p>
+</div>
+</div>
+<!-- Sales Chart Mockup -->
+<div class="mx-4 mb-6 p-4 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm">
+<h3 class="text-sm font-bold mb-4 text-slate-700 dark:text-slate-300">Ventas por Sucursal (CLP)</h3>
+<div class="flex items-end justify-between h-32 gap-2 px-2">
+<div class="flex-1 flex flex-col items-center gap-2">
+<div class="w-full bg-primary/20 rounded-t-md relative group">
+<div class="bg-primary w-full rounded-t-md transition-all duration-300" style="height: 80%"></div>
+</div>
+<span class="text-[10px] text-slate-400 font-medium">Centro</span>
+</div>
+<div class="flex-1 flex flex-col items-center gap-2">
+<div class="w-full bg-primary/20 rounded-t-md relative group">
+<div class="bg-primary w-full rounded-t-md" style="height: 65%"></div>
+</div>
+<span class="text-[10px] text-slate-400 font-medium">Prov.</span>
+</div>
+<div class="flex-1 flex flex-col items-center gap-2">
+<div class="w-full bg-primary/20 rounded-t-md relative group">
+<div class="bg-primary w-full rounded-t-md" style="height: 95%"></div>
+</div>
+<span class="text-[10px] text-slate-400 font-medium">Las C.</span>
+</div>
+<div class="flex-1 flex flex-col items-center gap-2">
+<div class="w-full bg-primary/20 rounded-t-md relative group">
+<div class="bg-primary w-full rounded-t-md" style="height: 40%"></div>
+</div>
+<span class="text-[10px] text-slate-400 font-medium">Maipú</span>
+</div>
+<div class="flex-1 flex flex-col items-center gap-2">
+<div class="w-full bg-primary/20 rounded-t-md relative group">
+<div class="bg-primary w-full rounded-t-md" style="height: 70%"></div>
+</div>
+<span class="text-[10px] text-slate-400 font-medium">Vitac.</span>
+</div>
+</div>
+</div>
+<!-- Branch List -->
+<div class="px-4">
+<div class="flex items-center justify-between mb-3">
+<h3 class="text-sm font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider">Detalle de Cierres</h3>
+<span class="text-xs text-primary font-semibold">Ver Todo</span>
+</div>
+<div class="space-y-3">
+<!-- Branch Item 1: Discrepancy -->
+<div class="p-4 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 flex items-center justify-between shadow-sm">
+<div class="flex items-center gap-3">
+<div class="size-10 rounded-full bg-red-100 dark:bg-red-900/30 flex items-center justify-center text-red-600 dark:text-red-400">
+<span class="material-symbols-outlined">storefront</span>
+</div>
+<div>
+<p class="font-bold text-slate-900 dark:text-white">Tienda Centro</p>
+<div class="flex items-center gap-2">
+<span class="size-2 rounded-full bg-emerald-500"></span>
+<span class="text-xs text-slate-500">Cerrado 21:05</span>
+</div>
+</div>
+</div>
+<div class="text-right">
+<p class="font-bold text-slate-900 dark:text-white">$1.240.000</p>
+<p class="text-xs font-bold text-red-500">Diff: -$12.450</p>
+</div>
+</div>
+<!-- Branch Item 2: OK -->
+<div class="p-4 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 flex items-center justify-between shadow-sm">
+<div class="flex items-center gap-3">
+<div class="size-10 rounded-full bg-emerald-100 dark:bg-emerald-900/30 flex items-center justify-center text-emerald-600 dark:text-emerald-400">
+<span class="material-symbols-outlined">storefront</span>
+</div>
+<div>
+<p class="font-bold text-slate-900 dark:text-white">Sucursal Providencia</p>
+<div class="flex items-center gap-2">
+<span class="size-2 rounded-full bg-emerald-500"></span>
+<span class="text-xs text-slate-500">Cerrado 20:45</span>
+</div>
+</div>
+</div>
+<div class="text-right">
+<p class="font-bold text-slate-900 dark:text-white">$890.500</p>
+<p class="text-xs font-bold text-emerald-500">OK</p>
+</div>
+</div>
+<!-- Branch Item 3: Pending -->
+<div class="p-4 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 flex items-center justify-between shadow-sm opacity-75">
+<div class="flex items-center gap-3">
+<div class="size-10 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-400">
+<span class="material-symbols-outlined">schedule</span>
+</div>
+<div>
+<p class="font-bold text-slate-900 dark:text-white">Las Condes Outlet</p>
+<div class="flex items-center gap-2">
+<span class="size-2 rounded-full bg-amber-500"></span>
+<span class="text-xs text-slate-500">Pendiente</span>
+</div>
+</div>
+</div>
+<div class="text-right">
+<p class="font-bold text-slate-400">--</p>
+<p class="text-xs text-slate-400">Sin datos</p>
+</div>
+</div>
+<!-- Branch Item 4: Minor Discrepancy -->
+<div class="p-4 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 flex items-center justify-between shadow-sm">
+<div class="flex items-center gap-3">
+<div class="size-10 rounded-full bg-amber-100 dark:bg-amber-900/30 flex items-center justify-center text-amber-600 dark:text-amber-400">
+<span class="material-symbols-outlined">storefront</span>
+</div>
+<div>
+<p class="font-bold text-slate-900 dark:text-white">Vitacura Mall</p>
+<div class="flex items-center gap-2">
+<span class="size-2 rounded-full bg-emerald-500"></span>
+<span class="text-xs text-slate-500">Cerrado 21:15</span>
+</div>
+</div>
+</div>
+<div class="text-right">
+<p class="font-bold text-slate-900 dark:text-white">$950.000</p>
+<p class="text-xs font-bold text-red-500">Diff: -$2.750</p>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Navigation Bar -->
+<nav class="fixed bottom-0 left-0 right-0 bg-white dark:bg-background-dark border-t border-slate-200 dark:border-slate-800 px-2 pb-6 pt-2 z-20">
+<div class="flex justify-around items-center max-w-md mx-auto">
+<a class="flex flex-col items-center gap-1 text-slate-400 dark:text-slate-500 hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined">home</span>
+<span class="text-[10px] font-medium">Inicio</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-primary" href="#">
+<span class="material-symbols-outlined font-bold" style="font-variation-settings: 'FILL' 1">bar_chart</span>
+<span class="text-[10px] font-bold">Reportes</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-slate-400 dark:text-slate-500 hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined">store</span>
+<span class="text-[10px] font-medium">Sucursales</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-slate-400 dark:text-slate-500 hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined">menu</span>
+<span class="text-[10px] font-medium">Más</span>
+</a>
+</div>
+</nav>
+</body></html>

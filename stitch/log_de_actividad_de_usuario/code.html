@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+
+<html class="light" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Log de Actividad - Chile SaaS ERP</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#ec5b13",
+                        "background-light": "#f8f6f6",
+                        "background-dark": "#221610",
+                    },
+                    fontFamily: {
+                        "display": ["Public Sans"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 min-h-screen">
+<div class="flex flex-col min-h-screen max-w-2xl mx-auto bg-white dark:bg-slate-900 shadow-xl overflow-hidden">
+<!-- Header -->
+<header class="flex items-center px-4 py-4 border-b border-slate-200 dark:border-slate-800 sticky top-0 bg-white dark:bg-slate-900 z-10">
+<button class="p-2 hover:bg-primary/10 rounded-full transition-colors">
+<span class="material-symbols-outlined text-primary">arrow_back</span>
+</button>
+<h1 class="text-xl font-bold ml-2 flex-1 tracking-tight">Log de Actividad</h1>
+<button class="p-2 hover:bg-primary/10 rounded-full transition-colors">
+<span class="material-symbols-outlined text-slate-500 dark:text-slate-400">download</span>
+</button>
+</header>
+<!-- Search & Filter Controls -->
+<section class="p-4 space-y-4 border-b border-slate-200 dark:border-slate-800">
+<!-- Search Bar -->
+<div class="relative group">
+<div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+<span class="material-symbols-outlined text-slate-400 group-focus-within:text-primary transition-colors">search</span>
+</div>
+<input class="block w-full pl-10 pr-3 py-2.5 bg-slate-100 dark:bg-slate-800 border-none rounded-xl text-sm focus:ring-2 focus:ring-primary/50 transition-all placeholder:text-slate-400" placeholder="Buscar por usuario, acción o DTE..." type="text"/>
+</div>
+<!-- Horizontal Filters -->
+<div class="flex gap-2 overflow-x-auto pb-1 no-scrollbar">
+<button class="flex items-center shrink-0 px-4 py-1.5 rounded-full bg-primary text-white text-xs font-semibold shadow-sm shadow-primary/30">
+<span class="material-symbols-outlined text-sm mr-1">category</span>
+                    Todos los Módulos
+                    <span class="material-symbols-outlined text-sm ml-1">expand_more</span>
+</button>
+<button class="flex items-center shrink-0 px-4 py-1.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 text-xs font-semibold">
+                    Ventas
+                    <span class="material-symbols-outlined text-sm ml-1">expand_more</span>
+</button>
+<button class="flex items-center shrink-0 px-4 py-1.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 text-xs font-semibold">
+                    Inventario
+                    <span class="material-symbols-outlined text-sm ml-1">expand_more</span>
+</button>
+<button class="flex items-center shrink-0 px-4 py-1.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 text-xs font-semibold">
+                    RRHH
+                    <span class="material-symbols-outlined text-sm ml-1">expand_more</span>
+</button>
+</div>
+<!-- Calendar Preview (Mini Range) -->
+<div class="flex items-center justify-between p-3 rounded-xl bg-primary/5 border border-primary/20">
+<div class="flex items-center">
+<span class="material-symbols-outlined text-primary mr-2">calendar_today</span>
+<div class="text-xs">
+<p class="font-bold text-slate-900 dark:text-slate-100">Hoy, 24 Mayo 2024</p>
+<p class="text-slate-500 dark:text-slate-400 text-[10px]">Filtrado por rango personalizado</p>
+</div>
+</div>
+<button class="material-symbols-outlined text-primary text-xl">edit_calendar</button>
+</div>
+</section>
+<!-- Activity Feed -->
+<main class="flex-1 overflow-y-auto bg-slate-50 dark:bg-slate-950/50 p-4 space-y-4">
+<!-- Severity: Change (Orange) -->
+<div class="bg-white dark:bg-slate-900 rounded-xl p-4 shadow-sm border-l-4 border-amber-500 relative">
+<div class="flex items-start justify-between">
+<div class="flex items-center gap-3">
+<img alt="Avatar" class="size-10 rounded-full object-cover" data-alt="Profile photo of a professional man" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBk41rUbjy9MskpORoeM5WMnfcnq2kuFGWZzAOFjuzVMYAnTUmI-A0jOiWm1aVfKMUL7rTXbCcEUlHv9Pjuy75TR3VOC_1frrqLIZj2Rp9iHzTBkhJc82_c15TrVto-WlGoJbm1O7cX1AH0cvD-xsgZzSU7HCmMnc-9x-pJb4FjTzh8xTcjSwHc1-UnwByJdhZmNTPnGlE4T1K9ZCVNTuvd8CqCGs_eqtDGYS0q7c-ZSIfkjI3D0fCkUdTQO1vVwQzFMu4BZW1q2L4"/>
+<div>
+<p class="text-sm font-bold">Eduardo Valenzuela</p>
+<span class="inline-flex items-center rounded-md bg-amber-50 dark:bg-amber-900/20 px-2 py-0.5 text-[10px] font-medium text-amber-600 ring-1 ring-inset ring-amber-500/10">Cambio</span>
+</div>
+</div>
+<span class="text-[10px] text-slate-400 font-medium">Hace 5 min</span>
+</div>
+<div class="mt-3">
+<p class="text-sm font-semibold text-slate-700 dark:text-slate-200">Stock Actualizado</p>
+<p class="text-xs text-slate-500 mt-1">Bodega Central - SKU: CHL-9920</p>
+<div class="flex items-center gap-3 mt-3 pt-3 border-t border-slate-100 dark:border-slate-800">
+<div class="flex items-center text-[10px] text-slate-400">
+<span class="material-symbols-outlined text-xs mr-1">location_on</span>
+                            IP: 186.105.44.122
+                        </div>
+<div class="flex items-center text-[10px] text-slate-400">
+<span class="material-symbols-outlined text-xs mr-1">schedule</span>
+                            14:22 hrs
+                        </div>
+</div>
+</div>
+<button class="absolute top-4 right-4 text-slate-300 hover:text-primary transition-colors">
+<span class="material-symbols-outlined">expand_more</span>
+</button>
+</div>
+<!-- Severity: Info (Blue) -->
+<div class="bg-white dark:bg-slate-900 rounded-xl p-4 shadow-sm border-l-4 border-blue-500 relative">
+<div class="flex items-start justify-between">
+<div class="flex items-center gap-3">
+<img alt="Avatar" class="size-10 rounded-full object-cover" data-alt="Profile photo of a professional woman" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD_6gcFT8abxG72YUYilgOnwDjzhRbquOC4qJ3aRL_vYN3IuwSxKtvYfp2_l_5XliGyY2tJ7d6XSm-8Tu5jdj69nRyBzb6DfXXKXMPmapCoFEgPGvenA2HldxJ8gXL0ciC12NuvMpIkwq1piAPsC730U5EOPk-_7XpCYloAmiBbR1rBvWP2tDaUQLNkN0rNlF14nmlmZhwe-Ph885RokNZ9J9_ungSbDf66QqUqxbIKDrnH9DeGwRtzxT9kNnBEPYHB-mwpiiAeF5c"/>
+<div>
+<p class="text-sm font-bold">Maria José Tapia</p>
+<span class="inline-flex items-center rounded-md bg-blue-50 dark:bg-blue-900/20 px-2 py-0.5 text-[10px] font-medium text-blue-600 ring-1 ring-inset ring-blue-500/10">Ventas</span>
+</div>
+</div>
+<span class="text-[10px] text-slate-400 font-medium">Hace 12 min</span>
+</div>
+<div class="mt-3">
+<p class="text-sm font-semibold text-slate-700 dark:text-slate-200">Factura Emitida</p>
+<p class="text-xs text-slate-500 mt-1">DTE #1024 - Cliente: Inversiones Los Andes</p>
+<!-- Expanded Details Example -->
+<div class="mt-3 p-2 bg-slate-50 dark:bg-slate-800/50 rounded-lg text-[10px] font-mono space-y-1">
+<div class="flex justify-between">
+<span class="text-slate-400">Monto:</span>
+<span class="text-slate-700 dark:text-slate-300">$1.450.000 CLP</span>
+</div>
+<div class="flex justify-between">
+<span class="text-slate-400">UUID:</span>
+<span class="text-slate-700 dark:text-slate-300">550e8400-e29b-41d4</span>
+</div>
+</div>
+<div class="flex items-center gap-3 mt-3 pt-3 border-t border-slate-100 dark:border-slate-800">
+<div class="flex items-center text-[10px] text-slate-400">
+<span class="material-symbols-outlined text-xs mr-1">location_on</span>
+                            IP: 190.21.11.8 (Santiago)
+                        </div>
+<div class="flex items-center text-[10px] text-slate-400">
+<span class="material-symbols-outlined text-xs mr-1">schedule</span>
+                            14:15 hrs
+                        </div>
+</div>
+</div>
+<button class="absolute top-4 right-4 text-primary transition-colors">
+<span class="material-symbols-outlined">expand_less</span>
+</button>
+</div>
+<!-- Severity: Critical/Alert (Red) -->
+<div class="bg-white dark:bg-slate-900 rounded-xl p-4 shadow-sm border-l-4 border-rose-500 relative">
+<div class="flex items-start justify-between">
+<div class="flex items-center gap-3">
+<div class="size-10 rounded-full bg-rose-100 dark:bg-rose-900/30 flex items-center justify-center">
+<span class="material-symbols-outlined text-rose-600">security</span>
+</div>
+<div>
+<p class="text-sm font-bold text-rose-600">Sistema / Seguridad</p>
+<span class="inline-flex items-center rounded-md bg-rose-50 dark:bg-rose-900/20 px-2 py-0.5 text-[10px] font-medium text-rose-600 ring-1 ring-inset ring-rose-500/10">Alerta</span>
+</div>
+</div>
+<span class="text-[10px] text-slate-400 font-medium">Hace 45 min</span>
+</div>
+<div class="mt-3">
+<p class="text-sm font-semibold text-slate-700 dark:text-slate-200">Acceso Denegado</p>
+<p class="text-xs text-slate-500 mt-1">Intento fallido de login desde ubicación inusual.</p>
+<div class="flex items-center gap-3 mt-3 pt-3 border-t border-slate-100 dark:border-slate-800">
+<div class="flex items-center text-[10px] text-rose-500 font-bold">
+<span class="material-symbols-outlined text-xs mr-1">public</span>
+                            IP: 45.234.11.201 (Rusia)
+                        </div>
+<div class="flex items-center text-[10px] text-slate-400">
+<span class="material-symbols-outlined text-xs mr-1">schedule</span>
+                            13:40 hrs
+                        </div>
+</div>
+</div>
+<button class="absolute top-4 right-4 text-slate-300 hover:text-primary transition-colors">
+<span class="material-symbols-outlined">expand_more</span>
+</button>
+</div>
+<!-- Severity: Change (Orange) -->
+<div class="bg-white dark:bg-slate-900 rounded-xl p-4 shadow-sm border-l-4 border-amber-500 relative">
+<div class="flex items-start justify-between">
+<div class="flex items-center gap-3">
+<img alt="Avatar" class="size-10 rounded-full object-cover" data-alt="Profile photo of a businessman" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA54DQqA9OUFxsEsgqOXDktXmkemXrUqJgxF1urExyxzHE1Y3k3G7XGgstRbOgRUuucRDpHSVE_KuygcNaliHD3jzPxxOo0vOdaaY79DcfpVQFKc3MYp4YvuOPQfmnW3HisWAjJ3XqB0JlBTvPnKE9DqklDQFKBFeVb5Eqq-HfT5xJHv_41I6Q86q99MZhb9fPXPf32psOL9miErojv9HVtyDOZ1VvVoGTWM6joFcQU3YBIRc_Wm6arW0XOvgdRP21u0u7-dvbTsZk"/>
+<div>
+<p class="text-sm font-bold">Cristian Donoso</p>
+<span class="inline-flex items-center rounded-md bg-slate-50 dark:bg-slate-800/50 px-2 py-0.5 text-[10px] font-medium text-slate-600 dark:text-slate-400 ring-1 ring-inset ring-slate-500/10">Usuarios</span>
+</div>
+</div>
+<span class="text-[10px] text-slate-400 font-medium">Hoy, 11:30</span>
+</div>
+<div class="mt-3">
+<p class="text-sm font-semibold text-slate-700 dark:text-slate-200">Nuevo Usuario Creado</p>
+<p class="text-xs text-slate-500 mt-1">Nombre: Roberto Gomez - Rol: Vendedor Jr.</p>
+<div class="flex items-center gap-3 mt-3 pt-3 border-t border-slate-100 dark:border-slate-800">
+<div class="flex items-center text-[10px] text-slate-400">
+<span class="material-symbols-outlined text-xs mr-1">location_on</span>
+                            IP: 190.160.22.9
+                        </div>
+<div class="flex items-center text-[10px] text-slate-400">
+<span class="material-symbols-outlined text-xs mr-1">schedule</span>
+                            11:30 hrs
+                        </div>
+</div>
+</div>
+<button class="absolute top-4 right-4 text-slate-300 hover:text-primary transition-colors">
+<span class="material-symbols-outlined">expand_more</span>
+</button>
+</div>
+</main>
+<!-- Bottom Navigation Bar -->
+<nav class="flex justify-around items-center px-4 py-2 bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 pb-safe">
+<a class="flex flex-col items-center gap-1 text-slate-400 py-1" href="#">
+<span class="material-symbols-outlined">home</span>
+<span class="text-[10px] font-medium">Inicio</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-slate-400 py-1" href="#">
+<span class="material-symbols-outlined">receipt_long</span>
+<span class="text-[10px] font-medium">Ventas</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-primary py-1" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1">list_alt</span>
+<span class="text-[10px] font-medium">Log</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-slate-400 py-1" href="#">
+<span class="material-symbols-outlined">inventory_2</span>
+<span class="text-[10px] font-medium">Inventario</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-slate-400 py-1" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="text-[10px] font-medium">Ajustes</span>
+</a>
+</nav>
+</div>
+<!-- Style for hiding scrollbar -->
+<style>
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        .pb-safe {
+            padding-bottom: env(safe-area-inset-bottom);
+        }
+    </style>
+</body></html>

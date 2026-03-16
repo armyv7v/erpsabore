@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+
+<html lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Reporte de Eficiencia de Conciliación</title>
+<!-- BEGIN: Scripts and Configuration -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#F97316', // Orange color from theme request
+            secondary: '#64748B',
+            success: '#10B981',
+            warning: '#F59E0B',
+            danger: '#EF4444',
+            surface: '#F8FAFC'
+          }
+        }
+      }
+    }
+  </script>
+<!-- END: Scripts and Configuration -->
+<style data-purpose="custom-layout">
+    body {
+      background-color: #F1F5F9;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+    .safe-area-bottom {
+      padding-bottom: env(safe-area-inset-bottom);
+    }
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+  </style>
+</head>
+<body class="flex flex-col min-h-screen text-slate-800">
+<!-- BEGIN: App Header -->
+<header class="bg-white border-b border-slate-200 sticky top-0 z-30 px-4 pt-6 pb-4">
+<div class="flex flex-col gap-4">
+<div class="flex items-center justify-between gap-2"><h1 class="text-xl font-bold text-slate-900">Eficiencia de Conciliación</h1>
+<div class="flex items-center gap-2">
+<button class="p-2 bg-slate-100 rounded-full flex items-center justify-center" data-purpose="export-pdf-btn" title="Exportar PDF">
+<svg class="h-5 w-5 text-slate-600" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+</button>
+<button class="p-2 bg-slate-100 rounded-full" data-purpose="notifications-btn">
+<svg class="h-5 w-5 text-slate-600" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+</button>
+</div></div>
+<!-- Date Range Picker Mockup -->
+<div class="flex items-center gap-2 bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-sm text-slate-600" data-purpose="date-picker">
+<svg class="h-4 w-4" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+<span>01 Oct 2023 - 31 Oct 2023</span>
+<svg class="h-4 w-4 ml-auto" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M19 9l-7 7-7-7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+</div>
+</div>
+</header>
+<!-- END: App Header -->
+<!-- BEGIN: Main Content -->
+<main class="flex-1 overflow-y-auto px-4 py-6 space-y-6 pb-24">
+<!-- BEGIN: KPI Cards -->
+<section class="grid grid-cols-2 gap-4" data-purpose="kpi-section">
+<!-- Automation Rate -->
+<div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-100 col-span-2">
+<p class="text-xs font-medium text-slate-500 uppercase tracking-wider">Tasa de Automatización</p>
+<div class="flex items-end justify-between mt-1">
+<span class="text-3xl font-bold text-slate-900">85%</span>
+<div class="flex items-center text-success text-sm font-medium">
+<svg class="h-4 w-4" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path clip-rule="evenodd" d="M12 7a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0V8.414l-4.293 4.293a1 1 0 01-1.414 0L8 10.414l-4.293 4.293a1 1 0 01-1.414-1.414l5-5a1 1 0 011.414 0L11 10.586 14.586 7H12z" fill-rule="evenodd"></path>
+</svg>
+<span>+3.2%</span>
+</div>
+</div>
+<div class="w-full bg-slate-100 h-2 rounded-full mt-3">
+<div class="bg-primary h-2 rounded-full" style="width: 85%"></div>
+</div>
+</div>
+<!-- Average Time -->
+<div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-100">
+<p class="text-xs font-medium text-slate-500 uppercase tracking-wider">Tiempo de Cierre</p>
+<div class="mt-1">
+<span class="text-xl font-bold text-slate-900">4.2 horas</span>
+</div>
+<p class="text-[10px] text-slate-400 mt-1">-15 min vs mes ant.</p>
+</div>
+<!-- Manual Pending -->
+<div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-100">
+<p class="text-xs font-medium text-slate-500 uppercase tracking-wider">Pendientes</p>
+<div class="mt-1 flex items-center gap-2">
+<span class="text-xl font-bold text-slate-900">12</span>
+<span class="px-2 py-0.5 bg-orange-100 text-primary text-[10px] font-bold rounded uppercase">Manuales</span>
+</div>
+<p class="text-[10px] text-slate-400 mt-1">Requieren atención</p>
+</div>
+</section>
+<!-- END: KPI Cards -->
+<!-- BEGIN: Match Progress Chart -->
+<section class="bg-white p-5 rounded-2xl shadow-sm border border-slate-100">
+<h2 class="text-sm font-bold text-slate-900 mb-4">Match Automático vs Manual</h2>
+<div class="flex items-center justify-around py-4">
+<!-- SVG Donut Chart Mockup -->
+<div class="relative w-32 h-32">
+<svg class="w-full h-full transform -rotate-90" viewbox="0 0 36 36">
+<circle class="stroke-slate-100" cx="18" cy="18" fill="none" r="16" stroke-width="4"></circle>
+<circle class="stroke-primary" cx="18" cy="18" fill="none" r="16" stroke-dasharray="85, 100" stroke-width="4"></circle>
+</svg>
+<div class="absolute inset-0 flex flex-col items-center justify-center">
+<span class="text-lg font-bold">85%</span>
+<span class="text-[8px] text-slate-400 uppercase">Auto</span>
+</div>
+</div>
+<div class="space-y-3">
+<div class="flex items-center gap-2">
+<div class="w-3 h-3 rounded-full bg-primary"></div>
+<div class="flex flex-col">
+<span class="text-xs font-semibold">Automático</span>
+<span class="text-[10px] text-slate-500">2,450 trans.</span>
+</div>
+</div>
+<div class="flex items-center gap-2">
+<div class="w-3 h-3 rounded-full bg-slate-200"></div>
+<div class="flex flex-col">
+<span class="text-xs font-semibold text-slate-600">Manual</span>
+<span class="text-[10px] text-slate-500">432 trans.</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- END: Match Progress Chart -->
+<!-- BEGIN: Bank Efficiency Bar Chart -->
+<section class="bg-white p-5 rounded-2xl shadow-sm border border-slate-100">
+<div class="flex justify-between items-center mb-4">
+<h2 class="text-sm font-bold text-slate-900">Conciliaciones por Banco</h2>
+<span class="text-[10px] font-bold text-primary uppercase">Tasa de éxito</span>
+</div>
+<div class="space-y-4">
+<!-- Bank 1 -->
+<div class="space-y-1">
+<div class="flex justify-between text-xs">
+<span class="font-medium">BBVA México</span>
+<span class="text-slate-500">92%</span>
+</div>
+<div class="w-full bg-slate-100 h-2 rounded-full overflow-hidden">
+<div class="bg-primary h-2 rounded-full" style="width: 92%"></div>
+</div>
+</div>
+<!-- Bank 2 -->
+<div class="space-y-1">
+<div class="flex justify-between text-xs">
+<span class="font-medium">Santander</span>
+<span class="text-slate-500">78%</span>
+</div>
+<div class="w-full bg-slate-100 h-2 rounded-full overflow-hidden">
+<div class="bg-primary h-2 rounded-full" style="width: 78%"></div>
+</div>
+</div>
+<!-- Bank 3 -->
+<div class="space-y-1">
+<div class="flex justify-between text-xs">
+<span class="font-medium">Banorte</span>
+<span class="text-slate-500">65%</span>
+</div>
+<div class="w-full bg-slate-100 h-2 rounded-full overflow-hidden">
+<div class="bg-primary h-2 rounded-full opacity-70" style="width: 65%"></div>
+</div>
+</div>
+</div>
+</section>
+<!-- END: Bank Efficiency Bar Chart -->
+<!-- BEGIN: Discrepancy Motives -->
+<section class="bg-white p-5 rounded-2xl shadow-sm border border-slate-100" data-purpose="discrepancy-list">
+<h2 class="text-sm font-bold text-slate-900 mb-4">Principales Motivos de Discrepancia</h2>
+<div class="divide-y divide-slate-100">
+<!-- Motive 1 -->
+<div class="py-3 flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-lg bg-orange-50 flex items-center justify-center text-primary">
+<svg class="h-4 w-4" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+</div>
+<div>
+<p class="text-xs font-semibold text-slate-800">Diferencia de centavos</p>
+<p class="text-[10px] text-slate-400">45 ocurrencias este mes</p>
+</div>
+</div>
+<span class="text-xs font-bold text-slate-600">38%</span>
+</div>
+<!-- Motive 2 -->
+<div class="py-3 flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-lg bg-orange-50 flex items-center justify-center text-primary">
+<svg class="h-4 w-4" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+</div>
+<div>
+<p class="text-xs font-semibold text-slate-800">Referencia inválida</p>
+<p class="text-[10px] text-slate-400">28 ocurrencias este mes</p>
+</div>
+</div>
+<span class="text-xs font-bold text-slate-600">24%</span>
+</div>
+<!-- Motive 3 -->
+<div class="py-3 flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-lg bg-orange-50 flex items-center justify-center text-primary">
+<svg class="h-4 w-4" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+</div>
+<div>
+<p class="text-xs font-semibold text-slate-800">Fecha fuera de rango</p>
+<p class="text-[10px] text-slate-400">15 ocurrencias este mes</p>
+</div>
+</div>
+<span class="text-xs font-bold text-slate-600">12%</span>
+</div>
+</div>
+</section>
+<!-- END: Discrepancy Motives -->
+</main>
+<!-- END: Main Content -->
+<!-- BEGIN: Bottom Navigation -->
+<nav class="fixed bottom-0 left-0 right-0 bg-white border-t border-slate-200 safe-area-bottom z-40">
+<div class="flex justify-around items-center h-16">
+<!-- Nav Item: Inicio -->
+<a class="flex flex-col items-center gap-1 px-4 py-2 text-slate-400" href="#">
+<svg class="h-5 w-5" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+<span class="text-[10px] font-medium">Inicio</span>
+</a>
+<!-- Nav Item: Conciliar -->
+<a class="flex flex-col items-center gap-1 px-4 py-2 text-primary" href="#">
+<svg class="h-5 w-5" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+<span class="text-[10px] font-medium">Analítica</span>
+</a>
+<!-- Nav Item: Facturas -->
+<a class="flex flex-col items-center gap-1 px-4 py-2 text-slate-400" href="#">
+<svg class="h-5 w-5" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+<span class="text-[10px] font-medium">Facturas</span>
+</a>
+<!-- Nav Item: Config -->
+<a class="flex flex-col items-center gap-1 px-4 py-2 text-slate-400" href="#">
+<svg class="h-5 w-5" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+<path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+<span class="text-[10px] font-medium">Config</span>
+</a>
+</div>
+</nav>
+<!-- END: Bottom Navigation -->
+</body></html>

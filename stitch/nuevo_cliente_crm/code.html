@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+
+<html lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Nuevo Cliente - ERP CRM</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#ec5b13",
+                        "background-light": "#f8f6f6",
+                        "background-dark": "#221610",
+                    },
+                    fontFamily: {
+                        "display": ["Public Sans"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        body { font-family: 'Public Sans', sans-serif; }
+        .material-symbols-outlined { font-size: 24px; }
+        .form-input-custom {
+            @apply block w-full rounded-xl border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:border-primary focus:ring-primary text-sm;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 font-display">
+<div class="relative flex min-h-screen flex-col overflow-x-hidden">
+<header class="sticky top-0 z-50 flex items-center justify-between border-b border-slate-200 dark:border-slate-800 bg-white/80 dark:bg-background-dark/80 px-4 py-3 backdrop-blur-md">
+<div class="flex items-center gap-3">
+<button class="flex h-10 w-10 items-center justify-center rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+<span class="material-symbols-outlined">arrow_back</span>
+</button>
+<h1 class="text-lg font-bold tracking-tight">Nuevo Cliente</h1>
+</div>
+<button class="text-primary font-bold text-base hover:opacity-80 transition-opacity">Guardar</button>
+</header>
+<main class="flex-1 pb-32">
+<form class="flex flex-col gap-6 p-4">
+<section>
+<div class="mb-3">
+<h2 class="text-sm font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Información Básica</h2>
+</div>
+<div class="space-y-4">
+<label class="block">
+<span class="mb-1 block text-sm font-medium">Tipo de Cliente</span>
+<select class="form-input-custom w-full h-12">
+<option value="">Seleccionar tipo</option>
+<option value="natural">Persona Natural</option>
+<option value="empresa">Empresa</option>
+</select>
+</label>
+<label class="block">
+<span class="mb-1 block text-sm font-medium">Nombre o Razón Social</span>
+<input class="form-input-custom w-full h-12" placeholder="Ej: Juan Pérez o Empresa SpA" type="text"/>
+</label>
+<label class="block">
+<span class="mb-1 block text-sm font-medium">RUT</span>
+<input class="form-input-custom w-full h-12" placeholder="12.345.678-9" type="text"/>
+</label>
+</div>
+</section>
+<section>
+<div class="mb-3">
+<h2 class="text-sm font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Detalles del Negocio</h2>
+</div>
+<div class="space-y-4">
+<label class="block">
+<span class="mb-1 block text-sm font-medium">Giro Comercial</span>
+<div class="relative">
+<input class="form-input-custom w-full h-12 pr-10" placeholder="Buscar actividad..." type="text"/>
+<span class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-slate-400">search</span>
+</div>
+</label>
+<label class="block">
+<span class="mb-1 block text-sm font-medium">Dirección Casa Matriz</span>
+<input class="form-input-custom w-full h-12" placeholder="Calle, número, oficina" type="text"/>
+</label>
+<div class="grid grid-cols-2 gap-4">
+<label class="block">
+<span class="mb-1 block text-sm font-medium">Región</span>
+<select class="form-input-custom w-full h-12">
+<option value="">Seleccionar</option>
+<option value="rm">Metropolitana</option>
+<option value="v">Valparaíso</option>
+</select>
+</label>
+<label class="block">
+<span class="mb-1 block text-sm font-medium">Comuna</span>
+<select class="form-input-custom w-full h-12">
+<option value="">Seleccionar</option>
+<option value="stgo">Santiago</option>
+<option value="prov">Providencia</option>
+</select>
+</label>
+</div>
+</div>
+</section>
+<section>
+<div class="mb-3">
+<h2 class="text-sm font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Información de Contacto</h2>
+</div>
+<div class="space-y-4">
+<label class="block">
+<span class="mb-1 block text-sm font-medium">Nombre de Contacto Principal</span>
+<input class="form-input-custom w-full h-12" placeholder="Ej: Pedro García" type="text"/>
+</label>
+<label class="block">
+<span class="mb-1 block text-sm font-medium">Email</span>
+<input class="form-input-custom w-full h-12" placeholder="ejemplo@correo.cl" type="email"/>
+</label>
+<label class="block">
+<span class="mb-1 block text-sm font-medium">Teléfono</span>
+<div class="flex">
+<span class="flex items-center justify-center rounded-l-xl border border-r-0 border-slate-300 dark:border-slate-700 bg-slate-100 dark:bg-slate-900 px-3 text-sm text-slate-500">
+                                    +56
+                                </span>
+<input class="form-input-custom h-12 flex-1 rounded-l-none" placeholder="9 1234 5678" type="tel"/>
+</div>
+</label>
+</div>
+</section>
+<section>
+<div class="mb-3">
+<h2 class="text-sm font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Metadatos CRM</h2>
+</div>
+<div class="space-y-4">
+<label class="block">
+<span class="mb-1 block text-sm font-medium">Etapa Inicial</span>
+<select class="form-input-custom w-full h-12">
+<option value="prospecto">Prospecto</option>
+<option value="calificado">Calificado</option>
+</select>
+</label>
+<label class="block">
+<span class="mb-1 block text-sm font-medium">Origen del Lead</span>
+<select class="form-input-custom w-full h-12">
+<option value="">Seleccionar origen</option>
+<option value="web">Web</option>
+<option value="referido">Referido</option>
+<option value="rrss">Redes Sociales</option>
+</select>
+</label>
+</div>
+</section>
+<div class="mt-4 flex flex-col gap-3">
+<button class="flex h-14 w-full items-center justify-center rounded-xl bg-primary text-white font-bold shadow-lg shadow-primary/20 hover:bg-primary/90 transition-all active:scale-95" type="submit">
+                        Crear Cliente
+                    </button>
+<button class="flex h-14 w-full items-center justify-center rounded-xl border border-slate-300 dark:border-slate-700 bg-transparent text-slate-600 dark:text-slate-400 font-medium hover:bg-slate-100 dark:hover:bg-slate-800 transition-all" type="button">
+                        Cancelar
+                    </button>
+</div>
+</form>
+</main>
+<nav class="fixed bottom-0 left-0 z-50 w-full border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-background-dark px-4 pb-6 pt-2">
+<div class="flex items-center justify-between">
+<a class="flex flex-1 flex-col items-center gap-1 text-slate-400 dark:text-slate-500" href="#">
+<span class="material-symbols-outlined">home</span>
+<span class="text-[10px] font-medium">Inicio</span>
+</a>
+<a class="flex flex-1 flex-col items-center gap-1 text-slate-400 dark:text-slate-500" href="#">
+<span class="material-symbols-outlined">query_stats</span>
+<span class="text-[10px] font-medium">Ventas</span>
+</a>
+<a class="flex flex-1 flex-col items-center gap-1 text-primary" href="#">
+<span class="material-symbols-outlined fill-[1]">groups</span>
+<span class="text-[10px] font-bold">CRM</span>
+</a>
+<a class="flex flex-1 flex-col items-center gap-1 text-slate-400 dark:text-slate-500" href="#">
+<span class="material-symbols-outlined">inventory_2</span>
+<span class="text-[10px] font-medium">Inventario</span>
+</a>
+<a class="flex flex-1 flex-col items-center gap-1 text-slate-400 dark:text-slate-500" href="#">
+<span class="material-symbols-outlined">more_horiz</span>
+<span class="text-[10px] font-medium">Más</span>
+</a>
+</div>
+</nav>
+</div>
+</body></html>

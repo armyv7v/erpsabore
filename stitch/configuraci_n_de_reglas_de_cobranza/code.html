@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+
+<html class="light" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Configuración de Cobranza | ERP</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#ec5b13",
+                        "background-light": "#f8f6f6",
+                        "background-dark": "#221610",
+                    },
+                    fontFamily: {
+                        "display": ["Public Sans", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        body { font-family: 'Public Sans', sans-serif; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 min-h-screen">
+<!-- Top Navigation Bar -->
+<header class="sticky top-0 z-50 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800">
+<div class="max-w-4xl mx-auto px-4 h-16 flex items-center justify-between">
+<div class="flex items-center gap-4">
+<button class="p-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full transition-colors">
+<span class="material-symbols-outlined align-middle">arrow_back</span>
+</button>
+<h1 class="text-xl font-bold tracking-tight">Reglas de Cobranza</h1>
+</div>
+<button class="bg-primary hover:bg-primary/90 text-white px-6 py-2 rounded-xl font-bold transition-all flex items-center gap-2 shadow-sm">
+<span class="material-symbols-outlined text-[20px]">save</span>
+<span>Guardar Cambios</span>
+</button>
+</div>
+</header>
+<main class="max-w-4xl mx-auto p-4 md:p-8 space-y-8">
+<!-- Main Toggle Section -->
+<section class="bg-white dark:bg-slate-900 rounded-xl p-6 shadow-sm border border-slate-200 dark:border-slate-800">
+<div class="flex items-center justify-between">
+<div class="space-y-1">
+<h2 class="text-lg font-bold">Automatización de Avisos</h2>
+<p class="text-slate-500 dark:text-slate-400 text-sm">Gestiona el envío autónomo de notificaciones de cobranza a tus clientes.</p>
+</div>
+<label class="relative inline-flex items-center cursor-pointer group">
+<input checked="" class="sr-only peer" type="checkbox" value=""/>
+<div class="w-14 h-7 bg-slate-200 peer-focus:outline-none dark:bg-slate-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[4px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-6 after:w-6 after:transition-all peer-checked:bg-primary"></div>
+</label>
+</div>
+</section>
+<!-- Rules Grid -->
+<div class="grid grid-cols-1 gap-6">
+<!-- Rule 1: Preventivo -->
+<div class="bg-white dark:bg-slate-900 rounded-xl overflow-hidden border border-slate-200 dark:border-slate-800 shadow-sm transition-all hover:shadow-md">
+<div class="p-6">
+<div class="flex items-start justify-between mb-6">
+<div class="flex items-center gap-4">
+<div class="p-3 bg-primary/10 rounded-lg text-primary">
+<span class="material-symbols-outlined text-3xl">event_upcoming</span>
+</div>
+<div>
+<h3 class="text-lg font-bold">Recordatorio Preventivo</h3>
+<p class="text-slate-500 dark:text-slate-400 text-sm">Aviso previo para asegurar el pago oportuno.</p>
+</div>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox"/>
+<div class="w-11 h-6 bg-slate-200 peer-focus:outline-none dark:bg-slate-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+</label>
+</div>
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pt-4 border-t border-slate-100 dark:border-slate-800">
+<div>
+<p class="font-medium">Días antes del vencimiento</p>
+<p class="text-xs text-slate-400">Recomendado: 3 a 5 días</p>
+</div>
+<div class="flex items-center gap-4 bg-slate-50 dark:bg-slate-800 p-2 rounded-lg">
+<button class="w-8 h-8 flex items-center justify-center rounded-md bg-white dark:bg-slate-700 border border-slate-200 dark:border-slate-600 hover:text-primary transition-colors">-</button>
+<input class="w-12 text-center bg-transparent border-none font-bold text-lg focus:ring-0" type="text" value="3"/>
+<button class="w-8 h-8 flex items-center justify-center rounded-md bg-white dark:bg-slate-700 border border-slate-200 dark:border-slate-600 hover:text-primary transition-colors">+</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Rule 2: Día del Vencimiento -->
+<div class="bg-white dark:bg-slate-900 rounded-xl overflow-hidden border border-slate-200 dark:border-slate-800 shadow-sm transition-all hover:shadow-md">
+<div class="p-6">
+<div class="flex items-start justify-between mb-6">
+<div class="flex items-center gap-4">
+<div class="p-3 bg-primary/10 rounded-lg text-primary">
+<span class="material-symbols-outlined text-3xl">notification_important</span>
+</div>
+<div>
+<h3 class="text-lg font-bold">Aviso Día de Vencimiento</h3>
+<p class="text-slate-500 dark:text-slate-400 text-sm">Notificar al cliente que su documento vence hoy.</p>
+</div>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input class="sr-only peer" type="checkbox"/>
+<div class="w-11 h-6 bg-slate-200 peer-focus:outline-none dark:bg-slate-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+</label>
+</div>
+<div class="p-4 bg-amber-50 dark:bg-amber-900/20 border border-amber-100 dark:border-amber-900/30 rounded-lg flex gap-3">
+<span class="material-symbols-outlined text-amber-600 dark:text-amber-400">info</span>
+<p class="text-sm text-amber-800 dark:text-amber-200">Este aviso se envía automáticamente a las 09:00 AM del día del vencimiento.</p>
+</div>
+</div>
+</div>
+<!-- Rule 3: Morosidad -->
+<div class="bg-white dark:bg-slate-900 rounded-xl overflow-hidden border border-slate-200 dark:border-slate-800 shadow-sm transition-all hover:shadow-md">
+<div class="p-6">
+<div class="flex items-start justify-between mb-6">
+<div class="flex items-center gap-4">
+<div class="p-3 bg-primary/10 rounded-lg text-primary">
+<span class="material-symbols-outlined text-3xl">priority_high</span>
+</div>
+<div>
+<h3 class="text-lg font-bold">Aviso de Morosidad</h3>
+<p class="text-slate-500 dark:text-slate-400 text-sm">Seguimiento de facturas impagas tras la fecha límite.</p>
+</div>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox"/>
+<div class="w-11 h-6 bg-slate-200 peer-focus:outline-none dark:bg-slate-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+</label>
+</div>
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pt-4 border-t border-slate-100 dark:border-slate-800">
+<div>
+<p class="font-medium">Días después del vencimiento</p>
+<p class="text-xs text-slate-400">Recomendado: 2 a 7 días</p>
+</div>
+<div class="flex items-center gap-4 bg-slate-50 dark:bg-slate-800 p-2 rounded-lg">
+<button class="w-8 h-8 flex items-center justify-center rounded-md bg-white dark:bg-slate-700 border border-slate-200 dark:border-slate-600 hover:text-primary transition-colors">-</button>
+<input class="w-12 text-center bg-transparent border-none font-bold text-lg focus:ring-0" type="text" value="5"/>
+<button class="w-8 h-8 flex items-center justify-center rounded-md bg-white dark:bg-slate-700 border border-slate-200 dark:border-slate-600 hover:text-primary transition-colors">+</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Notification Channels -->
+<section class="space-y-4">
+<h3 class="text-lg font-bold px-1">Canales de Notificación</h3>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+<div class="flex items-center gap-4 p-4 bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800">
+<div class="size-10 flex items-center justify-center bg-blue-100 text-blue-600 rounded-lg">
+<span class="material-symbols-outlined">mail</span>
+</div>
+<div class="flex-1">
+<p class="font-medium text-sm">Correo Electrónico</p>
+<p class="text-xs text-slate-500">Activado</p>
+</div>
+<input checked="" class="rounded text-primary focus:ring-primary h-5 w-5 border-slate-300" type="checkbox"/>
+</div>
+<div class="flex items-center gap-4 p-4 bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800">
+<div class="size-10 flex items-center justify-center bg-green-100 text-green-600 rounded-lg">
+<span class="material-symbols-outlined">chat</span>
+</div>
+<div class="flex-1">
+<p class="font-medium text-sm">WhatsApp Business</p>
+<p class="text-xs text-slate-500">Desactivado</p>
+</div>
+<input class="rounded text-primary focus:ring-primary h-5 w-5 border-slate-300" type="checkbox"/>
+</div>
+</div>
+</section>
+<!-- Preview Card -->
+<section class="bg-slate-900 text-white rounded-2xl p-8 relative overflow-hidden">
+<div class="relative z-10 max-w-lg">
+<h3 class="text-xl font-bold mb-2">Vista previa de mensajes</h3>
+<p class="text-slate-400 text-sm mb-6">Revisa cómo tus clientes verán las notificaciones de cobranza.</p>
+<button class="bg-white/10 hover:bg-white/20 text-white px-5 py-2.5 rounded-lg text-sm font-semibold transition-colors border border-white/10 flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px]">visibility</span>
+                    Ver plantilla de correo
+                </button>
+</div>
+<div class="absolute right-0 top-0 bottom-0 w-1/3 bg-gradient-to-l from-primary/20 to-transparent hidden md:block"></div>
+<span class="material-symbols-outlined absolute -right-8 -bottom-8 text-[200px] text-white/5 rotate-12">description</span>
+</section>
+</main>
+<!-- Footer Space -->
+<div class="h-12"></div>
+</body></html>
