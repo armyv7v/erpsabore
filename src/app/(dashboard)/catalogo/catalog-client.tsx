@@ -151,6 +151,25 @@ export default function CatalogClient({ products, customers = [] }: Props) {
     );
   }
 
+  function handleManualQuantityChange(productId: string, value: string) {
+    const cleanValue = value.replace(/[^0-9]/g, ""); // solo números enteros
+    setCartItems((current) =>
+      current.map((item) => {
+        if (item.id === productId) {
+          const qty = cleanValue === "" ? 0 : parseInt(cleanValue, 10);
+          return { ...item, quantity: qty };
+        }
+        return item;
+      })
+    );
+  }
+
+  function handleQuantityBlur(productId: string, currentQty: number) {
+    if (currentQty <= 0) {
+      setCartItems((current) => current.filter((item) => item.id !== productId));
+    }
+  }
+
   function clearCart() {
     setCartItems([]);
     window.localStorage.removeItem(CART_STORAGE_KEY);
@@ -485,7 +504,15 @@ export default function CatalogClient({ products, customers = [] }: Props) {
                           >
                             <Minus className="w-3.5 h-3.5" />
                           </button>
-                          <span className="min-w-6 text-center font-bold text-xs">{item.quantity}</span>
+                          <input
+                            type="text"
+                            inputMode="numeric"
+                            pattern="[0-9]*"
+                            value={item.quantity === 0 ? "" : item.quantity}
+                            onChange={(e) => handleManualQuantityChange(item.id, e.target.value)}
+                            onBlur={() => handleQuantityBlur(item.id, item.quantity)}
+                            className="w-12 h-8 text-center font-bold text-xs bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg focus:ring-1 focus:ring-primary focus:outline-none focus:bg-white dark:focus:bg-slate-900 transition-all [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                          />
                           <button
                             type="button"
                             onClick={() => updateQuantity(item.id, 1)}
