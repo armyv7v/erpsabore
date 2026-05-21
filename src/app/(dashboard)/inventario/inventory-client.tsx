@@ -72,7 +72,11 @@ export default function InventoryClient({ products, summary }: Props) {
 
   // Click outside to close dropdowns
   useEffect(() => {
-    const handleOutsideClick = () => {
+    const handleOutsideClick = (e: MouseEvent) => {
+      const target = e.target as HTMLElement;
+      if (target.closest("[data-dropdown-trigger]") || target.closest("[data-dropdown-menu]")) {
+        return;
+      }
       setActiveDropdownId(null);
     };
     window.addEventListener("click", handleOutsideClick);
@@ -313,15 +317,17 @@ export default function InventoryClient({ products, summary }: Props) {
                       <button
                         onClick={(e) => {
                           e.stopPropagation();
+                          e.nativeEvent.stopImmediatePropagation();
                           setActiveDropdownId(activeDropdownId === product.id ? null : product.id);
                         }}
+                        data-dropdown-trigger="true"
                         className="p-1.5 hover:bg-slate-100 dark:hover:bg-slate-800 rounded text-slate-400 hover:text-slate-600 transition-colors"
                       >
                         <MoreVertical className="w-5 h-5" />
                       </button>
 
                       {activeDropdownId === product.id && (
-                        <div className="absolute right-0 mt-1 w-44 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-lg py-1.5 z-30 animate-in fade-in slide-in-from-top-1 duration-100">
+                        <div data-dropdown-menu="true" className="absolute right-0 mt-1 w-44 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-lg py-1.5 z-30 animate-in fade-in slide-in-from-top-1 duration-100">
                           <button
                             onClick={() => {
                               setEditingProduct(product);

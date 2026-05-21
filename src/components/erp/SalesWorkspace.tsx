@@ -199,7 +199,11 @@ export default function SalesWorkspace({
   const [selectedInvoice, setSelectedInvoice] = useState<InvoiceRecord | null>(null);
 
   useEffect(() => {
-    const handleOutsideClick = () => {
+    const handleOutsideClick = (e: MouseEvent) => {
+      const target = e.target as HTMLElement;
+      if (target.closest("[data-dropdown-trigger]") || target.closest("[data-dropdown-menu]")) {
+        return;
+      }
       setActiveDropdownId(null);
     };
     window.addEventListener("click", handleOutsideClick);
@@ -432,15 +436,17 @@ export default function SalesWorkspace({
                         <button
                           onClick={(e) => {
                             e.stopPropagation();
+                            e.nativeEvent.stopImmediatePropagation();
                             setActiveDropdownId(activeDropdownId === invoice.id ? null : invoice.id);
                           }}
+                          data-dropdown-trigger="true"
                           className="text-slate-400 hover:text-primary transition-colors p-1.5 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800"
                         >
                           <MoreVertical className="w-5 h-5" />
                         </button>
                         
                         {activeDropdownId === invoice.id && (
-                          <div className="absolute right-4 mt-1 w-48 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-lg py-1.5 z-30 animate-in fade-in slide-in-from-top-1 duration-100">
+                          <div data-dropdown-menu="true" className="absolute right-4 mt-1 w-48 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-lg py-1.5 z-30 animate-in fade-in slide-in-from-top-1 duration-100">
                             <button
                               onClick={() => {
                                 setSelectedInvoice(invoice);
