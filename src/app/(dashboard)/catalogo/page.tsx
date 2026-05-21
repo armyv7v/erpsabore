@@ -2,7 +2,9 @@ import { requireAuthenticatedUser } from "@/lib/services/auth-service";
 import { createAuthenticatedSupabaseClient } from "@/lib/services/auth-service";
 import { listProducts } from "@/lib/repositories/product-repository";
 import { isSupabaseConfigured } from "@/lib/supabase/config";
+import { listCustomers } from "@/lib/repositories/customer-repository";
 import { mockCatalogProducts } from "@/data/catalog";
+import type { CustomerRecord } from "@/lib/types/erp";
 import CatalogClient from "./catalog-client";
 
 async function getCatalogProducts() {
@@ -35,5 +37,17 @@ async function getCatalogProducts() {
 
 export default async function CatalogPage() {
   const products = await getCatalogProducts();
-  return <CatalogClient products={products} />;
+
+  let customers: CustomerRecord[] = [];
+  if (isSupabaseConfigured()) {
+    try {
+      const user = await requireAuthenticatedUser();
+      const supabase = await createAuthenticatedSupabaseClient();
+      customers = await listCustomers(supabase, user.tenantId);
+    } catch (err) {
+      console.error("Error al cargar clientes para el catálogo:", err);
+    }
+  }
+
+  return <CatalogClient products={products} customers={customers} />;
 }
