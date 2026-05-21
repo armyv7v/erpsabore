@@ -44,8 +44,13 @@ async function getInventoryData() {
   const supabase = await createAuthenticatedSupabaseClient();
 
   const [products, summary] = await Promise.all([
-    listProducts(supabase, user.tenantId),
-    getProductStockSummary(supabase, user.tenantId),
+    listProducts(supabase, user.tenantId).catch(() => []),
+    getProductStockSummary(supabase, user.tenantId).catch(() => ({
+      skuCount: 0,
+      lowStockCount: 0,
+      stockAlertCount: 0,
+      totalInventoryValue: 0,
+    })),
   ]);
 
   return { products, summary };

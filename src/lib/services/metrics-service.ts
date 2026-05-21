@@ -33,7 +33,7 @@ export async function getDashboardMetrics(user: AuthUser): Promise<DashboardMetr
 
   const [workspace, stockSummary] = await Promise.all([
     getSalesWorkspace(user, { page: 1, pageSize: 10 }),
-    supabase ? getProductStockSummary(supabase, user.tenantId) : Promise.resolve(null),
+    supabase ? getProductStockSummary(supabase, user.tenantId).catch(() => null) : Promise.resolve(null),
   ]);
 
   const invoices = workspace.invoices;
