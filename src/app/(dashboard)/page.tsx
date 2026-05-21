@@ -7,7 +7,21 @@ import { getDashboardMetrics } from "@/lib/services/metrics-service";
 
 export default async function DashboardPage() {
   const user = await requireAuthenticatedUser();
-  const metrics = await getDashboardMetrics(user);
+
+  let metrics: Awaited<ReturnType<typeof getDashboardMetrics>>;
+  try {
+    metrics = await getDashboardMetrics(user);
+  } catch {
+    metrics = {
+      monthlySales: 0,
+      pendingInvoicesCount: 0,
+      grossMarginPercentage: 0,
+      stockAlertCount: 0,
+      revenueTrendTotal: 0,
+      revenueTrendGrowth: "+0%",
+      latestInvoices: [],
+    };
+  }
 
   if (user.role === "ventas") {
     return (
