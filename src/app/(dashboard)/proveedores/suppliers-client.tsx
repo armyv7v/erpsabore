@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect, useActionState } from "react";
 import {
   Search,
   Filter,
@@ -12,8 +12,12 @@ import {
   ChevronRight,
   Plus,
   Package,
+  X,
+  AlertCircle,
 } from "lucide-react";
 import type { SupplierRecord } from "@/lib/repositories/supplier-repository";
+import type { ActionState } from "@/lib/types/erp";
+import { createSupplierAction } from "@/app/actions/suppliers";
 
 interface Props {
   suppliers: SupplierRecord[];
@@ -37,11 +41,11 @@ function getStatusInfo(supplier: SupplierRecord): { text: string; isWarning: boo
   if (supplier.pendingBalance <= 0) {
     return { text: "Sin deudas", isWarning: false };
   }
-  // Como no tenemos due_date en suppliers, indicamos el monto pendiente como contexto
   return { text: `$${supplier.pendingBalance.toLocaleString("es-CL")} pendiente`, isWarning: true };
 }
 
 const CATEGORIES = ["Todos", "Suministros", "Logística", "Servicios", "Importaciones"] as const;
+const INITIAL_STATE: ActionState = { status: "idle", message: "" };
 
 function formatCLP(value: number) {
   return value.toLocaleString("es-CL", { style: "currency", currency: "CLP", maximumFractionDigits: 0 });
@@ -50,6 +54,16 @@ function formatCLP(value: number) {
 export default function SuppliersClient({ suppliers }: Props) {
   const [searchQuery, setSearchQuery] = useState("");
   const [activeCategory, setActiveCategory] = useState<string>("Todos");
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const [state, formAction, isPending] = useActionState(createSupplierAction, INITIAL_STATE);
+
+  // Cerrar modal automáticamente al tener éxito
+  useEffect(() => {
+    if (state.status === "success") {
+      setIsModalOpen(false);
+    }
+  }, [state]);
 
   const filteredSuppliers = useMemo(() => {
     return suppliers.filter((supplier) => {
@@ -90,9 +104,18 @@ export default function SuppliersClient({ suppliers }: Props) {
               )}
             </div>
           </div>
-          <button className="p-2 hover:bg-primary/10 rounded-full transition-colors text-slate-600 dark:text-slate-400">
-            <Filter className="w-5 h-5" />
-          </button>
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => setIsModalOpen(true)}
+              className="hidden md:flex items-center gap-2 px-4 py-2.5 bg-primary hover:bg-primary/95 text-white font-bold rounded-xl text-xs transition-all hover:shadow-lg hover:shadow-primary/20 hover:scale-[1.02] active:scale-95 cursor-pointer"
+            >
+              <Plus className="w-4 h-4" />
+              <span>Agregar Proveedor</span>
+            </button>
+            <button className="p-2 hover:bg-primary/10 rounded-full transition-colors text-slate-600 dark:text-slate-400">
+              <Filter className="w-5 h-5" />
+            </button>
+          </div>
         </div>
 
         {/* Search */}
@@ -221,9 +244,117 @@ export default function SuppliersClient({ suppliers }: Props) {
       </main>
 
       {/* FAB */}
-      <button className="md:hidden fixed right-6 bottom-24 size-14 bg-primary text-white rounded-full shadow-lg shadow-primary/30 flex items-center justify-center hover:scale-105 active:scale-95 transition-transform z-20">
+      <button
+        onClick={() => setIsModalOpen(true)}
+        className="md:hidden fixed right-6 bottom-24 size-14 bg-primary text-white rounded-full shadow-lg shadow-primary/30 flex items-center justify-center hover:scale-105 active:scale-95 transition-transform z-20 cursor-pointer"
+      >
         <Plus className="w-8 h-8" />
       </button>
+
+      {/* Modal — Añadir Proveedor */}
+      {isModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/50 backdrop-blur-sm">
+          <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-xl w-full max-w-md overflow-hidden animate-in fade-in zoom-in duration-200 text-slate-900 dark:text-slate-100">
+            <div className="flex items-center justify-between p-4 border-b border-slate-200 dark:border-slate-800">
+              <h2 className="text-lg font-bold">Añadir Nuevo Proveedor</h2>
+              <button
+                onClick={() => setIsModalOpen(false)}
+                className="p-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full transition-colors text-slate-500"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            {/* Feedback de error de la action */}
+            {state.status === "error" && (
+              <div className="mx-4 mt-4 flex items-center gap-2 p-3 rounded-lg bg-red-50 dark:bg-red-950/30 text-red-600 dark:text-red-400 text-sm">
+                <AlertCircle className="w-4 h-4 flex-shrink-0" />
+                {state.message}
+              </div>
+            )}
+
+            <form action={formAction} className="p-4 space-y-4">
+              <div>
+                <label className="block text-sm font-semibold mb-1">
+                  Razón Social / Nombre
+                </label>
+                <input
+                  type="text"
+                  name="name"
+                  required
+                  className="w-full px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-transparent focus:ring-2 focus:ring-primary/20 outline-none"
+                  placeholder="Ej. Distribuidora Central S.A."
+                />
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-semibold mb-1">RUT</label>
+                  <input
+                    type="text"
+                    name="rut"
+                    required
+                    className="w-full px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-transparent focus:ring-2 focus:ring-primary/20 outline-none uppercase"
+                    placeholder="77.654.321-K"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-semibold mb-1">Categoría</label>
+                  <select
+                    name="category"
+                    required
+                    className="w-full px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 focus:ring-2 focus:ring-primary/20 outline-none"
+                  >
+                    <option value="Suministros">Suministros</option>
+                    <option value="Logística">Logística</option>
+                    <option value="Servicios">Servicios</option>
+                    <option value="Importaciones">Importaciones</option>
+                  </select>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-semibold mb-1">Teléfono</label>
+                  <input
+                    type="tel"
+                    name="phone"
+                    className="w-full px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-transparent focus:ring-2 focus:ring-primary/20 outline-none"
+                    placeholder="+56912345678"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-semibold mb-1">Email</label>
+                  <input
+                    type="email"
+                    name="email"
+                    className="w-full px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-transparent focus:ring-2 focus:ring-primary/20 outline-none"
+                    placeholder="contacto@empresa.cl"
+                  />
+                </div>
+              </div>
+
+              <div className="pt-4 flex gap-3">
+                <button
+                  type="button"
+                  onClick={() => setIsModalOpen(false)}
+                  disabled={isPending}
+                  className="flex-1 px-4 py-2.5 rounded-xl font-bold border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors disabled:opacity-50 cursor-pointer"
+                >
+                  Cancelar
+                </button>
+                <button
+                  type="submit"
+                  disabled={isPending}
+                  className="flex-1 px-4 py-2.5 rounded-xl font-bold bg-primary hover:bg-primary/90 text-white transition-colors disabled:opacity-50 cursor-pointer"
+                >
+                  {isPending ? "Guardando..." : "Guardar"}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

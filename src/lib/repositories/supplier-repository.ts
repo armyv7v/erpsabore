@@ -86,3 +86,40 @@ export async function getTotalCommittedPayments(
     0,
   );
 }
+
+export interface InsertSupplierInput {
+  name: string;
+  rut: string;
+  category?: string | null;
+  email?: string | null;
+  phone?: string | null;
+}
+
+export async function insertSupplier(
+  supabase: SupabaseClient,
+  tenantId: string,
+  input: InsertSupplierInput,
+): Promise<SupplierRecord> {
+  const { data, error } = await supabase
+    .from("suppliers")
+    .insert({
+      tenant_id: tenantId,
+      name: input.name,
+      rut: input.rut,
+      category: input.category ?? null,
+      email: input.email ?? null,
+      phone: input.phone ?? null,
+      pending_balance: 0,
+    })
+    .select(SUPPLIER_SELECT)
+    .single();
+
+  if (error || !data) {
+    throw new Error(
+      `No se pudo crear el proveedor. ${error ? error.message : ""}`.trim(),
+    );
+  }
+
+  return mapSupplier(data as SupplierRow);
+}
+
