@@ -17,6 +17,7 @@ import {
   AlertCircle,
   Check,
   Users,
+  Loader2,
 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
@@ -664,7 +665,14 @@ export default function CatalogClient({ products, customers = [] }: Props) {
                   disabled={cartItems.length === 0 || !selectedCustomer || isPendingOrder}
                   className="flex-[2] rounded-xl bg-primary hover:bg-primary/95 py-2.5 font-bold text-xs text-white disabled:opacity-50 transition-all hover:scale-[1.01] active:scale-95 flex items-center justify-center gap-1.5 cursor-pointer shadow-md shadow-primary/20"
                 >
-                  {isPendingOrder ? "Guardando pedido..." : "Confirmar Pedido"}
+                  {isPendingOrder ? (
+                    <>
+                      <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                      <span>Guardando pedido...</span>
+                    </>
+                  ) : (
+                    "Confirmar Pedido"
+                  )}
                 </button>
               </div>
             </div>
@@ -764,9 +772,16 @@ export default function CatalogClient({ products, customers = [] }: Props) {
                 <button
                   type="submit"
                   disabled={isPendingCustomer}
-                  className="flex-1 px-4 py-2.5 rounded-xl font-bold text-xs bg-primary hover:bg-primary/90 text-white transition-colors disabled:opacity-50 cursor-pointer"
+                  className="flex-1 px-4 py-2.5 rounded-xl font-bold text-xs bg-primary hover:bg-primary/90 text-white transition-colors disabled:opacity-50 cursor-pointer flex items-center justify-center gap-1.5"
                 >
-                  {isPendingCustomer ? "Registrando..." : "Guardar Cliente"}
+                  {isPendingCustomer ? (
+                    <>
+                      <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                      <span>Registrando...</span>
+                    </>
+                  ) : (
+                    "Guardar Cliente"
+                  )}
                 </button>
               </div>
             </form>
