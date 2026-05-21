@@ -48,6 +48,7 @@ export default function InventoryClient({ products, summary }: Props) {
   const [isDeletePending, startDeleteTransition] = useTransition();
 
   const [activeDropdownId, setActiveDropdownId] = useState<string | null>(null);
+  const [dropdownPosition, setDropdownPosition] = useState<{ top: number; right: number } | null>(null);
   const [editingProduct, setEditingProduct] = useState<ProductRecord | null>(null);
   const [adjustingProduct, setAdjustingProduct] = useState<ProductRecord | null>(null);
 
@@ -316,9 +317,14 @@ export default function InventoryClient({ products, summary }: Props) {
                     <div className="relative inline-block text-left">
                       <button
                         onClick={(e) => {
-                          e.stopPropagation();
                           e.nativeEvent.stopImmediatePropagation();
-                          setActiveDropdownId(activeDropdownId === product.id ? null : product.id);
+                          const btn = e.currentTarget as HTMLElement;
+                          const rect = btn.getBoundingClientRect();
+                          const newId = activeDropdownId === product.id ? null : product.id;
+                          if (newId) {
+                            setDropdownPosition({ top: rect.bottom + 4, right: window.innerWidth - rect.right });
+                          }
+                          setActiveDropdownId(newId);
                         }}
                         data-dropdown-trigger="true"
                         className="p-1.5 hover:bg-slate-100 dark:hover:bg-slate-800 rounded text-slate-400 hover:text-slate-600 transition-colors"
@@ -326,8 +332,8 @@ export default function InventoryClient({ products, summary }: Props) {
                         <MoreVertical className="w-5 h-5" />
                       </button>
 
-                      {activeDropdownId === product.id && (
-                        <div data-dropdown-menu="true" className="absolute right-0 mt-1 w-44 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-lg py-1.5 z-30 animate-in fade-in slide-in-from-top-1 duration-100">
+                      {activeDropdownId === product.id && dropdownPosition && (
+                        <div data-dropdown-menu="true" style={{ position: 'fixed', top: `${dropdownPosition.top}px`, right: `${dropdownPosition.right}px` }} className="w-44 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-lg py-1.5 z-[9999] animate-in fade-in slide-in-from-top-1 duration-100">
                           <button
                             onClick={() => {
                               setEditingProduct(product);
