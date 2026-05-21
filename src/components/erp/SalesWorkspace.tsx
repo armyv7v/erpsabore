@@ -199,17 +199,7 @@ export default function SalesWorkspace({
   const [dropdownPosition, setDropdownPosition] = useState<{ top: number; right: number } | null>(null);
   const [selectedInvoice, setSelectedInvoice] = useState<InvoiceRecord | null>(null);
 
-  useEffect(() => {
-    const handleOutsideClick = (e: MouseEvent) => {
-      const target = e.target as HTMLElement;
-      if (target.closest("[data-dropdown-trigger]") || target.closest("[data-dropdown-menu]")) {
-        return;
-      }
-      setActiveDropdownId(null);
-    };
-    window.addEventListener("click", handleOutsideClick);
-    return () => window.removeEventListener("click", handleOutsideClick);
-  }, []);
+
 
   const handlePageChange = (newPage: number) => {
     if (newPage < 1 || newPage > pageCount) return;
@@ -285,6 +275,9 @@ export default function SalesWorkspace({
 
   return (
     <div className="p-4 md:p-8 space-y-6 relative">
+      {activeDropdownId && (
+        <div className="fixed inset-0 z-[9998]" onClick={() => setActiveDropdownId(null)} />
+      )}
       <div className="mb-6">
         <h1 className="text-2xl font-bold tracking-tight">Ventas y Facturación</h1>
         <p className="text-sm text-slate-500 dark:text-slate-400">
@@ -436,7 +429,7 @@ export default function SalesWorkspace({
                       <div className="inline-block text-left">
                         <button
                           onClick={(e) => {
-                            e.nativeEvent.stopImmediatePropagation();
+                            e.stopPropagation();
                             const btn = e.currentTarget as HTMLElement;
                             const rect = btn.getBoundingClientRect();
                             const newId = activeDropdownId === invoice.id ? null : invoice.id;
@@ -445,7 +438,6 @@ export default function SalesWorkspace({
                             }
                             setActiveDropdownId(newId);
                           }}
-                          data-dropdown-trigger="true"
                           className="text-slate-400 hover:text-primary transition-colors p-1.5 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800"
                         >
                           <MoreVertical className="w-5 h-5" />

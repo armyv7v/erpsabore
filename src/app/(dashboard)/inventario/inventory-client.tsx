@@ -71,18 +71,7 @@ export default function InventoryClient({ products, summary }: Props) {
     }
   }, [stockState]);
 
-  // Click outside to close dropdowns
-  useEffect(() => {
-    const handleOutsideClick = (e: MouseEvent) => {
-      const target = e.target as HTMLElement;
-      if (target.closest("[data-dropdown-trigger]") || target.closest("[data-dropdown-menu]")) {
-        return;
-      }
-      setActiveDropdownId(null);
-    };
-    window.addEventListener("click", handleOutsideClick);
-    return () => window.removeEventListener("click", handleOutsideClick);
-  }, []);
+
 
   const filteredProducts = useMemo(() => {
     return products.filter((product) => {
@@ -105,6 +94,9 @@ export default function InventoryClient({ products, summary }: Props) {
 
   return (
     <div className="p-4 md:p-8 space-y-6 relative">
+      {activeDropdownId && (
+        <div className="fixed inset-0 z-[9998]" onClick={() => setActiveDropdownId(null)} />
+      )}
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
         <div>
@@ -317,7 +309,7 @@ export default function InventoryClient({ products, summary }: Props) {
                     <div className="relative inline-block text-left">
                       <button
                         onClick={(e) => {
-                          e.nativeEvent.stopImmediatePropagation();
+                          e.stopPropagation();
                           const btn = e.currentTarget as HTMLElement;
                           const rect = btn.getBoundingClientRect();
                           const newId = activeDropdownId === product.id ? null : product.id;
@@ -326,7 +318,6 @@ export default function InventoryClient({ products, summary }: Props) {
                           }
                           setActiveDropdownId(newId);
                         }}
-                        data-dropdown-trigger="true"
                         className="p-1.5 hover:bg-slate-100 dark:hover:bg-slate-800 rounded text-slate-400 hover:text-slate-600 transition-colors"
                       >
                         <MoreVertical className="w-5 h-5" />
