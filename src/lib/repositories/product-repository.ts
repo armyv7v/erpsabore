@@ -202,3 +202,65 @@ export async function insertProduct(
   return mapProduct(data as ProductRow);
 }
 
+export interface UpdateProductInput {
+  name: string;
+  sku: string;
+  unitPrice: number;
+  stockMinQuantity?: number;
+  description?: string | null;
+  imageUrl?: string | null;
+}
+
+export async function updateProduct(
+  supabase: SupabaseClient,
+  tenantId: string,
+  productId: string,
+  input: UpdateProductInput,
+): Promise<ProductRecord> {
+  const { data, error } = await supabase
+    .from("products")
+    .update({
+      name: input.name,
+      sku: input.sku,
+      unit_price: input.unitPrice,
+      stock_min_quantity: input.stockMinQuantity ?? 10,
+      description: input.description ?? null,
+      image_url: input.imageUrl ?? null,
+      updated_at: new Date().toISOString(),
+    })
+    .eq("tenant_id", tenantId)
+    .eq("id", productId)
+    .is("deleted_at", null)
+    .select(PRODUCT_SELECT)
+    .single();
+
+  if (error || !data) {
+    throw new Error(
+      `No se pudo actualizar el producto. ${error ? error.message : ""}`.trim(),
+    );
+  }
+
+  return mapProduct(data as ProductRow);
+}
+
+export async function deleteProduct(
+  supabase: SupabaseClient,
+  tenantId: string,
+  productId: string,
+): Promise<void> {
+  const { error } = await supabase
+    .from("products")
+    .update({
+      deleted_at: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
+    })
+    .eq("tenant_id", tenantId)
+    .eq("id", productId)
+    .is("deleted_at", null);
+
+  if (error) {
+    throw new Error(`No se pudo eliminar el producto. ${error.message}`);
+  }
+}
+
+

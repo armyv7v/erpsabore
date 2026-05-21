@@ -93,3 +93,76 @@ export async function updateProductStockAction(
     };
   }
 }
+
+const updateProductSchema = z.object({
+  name: z.string().min(2, "El nombre debe tener al menos 2 caracteres."),
+  sku: z.string().min(1, "El SKU es obligatorio.").toUpperCase(),
+  unitPrice: z.number({ error: "El precio debe ser un número." }).min(0, "El precio no puede ser negativo."),
+  stockMinQuantity: z.number().int().min(0).optional().default(10),
+  description: z.string().optional().nullable(),
+});
+
+export async function updateProductAction(
+  _prev: ActionState,
+  formData: FormData,
+): Promise<ActionState> {
+  try {
+    const { user, supabase } = await requireAuthenticatedContext();
+    assertUserHasRole(user, ["admin", "bodega"]);
+
+    const productId = String(formData.get("productId") ?? "").trim();
+    if (!productId) return { status: "error", message: "ID de producto inválido." };
+
+    const rawName = String(formData.get("name") ?? "").trim();
+    const rawSku = String(formData.get("sku") ?? "").trim();
+    const rawPrice = Number(formData.get("unitPrice") ?? 0);
+    const rawMinQty = Number(formData.get("stockMinQuantity") ?? 10);
+    const rawDescription = formData.get("description")
+      ? String(formData.get("description")).trim()
+      : null;
+
+    const input = updateProductSchema.parse({
+      name: rawName,
+      sku: rawSku,
+      unitPrice: rawPrice,
+      stockMinQuantity: rawMinQty,
+      description: rawDescription,
+    });
+
+    const { updateProduct } = await import("@/lib/repositories/product-repository");
+    await updateProduct(supabase, user.tenantId, productId, input);
+
+    revalidatePath("/inventario");
+
+    return { status: "success", message: "Producto actualizado exitosamente." };
+  } catch (error) {
+    return {
+      status: "error",
+      message: getErrorMessage(error, "No se pudo actualizar el producto."),
+    };
+  }
+}
+
+export async function deleteProductAction(
+  productId: string,
+): Promise<ActionState> {
+  try {
+    const { user, supabase } = await requireAuthenticatedContext();
+    assertUserHasRole(user, ["admin", "bodega"]);
+
+    if (!productId) return { status: "error", message: "ID de producto inválido." };
+
+    const { deleteProduct } = await import("@/lib/repositories/product-repository");
+    await deleteProduct(supabase, user.tenantId, productId);
+
+    revalidatePath("/inventario");
+
+    return { status: "success", message: "Producto eliminado exitosamente." };
+  } catch (error) {
+    return {
+      status: "error",
+      message: error instanceof Error ? error.message : "No se pudo eliminar el producto.",
+    };
+  }
+}
+

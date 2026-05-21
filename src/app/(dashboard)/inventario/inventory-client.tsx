@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useMemo, useEffect, useActionState } from "react";
+import React, { useState, useMemo, useEffect, useActionState, useTransition } from "react";
 import {
   Filter,
   MapPin,
@@ -13,9 +13,11 @@ import {
   Package,
   CheckCircle,
   AlertCircle,
+  Trash2,
+  Sliders,
 } from "lucide-react";
 import type { ProductRecord, ProductStockSummary } from "@/lib/repositories/product-repository";
-import { createProductAction } from "@/app/actions/inventory";
+import { createProductAction, updateProductAction, updateProductStockAction, deleteProductAction } from "@/app/actions/inventory";
 import type { ActionState } from "@/lib/types/erp";
 
 interface Props {
@@ -41,6 +43,13 @@ export default function InventoryClient({ products, summary }: Props) {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const [state, formAction, isPending] = useActionState(createProductAction, INITIAL_STATE);
+  const [editState, editFormAction, isEditPending] = useActionState(updateProductAction, INITIAL_STATE);
+  const [stockState, stockFormAction, isStockPending] = useActionState(updateProductStockAction, INITIAL_STATE);
+  const [isDeletePending, startDeleteTransition] = useTransition();
+
+  const [activeDropdownId, setActiveDropdownId] = useState<string | null>(null);
+  const [editingProduct, setEditingProduct] = useState<ProductRecord | null>(null);
+  const [adjustingProduct, setAdjustingProduct] = useState<ProductRecord | null>(null);
 
   // Cerrar modal automáticamente al éxito
   useEffect(() => {
@@ -48,6 +57,27 @@ export default function InventoryClient({ products, summary }: Props) {
       setIsModalOpen(false);
     }
   }, [state]);
+
+  useEffect(() => {
+    if (editState.status === "success") {
+      setEditingProduct(null);
+    }
+  }, [editState]);
+
+  useEffect(() => {
+    if (stockState.status === "success") {
+      setAdjustingProduct(null);
+    }
+  }, [stockState]);
+
+  // Click outside to close dropdowns
+  useEffect(() => {
+    const handleOutsideClick = () => {
+      setActiveDropdownId(null);
+    };
+    window.addEventListener("click", handleOutsideClick);
+    return () => window.removeEventListener("click", handleOutsideClick);
+  }, []);
 
   const filteredProducts = useMemo(() => {
     return products.filter((product) => {
@@ -271,13 +301,68 @@ export default function InventoryClient({ products, summary }: Props) {
                     </span>
                   </div>
 
-                  <div className="flex justify-end gap-2">
-                    <button className="p-1.5 hover:bg-slate-100 dark:hover:bg-slate-800 rounded text-primary transition-colors">
+                  <div className="flex justify-end gap-2 relative">
+                    <button
+                      onClick={() => setEditingProduct(product)}
+                      className="p-1.5 hover:bg-slate-100 dark:hover:bg-slate-800 rounded text-primary transition-colors animate-in fade-in"
+                      title="Editar Producto"
+                    >
                       <Edit className="w-5 h-5" />
                     </button>
-                    <button className="p-1.5 hover:bg-slate-100 dark:hover:bg-slate-800 rounded text-slate-400 transition-colors">
-                      <MoreVertical className="w-5 h-5" />
-                    </button>
+                    <div className="relative inline-block text-left">
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setActiveDropdownId(activeDropdownId === product.id ? null : product.id);
+                        }}
+                        className="p-1.5 hover:bg-slate-100 dark:hover:bg-slate-800 rounded text-slate-400 hover:text-slate-600 transition-colors"
+                      >
+                        <MoreVertical className="w-5 h-5" />
+                      </button>
+
+                      {activeDropdownId === product.id && (
+                        <div className="absolute right-0 mt-1 w-44 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-lg py-1.5 z-30 animate-in fade-in slide-in-from-top-1 duration-100">
+                          <button
+                            onClick={() => {
+                              setEditingProduct(product);
+                              setActiveDropdownId(null);
+                            }}
+                            className="w-full flex items-center gap-2 px-4 py-2 text-xs font-semibold text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors text-left"
+                          >
+                            <Edit className="w-4 h-4 text-slate-400" />
+                            Editar Producto
+                          </button>
+                          
+                          <button
+                            onClick={() => {
+                              setAdjustingProduct(product);
+                              setActiveDropdownId(null);
+                            }}
+                            className="w-full flex items-center gap-2 px-4 py-2 text-xs font-semibold text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors text-left"
+                          >
+                            <Sliders className="w-4 h-4 text-slate-400" />
+                            Ajustar Stock
+                          </button>
+
+                          <div className="border-t border-slate-100 dark:border-slate-800 my-1" />
+
+                          <button
+                            onClick={() => {
+                              if (confirm(`¿Estás seguro de que querés eliminar el producto "${product.name}"?`)) {
+                                startDeleteTransition(async () => {
+                                  await deleteProductAction(product.id);
+                                });
+                              }
+                              setActiveDropdownId(null);
+                            }}
+                            className="w-full flex items-center gap-2 px-4 py-2 text-xs font-semibold text-red-600 hover:bg-red-55 dark:hover:bg-red-950/30 transition-colors text-left"
+                          >
+                            <Trash2 className="w-4 h-4 text-red-400" />
+                            Eliminar
+                          </button>
+                        </div>
+                      )}
+                    </div>
                   </div>
                 </div>
               );
@@ -409,6 +494,199 @@ export default function InventoryClient({ products, summary }: Props) {
                     <>
                       <CheckCircle className="w-4 h-4" />
                       Guardar Producto
+                    </>
+                  )}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+      {/* Modal — Editar Producto */}
+      {editingProduct && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/50 backdrop-blur-sm animate-in fade-in duration-200">
+          <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-xl w-full max-w-md overflow-hidden animate-in zoom-in duration-200">
+            <div className="flex items-center justify-between p-4 border-b border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/50">
+              <h2 className="text-lg font-extrabold text-slate-900 dark:text-white">Editar Producto</h2>
+              <button
+                onClick={() => setEditingProduct(null)}
+                className="p-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full transition-colors text-slate-500 hover:text-slate-800 dark:hover:text-slate-200"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            {/* Feedback de error de la action */}
+            {editState.status === "error" && (
+              <div className="mx-4 mt-4 flex items-center gap-2 p-3 rounded-lg bg-red-55 dark:bg-red-950/30 text-red-650 dark:text-red-400 text-sm">
+                <AlertCircle className="w-4 h-4 flex-shrink-0" />
+                {editState.message}
+              </div>
+            )}
+
+            <form action={editFormAction} className="p-4 space-y-4">
+              <input type="hidden" name="productId" value={editingProduct.id} />
+              
+              <div>
+                <label className="block text-sm font-semibold mb-1 text-slate-700 dark:text-slate-350">
+                  Nombre del Producto
+                </label>
+                <input
+                  type="text"
+                  name="name"
+                  required
+                  defaultValue={editingProduct.name}
+                  className="w-full px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-transparent focus:ring-2 focus:ring-primary/20 outline-none text-slate-800 dark:text-slate-150"
+                  placeholder="Ej. Rollo Kraft 20 cms"
+                />
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-semibold mb-1 text-slate-700 dark:text-slate-350">SKU</label>
+                  <input
+                    type="text"
+                    name="sku"
+                    required
+                    defaultValue={editingProduct.sku}
+                    className="w-full px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-transparent focus:ring-2 focus:ring-primary/20 outline-none uppercase text-slate-800 dark:text-slate-150"
+                    placeholder="INS-0001"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-semibold mb-1 text-slate-700 dark:text-slate-350">
+                    Mín. Stock
+                  </label>
+                  <input
+                    type="number"
+                    name="stockMinQuantity"
+                    min="0"
+                    defaultValue={editingProduct.stockMinQuantity}
+                    className="w-full px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-transparent focus:ring-2 focus:ring-primary/20 outline-none text-slate-800 dark:text-slate-150"
+                  />
+                </div>
+              </div>
+              <div>
+                <label className="block text-sm font-semibold mb-1 text-slate-700 dark:text-slate-350">
+                  Precio Unitario (CLP)
+                </label>
+                <input
+                  type="number"
+                  name="unitPrice"
+                  required
+                  min="0"
+                  defaultValue={editingProduct.unitPrice}
+                  className="w-full px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-transparent focus:ring-2 focus:ring-primary/20 outline-none text-slate-800 dark:text-slate-150"
+                  placeholder="25000"
+                />
+              </div>
+
+              <div className="pt-4 flex gap-3 border-t border-slate-100 dark:border-slate-800">
+                <button
+                  type="button"
+                  onClick={() => setEditingProduct(null)}
+                  disabled={isEditPending}
+                  className="flex-1 px-4 py-2.5 rounded-xl font-bold border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors disabled:opacity-50 text-slate-750 dark:text-slate-350"
+                >
+                  Cancelar
+                </button>
+                <button
+                  type="submit"
+                  disabled={isEditPending}
+                  className="flex-1 px-4 py-2.5 rounded-xl font-bold bg-primary text-white hover:bg-primary/90 transition-colors shadow-sm disabled:opacity-70 flex items-center justify-center gap-2"
+                >
+                  {isEditPending ? (
+                    <>
+                      <svg className="animate-spin h-4 w-4" fill="none" viewBox="0 0 24 24">
+                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z" />
+                      </svg>
+                      Guardando...
+                    </>
+                  ) : (
+                    <>
+                      <CheckCircle className="w-4 h-4" />
+                      Guardar Cambios
+                    </>
+                  )}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* Modal — Ajustar Stock Rápido */}
+      {adjustingProduct && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/50 backdrop-blur-sm animate-in fade-in duration-200">
+          <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-xl w-full max-w-md overflow-hidden animate-in zoom-in duration-200">
+            <div className="flex items-center justify-between p-4 border-b border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/50">
+              <h2 className="text-lg font-extrabold text-slate-900 dark:text-white">Ajustar Stock</h2>
+              <button
+                onClick={() => setAdjustingProduct(null)}
+                className="p-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full transition-colors text-slate-500 hover:text-slate-800 dark:hover:text-slate-200"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            {/* Feedback de error de la action */}
+            {stockState.status === "error" && (
+              <div className="mx-4 mt-4 flex items-center gap-2 p-3 rounded-lg bg-red-55 dark:bg-red-950/30 text-red-650 dark:text-red-400 text-sm">
+                <AlertCircle className="w-4 h-4 flex-shrink-0" />
+                {stockState.message}
+              </div>
+            )}
+
+            <form action={stockFormAction} className="p-4 space-y-4">
+              <input type="hidden" name="productId" value={adjustingProduct.id} />
+              
+              <div className="p-3 bg-slate-50 dark:bg-slate-850 rounded-xl border border-slate-150 dark:border-slate-800">
+                <p className="text-xs text-slate-400 uppercase font-bold">Producto</p>
+                <p className="text-sm font-extrabold text-slate-900 dark:text-white mt-0.5">{adjustingProduct.name}</p>
+                <p className="text-xs text-slate-550 mt-0.5">SKU: {adjustingProduct.sku}</p>
+              </div>
+
+              <div>
+                <label className="block text-sm font-semibold mb-1 text-slate-700 dark:text-slate-350">
+                  Cantidad Actual en Inventario
+                </label>
+                <input
+                  type="number"
+                  name="stockQuantity"
+                  required
+                  min="0"
+                  defaultValue={adjustingProduct.stockQuantity}
+                  className="w-full px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-transparent focus:ring-2 focus:ring-primary/20 outline-none text-slate-800 dark:text-slate-150 text-lg font-bold"
+                  placeholder="0"
+                />
+              </div>
+
+              <div className="pt-4 flex gap-3 border-t border-slate-100 dark:border-slate-800">
+                <button
+                  type="button"
+                  onClick={() => setAdjustingProduct(null)}
+                  disabled={isStockPending}
+                  className="flex-1 px-4 py-2.5 rounded-xl font-bold border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors disabled:opacity-50 text-slate-750 dark:text-slate-350"
+                >
+                  Cancelar
+                </button>
+                <button
+                  type="submit"
+                  disabled={isStockPending}
+                  className="flex-1 px-4 py-2.5 rounded-xl font-bold bg-primary text-white hover:bg-primary/90 transition-colors shadow-sm disabled:opacity-70 flex items-center justify-center gap-2"
+                >
+                  {isStockPending ? (
+                    <>
+                      <svg className="animate-spin h-4 w-4" fill="none" viewBox="0 0 24 24">
+                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z" />
+                      </svg>
+                      Ajustando...
+                    </>
+                  ) : (
+                    <>
+                      <CheckCircle className="w-4 h-4" />
+                      Guardar Ajuste
                     </>
                   )}
                 </button>

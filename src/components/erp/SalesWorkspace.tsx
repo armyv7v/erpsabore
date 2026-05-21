@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
-import { AlertTriangle, CheckCircle2, Clock, MoreVertical, Plus, Search, X } from "lucide-react";
+import { AlertTriangle, CheckCircle2, Clock, MoreVertical, Plus, Search, X, FileText, ExternalLink, Eye } from "lucide-react";
 import { submitDraftInvoiceAction } from "@/app/actions/invoices";
 import { formatInvoiceStatus } from "@/lib/formatters/status";
 import type { ActionState, CustomerRecord, InvoiceRecord, SalesSummary } from "@/lib/types/erp";
@@ -194,6 +194,17 @@ export default function SalesWorkspace({
   );
   const [catalogLines, setCatalogLines] = useState<DraftCatalogLine[]>([]);
   const [isPending, startTransition] = useTransition();
+
+  const [activeDropdownId, setActiveDropdownId] = useState<string | null>(null);
+  const [selectedInvoice, setSelectedInvoice] = useState<InvoiceRecord | null>(null);
+
+  useEffect(() => {
+    const handleOutsideClick = () => {
+      setActiveDropdownId(null);
+    };
+    window.addEventListener("click", handleOutsideClick);
+    return () => window.removeEventListener("click", handleOutsideClick);
+  }, []);
 
   const handlePageChange = (newPage: number) => {
     if (newPage < 1 || newPage > pageCount) return;
@@ -416,10 +427,57 @@ export default function SalesWorkspace({
                         {formatInvoiceStatus(invoice.status)}
                       </span>
                     </td>
-                    <td className="px-4 py-4 text-right">
-                      <button className="text-slate-400 hover:text-primary transition-colors">
-                        <MoreVertical className="w-5 h-5" />
-                      </button>
+                    <td className="px-4 py-4 text-right relative">
+                      <div className="inline-block text-left">
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setActiveDropdownId(activeDropdownId === invoice.id ? null : invoice.id);
+                          }}
+                          className="text-slate-400 hover:text-primary transition-colors p-1.5 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800"
+                        >
+                          <MoreVertical className="w-5 h-5" />
+                        </button>
+                        
+                        {activeDropdownId === invoice.id && (
+                          <div className="absolute right-4 mt-1 w-48 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-lg py-1.5 z-30 animate-in fade-in slide-in-from-top-1 duration-100">
+                            <button
+                              onClick={() => {
+                                setSelectedInvoice(invoice);
+                                setActiveDropdownId(null);
+                              }}
+                              className="w-full flex items-center gap-2 px-4 py-2 text-xs font-semibold text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors text-left"
+                            >
+                              <Eye className="w-4 h-4 text-slate-400" />
+                              Ver Detalles
+                            </button>
+                            
+                            {invoice.status === "draft" ? (
+                              <button
+                                onClick={() => {
+                                  router.push(`/facturacion?id=${invoice.id}`);
+                                  setActiveDropdownId(null);
+                                }}
+                                className="w-full flex items-center gap-2 px-4 py-2 text-xs font-semibold text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors text-left"
+                              >
+                                <FileText className="w-4 h-4 text-slate-400" />
+                                Gestionar Facturación
+                              </button>
+                            ) : (
+                              <a
+                                href={invoice.dtePdfUrl || `/dte/pdf/${invoice.id}`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                onClick={() => setActiveDropdownId(null)}
+                                className="w-full flex items-center gap-2 px-4 py-2 text-xs font-semibold text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors text-left"
+                              >
+                                <ExternalLink className="w-4 h-4 text-slate-400" />
+                                Ver PDF DTE
+                              </a>
+                            )}
+                          </div>
+                        )}
+                      </div>
                     </td>
                   </tr>
                 ))
@@ -782,6 +840,172 @@ export default function SalesWorkspace({
           </div>
         </div>
       ) : null}
+
+      {/* Drawer de Detalle de Factura */}
+      {selectedInvoice && (
+        <div className="fixed inset-0 z-50 flex justify-end bg-slate-900/50 backdrop-blur-sm animate-in fade-in duration-200">
+          <div 
+            className="fixed inset-0" 
+            onClick={() => setSelectedInvoice(null)}
+          />
+          <div className="relative w-full max-w-2xl bg-white dark:bg-slate-900 h-full shadow-2xl flex flex-col animate-in slide-in-from-right duration-300 ease-out z-10">
+            {/* Header */}
+            <div className="flex items-center justify-between p-6 border-b border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/50">
+              <div>
+                <span className="text-xs font-bold uppercase tracking-wider text-primary">Detalles del Documento</span>
+                <h2 className="text-xl font-extrabold text-slate-900 dark:text-white mt-0.5">
+                  Factura {selectedInvoice.number}
+                </h2>
+              </div>
+              <button
+                onClick={() => setSelectedInvoice(null)}
+                className="p-2 hover:bg-slate-200 dark:hover:bg-slate-800 rounded-full transition-colors text-slate-500 hover:text-slate-800 dark:hover:text-slate-200"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            {/* Content */}
+            <div className="flex-1 overflow-y-auto p-6 space-y-6">
+              {/* Status & Action Bar */}
+              <div className="flex items-center justify-between p-4 rounded-xl bg-slate-50 border border-slate-100 dark:bg-slate-800/40 dark:border-slate-805">
+                <div>
+                  <p className="text-xs text-slate-500 uppercase font-bold tracking-wider">Estado de Pago</p>
+                  <span className={`inline-flex items-center mt-1 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wide ${
+                    selectedInvoice.status === "paid"
+                      ? "bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400"
+                      : selectedInvoice.status === "overdue"
+                        ? "bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400"
+                        : "bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-400"
+                  }`}>
+                    {formatInvoiceStatus(selectedInvoice.status)}
+                  </span>
+                </div>
+                <div>
+                  {selectedInvoice.status === "draft" ? (
+                    <button
+                      onClick={() => {
+                        router.push(`/facturacion?id=${selectedInvoice.id}`);
+                        setSelectedInvoice(null);
+                      }}
+                      className="flex items-center gap-2 bg-primary text-white text-xs font-bold px-4 py-2.5 rounded-xl hover:bg-primary/95 transition-colors shadow-sm"
+                    >
+                      <FileText className="w-4 h-4" />
+                      Gestionar Facturación
+                    </button>
+                  ) : (
+                    <a
+                      href={selectedInvoice.dtePdfUrl || `/dte/pdf/${selectedInvoice.id}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center gap-2 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-800 dark:text-white text-xs font-bold px-4 py-2.5 rounded-xl transition-colors border border-slate-200 dark:border-slate-700 shadow-sm"
+                    >
+                      <ExternalLink className="w-4 h-4" />
+                      Ver PDF DTE
+                    </a>
+                  )}
+                </div>
+              </div>
+
+              {/* Informacion de Cliente y Facturacion */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 bg-white dark:bg-slate-900/40 p-4 rounded-xl border border-slate-150 dark:border-slate-800">
+                <div className="space-y-3">
+                  <h3 className="text-xs font-bold text-slate-500 uppercase tracking-wider">Cliente</h3>
+                  <div>
+                    <p className="font-extrabold text-slate-900 dark:text-white">{selectedInvoice.customerName}</p>
+                    <p className="text-sm text-slate-500 mt-0.5">RUT: {selectedInvoice.customerRut}</p>
+                  </div>
+                </div>
+                
+                <div className="space-y-3">
+                  <h3 className="text-xs font-bold text-slate-500 uppercase tracking-wider">Información de Fechas</h3>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <p className="text-xs text-slate-400">Fecha Emisión</p>
+                      <p className="text-sm font-bold text-slate-850 dark:text-slate-250">{selectedInvoice.issueDate}</p>
+                    </div>
+                    <div>
+                      <p className="text-xs text-slate-400">Fecha Vencimiento</p>
+                      <p className="text-sm font-bold text-slate-850 dark:text-slate-250">{selectedInvoice.dueDate}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Items Detail */}
+              <div className="space-y-3">
+                <h3 className="text-xs font-bold text-slate-500 uppercase tracking-wider">Líneas de Detalle</h3>
+                <div className="border border-slate-200 dark:border-slate-800 rounded-xl overflow-hidden shadow-sm">
+                  <table className="w-full text-left border-collapse">
+                    <thead>
+                      <tr className="bg-slate-50 dark:bg-slate-850 text-slate-600 dark:text-slate-400 text-xs font-bold uppercase">
+                        <th className="px-4 py-3">Descripción</th>
+                        <th className="px-4 py-3 text-center">Cant</th>
+                        <th className="px-4 py-3 text-right">Precio Unit.</th>
+                        <th className="px-4 py-3 text-right">Total</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-slate-100 dark:divide-slate-800 text-sm">
+                      {selectedInvoice.items && selectedInvoice.items.length > 0 ? (
+                        selectedInvoice.items.map((item) => (
+                          <tr key={item.id} className="dark:text-slate-300">
+                            <td className="px-4 py-3.5 font-medium">{item.description}</td>
+                            <td className="px-4 py-3.5 text-center font-bold text-slate-500 dark:text-slate-400">{item.qty}</td>
+                            <td className="px-4 py-3.5 text-right font-medium">${item.unitPrice.toLocaleString("es-CL")}</td>
+                            <td className="px-4 py-3.5 text-right font-bold text-slate-850 dark:text-slate-100">${(item.qty * item.unitPrice).toLocaleString("es-CL")}</td>
+                          </tr>
+                        ))
+                      ) : (
+                        <tr>
+                          <td colSpan={4} className="px-4 py-6 text-center text-slate-500">
+                            No hay productos detallados en este borrador.
+                          </td>
+                        </tr>
+                      )}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+              {/* Totales y Observaciones */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4">
+                <div className="space-y-3">
+                  <h3 className="text-xs font-bold text-slate-500 uppercase tracking-wider">Notas / Observaciones</h3>
+                  <div className="p-3 bg-slate-50 dark:bg-slate-850 rounded-xl border border-slate-150 dark:border-slate-800 min-h-24">
+                    <p className="text-sm text-slate-600 dark:text-slate-400 italic">
+                      {selectedInvoice.notes || "Sin observaciones en esta factura."}
+                    </p>
+                  </div>
+                </div>
+
+                <div className="bg-slate-50 dark:bg-slate-850/50 p-4 rounded-xl border border-slate-150 dark:border-slate-800 flex flex-col justify-between">
+                  <div className="space-y-2 text-sm">
+                    <div className="flex justify-between text-slate-550 dark:text-slate-400">
+                      <span>Subtotal:</span>
+                      <span className="font-semibold">${selectedInvoice.subtotal.toLocaleString("es-CL")}</span>
+                    </div>
+                    <div className="flex justify-between text-slate-550 dark:text-slate-400">
+                      <span>IVA (19%):</span>
+                      <span className="font-semibold">${selectedInvoice.tax.toLocaleString("es-CL")}</span>
+                    </div>
+                    <div className="border-t border-slate-200 dark:border-slate-700 my-2" />
+                    <div className="flex justify-between text-base font-extrabold text-slate-900 dark:text-white">
+                      <span>Total General:</span>
+                      <span>${selectedInvoice.total.toLocaleString("es-CL")}</span>
+                    </div>
+                    {selectedInvoice.outstandingBalance > 0 && (
+                      <div className="flex justify-between text-sm font-bold text-red-600 dark:text-red-400 pt-2">
+                        <span>Saldo Pendiente:</span>
+                        <span>${selectedInvoice.outstandingBalance.toLocaleString("es-CL")}</span>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
