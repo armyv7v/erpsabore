@@ -19,6 +19,8 @@ import {
 import type { ProductRecord, ProductStockSummary } from "@/lib/repositories/product-repository";
 import { createProductAction, updateProductAction, updateProductStockAction, deleteProductAction } from "@/app/actions/inventory";
 import type { ActionState } from "@/lib/types/erp";
+import ProductImageUploader from "@/components/erp/ProductImageUploader";
+import ProductDetailsModal from "@/components/erp/ProductDetailsModal";
 
 interface Props {
   products: ProductRecord[];
@@ -51,6 +53,7 @@ export default function InventoryClient({ products, summary }: Props) {
   const [dropdownPosition, setDropdownPosition] = useState<{ top: number; right: number } | null>(null);
   const [editingProduct, setEditingProduct] = useState<ProductRecord | null>(null);
   const [adjustingProduct, setAdjustingProduct] = useState<ProductRecord | null>(null);
+  const [detailsProduct, setDetailsProduct] = useState<ProductRecord | null>(null);
 
   // Cerrar modal automáticamente al éxito
   useEffect(() => {
@@ -221,7 +224,8 @@ export default function InventoryClient({ products, summary }: Props) {
               return (
                 <div
                   key={product.id}
-                  className={`p-4 flex flex-col md:grid md:grid-cols-6 md:items-center gap-4 ${
+                  onDoubleClick={() => setDetailsProduct(product)}
+                  className={`p-4 flex flex-col md:grid md:grid-cols-6 md:items-center gap-4 cursor-pointer select-none transition-all hover:bg-slate-50/50 dark:hover:bg-slate-850/20 ${
                     product.stockStatus === "low"
                       ? "bg-orange-50/30 dark:bg-primary/5"
                       : product.stockStatus === "out_of_stock"
@@ -327,6 +331,17 @@ export default function InventoryClient({ products, summary }: Props) {
                         <div data-dropdown-menu="true" style={{ position: 'fixed', top: `${dropdownPosition.top}px`, right: `${dropdownPosition.right}px` }} className="w-44 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-lg py-1.5 z-[9999] animate-in fade-in slide-in-from-top-1 duration-100">
                           <button
                             onClick={() => {
+                              setDetailsProduct(product);
+                              setActiveDropdownId(null);
+                            }}
+                            className="w-full flex items-center gap-2 px-4 py-2 text-xs font-semibold text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors text-left"
+                          >
+                            <Package className="w-4 h-4 text-slate-400" />
+                            Ver Detalles
+                          </button>
+
+                          <button
+                            onClick={() => {
                               setEditingProduct(product);
                               setActiveDropdownId(null);
                             }}
@@ -404,7 +419,8 @@ export default function InventoryClient({ products, summary }: Props) {
               </div>
             )}
 
-            <form action={formAction} className="p-4 space-y-4">
+            <form action={formAction} encType="multipart/form-data" className="p-4 space-y-4">
+              <ProductImageUploader name="image" />
               <div>
                 <label className="block text-sm font-semibold mb-1">
                   Nombre del Producto
@@ -527,8 +543,9 @@ export default function InventoryClient({ products, summary }: Props) {
               </div>
             )}
 
-            <form action={editFormAction} className="p-4 space-y-4">
+            <form action={editFormAction} encType="multipart/form-data" className="p-4 space-y-4">
               <input type="hidden" name="productId" value={editingProduct.id} />
+              <ProductImageUploader name="image" currentImageUrl={editingProduct.imageUrl} />
               
               <div>
                 <label className="block text-sm font-semibold mb-1 text-slate-700 dark:text-slate-350">
@@ -697,6 +714,26 @@ export default function InventoryClient({ products, summary }: Props) {
             </form>
           </div>
         </div>
+      )}
+
+      {/* Modal — Detalles del Producto */}
+      {detailsProduct && (
+        <ProductDetailsModal
+          product={{
+            id: detailsProduct.id,
+            name: detailsProduct.name,
+            sku: detailsProduct.sku,
+            unitPrice: detailsProduct.unitPrice,
+            stockQuantity: detailsProduct.stockQuantity,
+            stockMinQuantity: detailsProduct.stockMinQuantity,
+            stockStatus: detailsProduct.stockStatus,
+            imageUrl: detailsProduct.imageUrl,
+            description: detailsProduct.description,
+            category: null,
+          }}
+          onClose={() => setDetailsProduct(null)}
+          onEdit={() => setEditingProduct(detailsProduct)}
+        />
       )}
     </div>
   );

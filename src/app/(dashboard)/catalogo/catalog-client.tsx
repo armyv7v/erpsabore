@@ -23,6 +23,7 @@ import { useRouter } from "next/navigation";
 import Image from "next/image";
 import type { CustomerRecord } from "@/lib/types/erp";
 import { submitCreateCustomerAction } from "@/app/actions/crm";
+import ProductDetailsModal from "@/components/erp/ProductDetailsModal";
 import { createDraftInvoiceAction } from "@/app/actions/invoices";
 
 export interface CatalogProduct {
@@ -56,6 +57,7 @@ export default function CatalogClient({ products, customers = [] }: Props) {
   const [activeCategory, setActiveCategory] = useState("Todos");
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
+  const [detailsProduct, setDetailsProduct] = useState<CatalogProduct | null>(null);
 
   // Estados de Clientes
   const [localCustomers, setLocalCustomers] = useState<CustomerRecord[]>(customers);
@@ -365,7 +367,8 @@ export default function CatalogClient({ products, customers = [] }: Props) {
             filteredProducts.map((product) => (
               <div
                 key={product.id}
-                className={`flex flex-col overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm transition-all hover:shadow-md dark:border-slate-800 dark:bg-slate-900 ${
+                onClick={() => setDetailsProduct(product)}
+                className={`flex flex-col overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm transition-all hover:shadow-md dark:border-slate-800 dark:bg-slate-900 cursor-pointer select-none ${
                   product.stockQuantity === 0
                     ? "grayscale opacity-60"
                     : "hover:border-primary/30"
@@ -416,7 +419,10 @@ export default function CatalogClient({ products, customers = [] }: Props) {
                   </p>
                   <button
                     type="button"
-                    onClick={() => addToCart(product)}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      addToCart(product);
+                    }}
                     className={`mt-3 w-full rounded-lg py-2.5 text-xs font-bold flex items-center justify-center gap-1 transition-all ${
                       product.stockQuantity > 0
                         ? "bg-primary text-white active:scale-95 shadow-sm shadow-primary/20 hover:bg-primary/90"
@@ -787,6 +793,24 @@ export default function CatalogClient({ products, customers = [] }: Props) {
             </form>
           </div>
         </div>
+      )}
+
+      {/* Modal — Detalles de Producto */}
+      {detailsProduct && (
+        <ProductDetailsModal
+          product={{
+            id: detailsProduct.id,
+            name: detailsProduct.name,
+            sku: detailsProduct.sku,
+            unitPrice: detailsProduct.unitPrice,
+            stockQuantity: detailsProduct.stockQuantity,
+            imageUrl: detailsProduct.imageUrl,
+            category: detailsProduct.category,
+            description: null,
+          }}
+          onClose={() => setDetailsProduct(null)}
+          onAddToCart={() => addToCart(detailsProduct)}
+        />
       )}
     </div>
   );
