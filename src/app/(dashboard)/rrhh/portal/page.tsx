@@ -1,5 +1,5 @@
 import React from 'react';
-import { ArrowRight, FileText, FileBadge, CalendarRange, UserCircle, Settings } from 'lucide-react';
+import { ArrowRight, FileBadge, CalendarRange, UserCircle, Settings } from 'lucide-react';
 import { mockHRNews, employeeProfile } from '@/data/hrPortal';
 import Image from 'next/image';
 

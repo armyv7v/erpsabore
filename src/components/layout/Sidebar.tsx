@@ -1,109 +1,106 @@
-import React from 'react';
-import Link from 'next/link';
-import { Store, LayoutDashboard, Wallet, Package, Users, FileText, Briefcase, UserCog, LineChart, ArrowRightLeft, PieChart, Grid2X2, Truck, PackageOpen, Receipt, UserCircle } from 'lucide-react';
+"use client";
 
-export default function Sidebar() {
+import React from "react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { Store, X } from "lucide-react";
+import { navigationSections } from "@/lib/navigation";
+import type { AuthUser } from "@/lib/types/erp";
+
+interface SidebarProps {
+  user: AuthUser;
+  mode?: "desktop" | "mobile";
+  onNavigate?: () => void;
+}
+
+export default function Sidebar({ user, mode = "desktop", onNavigate }: SidebarProps) {
+  const isMobile = mode === "mobile";
+  const pathname = usePathname();
+
   return (
-    <aside className="hidden md:flex flex-col w-64 bg-white dark:bg-slate-900 border-r border-slate-200 dark:border-slate-800">
-      <div className="p-6 flex items-center gap-3">
-        <div className="bg-primary p-2 rounded-lg">
-          <Store className="text-white w-6 h-6" />
+    <aside
+      className={
+        isMobile
+          ? "absolute inset-y-0 left-0 z-50 flex w-[min(85vw,18rem)] flex-col border-r border-slate-200 bg-white shadow-2xl dark:border-slate-800 dark:bg-slate-900 md:hidden"
+          : "hidden w-64 flex-col border-r border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900 md:flex"
+      }
+    >
+      <div className="flex items-center justify-between p-6">
+        <div className="flex items-center gap-3">
+          <div className="bg-primary p-2 rounded-lg">
+            <Store className="text-white w-6 h-6" />
+          </div>
+          <span className="text-xl font-bold tracking-tight">ERP Sabore</span>
         </div>
-        <span className="text-xl font-bold tracking-tight">PymeSync</span>
+        {isMobile ? (
+          <button
+            type="button"
+            aria-label="Cerrar menu lateral"
+            onClick={onNavigate}
+            className="rounded-xl p-2 text-slate-500 transition-colors hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800"
+          >
+            <X className="h-5 w-5" />
+          </button>
+        ) : null}
       </div>
-      
+
       <nav className="flex-1 px-4 space-y-2 mt-4 overflow-y-auto">
-        <div className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2 mt-4 px-2">Principal</div>
-        <Link href="/" className="flex items-center gap-3 p-3 bg-primary/10 text-primary rounded-xl font-medium">
-          <LayoutDashboard className="w-5 h-5" />
-          Inicio
-        </Link>
-        <Link href="/ventas" className="flex items-center gap-3 p-3 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl transition-colors">
-          <Wallet className="w-5 h-5" />
-          Ventas
-        </Link>
-        <Link href="/inventario" className="flex items-center gap-3 p-3 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl transition-colors">
-          <Package className="w-5 h-5" />
-          Inventario
-        </Link>
-        <Link href="/catalogo" className="flex items-center gap-3 p-3 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl transition-colors">
-          <Grid2X2 className="w-5 h-5" />
-          Catálogo
-        </Link>
-        <Link href="/crm" className="flex items-center gap-3 p-3 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl transition-colors">
-          <Users className="w-5 h-5" />
-          CRM
-        </Link>
-        
-        <div className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2 mt-6 px-2">Operaciones</div>
-        <Link href="/proveedores" className="flex items-center gap-3 p-3 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl transition-colors">
-          <Truck className="w-5 h-5" />
-          Proveedores
-        </Link>
-        <Link href="/despachos" className="flex items-center gap-3 p-3 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl transition-colors">
-          <PackageOpen className="w-5 h-5" />
-          Despachos
-        </Link>
+        {navigationSections.map((section) => {
+          const items = section.items.filter((item) => item.roles.includes(user.role));
 
-        <div className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2 mt-6 px-2">Finanzas</div>
-        <Link href="/facturacion" className="flex items-center gap-3 p-3 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl transition-colors">
-          <FileText className="w-5 h-5" />
-          Facturación
-        </Link>
-        <Link href="/finanzas/flujo-caja" className="flex items-center gap-3 p-3 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl transition-colors">
-          <LineChart className="w-5 h-5" />
-          Flujo de Caja
-        </Link>
-        <Link href="/finanzas/conciliacion" className="flex items-center gap-3 p-3 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl transition-colors">
-          <ArrowRightLeft className="w-5 h-5" />
-          Conciliación
-        </Link>
-        <Link href="/finanzas/estado-resultados" className="flex items-center gap-3 p-3 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl transition-colors">
-          <PieChart className="w-5 h-5" />
-          Estado de Resultados
-        </Link>
+          if (items.length === 0) {
+            return null;
+          }
 
-        <div className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2 mt-6 px-2">Recursos Humanos</div>
-        <Link href="/empleados" className="flex items-center gap-3 p-3 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl transition-colors">
-          <Briefcase className="w-5 h-5" />
-          Empleados
-        </Link>
-        <Link href="/rrhh/nomina" className="flex items-center gap-3 p-3 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl transition-colors">
-          <Receipt className="w-5 h-5" />
-          Nómina
-        </Link>
-        <Link href="/rrhh/portal" className="flex items-center gap-3 p-3 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl transition-colors">
-          <UserCircle className="w-5 h-5" />
-          Portal Empleado
-        </Link>
+          return (
+            <div key={section.label}>
+              <div className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2 mt-4 px-2">
+                {section.label}
+              </div>
+              {items.map((item) => {
+                const Icon = item.icon;
+                // Un item está activo si el pathname actual coincide exactamente o si es una subruta (excepto para la raíz '/')
+                const isActive =
+                  pathname === item.href ||
+                  (item.href !== "/" && pathname.startsWith(item.href));
 
-        <div className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2 mt-6 px-2">Administración</div>
-        <Link href="/sucursales" className="flex items-center gap-3 p-3 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl transition-colors">
-          <Store className="w-5 h-5" />
-          Sucursales
-        </Link>
-        <Link href="/usuarios" className="flex items-center gap-3 p-3 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl transition-colors">
-          <UserCog className="w-5 h-5" />
-          Usuarios
-        </Link>
+                return (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    onClick={onNavigate}
+                    className={`flex items-center gap-3 p-3 rounded-xl transition-all duration-200 group ${
+                      isActive
+                        ? "bg-primary/10 text-primary dark:bg-primary/20 dark:text-primary-light font-semibold shadow-sm"
+                        : "text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-slate-200"
+                    }`}
+                  >
+                    <Icon
+                      className={`w-5 h-5 transition-transform duration-200 group-hover:scale-110 ${
+                        isActive ? "text-primary" : "text-slate-400 group-hover:text-slate-600 dark:group-hover:text-slate-300"
+                      }`}
+                    />
+                    {item.label}
+                  </Link>
+                );
+              })}
+            </div>
+          );
+        })}
       </nav>
 
       <div className="p-4 border-t border-slate-200 dark:border-slate-800">
         <div className="flex items-center gap-3 p-2">
-          <div className="w-10 h-10 rounded-full bg-slate-200 dark:bg-slate-700 overflow-hidden">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img 
-              className="w-full h-full object-cover" 
-              alt="Avatar de usuario administrador" 
-              src="https://lh3.googleusercontent.com/aida-public/AB6AXuBY82D8dDZ1LdVtVyA1MZEXI-0_ApPbEHvw2bRpDSW6WHWwok-ehnSrQCNFVfyI8uVpiH5ytY7l-yeeJBqc3wEoGYr0GtWsEV9OfC9zD2tLHos1Rj2ZCx7O7pk1hetpaWQA2fVu7VY9WyOxMURHPa7KjyjuVXyUWoKlz4sensRyDgkeNatYTNefXa8CfSAJj4NX95wrvSIEich2uMl3-6H2MjnHcqm9ubbYsXuH_VV-JTzh-_INUeAd7_IoJ9pLblDLjt2QWSUzhGk" 
-            />
+          <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold">
+            {user.fullName.slice(0, 2).toUpperCase()}
           </div>
           <div>
-            <p className="text-sm font-semibold">Admin Chile</p>
-            <p className="text-xs text-slate-500">Plan Premium</p>
+            <p className="text-sm font-semibold">{user.fullName}</p>
+            <p className="text-xs text-slate-500 capitalize">{user.role} · {user.tenantName}</p>
           </div>
         </div>
       </div>
     </aside>
   );
 }
+
