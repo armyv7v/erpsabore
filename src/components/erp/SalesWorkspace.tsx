@@ -382,7 +382,7 @@ export default function SalesWorkspace({
         ))}
       </div>
 
-      <div className="overflow-hidden rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900">
+      <div className="overflow-visible rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900">
         <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse">
             <thead>

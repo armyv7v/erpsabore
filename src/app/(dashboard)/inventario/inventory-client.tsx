@@ -206,7 +206,7 @@ export default function InventoryClient({ products, summary }: Props) {
       </div>
 
       {/* Product List Table */}
-      <div className="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 overflow-hidden">
+      <div className="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 overflow-visible">
         <div className="hidden md:grid grid-cols-6 gap-4 p-4 border-b border-slate-200 dark:border-slate-800 text-xs font-bold uppercase text-slate-500 tracking-wider">
           <div className="col-span-2">Producto / SKU</div>
           <div>Precio Unit.</div>
