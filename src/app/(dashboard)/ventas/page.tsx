@@ -13,7 +13,22 @@ export default async function SalesPage({
   const pageSize = Number(params.pageSize || 10);
 
   const { user, supabase } = await requireAuthenticatedContext();
-  const workspace = await getSalesWorkspace(user, { page, pageSize }, supabase);
+
+  let workspace: Awaited<ReturnType<typeof getSalesWorkspace>>;
+  try {
+    workspace = await getSalesWorkspace(user, { page, pageSize }, supabase);
+  } catch {
+    workspace = {
+      invoices: [],
+      customers: [],
+      summary: { totalPaid: 0, totalPending: 0, totalOverdue: 0, paidCount: 0, pendingCount: 0, overdueCount: 0 },
+      totals: { totalIssued: 0, totalOutstanding: 0, draftCount: 0, issuedCount: 0 },
+      totalCount: 0,
+      page,
+      pageSize,
+      pageCount: 0,
+    };
+  }
 
   return (
     <SalesWorkspace
