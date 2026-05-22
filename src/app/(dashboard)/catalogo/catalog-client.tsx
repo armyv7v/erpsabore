@@ -667,9 +667,19 @@ export default function CatalogClient({ products, customers = [] }: Props) {
                           <p className="text-[10px] text-slate-500 font-bold uppercase tracking-wider">{item.sku}</p>
                           <p className="font-semibold text-xs leading-tight mt-0.5">{item.name}</p>
                         </div>
-                        <p className="font-bold text-xs text-primary">
-                          ${(item.price * item.quantity).toLocaleString("es-CL")}
-                        </p>
+                        <div className="flex items-center gap-2 shrink-0">
+                          <p className="font-bold text-xs text-primary">
+                            ${(item.price * item.quantity).toLocaleString("es-CL")}
+                          </p>
+                          <button
+                            type="button"
+                            onClick={() => updateQuantity(item.id, -item.quantity)}
+                            className="rounded-lg p-1.5 text-slate-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-950/20 transition-all cursor-pointer"
+                            title="Eliminar producto"
+                          >
+                            <Trash2 className="w-3.5 h-3.5" />
+                          </button>
+                        </div>
                       </div>
                       <div className="mt-2.5 flex items-center justify-between">
                         <div className="flex items-center gap-2">
