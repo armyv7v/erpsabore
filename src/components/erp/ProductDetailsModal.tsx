@@ -66,7 +66,7 @@ export default function ProductDetailsModal({ product, onClose, onAddToCart, onE
       >
         <div 
           onClick={(e) => e.stopPropagation()}
-          className="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800 w-full max-w-2xl overflow-hidden shadow-2xl flex flex-col md:flex-row animate-in zoom-in-95 duration-200 my-auto"
+          className="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800 w-full max-w-2xl overflow-hidden shadow-2xl flex flex-col md:flex-row animate-in zoom-in-95 duration-200"
         >
           
           {/* Lado Izquierdo: Imagen */}
