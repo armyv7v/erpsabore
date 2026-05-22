@@ -34,32 +34,32 @@ export default async function DashboardPage() {
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          <div className="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
+          <Link href="/ventas" className="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-md hover:border-primary/40 transition-all block group">
             <div className="flex items-center justify-between mb-4">
-              <span className="bg-primary/10 p-2 rounded-lg"><TrendingUp className="text-primary w-5 h-5" /></span>
+              <span className="bg-primary/10 p-2 rounded-lg group-hover:bg-primary/20 transition-colors"><TrendingUp className="text-primary w-5 h-5" /></span>
               <span className="text-green-500 text-sm font-medium flex items-center gap-1">{metrics.revenueTrendGrowth} <ArrowUp className="w-3 h-3" /></span>
             </div>
-            <p className="text-sm font-medium text-slate-500 uppercase tracking-wider">Ventas del Periodo</p>
-            <p className="text-2xl font-bold mt-1 text-slate-900 dark:text-slate-100">${metrics.monthlySales.toLocaleString("es-CL")}</p>
-          </div>
+            <p className="text-sm font-medium text-slate-500 uppercase tracking-wider group-hover:text-slate-700 dark:group-hover:text-slate-350 transition-colors">Ventas del Periodo</p>
+            <p className="text-2xl font-bold mt-1 text-slate-900 dark:text-slate-100 group-hover:text-primary transition-colors">${metrics.monthlySales.toLocaleString("es-CL")}</p>
+          </Link>
 
-          <div className="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
+          <Link href="/facturacion" className="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-md hover:border-primary/40 transition-all block group">
             <div className="flex items-center justify-between mb-4">
-              <span className="bg-orange-100 p-2 rounded-lg"><Receipt className="text-orange-600 w-5 h-5" /></span>
+              <span className="bg-orange-100 p-2 rounded-lg group-hover:bg-orange-200/50 transition-colors"><Receipt className="text-orange-600 w-5 h-5" /></span>
               <span className="text-orange-500 text-sm font-medium flex items-center gap-1">por cobrar <ArrowDown className="w-3 h-3" /></span>
             </div>
-            <p className="text-sm font-medium text-slate-500 uppercase tracking-wider">Facturas Pendientes</p>
-            <p className="text-2xl font-bold mt-1 text-slate-900 dark:text-slate-100">{metrics.pendingInvoicesCount}</p>
-          </div>
+            <p className="text-sm font-medium text-slate-500 uppercase tracking-wider group-hover:text-slate-700 dark:group-hover:text-slate-350 transition-colors">Facturas Pendientes</p>
+            <p className="text-2xl font-bold mt-1 text-slate-900 dark:text-slate-100 group-hover:text-primary transition-colors">{metrics.pendingInvoicesCount}</p>
+          </Link>
 
-          <div className="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
+          <Link href="/ventas" className="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-md hover:border-primary/40 transition-all block group">
             <div className="flex items-center justify-between mb-4">
-              <span className="bg-primary/10 p-2 rounded-lg"><Wallet className="text-primary w-5 h-5" /></span>
+              <span className="bg-primary/10 p-2 rounded-lg group-hover:bg-primary/20 transition-colors"><Wallet className="text-primary w-5 h-5" /></span>
               <span className="text-slate-500 text-sm font-medium">gestion comercial</span>
             </div>
-            <p className="text-sm font-medium text-slate-500 uppercase tracking-wider">Documentos Recientes</p>
-            <p className="text-2xl font-bold mt-1 text-slate-900 dark:text-slate-100">{metrics.latestInvoices.length}</p>
-          </div>
+            <p className="text-sm font-medium text-slate-500 uppercase tracking-wider group-hover:text-slate-700 dark:group-hover:text-slate-350 transition-colors">Documentos Recientes</p>
+            <p className="text-2xl font-bold mt-1 text-slate-900 dark:text-slate-100 group-hover:text-primary transition-colors">{metrics.latestInvoices.length}</p>
+          </Link>
         </div>
 
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
@@ -132,22 +132,22 @@ export default async function DashboardPage() {
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          <div className="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
-            <p className="text-sm font-medium text-slate-500 uppercase tracking-wider">Ingresos del Periodo</p>
-            <p className="text-2xl font-bold mt-2 text-slate-900 dark:text-slate-100">${metrics.monthlySales.toLocaleString("es-CL")}</p>
-          </div>
-          <div className="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
-            <p className="text-sm font-medium text-slate-500 uppercase tracking-wider">Cuentas por Cobrar</p>
-            <p className="text-2xl font-bold mt-2 text-orange-600">{metrics.pendingInvoicesCount}</p>
-          </div>
-          <div className="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
-            <p className="text-sm font-medium text-slate-500 uppercase tracking-wider">Margen Bruto</p>
-            <p className="text-2xl font-bold mt-2 text-slate-900 dark:text-slate-100">{metrics.grossMarginPercentage}%</p>
-          </div>
-          <div className="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
-            <p className="text-sm font-medium text-slate-500 uppercase tracking-wider">Tendencia</p>
-            <p className="text-2xl font-bold mt-2 text-green-600">{metrics.revenueTrendGrowth}</p>
-          </div>
+          <Link href="/finanzas/flujo-caja" className="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-md hover:border-primary/40 transition-all block group">
+            <p className="text-sm font-medium text-slate-500 uppercase tracking-wider group-hover:text-slate-700 dark:group-hover:text-slate-350 transition-colors">Ingresos del Periodo</p>
+            <p className="text-2xl font-bold mt-2 text-slate-900 dark:text-slate-100 group-hover:text-primary transition-colors">${metrics.monthlySales.toLocaleString("es-CL")}</p>
+          </Link>
+          <Link href="/facturacion" className="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-md hover:border-primary/40 transition-all block group">
+            <p className="text-sm font-medium text-slate-500 uppercase tracking-wider group-hover:text-slate-700 dark:group-hover:text-slate-350 transition-colors">Cuentas por Cobrar</p>
+            <p className="text-2xl font-bold mt-2 text-orange-600 group-hover:text-primary transition-colors">{metrics.pendingInvoicesCount}</p>
+          </Link>
+          <Link href="/finanzas/estado-resultados" className="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-md hover:border-primary/40 transition-all block group">
+            <p className="text-sm font-medium text-slate-500 uppercase tracking-wider group-hover:text-slate-700 dark:group-hover:text-slate-350 transition-colors">Margen Bruto</p>
+            <p className="text-2xl font-bold mt-2 text-slate-900 dark:text-slate-100 group-hover:text-primary transition-colors">{metrics.grossMarginPercentage}%</p>
+          </Link>
+          <Link href="/reportes" className="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-md hover:border-primary/40 transition-all block group">
+            <p className="text-sm font-medium text-slate-500 uppercase tracking-wider group-hover:text-slate-700 dark:group-hover:text-slate-355 transition-colors">Tendencia</p>
+            <p className="text-2xl font-bold mt-2 text-green-600 group-hover:text-primary transition-colors">{metrics.revenueTrendGrowth}</p>
+          </Link>
         </div>
 
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
@@ -183,18 +183,18 @@ export default async function DashboardPage() {
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          <div className="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
-            <p className="text-sm font-medium text-slate-500 uppercase tracking-wider">Items en Alerta</p>
-            <p className="text-2xl font-bold mt-2 text-orange-600">{metrics.stockAlertCount}</p>
-          </div>
-          <div className="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
-            <p className="text-sm font-medium text-slate-500 uppercase tracking-wider">Facturas Pendientes</p>
-            <p className="text-2xl font-bold mt-2 text-slate-900 dark:text-slate-100">{metrics.pendingInvoicesCount}</p>
-          </div>
-          <div className="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
-            <p className="text-sm font-medium text-slate-500 uppercase tracking-wider">Tendencia Comercial</p>
-            <p className="text-2xl font-bold mt-2 text-green-600">{metrics.revenueTrendGrowth}</p>
-          </div>
+          <Link href="/inventario?tab=low" className="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-md hover:border-primary/40 transition-all block group">
+            <p className="text-sm font-medium text-slate-500 uppercase tracking-wider group-hover:text-slate-700 dark:group-hover:text-slate-350 transition-colors">Items en Alerta</p>
+            <p className="text-2xl font-bold mt-2 text-orange-600 group-hover:text-primary transition-colors">{metrics.stockAlertCount}</p>
+          </Link>
+          <Link href="/facturacion" className="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-md hover:border-primary/40 transition-all block group">
+            <p className="text-sm font-medium text-slate-500 uppercase tracking-wider group-hover:text-slate-700 dark:group-hover:text-slate-350 transition-colors">Facturas Pendientes</p>
+            <p className="text-2xl font-bold mt-2 text-slate-900 dark:text-slate-100 group-hover:text-primary transition-colors">{metrics.pendingInvoicesCount}</p>
+          </Link>
+          <Link href="/inventario" className="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-md hover:border-primary/40 transition-all block group">
+            <p className="text-sm font-medium text-slate-500 uppercase tracking-wider group-hover:text-slate-700 dark:group-hover:text-slate-350 transition-colors">Tendencia Comercial</p>
+            <p className="text-2xl font-bold mt-2 text-green-600 group-hover:text-primary transition-colors">{metrics.revenueTrendGrowth}</p>
+          </Link>
         </div>
 
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
@@ -229,41 +229,41 @@ export default async function DashboardPage() {
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        <div className="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
+        <Link href="/ventas" className="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-md hover:border-primary/40 transition-all block group">
           <div className="flex items-center justify-between mb-4">
-            <span className="bg-primary/10 p-2 rounded-lg"><TrendingUp className="text-primary w-5 h-5" /></span>
+            <span className="bg-primary/10 p-2 rounded-lg group-hover:bg-primary/20 transition-colors"><TrendingUp className="text-primary w-5 h-5" /></span>
             <span className="text-green-500 text-sm font-medium flex items-center gap-1">{metrics.revenueTrendGrowth} <ArrowUp className="w-3 h-3" /></span>
           </div>
-          <p className="text-sm font-medium text-slate-500 uppercase tracking-wider">Ventas del Periodo</p>
-          <p className="text-2xl font-bold mt-1 text-slate-900 dark:text-slate-100">\${metrics.monthlySales.toLocaleString("es-CL")}</p>
-        </div>
+          <p className="text-sm font-medium text-slate-500 uppercase tracking-wider group-hover:text-slate-700 dark:group-hover:text-slate-350 transition-colors">Ventas del Periodo</p>
+          <p className="text-2xl font-bold mt-1 text-slate-900 dark:text-slate-100 group-hover:text-primary transition-colors">${metrics.monthlySales.toLocaleString("es-CL")}</p>
+        </Link>
 
-        <div className="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
+        <Link href="/facturacion" className="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-md hover:border-primary/40 transition-all block group">
           <div className="flex items-center justify-between mb-4">
-            <span className="bg-primary/10 p-2 rounded-lg"><Receipt className="text-primary w-5 h-5" /></span>
+            <span className="bg-primary/10 p-2 rounded-lg group-hover:bg-primary/20 transition-colors"><Receipt className="text-primary w-5 h-5" /></span>
             <span className="text-orange-500 text-sm font-medium flex items-center gap-1">por cobrar <ArrowDown className="w-3 h-3" /></span>
           </div>
-          <p className="text-sm font-medium text-slate-500 uppercase tracking-wider">Facturas Pendientes</p>
-          <p className="text-2xl font-bold mt-1 text-slate-900 dark:text-slate-100">{metrics.pendingInvoicesCount}</p>
-        </div>
+          <p className="text-sm font-medium text-slate-500 uppercase tracking-wider group-hover:text-slate-700 dark:group-hover:text-slate-350 transition-colors">Facturas Pendientes</p>
+          <p className="text-2xl font-bold mt-1 text-slate-900 dark:text-slate-100 group-hover:text-primary transition-colors">{metrics.pendingInvoicesCount}</p>
+        </Link>
 
-        <div className="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
+        <Link href="/reportes" className="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-md hover:border-primary/40 transition-all block group">
           <div className="flex items-center justify-between mb-4">
-            <span className="bg-primary/10 p-2 rounded-lg"><Percent className="text-primary w-5 h-5" /></span>
+            <span className="bg-primary/10 p-2 rounded-lg group-hover:bg-primary/20 transition-colors"><Percent className="text-primary w-5 h-5" /></span>
             <span className="text-green-500 text-sm font-medium flex items-center gap-1">actual <ArrowUp className="w-3 h-3" /></span>
           </div>
-          <p className="text-sm font-medium text-slate-500 uppercase tracking-wider">Margen Bruto</p>
-          <p className="text-2xl font-bold mt-1 text-slate-900 dark:text-slate-100">{metrics.grossMarginPercentage}%</p>
-        </div>
+          <p className="text-sm font-medium text-slate-500 uppercase tracking-wider group-hover:text-slate-700 dark:group-hover:text-slate-350 transition-colors">Margen Bruto</p>
+          <p className="text-2xl font-bold mt-1 text-slate-900 dark:text-slate-100 group-hover:text-primary transition-colors">{metrics.grossMarginPercentage}%</p>
+        </Link>
 
-        <div className="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
+        <Link href="/inventario?tab=low" className="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-md hover:border-primary/40 transition-all block group">
           <div className="flex items-center justify-between mb-4">
-            <span className="bg-primary/10 p-2 rounded-lg"><Package className="text-primary w-5 h-5" /></span>
+            <span className="bg-primary/10 p-2 rounded-lg group-hover:bg-primary/20 transition-colors"><Package className="text-primary w-5 h-5" /></span>
             <span className="text-slate-500 text-sm font-medium">stock bajo</span>
           </div>
-          <p className="text-sm font-medium text-slate-500 uppercase tracking-wider">Items en Alerta</p>
-          <p className="text-2xl font-bold mt-1 text-slate-900 dark:text-slate-100">{metrics.stockAlertCount}</p>
-        </div>
+          <p className="text-sm font-medium text-slate-500 uppercase tracking-wider group-hover:text-slate-700 dark:group-hover:text-slate-350 transition-colors">Items en Alerta</p>
+          <p className="text-2xl font-bold mt-1 text-slate-900 dark:text-slate-100 group-hover:text-primary transition-colors">{metrics.stockAlertCount}</p>
+        </Link>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -276,16 +276,16 @@ export default async function DashboardPage() {
           </div>
           <div className="flex-1 flex flex-col justify-end min-h-[220px]">
             <p className="text-3xl font-bold mb-4">
-              \${metrics.revenueTrendTotal.toLocaleString("es-CL")}
+              ${metrics.revenueTrendTotal.toLocaleString("es-CL")}
               <span className="text-green-500 text-sm font-normal ml-2">{metrics.revenueTrendGrowth} sobre base actual</span>
             </p>
             <div className="grid grid-cols-3 gap-3">
               {metrics.latestInvoices.map((invoice) => (
-                <div key={invoice.id} className="rounded-xl border border-slate-200 dark:border-slate-800 p-4 bg-slate-50 dark:bg-slate-800/40">
+                <Link href="/facturacion" key={invoice.id} className="rounded-xl border border-slate-200 dark:border-slate-800 p-4 bg-slate-50 dark:bg-slate-800/40 hover:border-primary/40 transition-colors block">
                   <p className="text-xs text-slate-500">{invoice.number}</p>
-                  <p className="font-semibold mt-1">{invoice.customerName}</p>
-                  <p className="text-sm text-primary mt-2">\${invoice.total.toLocaleString("es-CL")}</p>
-                </div>
+                  <p className="font-semibold mt-1 truncate">{invoice.customerName}</p>
+                  <p className="text-sm text-primary mt-2">${invoice.total.toLocaleString("es-CL")}</p>
+                </Link>
               ))}
             </div>
           </div>
@@ -345,14 +345,16 @@ export default async function DashboardPage() {
                 <tr key={invoice.id} className="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
                   <td className="px-6 py-4 font-medium">{invoice.customerName}</td>
                   <td className="px-6 py-4 text-sm">{invoice.issueDate}</td>
-                  <td className="px-6 py-4 text-sm font-bold">\${invoice.total.toLocaleString("es-CL")}</td>
+                  <td className="px-6 py-4 text-sm font-bold">${invoice.total.toLocaleString("es-CL")}</td>
                   <td className="px-6 py-4">
                     <span className="px-3 py-1 bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-300 rounded-full text-xs font-semibold">
                       {formatInvoiceStatus(invoice.status)}
                     </span>
                   </td>
                   <td className="px-6 py-4">
-                    <button className="text-slate-400 hover:text-primary"><MoreHorizontal className="w-5 h-5" /></button>
+                    <Link href="/facturacion" className="inline-flex p-1.5 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg text-slate-400 hover:text-primary transition-colors">
+                      <MoreHorizontal className="w-5 h-5" />
+                    </Link>
                   </td>
                 </tr>
               ))}

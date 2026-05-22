@@ -98,6 +98,17 @@ export default function InventoryClient({ products, summary }: Props) {
     return ["all", ...Array.from(list).sort()];
   }, [products]);
 
+  // Cargar pestaña inicial desde los parámetros de búsqueda de la URL
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const params = new URLSearchParams(window.location.search);
+      const tab = params.get("tab");
+      if (tab === "low" || tab === "out" || tab === "all") {
+        setActiveTab(tab);
+      }
+    }
+  }, []);
+
   // Cerrar modal automáticamente al éxito
   useEffect(() => {
     if (state.status === "success") {
