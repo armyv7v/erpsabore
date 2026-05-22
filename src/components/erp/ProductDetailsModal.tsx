@@ -48,13 +48,29 @@ export default function ProductDetailsModal({ product, onClose, onAddToCart, onE
 
   const displayDescription = product.description || product.category || "Sin descripción disponible.";
 
+  React.useEffect(() => {
+    // Bloquear el scroll del body al abrir el modal
+    const originalStyle = window.getComputedStyle(document.body).overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      // Restaurar el scroll original al desmontar
+      document.body.style.overflow = originalStyle;
+    };
+  }, []);
+
   return (
     <>
-      <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-md z-50 flex items-center justify-center p-4 animate-in fade-in duration-200">
-        <div className="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800 w-full max-w-2xl overflow-hidden shadow-2xl flex flex-col md:flex-row animate-in zoom-in-95 duration-200">
+      <div 
+        onClick={onClose}
+        className="fixed inset-0 bg-slate-900/60 backdrop-blur-md z-50 flex items-start md:items-center justify-center p-4 overflow-y-auto py-8 md:py-4 animate-in fade-in duration-200"
+      >
+        <div 
+          onClick={(e) => e.stopPropagation()}
+          className="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800 w-full max-w-2xl overflow-hidden shadow-2xl flex flex-col md:flex-row animate-in zoom-in-95 duration-200 my-auto"
+        >
           
           {/* Lado Izquierdo: Imagen */}
-          <div className="md:w-1/2 aspect-square md:aspect-auto bg-slate-50 dark:bg-slate-950/40 flex items-center justify-center relative cursor-zoom-in group overflow-hidden border-b md:border-b-0 md:border-r border-slate-100 dark:border-slate-800/80">
+          <div className="w-full md:w-1/2 h-56 md:h-auto bg-slate-50 dark:bg-slate-950/40 flex items-center justify-center relative cursor-zoom-in group overflow-hidden border-b md:border-b-0 md:border-r border-slate-100 dark:border-slate-800/80">
             {product.imageUrl ? (
               <>
                 <img
