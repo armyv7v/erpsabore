@@ -141,3 +141,68 @@ export async function submitMarkDiscrepancyAction(formData: FormData): Promise<A
     };
   }
 }
+
+const importCashMovementsSchema = z.object({
+  movements: z.array(
+    z.object({
+      kind: z.enum(["income", "expense"]),
+      amount: z.coerce.number().positive("El monto debe ser mayor a 0."),
+      movementDate: z.string().min(1, "La fecha es obligatoria."),
+      reference: z.string().trim().optional(),
+    })
+  ).min(1, "No hay movimientos para importar."),
+});
+
+export async function submitImportCashMovementsAction(formData: FormData): Promise<ActionState> {
+  try {
+    const { user, supabase } = await requireAuthenticatedContext();
+    assertUserHasRole(user, ["admin", "finanzas"]);
+
+    const rawMovements = formData.get("movements");
+    if (!rawMovements) {
+      return {
+        status: "error",
+        message: "No se proporcionaron movimientos para importar.",
+      };
+    }
+
+    const parsed = importCashMovementsSchema.parse({
+      movements: JSON.parse(String(rawMovements)),
+    });
+
+    const { data, error } = await supabase
+      .from("cash_movements")
+      .insert(
+        parsed.movements.map((m) => ({
+          tenant_id: user.tenantId,
+          source_type: "manual",
+          source_id: null,
+          kind: m.kind,
+          amount: m.amount,
+          movement_date: m.movementDate,
+          reference: m.reference || null,
+          payment_method: "transfer",
+          status: "pending",
+          created_by: user.id,
+        }))
+      )
+      .select("id");
+
+    if (error) {
+      throw new Error(`Error en base de datos: ${error.message}`);
+    }
+
+    revalidateFinancePaths();
+
+    return {
+      status: "success",
+      message: `Se importaron ${data.length} movimientos de cartola correctamente.`,
+    };
+  } catch (error) {
+    return {
+      status: "error",
+      message: getActionErrorMessage(error, "No se pudo realizar la importación de movimientos bancarios."),
+    };
+  }
+}
+

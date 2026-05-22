@@ -1,9 +1,9 @@
 "use client";
 
 import { useMemo, useState, useTransition } from "react";
-import { Bolt, CheckCircle2, Link as LinkIcon, Search, Wand2 } from "lucide-react";
+import { Bolt, CheckCircle2, Link as LinkIcon, Search, Wand2, ArrowRight, AlertCircle, Info, UploadCloud, X } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { submitAutoReconcileAction } from "@/app/actions/finance";
+import { submitAutoReconcileAction, submitImportCashMovementsAction } from "@/app/actions/finance";
 import type { BankStatementRow, ERPMatchRow } from "@/data/reconciliation";
 
 interface ReconciliationWorkspaceProps {
@@ -36,6 +36,22 @@ export default function ReconciliationWorkspace({
   const [bankRows, setBankRows] = useState(initialBankRows);
   const [erpRows, setErpRows] = useState(initialErpRows);
   const [feedback, setFeedback] = useState<string>("");
+
+  // Import Cartola States
+  const [isImportModalOpen, setIsImportModalOpen] = useState(false);
+  const [importStep, setImportStep] = useState<1 | 2 | 3>(1);
+  const [selectedBank, setSelectedBank] = useState("");
+  const [parsedMovements, setParsedMovements] = useState<Array<{
+    movementDate: string;
+    concept: string;
+    reference: string;
+    amount: number;
+    kind: "income" | "expense";
+  }>>([]);
+  const [isDragging, setIsDragging] = useState(false);
+  const [importError, setImportError] = useState("");
+  const [isImporting, setIsImporting] = useState(false);
+
 
   const suggestionCount = useMemo(
     () => erpRows.filter((row) => typeof row.matchConfidence === "number" && row.matchConfidence >= 90).length,
@@ -134,6 +150,168 @@ export default function ReconciliationWorkspace({
     setFeedback(applied > 0 ? `Se conciliaron ${applied} movimientos automaticamente.` : "No hay movimientos pendientes.");
   }
 
+  function parseCSV(text: string) {
+    try {
+      setImportError("");
+      const lines = text.split(/\r?\n/).map(line => line.trim()).filter(Boolean);
+      if (lines.length < 2) {
+        throw new Error("El archivo CSV debe contener al menos una cabecera y una fila de datos.");
+      }
+
+      // Detect separator: , or ;
+      const firstLine = lines[0];
+      const commas = (firstLine.match(/,/g) || []).length;
+      const semicolons = (firstLine.match(/;/g) || []).length;
+      const separator = semicolons > commas ? ";" : ",";
+
+      const headers = firstLine.split(separator).map(h => h.trim().toLowerCase().replace(/['"]/g, ""));
+      
+      // Look for matches
+      let dateIdx = headers.findIndex(h => h.includes("fecha") || h.includes("date") || h.includes("dia") || h.includes("fec") || h.includes("oper"));
+      let conceptIdx = headers.findIndex(h => h.includes("concept") || h.includes("descrip") || h.includes("glosa") || h.includes("detal"));
+      let refIdx = headers.findIndex(h => h.includes("referen") || h.includes("ref") || h.includes("docum") || h.includes("nro"));
+      let amountIdx = headers.findIndex(h => h.includes("monto") || h.includes("valor") || h.includes("cantid") || h.includes("cargo") || h.includes("abono") || h.includes("total") || h.includes("amount"));
+
+      // Fallbacks if not found by name
+      if (dateIdx === -1) dateIdx = 0;
+      if (conceptIdx === -1) conceptIdx = Math.min(1, headers.length - 1);
+      if (refIdx === -1) refIdx = Math.min(2, headers.length - 1);
+      if (amountIdx === -1) amountIdx = Math.min(3, headers.length - 1);
+
+      const movements: typeof parsedMovements = [];
+
+      for (let i = 1; i < lines.length; i++) {
+        const row = lines[i].split(separator).map(r => r.trim().replace(/['"]/g, ""));
+        if (row.length < Math.max(dateIdx, conceptIdx, refIdx, amountIdx) + 1) {
+          continue; // Skip malformed or empty rows
+        }
+
+        const dateStr = row[dateIdx];
+        const conceptStr = row[conceptIdx] || "Movimiento importado";
+        const refStr = row[refIdx] || `Importación ${selectedBank || "Bancaria"}`;
+        
+        let amountRaw = row[amountIdx] || "0";
+        // Remove currency symbols, spaces
+        amountRaw = amountRaw.replace(/[$\s]/g, "");
+        // Detect Chilean format where dots are thousands and commas are decimals
+        let amountVal = 0;
+        if (amountRaw.includes(",") && amountRaw.includes(".")) {
+          amountVal = parseFloat(amountRaw.replace(/\./g, "").replace(",", "."));
+        } else if (amountRaw.includes(",")) {
+          amountVal = parseFloat(amountRaw.replace(",", "."));
+        } else {
+          amountVal = parseFloat(amountRaw);
+        }
+
+        if (isNaN(amountVal)) {
+          amountVal = 0;
+        }
+
+        const isNegative = amountVal < 0 || conceptStr.toLowerCase().includes("cargo") || conceptStr.toLowerCase().includes("comision") || conceptStr.toLowerCase().includes("compra") || conceptStr.toLowerCase().includes("pago") || conceptStr.toLowerCase().includes("egreso") || conceptStr.toLowerCase().includes("debito") || conceptStr.toLowerCase().includes("débito");
+        const absoluteAmount = Math.abs(amountVal);
+        const kind = isNegative ? "expense" as const : "income" as const;
+
+        movements.push({
+          movementDate: dateStr || new Date().toISOString().split("T")[0],
+          concept: conceptStr,
+          reference: refStr,
+          amount: absoluteAmount,
+          kind,
+        });
+      }
+
+      if (movements.length === 0) {
+        throw new Error("No se encontraron transacciones válidas en el archivo.");
+      }
+
+      setParsedMovements(movements);
+      setImportStep(2);
+    } catch (err: any) {
+      setImportError(err?.message || "Error al procesar el archivo CSV. Verifique el formato.");
+    }
+  }
+
+  function handleFileChange(event: React.ChangeEvent<HTMLInputElement>) {
+    const file = event.target.files?.[0];
+    if (!file) return;
+    processFile(file);
+  }
+
+  function processFile(file: File) {
+    if (!file.name.endsWith(".csv")) {
+      setImportError("Solo se admiten archivos en formato CSV (.csv) por el momento.");
+      return;
+    }
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const text = e.target?.result;
+      if (typeof text === "string") {
+        parseCSV(text);
+      }
+    };
+    reader.onerror = () => {
+      setImportError("Error al leer el archivo.");
+    };
+    reader.readAsText(file);
+  }
+
+  function handleConfirmImport() {
+    if (parsedMovements.length === 0) return;
+
+    setIsImporting(true);
+    if (!persistentMode) {
+      // Local fallback mode: merge reactively!
+      setBankRows((currentRows) => {
+        const newRows: BankStatementRow[] = parsedMovements.map((m, idx) => ({
+          id: `b-imported-${idx}-${Date.now()}`,
+          date: m.movementDate,
+          concept: m.concept,
+          reference: m.reference,
+          amount: m.amount,
+          type: m.kind,
+          status: "pending",
+        }));
+        return [...newRows, ...currentRows];
+      });
+
+      setErpRows((currentRows) => {
+        const newRows: ERPMatchRow[] = parsedMovements.map((m, idx) => ({
+          id: `erp-imported-${idx}-${Date.now()}`,
+          bankId: `b-imported-${idx}-${Date.now()}`,
+          date: m.movementDate,
+          concept: m.concept.toLowerCase().includes("pago") || m.concept.toLowerCase().includes("cobro") ? "Cobro relacionado a factura" : "Registro contable manual",
+          reference: m.reference,
+          amount: m.amount,
+          type: m.kind,
+          matchConfidence: m.concept.toLowerCase().includes("pago") || m.concept.toLowerCase().includes("cobro") ? 96 : 91,
+        }));
+        return [...newRows, ...currentRows];
+      });
+
+      setFeedback(`Se importaron ${parsedMovements.length} movimientos de cartola localmente.`);
+      setIsImporting(false);
+      setImportStep(3);
+      return;
+    }
+
+    // Persistent Mode (Supabase Server Action)
+    startTransition(async () => {
+      const formData = new FormData();
+      formData.set("movements", JSON.stringify(parsedMovements));
+      
+      const result = await submitImportCashMovementsAction(formData);
+      setIsImporting(false);
+
+      if (result.status === "success") {
+        setFeedback(result.message);
+        setImportStep(3);
+        router.refresh();
+      } else {
+        setImportError(result.message);
+      }
+    });
+  }
+
   function runPersistentReconcile(movementIds: string[], emptyMessage: string) {
     if (movementIds.length === 0) {
       setFeedback(emptyMessage);
@@ -198,6 +376,14 @@ export default function ReconciliationWorkspace({
                 onChange={(event) => setSearchQuery(event.target.value)}
               />
             </div>
+            <button
+              type="button"
+              onClick={() => setIsImportModalOpen(true)}
+              className="w-full sm:w-auto bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-200 px-4 py-2 rounded-lg font-bold text-sm flex items-center justify-center gap-2 hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors shadow-sm"
+            >
+              <UploadCloud className="w-4 h-4 text-primary" />
+              Importar Cartola
+            </button>
             <button
               type="button"
               onClick={handleAutoReconcile}
@@ -391,6 +577,256 @@ export default function ReconciliationWorkspace({
           </section>
         </div>
       </main>
+
+      {isImportModalOpen ? (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4 overflow-y-auto">
+          <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 w-full max-w-2xl rounded-2xl shadow-2xl flex flex-col max-h-[90vh] overflow-hidden text-slate-800 dark:text-slate-100">
+            {/* Header */}
+            <div className="flex items-center justify-between p-6 border-b border-slate-100 dark:border-slate-800 shrink-0">
+              <h2 className="text-lg font-bold">Importar Cartola Bancaria</h2>
+              <button
+                type="button"
+                onClick={() => {
+                  setIsImportModalOpen(false);
+                  setImportStep(1);
+                  setImportError("");
+                  setParsedMovements([]);
+                }}
+                className="p-1.5 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full transition-colors"
+              >
+                <X className="w-5 h-5 text-slate-500" />
+              </button>
+            </div>
+
+            {/* Stepper */}
+            <div className="px-6 py-4 bg-slate-50 dark:bg-slate-950 border-b border-slate-100 dark:border-slate-800 flex items-center justify-center gap-6 shrink-0">
+              <div className="flex items-center gap-2">
+                <span className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold ${
+                  importStep >= 1 ? "bg-primary text-white" : "bg-slate-200 text-slate-600 dark:bg-slate-800 dark:text-slate-400"
+                }`}>
+                  1
+                </span>
+                <span className={`text-xs font-bold ${importStep >= 1 ? "text-primary" : "text-slate-500"}`}>Carga</span>
+              </div>
+              <div className="h-px w-8 bg-slate-200 dark:bg-slate-800"></div>
+              <div className="flex items-center gap-2">
+                <span className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold ${
+                  importStep >= 2 ? "bg-primary text-white" : "bg-slate-200 text-slate-600 dark:bg-slate-800 dark:text-slate-400"
+                }`}>
+                  2
+                </span>
+                <span className={`text-xs font-bold ${importStep >= 2 ? "text-primary" : "text-slate-500"}`}>Previsualización</span>
+              </div>
+              <div className="h-px w-8 bg-slate-200 dark:bg-slate-800"></div>
+              <div className="flex items-center gap-2">
+                <span className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold ${
+                  importStep >= 3 ? "bg-primary text-white" : "bg-slate-200 text-slate-600 dark:bg-slate-800 dark:text-slate-400"
+                }`}>
+                  3
+                </span>
+                <span className={`text-xs font-bold ${importStep >= 3 ? "text-primary" : "text-slate-500"}`}>Resultado</span>
+              </div>
+            </div>
+
+            {/* Content Body */}
+            <div className="flex-1 overflow-y-auto p-6 space-y-6">
+              {importError ? (
+                <div className="flex items-center gap-3 p-4 bg-red-50 dark:bg-red-950/30 text-red-600 dark:text-red-400 border border-red-100 dark:border-red-900/50 rounded-xl text-sm">
+                  <AlertCircle className="w-5 h-5 shrink-0" />
+                  <span>{importError}</span>
+                </div>
+              ) : null}
+
+              {importStep === 1 ? (
+                <div className="space-y-6">
+                  <div>
+                    <label className="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-2">
+                      Banco de Origen
+                    </label>
+                    <select
+                      value={selectedBank}
+                      onChange={(e) => setSelectedBank(e.target.value)}
+                      className="w-full h-11 px-4 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-slate-100 text-sm focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all"
+                    >
+                      <option value="">Seleccione el banco emisor</option>
+                      <option value="Santander">Banco Santander Chile</option>
+                      <option value="De Chile">Banco de Chile / Edwards</option>
+                      <option value="Estado">Banco Estado</option>
+                      <option value="BCI">BCI</option>
+                      <option value="Scotiabank">Scotiabank</option>
+                      <option value="Itaú">Itaú</option>
+                    </select>
+                  </div>
+
+                  {/* Dropzone */}
+                  <div
+                    onDragOver={(e) => {
+                      e.preventDefault();
+                      setIsDragging(true);
+                    }}
+                    onDragLeave={() => setIsDragging(false)}
+                    onDrop={(e) => {
+                      e.preventDefault();
+                      setIsDragging(false);
+                      const file = e.dataTransfer.files?.[0];
+                      if (file) processFile(file);
+                    }}
+                    className={`border-2 border-dashed rounded-2xl p-10 flex flex-col items-center justify-center text-center transition-all ${
+                      isDragging
+                        ? "border-primary bg-primary/5"
+                        : "border-slate-200 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-900/20 hover:border-primary/50"
+                    }`}
+                  >
+                    <div className="w-12 h-12 rounded-full bg-primary/5 flex items-center justify-center mb-3">
+                      <UploadCloud className="w-6 h-6 text-primary" />
+                    </div>
+                    <p className="text-sm font-bold mb-1">Arrastrá tu archivo CSV aquí</p>
+                    <p className="text-xs text-slate-400 mb-4">Solo se admiten formatos de valores delimitados (.csv)</p>
+                    
+                    <label className="px-5 py-2.5 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-xs font-bold shadow-sm hover:shadow-md cursor-pointer transition-shadow">
+                      Examinar Archivos
+                      <input
+                        type="file"
+                        accept=".csv"
+                        onChange={handleFileChange}
+                        className="hidden"
+                      />
+                    </label>
+                  </div>
+
+                  {/* Instrucciones */}
+                  <div className="bg-primary/5 border border-primary/20 rounded-xl p-4 flex gap-3">
+                    <Info className="w-5 h-5 text-primary shrink-0 mt-0.5" />
+                    <div>
+                      <p className="text-xs font-bold text-primary mb-1">Instrucciones de formato</p>
+                      <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
+                        Asegurate de que el archivo contenga columnas mapeables como: <b>Fecha, Concepto, Referencia y Monto</b>. 
+                        El sistema las reconocerá automáticamente. Se aceptan comas (,) o punto y coma (;) como delimitadores.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              ) : importStep === 2 ? (
+                <div className="space-y-4">
+                  <div className="flex items-center justify-between text-xs font-bold text-slate-500">
+                    <span>Banco: {selectedBank || "No especificado"}</span>
+                    <span>{parsedMovements.length} transacciones encontradas</span>
+                  </div>
+
+                  <div className="border border-slate-200 dark:border-slate-800 rounded-xl overflow-hidden max-h-[300px] overflow-y-auto">
+                    <table className="w-full text-left text-xs border-collapse">
+                      <thead className="bg-slate-50 dark:bg-slate-950 text-slate-500 font-bold sticky top-0 border-b border-slate-100 dark:border-slate-800">
+                        <tr>
+                          <th className="p-3">Fecha</th>
+                          <th className="p-3">Concepto / Glosa</th>
+                          <th className="p-3">Referencia</th>
+                          <th className="p-3 text-right">Monto</th>
+                        </tr>
+                      </thead>
+                      <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
+                        {parsedMovements.map((m, idx) => (
+                          <tr key={idx} className="hover:bg-slate-50/50 dark:hover:bg-slate-900/50">
+                            <td className="p-3 whitespace-nowrap">{m.movementDate}</td>
+                            <td className="p-3 font-semibold max-w-[200px] truncate">{m.concept}</td>
+                            <td className="p-3 font-mono text-slate-400">{m.reference}</td>
+                            <td className={`p-3 text-right font-bold ${
+                              m.kind === "expense" ? "text-red-500" : "text-green-600"
+                            }`}>
+                              {m.kind === "expense" ? "-" : "+"}${m.amount.toLocaleString("es-CL", { minimumFractionDigits: 2 })}
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+
+                  <div className="bg-slate-50 dark:bg-slate-950 p-4 rounded-xl border border-slate-100 dark:border-slate-800 flex justify-between items-center text-sm font-bold">
+                    <span className="text-slate-500">Total a Importar</span>
+                    <span className="text-primary text-base font-black">
+                      ${parsedMovements.reduce((sum, m) => sum + (m.kind === "income" ? m.amount : -m.amount), 0).toLocaleString("es-CL", { minimumFractionDigits: 2 })}
+                    </span>
+                  </div>
+                </div>
+              ) : importStep === 3 ? (
+                <div className="flex flex-col items-center justify-center py-8 text-center space-y-4">
+                  <div className="w-16 h-16 rounded-full bg-green-50 dark:bg-green-950/30 flex items-center justify-center text-green-600 dark:text-green-400 animate-bounce">
+                    <CheckCircle2 className="w-10 h-10" />
+                  </div>
+                  <h3 className="text-xl font-bold text-slate-900 dark:text-slate-50">¡Importación Exitosa!</h3>
+                  <p className="text-sm text-slate-500 dark:text-slate-400 max-w-md">
+                    Se han cargado correctamente <b>{parsedMovements.length}</b> movimientos de la cartola de <b>{selectedBank || "tu banco"}</b> al panel de conciliación.
+                  </p>
+                  
+                  <div className="w-full max-w-sm bg-slate-50 dark:bg-slate-950 p-4 rounded-xl border border-slate-100 dark:border-slate-800 space-y-2 text-xs text-left">
+                    <div className="flex justify-between">
+                      <span className="text-slate-400">Banco Emisor:</span>
+                      <span className="font-semibold text-slate-700 dark:text-slate-300">{selectedBank || "N/A"}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-slate-400">Cantidad de Registros:</span>
+                      <span className="font-semibold text-slate-700 dark:text-slate-300">{parsedMovements.length}</span>
+                    </div>
+                    <div className="flex justify-between border-t border-slate-100 dark:border-slate-800 pt-2 font-bold">
+                      <span className="text-slate-500">Balance Neto:</span>
+                      <span className="text-primary text-base">
+                        ${parsedMovements.reduce((sum, m) => sum + (m.kind === "income" ? m.amount : -m.amount), 0).toLocaleString("es-CL", { minimumFractionDigits: 2 })}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              ) : null}
+            </div>
+
+            {/* Footer shrink-0 */}
+            <div className="p-6 border-t border-slate-100 dark:border-slate-800 flex justify-between shrink-0 bg-slate-50 dark:bg-slate-950/50">
+              {importStep !== 3 ? (
+                <button
+                  type="button"
+                  onClick={() => {
+                    if (importStep === 1) {
+                      setIsImportModalOpen(false);
+                      setImportError("");
+                    } else {
+                      setImportStep(1);
+                      setImportError("");
+                    }
+                  }}
+                  className="px-5 py-2.5 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-200 rounded-lg text-xs font-bold hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors"
+                >
+                  {importStep === 1 ? "Cancelar" : "Atrás"}
+                </button>
+              ) : (
+                <div />
+              )}
+
+              {importStep === 2 ? (
+                <button
+                  type="button"
+                  onClick={handleConfirmImport}
+                  disabled={isImporting}
+                  className="px-6 py-2.5 bg-primary text-white rounded-lg text-xs font-bold shadow-md hover:opacity-90 disabled:opacity-50 transition-opacity flex items-center gap-1.5"
+                >
+                  {isImporting ? "Importando..." : "Confirmar e Importar"}
+                  <ArrowRight className="w-3.5 h-3.5" />
+                </button>
+              ) : importStep === 3 ? (
+                <button
+                  type="button"
+                  onClick={() => {
+                    setIsImportModalOpen(false);
+                    setImportStep(1);
+                    setParsedMovements([]);
+                    setImportError("");
+                  }}
+                  className="px-6 py-2.5 bg-primary text-white rounded-lg text-xs font-bold shadow-md hover:opacity-90 transition-opacity"
+                >
+                  Comenzar a Conciliar
+                </button>
+              ) : null}
+            </div>
+          </div>
+        </div>
+      ) : null}
     </div>
   );
 }
