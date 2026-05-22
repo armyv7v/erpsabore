@@ -456,29 +456,68 @@ export default function CatalogClient({ products, customers = [] }: Props) {
                     ${product.unitPrice.toLocaleString("es-CL")}
                     <span className="text-slate-400 text-[10px] font-normal"> CLP</span>
                   </p>
-                  <button
-                    type="button"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      addToCart(product);
-                    }}
-                    className={`mt-3 w-full rounded-lg py-2.5 text-xs font-bold flex items-center justify-center gap-1 transition-all ${
-                      product.stockQuantity > 0
-                        ? "bg-primary text-white active:scale-95 shadow-sm shadow-primary/20 hover:bg-primary/90"
-                        : "cursor-not-allowed border border-slate-200 bg-slate-100 text-slate-400 dark:border-slate-700 dark:bg-slate-800"
-                    }`}
-                    disabled={product.stockQuantity === 0}
-                  >
-                    {product.stockQuantity > 0 ? (
-                      <>
-                        <ShoppingBag className="w-4 h-4" /> AÑADIR
-                      </>
-                    ) : (
-                      <>
-                        <Ban className="w-4 h-4" /> AGOTADO
-                      </>
-                    )}
-                  </button>
+                  {(() => {
+                    const cartItem = cartItems.find((item) => item.id === product.id);
+                    if (cartItem && cartItem.quantity > 0) {
+                      return (
+                        <div
+                          onClick={(e) => e.stopPropagation()}
+                          className="mt-3 w-full flex items-center justify-between bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg p-1 h-[38px] transition-all"
+                        >
+                          <button
+                            type="button"
+                            onClick={() => updateQuantity(product.id, -1)}
+                            className="size-7 flex items-center justify-center text-slate-500 hover:text-slate-700 dark:hover:text-slate-200 transition-colors bg-white dark:bg-slate-900 rounded-md border border-slate-200 dark:border-slate-700 active:scale-90 cursor-pointer"
+                          >
+                            <Minus className="w-3.5 h-3.5" />
+                          </button>
+                          
+                          <input
+                            type="text"
+                            value={cartItem.quantity}
+                            onChange={(e) => handleManualQuantityChange(product.id, e.target.value)}
+                            onBlur={() => handleQuantityBlur(product.id, cartItem.quantity)}
+                            className="w-12 text-center bg-transparent border-0 font-extrabold text-sm text-slate-800 dark:text-slate-100 focus:outline-none focus:ring-0 p-0"
+                          />
+
+                          <button
+                            type="button"
+                            onClick={() => updateQuantity(product.id, 1)}
+                            disabled={cartItem.quantity >= product.stockQuantity}
+                            className="size-7 flex items-center justify-center text-slate-500 hover:text-slate-700 dark:hover:text-slate-200 transition-colors bg-white dark:bg-slate-900 rounded-md border border-slate-200 dark:border-slate-700 active:scale-90 disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer"
+                          >
+                            <Plus className="w-3.5 h-3.5" />
+                          </button>
+                        </div>
+                      );
+                    }
+
+                    return (
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          addToCart(product);
+                        }}
+                        className={`mt-3 w-full rounded-lg py-2.5 text-xs font-bold flex items-center justify-center gap-1 transition-all h-[38px] ${
+                          product.stockQuantity > 0
+                            ? "bg-primary text-white active:scale-95 shadow-sm shadow-primary/20 hover:bg-primary/90"
+                            : "cursor-not-allowed border border-slate-200 bg-slate-100 text-slate-400 dark:border-slate-700 dark:bg-slate-800"
+                        }`}
+                        disabled={product.stockQuantity === 0}
+                      >
+                        {product.stockQuantity > 0 ? (
+                          <>
+                            <ShoppingBag className="w-4 h-4" /> AÑADIR
+                          </>
+                        ) : (
+                          <>
+                            <Ban className="w-4 h-4" /> AGOTADO
+                          </>
+                        )}
+                      </button>
+                    );
+                  })()}
                 </div>
               </div>
             ))
