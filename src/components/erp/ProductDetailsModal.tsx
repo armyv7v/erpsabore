@@ -54,13 +54,13 @@ export default function ProductDetailsModal({ product, onClose, onAddToCart, onE
         <div className="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800 w-full max-w-2xl overflow-hidden shadow-2xl flex flex-col md:flex-row animate-in zoom-in-95 duration-200">
           
           {/* Lado Izquierdo: Imagen */}
-          <div className="md:w-1/2 aspect-square md:aspect-auto bg-slate-50 dark:bg-slate-950 flex items-center justify-center relative cursor-zoom-in group overflow-hidden border-b md:border-b-0 md:border-r border-slate-100 dark:border-slate-800/80">
+          <div className="md:w-1/2 aspect-square md:aspect-auto bg-slate-50 dark:bg-slate-950/40 flex items-center justify-center relative cursor-zoom-in group overflow-hidden border-b md:border-b-0 md:border-r border-slate-100 dark:border-slate-800/80">
             {product.imageUrl ? (
               <>
                 <img
                   src={product.imageUrl}
                   alt={product.name}
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  className="w-full h-full max-h-[320px] md:max-h-full object-contain p-6 group-hover:scale-105 transition-transform duration-500"
                 />
                 {/* Overlay de zoom en hover */}
                 <div

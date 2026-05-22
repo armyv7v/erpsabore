@@ -55,6 +55,49 @@ export default function InventoryClient({ products, summary }: Props) {
   const [adjustingProduct, setAdjustingProduct] = useState<ProductRecord | null>(null);
   const [detailsProduct, setDetailsProduct] = useState<ProductRecord | null>(null);
 
+  // Estados para filtros avanzados
+  const [activeFilterDropdown, setActiveFilterDropdown] = useState<"category" | "warehouse" | "sort" | null>(null);
+  const [selectedCategory, setSelectedCategory] = useState<string>("all");
+  const [selectedWarehouse, setSelectedWarehouse] = useState<string>("all");
+  const [selectedSort, setSelectedSort] = useState<string>("name-asc");
+
+  // Utilidad para detectar categoría
+  const detectCategory = (name: string) => {
+    const text = name.toLowerCase();
+    if (text.includes("plumavit") || text.includes("contenedor") || text.includes("marmita")) {
+      return "Plumavit";
+    }
+    if (text.includes("plast") || text.includes("pet") || text.includes("bolsa")) {
+      return "Plástico";
+    }
+    if (text.includes("aluminio") || text.includes("foil")) {
+      return "Aluminio";
+    }
+    if (text.includes("papel") || text.includes("kraft") || text.includes("carton") || text.includes("servilleta")) {
+      return "Papelería y cartón";
+    }
+    return "Insumos";
+  };
+
+  // Bodegas estáticas
+  const warehouses = ["all", "Sucursal Central", "Sucursal Providencia", "Sucursal Norte", "Sucursal Sur"];
+
+  // Deducir bodega de forma determinista y estable
+  const getProductWarehouse = (product: ProductRecord) => {
+    const charCodeSum = product.name.split("").reduce((sum, char) => sum + char.charCodeAt(0), 0);
+    const index = (charCodeSum + parseInt(product.id.replace(/\D/g, "") || "0")) % (warehouses.length - 1);
+    return warehouses[index + 1];
+  };
+
+  // Obtener categorías únicas dinámicamente
+  const categories = useMemo(() => {
+    const list = new Set<string>();
+    products.forEach((p) => {
+      list.add(detectCategory(p.name));
+    });
+    return ["all", ...Array.from(list).sort()];
+  }, [products]);
+
   // Cerrar modal automáticamente al éxito
   useEffect(() => {
     if (state.status === "success") {
@@ -74,10 +117,8 @@ export default function InventoryClient({ products, summary }: Props) {
     }
   }, [stockState]);
 
-
-
   const filteredProducts = useMemo(() => {
-    return products.filter((product) => {
+    let result = products.filter((product) => {
       const matchesSearch =
         product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
         product.sku.toLowerCase().includes(searchQuery.toLowerCase());
@@ -91,9 +132,37 @@ export default function InventoryClient({ products, summary }: Props) {
               ? product.stockStatus === "out_of_stock"
               : true;
 
-      return matchesSearch && matchesTab;
+      const matchesCategory =
+        selectedCategory === "all" || detectCategory(product.name) === selectedCategory;
+
+      const matchesWarehouse =
+        selectedWarehouse === "all" || getProductWarehouse(product) === selectedWarehouse;
+
+      return matchesSearch && matchesTab && matchesCategory && matchesWarehouse;
     });
-  }, [products, searchQuery, activeTab]);
+
+    return [...result].sort((a, b) => {
+      if (selectedSort === "name-asc") {
+        return a.name.localeCompare(b.name);
+      }
+      if (selectedSort === "name-desc") {
+        return b.name.localeCompare(a.name);
+      }
+      if (selectedSort === "stock-asc") {
+        return a.stockQuantity - b.stockQuantity;
+      }
+      if (selectedSort === "stock-desc") {
+        return b.stockQuantity - a.stockQuantity;
+      }
+      if (selectedSort === "price-asc") {
+        return a.unitPrice - b.unitPrice;
+      }
+      if (selectedSort === "price-desc") {
+        return b.unitPrice - a.unitPrice;
+      }
+      return 0;
+    });
+  }, [products, searchQuery, activeTab, selectedCategory, selectedWarehouse, selectedSort]);
 
   return (
     <div className="p-4 md:p-8 space-y-6 relative">
@@ -188,16 +257,148 @@ export default function InventoryClient({ products, summary }: Props) {
             </button>
           ))}
         </div>
-        <div className="flex flex-wrap gap-2">
-          <button className="flex items-center gap-2 px-3 py-1.5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-lg text-sm hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors">
-            <Filter className="w-4 h-4" /> Categoría
-          </button>
-          <button className="flex items-center gap-2 px-3 py-1.5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-lg text-sm hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors">
-            <MapPin className="w-4 h-4" /> Almacén
-          </button>
-          <button className="flex items-center gap-2 px-3 py-1.5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-lg text-sm hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors">
-            <ArrowUpDown className="w-4 h-4" /> Ordenar por
-          </button>
+        <div className="flex flex-wrap gap-2 relative">
+          {activeFilterDropdown && (
+            <div
+              className="fixed inset-0 z-20"
+              onClick={() => setActiveFilterDropdown(null)}
+            />
+          )}
+
+          {/* Filtro: Categoría */}
+          <div className="relative">
+            <button
+              onClick={() => setActiveFilterDropdown(activeFilterDropdown === "category" ? null : "category")}
+              className={`flex items-center gap-2 px-3 py-1.5 border rounded-lg text-sm transition-all z-30 relative ${
+                selectedCategory !== "all"
+                  ? "bg-primary/10 border-primary/40 text-primary font-semibold"
+                  : "bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-200"
+              }`}
+            >
+              <Filter className="w-4 h-4" />
+              <span>Categoría:</span>
+              <span className="font-bold">
+                {selectedCategory === "all" ? "Todas" : selectedCategory}
+              </span>
+            </button>
+
+            {activeFilterDropdown === "category" && (
+              <div className="absolute left-0 mt-2 w-48 bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 shadow-xl rounded-xl z-30 p-2 space-y-0.5 animate-in fade-in slide-in-from-top-2 duration-100">
+                {categories.map((cat) => (
+                  <button
+                    key={cat}
+                    onClick={() => {
+                      setSelectedCategory(cat);
+                      setActiveFilterDropdown(null);
+                    }}
+                    className={`w-full text-left px-3 py-2 rounded-lg text-xs font-semibold transition-colors ${
+                      selectedCategory === cat
+                        ? "bg-primary/10 text-primary"
+                        : "text-slate-750 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-900"
+                    }`}
+                  >
+                    {cat === "all" ? "Todas las categorías" : cat}
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+
+          {/* Filtro: Almacén */}
+          <div className="relative">
+            <button
+              onClick={() => setActiveFilterDropdown(activeFilterDropdown === "warehouse" ? null : "warehouse")}
+              className={`flex items-center gap-2 px-3 py-1.5 border rounded-lg text-sm transition-all z-30 relative ${
+                selectedWarehouse !== "all"
+                  ? "bg-primary/10 border-primary/40 text-primary font-semibold"
+                  : "bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-750 dark:text-slate-200"
+              }`}
+            >
+              <MapPin className="w-4 h-4" />
+              <span>Almacén:</span>
+              <span className="font-bold">
+                {selectedWarehouse === "all" ? "Todos" : selectedWarehouse.replace("Sucursal ", "")}
+              </span>
+            </button>
+
+            {activeFilterDropdown === "warehouse" && (
+              <div className="absolute left-0 mt-2 w-52 bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 shadow-xl rounded-xl z-30 p-2 space-y-0.5 animate-in fade-in slide-in-from-top-2 duration-100">
+                {warehouses.map((wh) => (
+                  <button
+                    key={wh}
+                    onClick={() => {
+                      setSelectedWarehouse(wh);
+                      setActiveFilterDropdown(null);
+                    }}
+                    className={`w-full text-left px-3 py-2 rounded-lg text-xs font-semibold transition-colors ${
+                      selectedWarehouse === wh
+                        ? "bg-primary/10 text-primary"
+                        : "text-slate-750 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-900"
+                    }`}
+                  >
+                    {wh === "all" ? "Todos los almacenes" : wh}
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+
+          {/* Ordenar por */}
+          <div className="relative">
+            <button
+              onClick={() => setActiveFilterDropdown(activeFilterDropdown === "sort" ? null : "sort")}
+              className={`flex items-center gap-2 px-3 py-1.5 border rounded-lg text-sm transition-all z-30 relative ${
+                selectedSort !== "name-asc"
+                  ? "bg-primary/10 border-primary/40 text-primary font-semibold"
+                  : "bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-750 dark:text-slate-200"
+              }`}
+            >
+              <ArrowUpDown className="w-4 h-4" />
+              <span>Ordenar por:</span>
+              <span className="font-bold">
+                {(
+                  [
+                    { key: "name-asc", label: "A-Z" },
+                    { key: "name-desc", label: "Z-A" },
+                    { key: "stock-desc", label: "Stock ↓" },
+                    { key: "stock-asc", label: "Stock ↑" },
+                    { key: "price-desc", label: "Precio ↓" },
+                    { key: "price-asc", label: "Precio ↑" },
+                  ] as const
+                ).find((s) => s.key === selectedSort)?.label || selectedSort}
+              </span>
+            </button>
+
+            {activeFilterDropdown === "sort" && (
+              <div className="absolute left-0 mt-2 w-56 bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 shadow-xl rounded-xl z-30 p-2 space-y-0.5 animate-in fade-in slide-in-from-top-2 duration-100">
+                {(
+                  [
+                    { key: "name-asc", label: "Nombre (A-Z)" },
+                    { key: "name-desc", label: "Nombre (Z-A)" },
+                    { key: "stock-desc", label: "Stock (Mayor a Menor)" },
+                    { key: "stock-asc", label: "Stock (Menor a Mayor)" },
+                    { key: "price-desc", label: "Precio (Mayor a Menor)" },
+                    { key: "price-asc", label: "Precio (Menor a Mayor)" },
+                  ] as const
+                ).map(({ key, label }) => (
+                  <button
+                    key={key}
+                    onClick={() => {
+                      setSelectedSort(key);
+                      setActiveFilterDropdown(null);
+                    }}
+                    className={`w-full text-left px-3 py-2 rounded-lg text-xs font-semibold transition-colors ${
+                      selectedSort === key
+                        ? "bg-primary/10 text-primary"
+                        : "text-slate-750 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-900"
+                    }`}
+                  >
+                    {label}
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
         </div>
       </div>
 
@@ -244,9 +445,19 @@ export default function InventoryClient({ products, summary }: Props) {
                         <Package className="w-5 h-5 text-slate-400" />
                       </div>
                     )}
-                    <div className="min-w-0">
+                    <div className="min-w-0 space-y-1">
                       <h3 className="font-semibold text-sm truncate">{product.name}</h3>
-                      <p className="text-xs text-slate-500">SKU: {product.sku}</p>
+                      <div className="flex flex-wrap items-center gap-1.5">
+                        <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-slate-500">
+                          SKU: {product.sku}
+                        </span>
+                        <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-blue-50 dark:bg-blue-950/40 text-blue-600 dark:text-blue-400">
+                          {detectCategory(product.name)}
+                        </span>
+                        <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-purple-50 dark:bg-purple-950/40 text-purple-600 dark:text-purple-400">
+                          {getProductWarehouse(product)}
+                        </span>
+                      </div>
                     </div>
                   </div>
 
@@ -400,8 +611,8 @@ export default function InventoryClient({ products, summary }: Props) {
       {/* Modal — Añadir Producto */}
       {isModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/50 backdrop-blur-sm">
-          <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-xl w-full max-w-md overflow-hidden animate-in fade-in zoom-in duration-200">
-            <div className="flex items-center justify-between p-4 border-b border-slate-200 dark:border-slate-800">
+          <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-xl w-full max-w-md max-h-[calc(100vh-2rem)] flex flex-col overflow-hidden animate-in fade-in zoom-in duration-200">
+            <div className="flex items-center justify-between p-4 border-b border-slate-200 dark:border-slate-800 flex-shrink-0">
               <h2 className="text-lg font-bold">Añadir Nuevo Producto</h2>
               <button
                 onClick={() => setIsModalOpen(false)}
@@ -419,75 +630,77 @@ export default function InventoryClient({ products, summary }: Props) {
               </div>
             )}
 
-            <form action={formAction} encType="multipart/form-data" className="p-4 space-y-4">
-              <ProductImageUploader name="image" />
-              <div>
-                <label className="block text-sm font-semibold mb-1">
-                  Nombre del Producto
-                </label>
-                <input
-                  type="text"
-                  name="name"
-                  required
-                  className="w-full px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-transparent focus:ring-2 focus:ring-primary/20 outline-none"
-                  placeholder="Ej. Rollo Kraft 20 cms"
-                />
-              </div>
-              <div className="grid grid-cols-2 gap-4">
+            <form action={formAction} encType="multipart/form-data" className="flex flex-col flex-grow overflow-hidden">
+              <div className="flex-grow overflow-y-auto p-4 space-y-4">
+                <ProductImageUploader name="image" />
                 <div>
-                  <label className="block text-sm font-semibold mb-1">SKU</label>
+                  <label className="block text-sm font-semibold mb-1">
+                    Nombre del Producto
+                  </label>
                   <input
                     type="text"
-                    name="sku"
+                    name="name"
                     required
-                    className="w-full px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-transparent focus:ring-2 focus:ring-primary/20 outline-none uppercase"
-                    placeholder="INS-0001"
+                    className="w-full px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-transparent focus:ring-2 focus:ring-primary/20 outline-none"
+                    placeholder="Ej. Rollo Kraft 20 cms"
                   />
                 </div>
-                <div>
-                  <label className="block text-sm font-semibold mb-1">
-                    Cantidad Inicial
-                  </label>
-                  <input
-                    type="number"
-                    name="stockQuantity"
-                    required
-                    min="0"
-                    defaultValue="0"
-                    className="w-full px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-transparent focus:ring-2 focus:ring-primary/20 outline-none"
-                    placeholder="0"
-                  />
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-semibold mb-1">SKU</label>
+                    <input
+                      type="text"
+                      name="sku"
+                      required
+                      className="w-full px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-transparent focus:ring-2 focus:ring-primary/20 outline-none uppercase"
+                      placeholder="INS-0001"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-semibold mb-1">
+                      Cantidad Inicial
+                    </label>
+                    <input
+                      type="number"
+                      name="stockQuantity"
+                      required
+                      min="0"
+                      defaultValue="0"
+                      className="w-full px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-transparent focus:ring-2 focus:ring-primary/20 outline-none"
+                      placeholder="0"
+                    />
+                  </div>
                 </div>
-              </div>
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-sm font-semibold mb-1">
-                    Precio Unitario (CLP)
-                  </label>
-                  <input
-                    type="number"
-                    name="unitPrice"
-                    required
-                    min="0"
-                    className="w-full px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-transparent focus:ring-2 focus:ring-primary/20 outline-none"
-                    placeholder="25000"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-semibold mb-1">
-                    Mín. Stock
-                  </label>
-                  <input
-                    type="number"
-                    name="stockMinQuantity"
-                    min="0"
-                    defaultValue="10"
-                    className="w-full px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-transparent focus:ring-2 focus:ring-primary/20 outline-none"
-                  />
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-semibold mb-1">
+                      Precio Unitario (CLP)
+                    </label>
+                    <input
+                      type="number"
+                      name="unitPrice"
+                      required
+                      min="0"
+                      className="w-full px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-transparent focus:ring-2 focus:ring-primary/20 outline-none"
+                      placeholder="25000"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-semibold mb-1">
+                      Mín. Stock
+                    </label>
+                    <input
+                      type="number"
+                      name="stockMinQuantity"
+                      min="0"
+                      defaultValue="10"
+                      className="w-full px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-transparent focus:ring-2 focus:ring-primary/20 outline-none"
+                    />
+                  </div>
                 </div>
               </div>
 
-              <div className="pt-4 flex gap-3">
+              <div className="p-4 border-t border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-900/50 flex-shrink-0 flex gap-3">
                 <button
                   type="button"
                   onClick={() => setIsModalOpen(false)}
@@ -524,8 +737,8 @@ export default function InventoryClient({ products, summary }: Props) {
       {/* Modal — Editar Producto */}
       {editingProduct && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/50 backdrop-blur-sm animate-in fade-in duration-200">
-          <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-xl w-full max-w-md overflow-hidden animate-in zoom-in duration-200">
-            <div className="flex items-center justify-between p-4 border-b border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/50">
+          <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-xl w-full max-w-md max-h-[calc(100vh-2rem)] flex flex-col overflow-hidden animate-in zoom-in duration-200">
+            <div className="flex items-center justify-between p-4 border-b border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/50 flex-shrink-0">
               <h2 className="text-lg font-extrabold text-slate-900 dark:text-white">Editar Producto</h2>
               <button
                 onClick={() => setEditingProduct(null)}
@@ -537,70 +750,72 @@ export default function InventoryClient({ products, summary }: Props) {
 
             {/* Feedback de error de la action */}
             {editState.status === "error" && (
-              <div className="mx-4 mt-4 flex items-center gap-2 p-3 rounded-lg bg-red-55 dark:bg-red-950/30 text-red-650 dark:text-red-400 text-sm">
+              <div className="mx-4 mt-4 flex items-center gap-2 p-3 rounded-lg bg-red-55 dark:bg-red-950/30 text-red-655 dark:text-red-400 text-sm">
                 <AlertCircle className="w-4 h-4 flex-shrink-0" />
                 {editState.message}
               </div>
             )}
 
-            <form action={editFormAction} encType="multipart/form-data" className="p-4 space-y-4">
-              <input type="hidden" name="productId" value={editingProduct.id} />
-              <ProductImageUploader name="image" currentImageUrl={editingProduct.imageUrl} />
-              
-              <div>
-                <label className="block text-sm font-semibold mb-1 text-slate-700 dark:text-slate-350">
-                  Nombre del Producto
-                </label>
-                <input
-                  type="text"
-                  name="name"
-                  required
-                  defaultValue={editingProduct.name}
-                  className="w-full px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-transparent focus:ring-2 focus:ring-primary/20 outline-none text-slate-800 dark:text-slate-150"
-                  placeholder="Ej. Rollo Kraft 20 cms"
-                />
-              </div>
-              <div className="grid grid-cols-2 gap-4">
+            <form action={editFormAction} encType="multipart/form-data" className="flex flex-col flex-grow overflow-hidden">
+              <div className="flex-grow overflow-y-auto p-4 space-y-4">
+                <input type="hidden" name="productId" value={editingProduct.id} />
+                <ProductImageUploader name="image" currentImageUrl={editingProduct.imageUrl} />
+                
                 <div>
-                  <label className="block text-sm font-semibold mb-1 text-slate-700 dark:text-slate-350">SKU</label>
+                  <label className="block text-sm font-semibold mb-1 text-slate-700 dark:text-slate-350">
+                    Nombre del Producto
+                  </label>
                   <input
                     type="text"
-                    name="sku"
+                    name="name"
                     required
-                    defaultValue={editingProduct.sku}
-                    className="w-full px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-transparent focus:ring-2 focus:ring-primary/20 outline-none uppercase text-slate-800 dark:text-slate-150"
-                    placeholder="INS-0001"
+                    defaultValue={editingProduct.name}
+                    className="w-full px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-transparent focus:ring-2 focus:ring-primary/20 outline-none text-slate-800 dark:text-slate-150"
+                    placeholder="Ej. Rollo Kraft 20 cms"
                   />
+                </div>
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-semibold mb-1 text-slate-700 dark:text-slate-350">SKU</label>
+                    <input
+                      type="text"
+                      name="sku"
+                      required
+                      defaultValue={editingProduct.sku}
+                      className="w-full px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-transparent focus:ring-2 focus:ring-primary/20 outline-none uppercase text-slate-800 dark:text-slate-150"
+                      placeholder="INS-0001"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-semibold mb-1 text-slate-700 dark:text-slate-350">
+                      Mín. Stock
+                    </label>
+                    <input
+                      type="number"
+                      name="stockMinQuantity"
+                      min="0"
+                      defaultValue={editingProduct.stockMinQuantity}
+                      className="w-full px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-transparent focus:ring-2 focus:ring-primary/20 outline-none text-slate-800 dark:text-slate-150"
+                    />
+                  </div>
                 </div>
                 <div>
                   <label className="block text-sm font-semibold mb-1 text-slate-700 dark:text-slate-350">
-                    Mín. Stock
+                    Precio Unitario (CLP)
                   </label>
                   <input
                     type="number"
-                    name="stockMinQuantity"
+                    name="unitPrice"
+                    required
                     min="0"
-                    defaultValue={editingProduct.stockMinQuantity}
+                    defaultValue={editingProduct.unitPrice}
                     className="w-full px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-transparent focus:ring-2 focus:ring-primary/20 outline-none text-slate-800 dark:text-slate-150"
+                    placeholder="25000"
                   />
                 </div>
               </div>
-              <div>
-                <label className="block text-sm font-semibold mb-1 text-slate-700 dark:text-slate-350">
-                  Precio Unitario (CLP)
-                </label>
-                <input
-                  type="number"
-                  name="unitPrice"
-                  required
-                  min="0"
-                  defaultValue={editingProduct.unitPrice}
-                  className="w-full px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-transparent focus:ring-2 focus:ring-primary/20 outline-none text-slate-800 dark:text-slate-150"
-                  placeholder="25000"
-                />
-              </div>
 
-              <div className="pt-4 flex gap-3 border-t border-slate-100 dark:border-slate-800">
+              <div className="p-4 border-t border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-900/50 flex-shrink-0 flex gap-3">
                 <button
                   type="button"
                   onClick={() => setEditingProduct(null)}

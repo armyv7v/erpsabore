@@ -42,11 +42,11 @@ export default function ImageZoomLightbox({ imageUrl, onClose }: Props) {
         <X className="w-6 h-6" />
       </button>
 
-      <div className="relative max-w-[90vw] max-h-[85vh] md:max-w-[80vw] select-none pointer-events-none animate-in zoom-in-95 duration-200">
+      <div className="relative w-full h-full max-w-[95vw] max-h-[85vh] md:max-w-[90vw] flex items-center justify-center select-none pointer-events-none animate-in zoom-in-95 duration-200">
         <img
           src={imageUrl}
           alt="Foto ampliada del producto"
-          className="max-w-full max-h-[85vh] object-contain rounded-xl shadow-2xl scale-100"
+          className="w-full h-full object-contain rounded-2xl shadow-2xl scale-100"
         />
       </div>
 
