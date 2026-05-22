@@ -780,9 +780,17 @@ export default function ReconciliationWorkspace({
                       <option value="Santander">Banco Santander Chile</option>
                       <option value="De Chile">Banco de Chile / Edwards</option>
                       <option value="Estado">Banco Estado</option>
-                      <option value="BCI">BCI</option>
-                      <option value="Scotiabank">Scotiabank</option>
-                      <option value="Itaú">Itaú</option>
+                      <option value="BCI">BCI (Banco de Crédito e Inversiones)</option>
+                      <option value="Scotiabank">Scotiabank Chile</option>
+                      <option value="Itaú">Itaú Chile</option>
+                      <option value="BICE">Banco BICE</option>
+                      <option value="Falabella">Banco Falabella</option>
+                      <option value="Ripley">Banco Ripley</option>
+                      <option value="Security">Banco Security</option>
+                      <option value="Consorcio">Banco Consorcio</option>
+                      <option value="Internacional">Banco Internacional</option>
+                      <option value="Coopeuch">Coopeuch</option>
+                      <option value="HSBC">HSBC Chile</option>
                     </select>
                   </div>
 
