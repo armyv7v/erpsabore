@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState, useTransition } from "react";
+import { useEffect, useMemo, useState, useTransition } from "react";
 import { Bolt, CheckCircle2, Link as LinkIcon, Search, Wand2, ArrowRight, AlertCircle, Info, UploadCloud, X } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { submitAutoReconcileAction, submitImportCashMovementsAction } from "@/app/actions/finance";
@@ -36,6 +36,15 @@ export default function ReconciliationWorkspace({
   const [bankRows, setBankRows] = useState(initialBankRows);
   const [erpRows, setErpRows] = useState(initialErpRows);
   const [feedback, setFeedback] = useState<string>("");
+
+  // Sync state with props when server refreshes
+  useEffect(() => {
+    setBankRows(initialBankRows);
+  }, [initialBankRows]);
+
+  useEffect(() => {
+    setErpRows(initialErpRows);
+  }, [initialErpRows]);
 
   // Import Cartola States
   const [isImportModalOpen, setIsImportModalOpen] = useState(false);
@@ -158,64 +167,183 @@ export default function ReconciliationWorkspace({
         throw new Error("El archivo CSV debe contener al menos una cabecera y una fila de datos.");
       }
 
-      // Detect separator: , or ;
-      const firstLine = lines[0];
-      const commas = (firstLine.match(/,/g) || []).length;
-      const semicolons = (firstLine.match(/;/g) || []).length;
-      const separator = semicolons > commas ? ";" : ",";
+      // Helper to parse numbers robustly with Chilean dot/comma formats
+      function parseChileanNumber(str: string): number {
+        if (!str) return 0;
+        let cleaned = str.replace(/[$\s'"\(\)]/g, "").trim();
+        
+        let isNegative = false;
+        if (cleaned.startsWith("-")) {
+          isNegative = true;
+          cleaned = cleaned.substring(1);
+        } else if (cleaned.endsWith("-")) {
+          isNegative = true;
+          cleaned = cleaned.slice(0, -1);
+        }
+        
+        if (!cleaned) return 0;
+        
+        if (cleaned.includes(",")) {
+          // Dot is thousands, comma is decimal
+          cleaned = cleaned.replace(/\./g, "").replace(",", ".");
+        } else {
+          // No comma. Check if there are multiple dots (e.g. 1.250.000) or just a decimal dot (e.g. 1250.50)
+          const dotCount = (cleaned.match(/\./g) || []).length;
+          if (dotCount > 1) {
+            cleaned = cleaned.replace(/\./g, "");
+          } else if (dotCount === 1) {
+            const parts = cleaned.split(".");
+            if (parts[1].length === 3) {
+              cleaned = cleaned.replace(/\./g, ""); // Thousands separator
+            }
+          }
+        }
+        
+        const val = parseFloat(cleaned);
+        return isNegative ? -Math.abs(val) : val;
+      }
 
-      const headers = firstLine.split(separator).map(h => h.trim().toLowerCase().replace(/['"]/g, ""));
-      
+      // Helper to format Chilean date (DD/MM/YYYY or DD-MM-YYYY) into YYYY-MM-DD
+      function formatChileanDate(dateStr: string): string {
+        if (!dateStr) return new Date().toISOString().split("T")[0];
+        const cleaned = dateStr.trim().replace(/\./g, "-").replace(/\//g, "-");
+        const parts = cleaned.split("-");
+        if (parts.length === 3) {
+          if (parts[0].length === 4) {
+            return `${parts[0]}-${parts[1].padStart(2, "0")}-${parts[2].padStart(2, "0")}`;
+          } else if (parts[2].length === 4) {
+            return `${parts[2]}-${parts[1].padStart(2, "0")}-${parts[0].padStart(2, "0")}`;
+          } else if (parts[2].length === 2) {
+            return `20${parts[2]}-${parts[1].padStart(2, "0")}-${parts[0].padStart(2, "0")}`;
+          }
+        }
+        return dateStr;
+      }
+
+      // Dynamically locate the header line by skipping metadata lines if present
+      let headerLineIdx = 0;
+      let separator = ",";
+      let headers: string[] = [];
+
+      for (let i = 0; i < Math.min(15, lines.length); i++) {
+        const currentLine = lines[i];
+        const commas = (currentLine.match(/,/g) || []).length;
+        const semicolons = (currentLine.match(/;/g) || []).length;
+        const currentSeparator = semicolons > commas ? ";" : ",";
+        const currentHeaders = currentLine.split(currentSeparator).map(h => h.trim().toLowerCase().replace(/['"]/g, ""));
+
+        const hasFecha = currentHeaders.some(h => h.includes("fecha") || h.includes("date") || h.includes("fec") || h.includes("dia") || h.includes("oper"));
+        const hasMonto = currentHeaders.some(h => h.includes("monto") || h.includes("valor") || h.includes("amount") || h.includes("total") || h.includes("cargo") || h.includes("abono") || h.includes("debito") || h.includes("débito") || h.includes("egreso") || h.includes("ingreso"));
+        const hasGlosa = currentHeaders.some(h => h.includes("glosa") || h.includes("concepto") || h.includes("descripcion") || h.includes("descripción") || h.includes("detalle") || h.includes("concept"));
+
+        if (hasFecha && (hasMonto || hasGlosa)) {
+          headerLineIdx = i;
+          separator = currentSeparator;
+          headers = currentHeaders;
+          break;
+        }
+      }
+
+      // Fallback to first line if no header matched
+      if (headers.length === 0) {
+        const commas = (lines[0].match(/,/g) || []).length;
+        const semicolons = (lines[0].match(/;/g) || []).length;
+        separator = semicolons > commas ? ";" : ",";
+        headers = lines[0].split(separator).map(h => h.trim().toLowerCase().replace(/['"]/g, ""));
+        headerLineIdx = 0;
+      }
+
       // Look for matches
       let dateIdx = headers.findIndex(h => h.includes("fecha") || h.includes("date") || h.includes("dia") || h.includes("fec") || h.includes("oper"));
-      let conceptIdx = headers.findIndex(h => h.includes("concept") || h.includes("descrip") || h.includes("glosa") || h.includes("detal"));
-      let refIdx = headers.findIndex(h => h.includes("referen") || h.includes("ref") || h.includes("docum") || h.includes("nro"));
-      let amountIdx = headers.findIndex(h => h.includes("monto") || h.includes("valor") || h.includes("cantid") || h.includes("cargo") || h.includes("abono") || h.includes("total") || h.includes("amount"));
+      let conceptIdx = headers.findIndex(h => h.includes("concept") || h.includes("descrip") || h.includes("glosa") || h.includes("detal") || h.includes("concepto"));
+      let refIdx = headers.findIndex(h => h.includes("referen") || h.includes("ref") || h.includes("docum") || h.includes("nro") || h.includes("n°") || h.includes("número") || h.includes("numero"));
+      
+      let cargoIdx = headers.findIndex(h => h.includes("cargo") || h.includes("egreso") || h.includes("debito") || h.includes("débito") || h.includes("salida") || h.includes("retiro") || h.includes("cargos") || h.includes("débitos"));
+      let abonoIdx = headers.findIndex(h => h.includes("abono") || h.includes("ingreso") || h.includes("credito") || h.includes("crédito") || h.includes("entrada") || h.includes("deposito") || h.includes("abonos") || h.includes("créditos"));
+      let amountIdx = headers.findIndex(h => h.includes("monto") || h.includes("valor") || h.includes("total") || h.includes("amount") || h.includes("saldo"));
 
       // Fallbacks if not found by name
       if (dateIdx === -1) dateIdx = 0;
       if (conceptIdx === -1) conceptIdx = Math.min(1, headers.length - 1);
       if (refIdx === -1) refIdx = Math.min(2, headers.length - 1);
-      if (amountIdx === -1) amountIdx = Math.min(3, headers.length - 1);
+      if (amountIdx === -1 && cargoIdx === -1 && abonoIdx === -1) {
+        amountIdx = Math.min(3, headers.length - 1);
+      }
 
       const movements: typeof parsedMovements = [];
 
-      for (let i = 1; i < lines.length; i++) {
+      for (let i = headerLineIdx + 1; i < lines.length; i++) {
         const row = lines[i].split(separator).map(r => r.trim().replace(/['"]/g, ""));
-        if (row.length < Math.max(dateIdx, conceptIdx, refIdx, amountIdx) + 1) {
+        const maxIdx = Math.max(dateIdx, conceptIdx, refIdx, amountIdx, cargoIdx, abonoIdx);
+        if (row.length <= maxIdx) {
           continue; // Skip malformed or empty rows
         }
 
-        const dateStr = row[dateIdx];
+        const dateStr = formatChileanDate(row[dateIdx]);
         const conceptStr = row[conceptIdx] || "Movimiento importado";
         const refStr = row[refIdx] || `Importación ${selectedBank || "Bancaria"}`;
         
-        let amountRaw = row[amountIdx] || "0";
-        // Remove currency symbols, spaces
-        amountRaw = amountRaw.replace(/[$\s]/g, "");
-        // Detect Chilean format where dots are thousands and commas are decimals
         let amountVal = 0;
-        if (amountRaw.includes(",") && amountRaw.includes(".")) {
-          amountVal = parseFloat(amountRaw.replace(/\./g, "").replace(",", "."));
-        } else if (amountRaw.includes(",")) {
-          amountVal = parseFloat(amountRaw.replace(",", "."));
+        let kind: "income" | "expense" = "income";
+
+        // Determine amounts and kind (Separate Cargo vs Abono columns or Single Column)
+        if (cargoIdx !== -1 && abonoIdx !== -1) {
+          const cargoRaw = row[cargoIdx];
+          const abonoRaw = row[abonoIdx];
+          const cargoParsed = parseChileanNumber(cargoRaw);
+          const abonoParsed = parseChileanNumber(abonoRaw);
+
+          if (Math.abs(cargoParsed) > 0) {
+            amountVal = Math.abs(cargoParsed);
+            kind = "expense";
+          } else if (Math.abs(abonoParsed) > 0) {
+            amountVal = Math.abs(abonoParsed);
+            kind = "income";
+          } else {
+            // Fallback to general amount if both cargo and abono columns are zero or empty
+            if (amountIdx !== -1) {
+              const fallbackAmt = parseChileanNumber(row[amountIdx]);
+              amountVal = Math.abs(fallbackAmt);
+              kind = fallbackAmt < 0 ? "expense" : "income";
+            } else {
+              continue; // Skip row if no amount is found
+            }
+          }
+        } else if (cargoIdx !== -1) {
+          const val = parseChileanNumber(row[cargoIdx]);
+          amountVal = Math.abs(val);
+          kind = "expense";
+        } else if (abonoIdx !== -1) {
+          const val = parseChileanNumber(row[abonoIdx]);
+          amountVal = Math.abs(val);
+          kind = "income";
         } else {
-          amountVal = parseFloat(amountRaw);
+          const val = parseChileanNumber(row[amountIdx]);
+          amountVal = Math.abs(val);
+          
+          const isNegative = val < 0 || 
+            conceptStr.toLowerCase().includes("cargo") || 
+            conceptStr.toLowerCase().includes("comision") || 
+            conceptStr.toLowerCase().includes("compra") || 
+            conceptStr.toLowerCase().includes("pago") || 
+            conceptStr.toLowerCase().includes("egreso") || 
+            conceptStr.toLowerCase().includes("debito") || 
+            conceptStr.toLowerCase().includes("débito") || 
+            conceptStr.toLowerCase().includes("retiro") || 
+            conceptStr.toLowerCase().includes("salida");
+          
+          kind = isNegative ? "expense" : "income";
         }
 
-        if (isNaN(amountVal)) {
-          amountVal = 0;
+        if (amountVal === 0) {
+          continue;
         }
-
-        const isNegative = amountVal < 0 || conceptStr.toLowerCase().includes("cargo") || conceptStr.toLowerCase().includes("comision") || conceptStr.toLowerCase().includes("compra") || conceptStr.toLowerCase().includes("pago") || conceptStr.toLowerCase().includes("egreso") || conceptStr.toLowerCase().includes("debito") || conceptStr.toLowerCase().includes("débito");
-        const absoluteAmount = Math.abs(amountVal);
-        const kind = isNegative ? "expense" as const : "income" as const;
 
         movements.push({
-          movementDate: dateStr || new Date().toISOString().split("T")[0],
+          movementDate: dateStr,
           concept: conceptStr,
           reference: refStr,
-          amount: absoluteAmount,
+          amount: amountVal,
           kind,
         });
       }
