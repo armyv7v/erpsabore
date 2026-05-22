@@ -170,33 +170,28 @@ export async function submitImportCashMovementsAction(formData: FormData): Promi
       movements: JSON.parse(String(rawMovements)),
     });
 
-    const { data, error } = await supabase
-      .from("cash_movements")
-      .insert(
-        parsed.movements.map((m) => ({
-          tenant_id: user.tenantId,
-          source_type: "manual",
-          source_id: null,
-          kind: m.kind,
-          amount: m.amount,
-          movement_date: m.movementDate,
-          reference: m.reference || null,
-          payment_method: "transfer",
-          status: "pending",
-          created_by: user.id,
-        }))
-      )
-      .select("id");
-
-    if (error) {
-      throw new Error(`Error en base de datos: ${error.message}`);
+    const importedIds: string[] = [];
+    for (const m of parsed.movements) {
+      const created = await createCashMovement(supabase, {
+        tenantId: user.tenantId,
+        sourceType: "manual",
+        sourceId: null,
+        kind: m.kind,
+        amount: m.amount,
+        movementDate: m.movementDate,
+        reference: m.reference || null,
+        paymentMethod: "transfer",
+        status: "pending",
+        createdBy: user.id,
+      });
+      importedIds.push(created.id);
     }
 
     revalidateFinancePaths();
 
     return {
       status: "success",
-      message: `Se importaron ${data.length} movimientos de cartola correctamente.`,
+      message: `Se importaron ${importedIds.length} movimientos de cartola correctamente.`,
     };
   } catch (error) {
     return {
