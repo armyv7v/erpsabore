@@ -66,11 +66,11 @@ export default function ProductDetailsModal({ product, onClose, onAddToCart, onE
       >
         <div 
           onClick={(e) => e.stopPropagation()}
-          className="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800 w-full max-w-2xl overflow-hidden shadow-2xl flex flex-col md:flex-row animate-in zoom-in-95 duration-200"
+          className="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800 w-full max-w-2xl overflow-hidden shadow-2xl flex flex-col md:flex-row animate-in zoom-in-95 duration-200 max-h-[82vh] md:max-h-[90vh]"
         >
           
           {/* Lado Izquierdo: Imagen */}
-          <div className="w-full md:w-1/2 h-56 md:h-auto bg-slate-50 dark:bg-slate-950/40 flex items-center justify-center relative cursor-zoom-in group overflow-hidden border-b md:border-b-0 md:border-r border-slate-100 dark:border-slate-800/80">
+          <div className="w-full md:w-1/2 h-36 md:h-auto bg-slate-50 dark:bg-slate-950/40 flex items-center justify-center relative cursor-zoom-in group overflow-hidden border-b md:border-b-0 md:border-r border-slate-100 dark:border-slate-800/80 shrink-0">
             {product.imageUrl ? (
               <>
                 <img
@@ -98,7 +98,7 @@ export default function ProductDetailsModal({ product, onClose, onAddToCart, onE
           </div>
 
           {/* Lado Derecho: Detalles */}
-          <div className="md:w-1/2 p-6 flex flex-col justify-between space-y-6 relative">
+          <div className="md:w-1/2 p-6 flex flex-col justify-between space-y-6 relative overflow-y-auto flex-1">
             {/* Botón Cerrar */}
             <button
               onClick={onClose}
