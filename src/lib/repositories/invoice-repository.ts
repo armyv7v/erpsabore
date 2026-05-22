@@ -538,8 +538,11 @@ export async function createCashMovement(
     .select("id, tenant_id, source_type, source_id, kind, amount, movement_date, reference, payment_method, status, created_at")
     .single();
 
-  if (error || !data) {
-    throw new Error("No se pudo registrar el movimiento de caja.");
+  if (error) {
+    throw new Error(`No se pudo registrar el movimiento de caja. Detalle: ${error.message}`);
+  }
+  if (!data) {
+    throw new Error("No se pudo registrar el movimiento de caja (datos vacíos).");
   }
 
   return mapCashMovement(data as CashMovementRow);
