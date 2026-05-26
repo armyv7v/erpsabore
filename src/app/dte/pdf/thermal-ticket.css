@@ -1,0 +1,60 @@
+/* Estilos para impresión de ticket térmico físico de 80mm o 58mm */
+@media print {
+  body {
+    background: white;
+    color: black;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 12px;
+    line-height: 1.2;
+    margin: 0;
+    padding: 0;
+    width: 80mm; /* Ancho estándar de papel térmico */
+  }
+
+  /* Ocultar elementos generales de la app al imprimir */
+  header, footer, nav, aside, button, .no-print {
+    display: none !important;
+  }
+
+  /* Remueve márgenes y cabeceras automáticos de navegadores */
+  @page {
+    size: auto;
+    margin: 0mm;
+  }
+
+  .thermal-ticket-container {
+    width: 100% !important;
+    max-width: 80mm !important;
+    padding: 2mm !important;
+    box-sizing: border-box;
+  }
+}
+
+/* Estilos de pantalla (visualización previa estéticamente agradable) */
+.thermal-ticket-screen {
+  background: #fdfdfd;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
+  color: #1e293b;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 13px;
+  line-height: 1.3;
+  margin: 0 auto;
+  max-width: 80mm;
+  padding: 16px;
+  position: relative;
+}
+
+.thermal-ticket-screen::after {
+  content: "";
+  position: absolute;
+  bottom: -8px;
+  left: 0;
+  right: 0;
+  height: 8px;
+  background-image: linear-gradient(135deg, #fdfdfd 25%, transparent 25%),
+                    linear-gradient(225deg, #fdfdfd 25%, transparent 25%);
+  background-size: 8px 16px;
+  background-position: left bottom;
+}
