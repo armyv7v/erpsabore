@@ -484,10 +484,10 @@ function resolveImageUrlByCatalogOrder(productIndex: number) {
     "/catalogo_webp/page-05-img-05-0033.webp", // Canoa grande carton 100 und
     "/catalogo_webp/page-05-img-06-0034.webp", // Canasto 00 de carton 100 und
     "/catalogo_webp/page-05-img-06-0034.webp", // Canasto de carton 01
-    "/catalogo_webp/page-05-img-07-0035.webp", // Canasto 1 de carton 200 und
-    "/catalogo_webp/page-05-img-08-0036.webp", // Rollo termico Transbank 10 und
-    "/catalogo_webp/page-05-img-09-0037.webp", // Rollo termico 80x80
-    "/catalogo_webp/page-05-img-10-0038.webp", // Resma carta
+    "/catalogo_webp/page-05-img-06-0034.webp", // Canasto 1 de carton 200 und
+    "/catalogo_webp/page-05-img-07-0035.webp", // Rollo termico Transbank 10 und
+    "/catalogo_webp/page-05-img-08-0036.webp", // Rollo termico 80x80
+    "/catalogo_webp/page-05-img-09-0037.webp", // Resma carta
     "/catalogo_webp/page-05-img-10-0038.webp", // Borrador garzon
 
     // Page 6 (15 products)
