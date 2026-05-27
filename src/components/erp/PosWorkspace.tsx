@@ -697,7 +697,15 @@ export default function PosWorkspace({ products: initialProducts, branches }: Po
                   >
                     <Minus className="w-3.5 h-3.5" />
                   </button>
-                  <span className="font-bold text-xs w-4 text-center">{item.qty}</span>
+                  <input
+                    type="number"
+                    value={item.qty}
+                    onChange={(e) => {
+                      const val = parseInt(e.target.value) || 0;
+                      updateCartQty(item.product.id, val);
+                    }}
+                    className="w-10 text-center font-bold text-xs outline-none bg-transparent hover:bg-slate-100 focus:bg-slate-100 dark:hover:bg-slate-800 dark:focus:bg-slate-800 rounded py-0.5 transition-all text-slate-800 dark:text-slate-200 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                  />
                   <button
                     onClick={() => addToCart(item.product)}
                     className="p-1 rounded-lg border border-slate-250 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-650"
