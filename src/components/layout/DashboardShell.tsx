@@ -15,6 +15,7 @@ interface DashboardShellProps {
 
 export default function DashboardShell({ user, children }: DashboardShellProps) {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [isPosSidebarHovered, setIsPosSidebarHovered] = useState(false);
   const pathname = usePathname();
   const router = useRouter();
 
@@ -32,13 +33,44 @@ export default function DashboardShell({ user, children }: DashboardShellProps) 
     );
   }
 
-  // Si es la página del POS, aislar y usar pantalla completa
+  // Si es la página del POS, aislamos el layout con Sidebar hoverable/desplegable
   const isPosPage = pathname === "/pos";
 
   if (isPosPage) {
     return (
-      <div className="h-screen w-screen overflow-hidden bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-slate-100">
-        {children}
+      <div className="h-screen w-screen overflow-hidden bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-slate-100 relative">
+        {/* Strip sensible al hover en el extremo izquierdo */}
+        <div 
+          onMouseEnter={() => setIsPosSidebarHovered(true)}
+          className="fixed left-0 top-0 bottom-0 w-3.5 z-40 bg-transparent cursor-e-resize"
+        />
+
+        {/* Tirador visual discreto para pantallas táctiles y guía de usuario */}
+        {!isPosSidebarHovered && (
+          <button
+            type="button"
+            onClick={() => setIsPosSidebarHovered(true)}
+            onMouseEnter={() => setIsPosSidebarHovered(true)}
+            className="fixed left-0 top-1/2 -translate-y-1/2 bg-slate-200/80 dark:bg-slate-800/80 hover:bg-slate-300 dark:hover:bg-slate-700 text-slate-500 dark:text-slate-400 w-3.5 h-16 rounded-r-lg z-30 flex items-center justify-center transition-all opacity-30 hover:opacity-100"
+          >
+            <span className="text-[10px] font-extrabold">›</span>
+          </button>
+        )}
+
+        {/* Sidebar flotante con transición suave y sombra elegante */}
+        <div
+          onMouseLeave={() => setIsPosSidebarHovered(false)}
+          className={`fixed inset-y-0 left-0 z-50 transition-all duration-300 transform ${
+            isPosSidebarHovered ? "translate-x-0 shadow-[10px_0_30px_rgba(0,0,0,0.15)]" : "-translate-x-full"
+          }`}
+        >
+          <Sidebar user={user} />
+        </div>
+
+        {/* Contenido POS en pantalla completa */}
+        <main className="h-full w-full overflow-hidden">
+          {children}
+        </main>
       </div>
     );
   }
