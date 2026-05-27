@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef, useTransition, useMemo } from "react";
 import { 
   Search, ShoppingCart, CreditCard, Banknote, Landmark, Smartphone, 
-  Trash2, User, FileText, ShoppingBag, Plus, Minus, Send, Copy, Clipboard, Check 
+  Trash2, User, FileText, ShoppingBag, Plus, Minus, Send, Copy, Clipboard, Check, X 
 } from "lucide-react";
 import { submitPosSaleAction } from "@/app/actions/pos";
 import TicketReceipt from "./TicketReceipt";
@@ -76,6 +76,7 @@ export default function PosWorkspace({ products: initialProducts, branches }: Po
   const [isPending, startTransition] = useTransition();
   const [formState, setFormState] = useState<ActionState>({ status: "idle", message: "" });
   const [completedSale, setCompletedSale] = useState<any | null>(null);
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
 
   // Escáner de código de barras físico (Simulado por teclado a nivel global)
   const barcodeBuffer = useRef<string>("");
@@ -88,6 +89,47 @@ export default function PosWorkspace({ products: initialProducts, branches }: Po
     const paid = parseFloat(amountPaid) || 0;
     return Math.max(0, paid - subtotal);
   }, [amountPaid, subtotal]);
+
+  // Montos rápidos de billetes inteligentes para cobros en efectivo
+  const smartCashAmounts = useMemo(() => {
+    if (subtotal <= 0) return [];
+    
+    const amounts = new Set<number>();
+    
+    // 1. Monto Exacto
+    amounts.add(subtotal);
+    
+    // 2. Redondeo al billete más cercano mayor que el total (Pesos Chilenos)
+    const bills = [1000, 2000, 5000, 10000, 20000];
+    
+    // Agregar el primer billete que cubre el subtotal
+    const nextBill = bills.find((b) => b > subtotal);
+    if (nextBill) {
+      amounts.add(nextBill);
+    }
+    
+    // Agregar el siguiente billete mayor
+    if (nextBill) {
+      const idx = bills.indexOf(nextBill);
+      if (idx !== -1 && idx + 1 < bills.length) {
+        amounts.add(bills[idx + 1]);
+      }
+    }
+    
+    // Redondeos prácticos a múltiplos de $500 o $1.000
+    const rounded500 = Math.ceil(subtotal / 500) * 500;
+    if (rounded500 > subtotal) {
+      amounts.add(rounded500);
+    }
+
+    const rounded1000 = Math.ceil(subtotal / 1000) * 1000;
+    if (rounded1000 > subtotal) {
+      amounts.add(rounded1000);
+    }
+
+    // Convertir a array ordenado y limitar a un máximo de 4 botones rápidos
+    return Array.from(amounts).sort((a, b) => a - b).slice(0, 4);
+  }, [subtotal]);
 
   // Agregar al carrito
   const addToCart = (product: Product) => {
@@ -116,6 +158,29 @@ export default function PosWorkspace({ products: initialProducts, branches }: Po
       return currentCart.map((item) =>
         item.product.id === productId ? { ...item, qty: item.qty - 1 } : item
       );
+    });
+  };
+
+  // Actualizar cantidad directamente
+  const updateCartQty = (productId: string, qty: number) => {
+    setCart((currentCart) => {
+      const product = products.find((p) => p.id === productId);
+      if (!product) return currentCart;
+      
+      if (qty <= 0) {
+        return currentCart.filter((item) => item.product.id !== productId);
+      }
+      
+      const clampedQty = Math.min(qty, product.stockQuantity);
+      const existing = currentCart.find((item) => item.product.id === productId);
+      
+      if (existing) {
+        return currentCart.map((item) =>
+          item.product.id === productId ? { ...item, qty: clampedQty } : item
+        );
+      }
+      
+      return [...currentCart, { product, qty: clampedQty }];
     });
   };
 
@@ -219,6 +284,12 @@ export default function PosWorkspace({ products: initialProducts, branches }: Po
   // Procesar cobro real mediante Server Action
   const handleProcessSale = () => {
     if (cart.length === 0) return;
+    setShowConfirmModal(true);
+  };
+
+  const executeProcessSale = () => {
+    if (cart.length === 0) return;
+    setShowConfirmModal(false);
 
     const fd = new FormData();
     fd.append("customerName", customerName);
@@ -352,54 +423,104 @@ export default function PosWorkspace({ products: initialProducts, branches }: Po
               {filteredProducts.map((p) => {
                 const cartQty = cart.find((item) => item.product.id === p.id)?.qty || 0;
                 return (
-                  <button
+                  <div
                     key={p.id}
-                    disabled={p.stockQuantity <= 0}
-                    onClick={() => addToCart(p)}
-                    className={`relative flex flex-col text-left rounded-2xl bg-white border p-3 shadow-sm hover:shadow-md hover:border-primary/30 transition-all dark:bg-slate-950 dark:border-slate-800 ${
-                      p.stockQuantity <= 0 ? "opacity-50 cursor-not-allowed" : "cursor-pointer"
+                    className={`relative flex flex-col rounded-2xl bg-white border p-3 shadow-sm hover:shadow-md transition-all dark:bg-slate-950 dark:border-slate-800 ${
+                      p.stockQuantity <= 0 ? "opacity-50" : ""
                     }`}
                   >
-                    {/* Imagen de Catálogo */}
-                    <div className="aspect-square w-full rounded-xl bg-slate-100 dark:bg-slate-900 mb-2 overflow-hidden relative">
-                      {p.imageUrl ? (
-                        <img src={p.imageUrl} alt={p.name} className="w-full h-full object-cover" />
-                      ) : (
-                        <div className="w-full h-full flex items-center justify-center text-slate-400">
-                          <ShoppingBag className="w-8 h-8" />
-                        </div>
-                      )}
-                      
-                      {/* Cantidad en Carrito */}
-                      {cartQty > 0 && (
-                        <span className="absolute top-2 right-2 bg-primary text-white text-[10px] font-extrabold rounded-full w-5 h-5 flex items-center justify-center shadow-md animate-scale-up">
-                          {cartQty}
+                    {/* Contenido principal clickable */}
+                    <div
+                      onClick={() => p.stockQuantity > 0 && addToCart(p)}
+                      className="cursor-pointer flex flex-col flex-1"
+                    >
+                      {/* Imagen de Catálogo */}
+                      <div className="aspect-square w-full rounded-xl bg-slate-100 dark:bg-slate-900 mb-2 overflow-hidden relative">
+                        {p.imageUrl ? (
+                          <img src={p.imageUrl} alt={p.name} className="w-full h-full object-cover" />
+                        ) : (
+                          <div className="w-full h-full flex items-center justify-center text-slate-400">
+                            <ShoppingBag className="w-8 h-8" />
+                          </div>
+                        )}
+                        
+                        {/* Cantidad en Carrito (Badge) */}
+                        {cartQty > 0 && (
+                          <span className="absolute top-2 right-2 bg-primary text-white text-[10px] font-extrabold rounded-full w-5 h-5 flex items-center justify-center shadow-md animate-scale-up">
+                            {cartQty}
+                          </span>
+                        )}
+                      </div>
+
+                      <h4 className="font-bold text-xs leading-tight text-slate-800 dark:text-slate-200 line-clamp-2 h-8">
+                        {p.name}
+                      </h4>
+                      <p className="text-[10px] text-slate-400 font-mono pt-1">{p.sku.substring(0, 15)}...</p>
+
+                      {/* Precio */}
+                      <div className="pt-2 mt-auto">
+                        <span className="font-extrabold text-sm text-slate-900 dark:text-slate-150">
+                          ${p.unitPrice.toLocaleString("es-CL")}
                         </span>
+                      </div>
+                    </div>
+
+                    {/* Fila de Controles de Cantidad / Stock */}
+                    <div className="flex items-center justify-between pt-2 border-t border-slate-100 dark:border-slate-800 mt-2 h-8">
+                      {cartQty > 0 ? (
+                        <div className="flex items-center gap-1.5 bg-slate-50 dark:bg-slate-900 p-0.5 rounded-lg border border-slate-200 dark:border-slate-700 w-full justify-between">
+                          <button
+                            type="button"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              removeFromCart(p.id);
+                            }}
+                            className="p-1 rounded-md bg-white dark:bg-slate-800 border border-slate-250 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-750 text-slate-700 dark:text-slate-200"
+                          >
+                            <Minus className="w-3 h-3" />
+                          </button>
+                          
+                          <input
+                            type="number"
+                            value={cartQty}
+                            onClick={(e) => e.stopPropagation()}
+                            onChange={(e) => {
+                              const val = parseInt(e.target.value) || 0;
+                              updateCartQty(p.id, val);
+                            }}
+                            className="w-10 text-center font-extrabold text-xs outline-none bg-transparent text-slate-800 dark:text-slate-200 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                          />
+                          
+                          <button
+                            type="button"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              addToCart(p);
+                            }}
+                            className="p-1 rounded-md bg-white dark:bg-slate-800 border border-slate-250 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-750 text-slate-700 dark:text-slate-200"
+                          >
+                            <Plus className="w-3 h-3" />
+                          </button>
+                        </div>
+                      ) : (
+                        <>
+                          <span className="text-[10px] text-slate-400 font-semibold">
+                            Stock: {p.stockQuantity}
+                          </span>
+
+                          <span className={`px-2 py-0.5 rounded-full text-[9px] font-bold ${
+                            p.stockQuantity === 0
+                              ? "bg-red-150 text-red-700 dark:bg-red-950/40 dark:text-red-300"
+                              : p.stockQuantity <= 10
+                                ? "bg-amber-100 text-amber-700 dark:bg-amber-950/40 dark:text-amber-300"
+                                : "bg-green-100 text-green-700 dark:bg-green-950/40 dark:text-green-300"
+                          }`}>
+                            {p.stockQuantity === 0 ? "Agotado" : p.stockQuantity <= 10 ? "Bajo" : "Disponible"}
+                          </span>
+                        </>
                       )}
                     </div>
-
-                    <h4 className="font-bold text-xs leading-tight text-slate-800 dark:text-slate-200 line-clamp-2 h-8">
-                      {p.name}
-                    </h4>
-                    <p className="text-[10px] text-slate-400 font-mono pt-1">{p.sku.substring(0, 15)}...</p>
-
-                    {/* Fila de precio e Inventario */}
-                    <div className="flex items-center justify-between pt-2 mt-auto">
-                      <span className="font-extrabold text-sm text-slate-900 dark:text-slate-150">
-                        ${p.unitPrice.toLocaleString("es-CL")}
-                      </span>
-
-                      <span className={`px-2 py-0.5 rounded-full text-[9px] font-bold ${
-                        p.stockQuantity === 0
-                          ? "bg-red-150 text-red-700 dark:bg-red-950/40 dark:text-red-300"
-                          : p.stockQuantity <= 10
-                            ? "bg-amber-100 text-amber-700 dark:bg-amber-950/40 dark:text-amber-300"
-                            : "bg-green-100 text-green-700 dark:bg-green-950/40 dark:text-green-300"
-                      }`}>
-                        Stock: {p.stockQuantity}
-                      </span>
-                    </div>
-                  </button>
+                  </div>
                 );
               })}
             </div>
@@ -643,10 +764,10 @@ export default function PosWorkspace({ products: initialProducts, branches }: Po
             </div>
           </div>
 
-          {/* Grid de métodos de pago */}
-          <div className="space-y-2">
-            <label className="block text-xs font-semibold text-slate-500">Método de Pago</label>
-            <div className="grid grid-cols-4 gap-2">
+          {/* Grid de métodos de pago - Optimizado y Compacto */}
+          <div className="space-y-1.5">
+            <label className="block text-[11px] font-bold text-slate-500 uppercase tracking-wider">Método de Pago</label>
+            <div className="grid grid-cols-4 gap-1.5">
               {[
                 { id: "cash", label: "Efectivo", icon: Banknote },
                 { id: "debit", label: "Débito", icon: CreditCard },
@@ -663,40 +784,65 @@ export default function PosWorkspace({ products: initialProducts, branches }: Po
                         setAmountPaid("");
                       }
                     }}
-                    className={`flex flex-col items-center justify-center py-2.5 rounded-xl border transition-all text-[10px] font-bold gap-1 ${
+                    className={`flex items-center justify-center py-2 px-1 rounded-xl border transition-all text-[10px] font-extrabold gap-1 ${
                       paymentMethod === method.id
-                        ? "border-primary bg-primary/5 text-primary"
-                        : "border-slate-250 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-900 text-slate-650"
+                        ? "border-primary bg-primary/5 text-primary ring-1 ring-primary"
+                        : "border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-900 text-slate-600 dark:text-slate-400"
                     }`}
                   >
-                    <Icon className="w-4 h-4" />
-                    <span>{method.label}</span>
+                    <Icon className="w-3.5 h-3.5 shrink-0" />
+                    <span className="truncate">{method.label}</span>
                   </button>
                 );
               })}
             </div>
           </div>
 
-          {/* Calculador de vuelto para efectivo */}
+          {/* Calculador de vuelto para efectivo con Billetes Rápidos Inteligentes */}
           {paymentMethod === "cash" && cart.length > 0 && (
-            <div className="grid grid-cols-[1fr_120px] gap-3 bg-slate-50 dark:bg-slate-900/40 p-3 rounded-2xl border border-slate-200 dark:border-slate-800 animate-fade-in">
-              <div className="space-y-1 text-xs">
-                <span className="block font-semibold text-slate-500">Monto Entregado</span>
-                <input
-                  type="number"
-                  value={amountPaid}
-                  onChange={(e) => setAmountPaid(e.target.value)}
-                  placeholder={`$${subtotal}`}
-                  className="w-full rounded-xl border border-slate-250 dark:border-slate-700 px-3 py-1.8 bg-white dark:bg-slate-900 text-sm font-extrabold outline-none focus:ring-2 focus:ring-primary/20"
-                />
+            <div className="bg-slate-50 dark:bg-slate-900/40 p-3 rounded-2xl border border-slate-200 dark:border-slate-800 animate-fade-in space-y-2.5">
+              <div className="grid grid-cols-[1fr_120px] gap-3">
+                <div className="space-y-1 text-xs">
+                  <span className="block font-semibold text-slate-500">Monto Entregado</span>
+                  <input
+                    type="number"
+                    value={amountPaid}
+                    onChange={(e) => setAmountPaid(e.target.value)}
+                    placeholder={`$${subtotal}`}
+                    className="w-full rounded-xl border border-slate-250 dark:border-slate-700 px-3 py-1.8 bg-white dark:bg-slate-900 text-sm font-extrabold outline-none focus:ring-2 focus:ring-primary/20"
+                  />
+                </div>
+
+                <div className="text-right flex flex-col justify-center">
+                  <span className="block text-[10px] font-semibold text-slate-500 uppercase tracking-wider">Su Vuelto</span>
+                  <span className="text-base font-extrabold text-green-600 dark:text-green-400">
+                    ${changeDue.toLocaleString("es-CL")}
+                  </span>
+                </div>
               </div>
 
-              <div className="text-right flex flex-col justify-center">
-                <span className="block text-[10px] font-semibold text-slate-500 uppercase tracking-wider">Su Vuelto</span>
-                <span className="text-base font-extrabold text-green-600 dark:text-green-400">
-                  ${changeDue.toLocaleString("es-CL")}
-                </span>
-              </div>
+              {/* Billetes rápidos */}
+              {smartCashAmounts.length > 0 && (
+                <div className="space-y-1 border-t border-slate-200 dark:border-slate-800/80 pt-2">
+                  <span className="block text-[9px] font-bold text-slate-400 uppercase tracking-wider">Montos Rápidos (Efectivo)</span>
+                  <div className="flex flex-wrap gap-1.5 pt-0.5">
+                    {smartCashAmounts.map((amt) => (
+                      <button
+                        key={amt}
+                        type="button"
+                        onClick={() => setAmountPaid(String(amt))}
+                        className={`flex-1 min-w-[55px] py-1 rounded-lg border text-[10px] font-extrabold text-center transition-all ${
+                          Number(amountPaid) === amt
+                            ? "bg-primary border-primary text-white shadow-sm scale-[1.03]"
+                            : "bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-350 hover:bg-slate-50 dark:hover:bg-slate-700"
+                        }`}
+                      >
+                        {amt === subtotal ? "Exacto" : `$${amt.toLocaleString("es-CL")}`}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
           )}
 
@@ -724,6 +870,159 @@ export default function PosWorkspace({ products: initialProducts, branches }: Po
         </div>
 
       </div>
+
+      {/* MODAL DE CONFIRMACIÓN DE PRE-VENTA INTERACTIVO */}
+      {showConfirmModal && (
+        <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 overflow-y-auto animate-fade-in">
+          <div className="bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-3xl w-full max-w-2xl overflow-hidden shadow-2xl animate-scale-up flex flex-col max-h-[90vh]">
+            
+            {/* Cabecera del Modal */}
+            <div className="p-5 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between bg-slate-50/50 dark:bg-slate-900/20">
+              <div className="space-y-1">
+                <h3 className="font-extrabold text-base text-slate-900 dark:text-slate-100 flex items-center gap-2">
+                  <ShoppingCart className="w-5 h-5 text-primary" />
+                  <span>Confirmación de Venta</span>
+                </h3>
+                <p className="text-xs text-slate-500">
+                  Verificá el detalle de la venta antes de emitir el documento tributario.
+                </p>
+              </div>
+              <button 
+                onClick={() => setShowConfirmModal(false)}
+                className="p-1.5 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-400 hover:text-slate-600 transition-colors"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            {/* Cuerpo del Modal */}
+            <div className="flex-1 overflow-y-auto p-6 grid grid-cols-1 md:grid-cols-5 gap-6">
+              
+              {/* Lista de productos (Columna Izquierda 3/5) */}
+              <div className="md:col-span-3 space-y-3">
+                <h4 className="font-extrabold text-xs text-slate-700 dark:text-slate-350 uppercase tracking-wider pb-1 border-b border-slate-100 dark:border-slate-800/80">
+                  Lista de Productos ({cart.length})
+                </h4>
+                <div className="space-y-2 max-h-[45vh] overflow-y-auto pr-1">
+                  {cart.map((item) => (
+                    <div 
+                      key={item.product.id}
+                      className="flex items-center justify-between p-2.5 rounded-xl bg-slate-50 dark:bg-slate-900/40 border border-slate-150 dark:border-slate-800/60 gap-3"
+                    >
+                      <div className="min-w-0 flex-1">
+                        <p className="font-bold text-xs text-slate-800 dark:text-slate-200 truncate">{item.product.name}</p>
+                        <p className="text-[10px] text-slate-400 font-mono pt-0.5">
+                          SKU: {item.product.sku}
+                        </p>
+                      </div>
+                      <div className="text-right shrink-0">
+                        <p className="font-extrabold text-xs text-slate-900 dark:text-slate-250">
+                          ${(item.qty * item.product.unitPrice).toLocaleString("es-CL")}
+                        </p>
+                        <p className="text-[10px] text-slate-400">
+                          {item.qty} x ${item.product.unitPrice.toLocaleString("es-CL")}
+                        </p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Detalles y Totales (Columna Derecha 2/5) */}
+              <div className="md:col-span-2 space-y-4">
+                
+                {/* Tipo de Documento */}
+                <div className="space-y-1">
+                  <span className="block text-[10px] font-bold text-slate-400 uppercase tracking-wider">Documento Tributario</span>
+                  <div className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-extrabold ${
+                    dteType === 39 
+                      ? "bg-orange-100 text-orange-700 dark:bg-orange-950/40 dark:text-orange-350"
+                      : "bg-blue-100 text-blue-700 dark:bg-blue-950/40 dark:text-blue-350"
+                  }`}>
+                    <FileText className="w-3.5 h-3.5" />
+                    <span>{dteType === 39 ? "Boleta Electrónica (39)" : "Factura Electrónica (33)"}</span>
+                  </div>
+                </div>
+
+                {/* Cliente */}
+                <div className="space-y-2 bg-slate-50 dark:bg-slate-900/40 p-3 rounded-2xl border border-slate-150 dark:border-slate-850">
+                  <span className="block text-[10px] font-bold text-slate-400 uppercase tracking-wider">Receptor / Cliente</span>
+                  <div className="space-y-1 text-xs">
+                    <p className="font-extrabold text-slate-800 dark:text-slate-200">{customerName || "Cliente General"}</p>
+                    <p className="font-mono text-slate-500 text-[10px]">RUT: {customerRut || "66.666.666-6"}</p>
+                    {customerEmail && (
+                      <p className="text-[10px] text-slate-400 truncate">Email: {customerEmail}</p>
+                    )}
+                  </div>
+                </div>
+
+                {/* Detalles de Pago */}
+                <div className="space-y-2 bg-slate-50 dark:bg-slate-900/40 p-3 rounded-2xl border border-slate-150 dark:border-slate-850">
+                  <span className="block text-[10px] font-bold text-slate-450 uppercase tracking-wider">Detalle del Pago</span>
+                  <div className="space-y-1.5 text-xs">
+                    <div className="flex justify-between items-center text-slate-650 dark:text-slate-400">
+                      <span>Método:</span>
+                      <span className="font-extrabold flex items-center gap-1 capitalize">
+                        {paymentMethod === "cash" && <Banknote className="w-3.5 h-3.5 text-green-500" />}
+                        {(paymentMethod === "debit" || paymentMethod === "credit") && <CreditCard className="w-3.5 h-3.5 text-blue-500" />}
+                        {paymentMethod === "transfer" && <Landmark className="w-3.5 h-3.5 text-purple-500" />}
+                        {paymentMethod === "cash" ? "Efectivo" : paymentMethod === "debit" ? "Débito" : paymentMethod === "credit" ? "Crédito" : "Transferencia"}
+                      </span>
+                    </div>
+                    {paymentMethod === "cash" && (
+                      <>
+                        <div className="flex justify-between text-slate-650 dark:text-slate-400">
+                          <span>Entregado:</span>
+                          <span className="font-bold text-slate-850 dark:text-slate-200">
+                            ${(parseFloat(amountPaid) || subtotal).toLocaleString("es-CL")}
+                          </span>
+                        </div>
+                        <div className="flex justify-between items-center pt-1 border-t border-slate-200 dark:border-slate-800 text-green-600 dark:text-green-400">
+                          <span className="font-extrabold">Su Vuelto:</span>
+                          <span className="font-extrabold text-sm">
+                            ${changeDue.toLocaleString("es-CL")}
+                          </span>
+                        </div>
+                      </>
+                    )}
+                  </div>
+                </div>
+
+                {/* Total Final */}
+                <div className="bg-primary/5 dark:bg-primary/10 border border-primary/20 p-3.5 rounded-2xl space-y-1">
+                  <span className="block text-[10px] font-extrabold text-primary uppercase tracking-wider text-center">Total a Cobrar</span>
+                  <div className="text-center font-extrabold text-2xl text-primary tracking-tight">
+                    ${subtotal.toLocaleString("es-CL")}
+                  </div>
+                </div>
+
+              </div>
+
+            </div>
+
+            {/* Botones de Acción */}
+            <div className="p-5 border-t border-slate-200 dark:border-slate-800 flex items-center justify-end gap-3 bg-slate-50/50 dark:bg-slate-900/20">
+              <button
+                type="button"
+                onClick={() => setShowConfirmModal(false)}
+                className="px-4 py-2.5 rounded-xl border border-slate-250 dark:border-slate-700 text-xs font-bold text-slate-650 dark:text-slate-350 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+              >
+                Volver
+              </button>
+              
+              <button
+                type="button"
+                onClick={executeProcessSale}
+                className="px-6 py-2.5 rounded-xl bg-orange-600 hover:bg-orange-700 text-white font-extrabold text-xs flex items-center gap-1.5 transition-colors shadow-md shadow-orange-600/10 active:scale-[0.98]"
+              >
+                <Check className="w-4 h-4" />
+                <span>Confirmar Pago y Emitir DTE</span>
+              </button>
+            </div>
+
+          </div>
+        </div>
+      )}
 
       {/* MODAL DE TICKET / DTE COMPLETADO */}
       {completedSale && (
