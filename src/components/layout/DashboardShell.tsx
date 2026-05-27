@@ -32,6 +32,17 @@ export default function DashboardShell({ user, children }: DashboardShellProps) 
     );
   }
 
+  // Si es la página del POS, aislar y usar pantalla completa
+  const isPosPage = pathname === "/pos";
+
+  if (isPosPage) {
+    return (
+      <div className="h-screen w-screen overflow-hidden bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-slate-100">
+        {children}
+      </div>
+    );
+  }
+
   return (
     <div className="flex h-screen overflow-hidden bg-background-light text-slate-900 dark:bg-background-dark dark:text-slate-100">
       <Sidebar user={user} />

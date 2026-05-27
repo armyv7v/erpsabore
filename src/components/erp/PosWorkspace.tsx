@@ -77,6 +77,7 @@ export default function PosWorkspace({ products: initialProducts, branches }: Po
   const [formState, setFormState] = useState<ActionState>({ status: "idle", message: "" });
   const [completedSale, setCompletedSale] = useState<any | null>(null);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
+  const [showCashPopup, setShowCashPopup] = useState(false);
 
   // Escáner de código de barras físico (Simulado por teclado a nivel global)
   const barcodeBuffer = useRef<string>("");
@@ -361,7 +362,7 @@ export default function PosWorkspace({ products: initialProducts, branches }: Po
   }, [products, searchQuery]);
 
   return (
-    <div className="flex h-[calc(100vh-4rem)] overflow-hidden bg-slate-50 dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800">
+    <div className="flex h-screen w-screen overflow-hidden bg-slate-50 dark:bg-slate-900">
       
       {/* PANEL IZQUIERDO: Catálogo de Productos y Cola Pedidos */}
       <div className="flex-1 flex flex-col overflow-hidden border-r border-slate-200 dark:border-slate-800">
@@ -417,15 +418,15 @@ export default function PosWorkspace({ products: initialProducts, branches }: Po
         )}
 
         {/* CONTENIDO TAB */}
-        <div className="flex-1 overflow-y-auto p-4">
+        <div className="flex-1 overflow-y-auto p-3">
           {activeTab === "catalog" ? (
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+            <div className="grid grid-cols-2 xs:grid-cols-3 sm:grid-cols-4 md:grid-cols-5 xl:grid-cols-6 gap-2.5">
               {filteredProducts.map((p) => {
                 const cartQty = cart.find((item) => item.product.id === p.id)?.qty || 0;
                 return (
                   <div
                     key={p.id}
-                    className={`relative flex flex-col rounded-2xl bg-white border p-3 shadow-sm hover:shadow-md transition-all dark:bg-slate-950 dark:border-slate-800 ${
+                    className={`relative flex flex-col rounded-xl bg-white border p-2.5 shadow-sm hover:shadow-md transition-all dark:bg-slate-950 dark:border-slate-800 ${
                       p.stockQuantity <= 0 ? "opacity-50" : ""
                     }`}
                   >
@@ -435,49 +436,49 @@ export default function PosWorkspace({ products: initialProducts, branches }: Po
                       className="cursor-pointer flex flex-col flex-1"
                     >
                       {/* Imagen de Catálogo */}
-                      <div className="aspect-square w-full rounded-xl bg-slate-100 dark:bg-slate-900 mb-2 overflow-hidden relative">
+                      <div className="aspect-square w-full rounded-lg bg-slate-100 dark:bg-slate-900 mb-1.5 overflow-hidden relative">
                         {p.imageUrl ? (
                           <img src={p.imageUrl} alt={p.name} className="w-full h-full object-cover" />
                         ) : (
                           <div className="w-full h-full flex items-center justify-center text-slate-400">
-                            <ShoppingBag className="w-8 h-8" />
+                            <ShoppingBag className="w-6 h-6" />
                           </div>
                         )}
                         
                         {/* Cantidad en Carrito (Badge) */}
                         {cartQty > 0 && (
-                          <span className="absolute top-2 right-2 bg-primary text-white text-[10px] font-extrabold rounded-full w-5 h-5 flex items-center justify-center shadow-md animate-scale-up">
+                          <span className="absolute top-1.5 right-1.5 bg-primary text-white text-[9px] font-extrabold rounded-full w-4.5 h-4.5 flex items-center justify-center shadow-md animate-scale-up">
                             {cartQty}
                           </span>
                         )}
                       </div>
 
-                      <h4 className="font-bold text-xs leading-tight text-slate-800 dark:text-slate-200 line-clamp-2 h-8">
+                      <h4 className="font-extrabold text-[11px] leading-tight text-slate-800 dark:text-slate-250 line-clamp-2 h-7.5">
                         {p.name}
                       </h4>
-                      <p className="text-[10px] text-slate-400 font-mono pt-1">{p.sku.substring(0, 15)}...</p>
+                      <p className="text-[9px] text-slate-400 font-mono pt-0.5">{p.sku.substring(0, 12)}...</p>
 
                       {/* Precio */}
-                      <div className="pt-2 mt-auto">
-                        <span className="font-extrabold text-sm text-slate-900 dark:text-slate-150">
+                      <div className="pt-1.5 mt-auto">
+                        <span className="font-extrabold text-xs text-slate-900 dark:text-slate-150">
                           ${p.unitPrice.toLocaleString("es-CL")}
                         </span>
                       </div>
                     </div>
 
                     {/* Fila de Controles de Cantidad / Stock */}
-                    <div className="flex items-center justify-between pt-2 border-t border-slate-100 dark:border-slate-800 mt-2 h-8">
+                    <div className="flex items-center justify-between pt-1.5 border-t border-slate-150 dark:border-slate-800 mt-1.5 h-7">
                       {cartQty > 0 ? (
-                        <div className="flex items-center gap-1.5 bg-slate-50 dark:bg-slate-900 p-0.5 rounded-lg border border-slate-200 dark:border-slate-700 w-full justify-between">
+                        <div className="flex items-center gap-1 bg-slate-50 dark:bg-slate-900 p-0.5 rounded-lg border border-slate-200 dark:border-slate-700 w-full justify-between">
                           <button
                             type="button"
                             onClick={(e) => {
                               e.stopPropagation();
                               removeFromCart(p.id);
                             }}
-                            className="p-1 rounded-md bg-white dark:bg-slate-800 border border-slate-250 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-750 text-slate-700 dark:text-slate-200"
+                            className="p-0.5 rounded bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:bg-slate-100 text-slate-700 dark:text-slate-200"
                           >
-                            <Minus className="w-3 h-3" />
+                            <Minus className="w-2.5 h-2.5" />
                           </button>
                           
                           <input
@@ -488,7 +489,7 @@ export default function PosWorkspace({ products: initialProducts, branches }: Po
                               const val = parseInt(e.target.value) || 0;
                               updateCartQty(p.id, val);
                             }}
-                            className="w-10 text-center font-extrabold text-xs outline-none bg-transparent text-slate-800 dark:text-slate-200 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                            className="w-8 text-center font-extrabold text-[10px] outline-none bg-transparent text-slate-800 dark:text-slate-200 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
                           />
                           
                           <button
@@ -497,25 +498,25 @@ export default function PosWorkspace({ products: initialProducts, branches }: Po
                               e.stopPropagation();
                               addToCart(p);
                             }}
-                            className="p-1 rounded-md bg-white dark:bg-slate-800 border border-slate-250 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-750 text-slate-700 dark:text-slate-200"
+                            className="p-0.5 rounded bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:bg-slate-100 text-slate-700 dark:text-slate-200"
                           >
-                            <Plus className="w-3 h-3" />
+                            <Plus className="w-2.5 h-2.5" />
                           </button>
                         </div>
                       ) : (
                         <>
-                          <span className="text-[10px] text-slate-400 font-semibold">
+                          <span className="text-[9px] text-slate-400 font-bold">
                             Stock: {p.stockQuantity}
                           </span>
 
-                          <span className={`px-2 py-0.5 rounded-full text-[9px] font-bold ${
+                          <span className={`px-1.5 py-0.5 rounded-full text-[8px] font-extrabold ${
                             p.stockQuantity === 0
-                              ? "bg-red-150 text-red-700 dark:bg-red-950/40 dark:text-red-300"
+                              ? "bg-red-100 text-red-700 dark:bg-red-950/40 dark:text-red-300"
                               : p.stockQuantity <= 10
                                 ? "bg-amber-100 text-amber-700 dark:bg-amber-950/40 dark:text-amber-300"
                                 : "bg-green-100 text-green-700 dark:bg-green-950/40 dark:text-green-300"
                           }`}>
-                            {p.stockQuantity === 0 ? "Agotado" : p.stockQuantity <= 10 ? "Bajo" : "Disponible"}
+                            {p.stockQuantity === 0 ? "Agotado" : p.stockQuantity <= 10 ? "Bajo" : "Stock"}
                           </span>
                         </>
                       )}
@@ -599,7 +600,7 @@ export default function PosWorkspace({ products: initialProducts, branches }: Po
       </div>
 
       {/* PANEL DERECHO: Venta, Cliente y Barra de Pago */}
-      <div className="w-[380px] bg-white dark:bg-slate-950 flex flex-col overflow-hidden shadow-xl z-10">
+      <div className="w-[410px] bg-white dark:bg-slate-950 flex flex-col overflow-hidden shadow-xl z-10">
         
         {/* Barra Cabecera Carrito */}
         <div className="p-4 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between bg-slate-50/50 dark:bg-slate-900/30">
@@ -780,14 +781,16 @@ export default function PosWorkspace({ products: initialProducts, branches }: Po
                     key={method.id}
                     onClick={() => {
                       setPaymentMethod(method.id);
-                      if (method.id !== "cash") {
+                      if (method.id === "cash") {
+                        setShowCashPopup(true);
+                      } else {
                         setAmountPaid("");
                       }
                     }}
                     className={`flex items-center justify-center py-2 px-1 rounded-xl border transition-all text-[10px] font-extrabold gap-1 ${
                       paymentMethod === method.id
                         ? "border-primary bg-primary/5 text-primary ring-1 ring-primary"
-                        : "border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-900 text-slate-600 dark:text-slate-400"
+                        : "border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-900 text-slate-650 dark:text-slate-450"
                     }`}
                   >
                     <Icon className="w-3.5 h-3.5 shrink-0" />
@@ -798,52 +801,36 @@ export default function PosWorkspace({ products: initialProducts, branches }: Po
             </div>
           </div>
 
-          {/* Calculador de vuelto para efectivo con Billetes Rápidos Inteligentes */}
-          {paymentMethod === "cash" && cart.length > 0 && (
-            <div className="bg-slate-50 dark:bg-slate-900/40 p-3 rounded-2xl border border-slate-200 dark:border-slate-800 animate-fade-in space-y-2.5">
-              <div className="grid grid-cols-[1fr_120px] gap-3">
-                <div className="space-y-1 text-xs">
-                  <span className="block font-semibold text-slate-500">Monto Entregado</span>
-                  <input
-                    type="number"
-                    value={amountPaid}
-                    onChange={(e) => setAmountPaid(e.target.value)}
-                    placeholder={`$${subtotal}`}
-                    className="w-full rounded-xl border border-slate-250 dark:border-slate-700 px-3 py-1.8 bg-white dark:bg-slate-900 text-sm font-extrabold outline-none focus:ring-2 focus:ring-primary/20"
-                  />
-                </div>
-
-                <div className="text-right flex flex-col justify-center">
-                  <span className="block text-[10px] font-semibold text-slate-500 uppercase tracking-wider">Su Vuelto</span>
-                  <span className="text-base font-extrabold text-green-600 dark:text-green-400">
-                    ${changeDue.toLocaleString("es-CL")}
-                  </span>
-                </div>
+          {/* Indicador compacto de pago en efectivo */}
+          {paymentMethod === "cash" && amountPaid && cart.length > 0 && (
+            <div className="flex items-center justify-between bg-slate-50 dark:bg-slate-900/40 px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-800 text-xs font-semibold animate-fade-in">
+              <div className="flex items-center gap-1.5 text-slate-650 dark:text-slate-350">
+                <Banknote className="w-4 h-4 text-green-500" />
+                <span>Paga con: <strong className="text-slate-855 dark:text-slate-100">${(parseFloat(amountPaid) || subtotal).toLocaleString("es-CL")}</strong></span>
               </div>
-
-              {/* Billetes rápidos */}
-              {smartCashAmounts.length > 0 && (
-                <div className="space-y-1 border-t border-slate-200 dark:border-slate-800/80 pt-2">
-                  <span className="block text-[9px] font-bold text-slate-400 uppercase tracking-wider">Montos Rápidos (Efectivo)</span>
-                  <div className="flex flex-wrap gap-1.5 pt-0.5">
-                    {smartCashAmounts.map((amt) => (
-                      <button
-                        key={amt}
-                        type="button"
-                        onClick={() => setAmountPaid(String(amt))}
-                        className={`flex-1 min-w-[55px] py-1 rounded-lg border text-[10px] font-extrabold text-center transition-all ${
-                          Number(amountPaid) === amt
-                            ? "bg-primary border-primary text-white shadow-sm scale-[1.03]"
-                            : "bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-350 hover:bg-slate-50 dark:hover:bg-slate-700"
-                        }`}
-                      >
-                        {amt === subtotal ? "Exacto" : `$${amt.toLocaleString("es-CL")}`}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-              )}
+              <div className="text-right">
+                <span className="text-[10px] text-slate-450 block uppercase font-bold">Vuelto:</span>
+                <span className="font-extrabold text-green-600 dark:text-green-400">${changeDue.toLocaleString("es-CL")}</span>
+              </div>
+              <button 
+                type="button" 
+                onClick={() => setShowCashPopup(true)} 
+                className="ml-2 text-[10px] font-bold text-primary hover:underline"
+              >
+                Editar
+              </button>
             </div>
+          )}
+
+          {paymentMethod === "cash" && !amountPaid && cart.length > 0 && (
+            <button
+              type="button"
+              onClick={() => setShowCashPopup(true)}
+              className="w-full flex items-center justify-center gap-1.5 py-2.5 rounded-xl border border-dashed border-primary/40 bg-primary/5 text-primary text-xs font-bold hover:bg-primary/10 transition-all animate-fade-in"
+            >
+              <Banknote className="w-4 h-4" />
+              <span>Ingresar Monto Recibido</span>
+            </button>
           )}
 
           {/* BOTÓN COBRAR Y CONFIRMAR VENTA */}
@@ -1017,6 +1004,106 @@ export default function PosWorkspace({ products: initialProducts, branches }: Po
               >
                 <Check className="w-4 h-4" />
                 <span>Confirmar Pago y Emitir DTE</span>
+              </button>
+            </div>
+
+          </div>
+        </div>
+      )}
+
+      {/* POPUP DE COBRO EN EFECTIVO TRANSLÚCIDO (MODAL) */}
+      {showCashPopup && (
+        <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 animate-fade-in">
+          <div className="bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-3xl w-full max-w-md overflow-hidden shadow-2xl animate-scale-up p-5 space-y-4">
+            
+            {/* Cabecera */}
+            <div className="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-slate-800/85">
+              <div className="flex items-center gap-2">
+                <Banknote className="w-5 h-5 text-green-500" />
+                <h3 className="font-extrabold text-base text-slate-900 dark:text-slate-100">Cobro en Efectivo</h3>
+              </div>
+              <button 
+                type="button"
+                onClick={() => setShowCashPopup(false)}
+                className="p-1 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-400 hover:text-slate-650"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+
+            {/* Caja de Total */}
+            <div className="bg-slate-50 dark:bg-slate-900/50 p-4 rounded-2xl border border-slate-150 dark:border-slate-850 flex items-center justify-between">
+              <span className="text-xs font-bold text-slate-500 uppercase">Total a Cobrar:</span>
+              <span className="text-2xl font-extrabold text-slate-900 dark:text-slate-100">
+                ${subtotal.toLocaleString("es-CL")}
+              </span>
+            </div>
+
+            {/* Input de Monto Recibido */}
+            <div className="space-y-1.5">
+              <label className="block text-xs font-bold text-slate-500">Monto Entregado por el Cliente</label>
+              <div className="relative">
+                <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-450 font-extrabold text-base">$</span>
+                <input
+                  type="number"
+                  value={amountPaid}
+                  autoFocus
+                  onChange={(e) => setAmountPaid(e.target.value)}
+                  placeholder={`${subtotal}`}
+                  className="w-full rounded-2xl border border-slate-250 dark:border-slate-700 pl-8 pr-4 py-3 bg-slate-50/50 dark:bg-slate-900/20 text-lg font-extrabold outline-none focus:ring-2 focus:ring-primary/20 transition-all text-slate-850 dark:text-slate-150"
+                />
+              </div>
+            </div>
+
+            {/* Billetes Rápidos */}
+            {smartCashAmounts.length > 0 && (
+              <div className="space-y-1.5">
+                <span className="block text-[10px] font-bold text-slate-400 uppercase tracking-wider">Montos Rápidos (Billetes)</span>
+                <div className="grid grid-cols-4 gap-2">
+                  {smartCashAmounts.map((amt) => (
+                    <button
+                      key={amt}
+                      type="button"
+                      onClick={() => setAmountPaid(String(amt))}
+                      className={`py-2 rounded-xl border text-xs font-extrabold text-center transition-all ${
+                        Number(amountPaid) === amt
+                          ? "bg-primary border-primary text-white shadow-md scale-[1.03]"
+                          : "bg-slate-50 dark:bg-slate-900 border-slate-200 dark:border-slate-850 text-slate-750 dark:text-slate-350 hover:bg-slate-100 dark:hover:bg-slate-800"
+                      }`}
+                    >
+                      {amt === subtotal ? "Exacto" : `$${amt.toLocaleString("es-CL")}`}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Caja de Vuelto */}
+            <div className="bg-green-50 dark:bg-green-950/20 border border-green-200 dark:border-green-900/40 p-4 rounded-2xl flex items-center justify-between">
+              <span className="text-xs font-bold text-green-700 dark:text-green-400 uppercase">Su Vuelto:</span>
+              <span className="text-2xl font-extrabold text-green-600 dark:text-green-400">
+                ${changeDue.toLocaleString("es-CL")}
+              </span>
+            </div>
+
+            {/* Botones */}
+            <div className="flex gap-2 pt-2">
+              <button
+                type="button"
+                onClick={() => {
+                  setAmountPaid("");
+                }}
+                className="flex-1 py-2.5 rounded-xl border border-slate-250 dark:border-slate-700 text-xs font-bold text-slate-650 dark:text-slate-350 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors"
+              >
+                Limpiar
+              </button>
+              
+              <button
+                type="button"
+                onClick={() => setShowCashPopup(false)}
+                className="flex-1 py-2.5 rounded-xl bg-green-600 hover:bg-green-700 text-white font-extrabold text-xs transition-colors shadow-md shadow-green-600/10 active:scale-[0.98]"
+              >
+                Confirmar Monto
               </button>
             </div>
 
