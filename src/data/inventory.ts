@@ -606,7 +606,7 @@ function resolveImageUrlByCatalogOrder(productIndex: number) {
     "/catalogo_webp/page-13-img-06-0094.webp", // Contenedor termico T1 Darnel
     "/catalogo_webp/page-13-img-06-0094.webp", // Contenedor termico Ct2 x 50 und Pamolsa
     "/catalogo_webp/page-13-img-06-0094.webp", // Contenedor termico Ct3 x 50 und Pamolsa
-    "/catalogo_webp/page-13-img-06-0094.webp", // Contenedor termico Ct5 con o sin division x 50 und
+    "/catalogo_webp/page-13-img-07-0095.webp", // Contenedor termico Ct5 con o sin division x 50 und
     "/catalogo_webp/page-13-img-07-0095.webp", // Contenedor termico J1L
     "/catalogo_webp/page-13-img-07-0095.webp", // Contenedor termico J1M
 
