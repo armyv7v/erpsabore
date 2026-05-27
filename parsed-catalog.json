@@ -1,0 +1,790 @@
+[
+  {
+    "name": "Rollo Kraft 20 cms",
+    "price": 5600
+  },
+  {
+    "name": "Rollo Kraft 40 cms",
+    "price": 10900
+  },
+  {
+    "name": "Rollo Kraft 57 cms",
+    "price": 14900
+  },
+  {
+    "name": "Papel antigrasa 28x34cm x 100 und",
+    "price": 37000
+  },
+  {
+    "name": "Porta completo B1 x100 und",
+    "price": 5100
+  },
+  {
+    "name": "Porta completo cartón B2  x 100 und",
+    "price": 5600
+  },
+  {
+    "name": "Caja para pollo de carton 100 und",
+    "price": 22800
+  },
+  {
+    "name": "Caja papa carton #3, 100 und",
+    "price": 13700
+  },
+  {
+    "name": "Caja carton porta sandwich",
+    "price": 130
+  },
+  {
+    "name": "Caja torta mediana 35x35x10,5 50 und",
+    "price": 580
+  },
+  {
+    "name": "Caja torta grande 39x39x14, 50 und",
+    "price": 700
+  },
+  {
+    "name": "Caja tartaleta grande, 50 und",
+    "price": 400
+  },
+  {
+    "name": "Papel mantequilla resma 100x80 x 500und",
+    "price": 70000
+  },
+  {
+    "name": "Papel Kraft resma 80x100, 400 und",
+    "price": 34000
+  },
+  {
+    "name": "Vaso polipapel blanco 6oz x 50 und",
+    "price": 41
+  },
+  {
+    "name": "Vaso polipapel blanco 8oz x 50 und",
+    "price": 54
+  },
+  {
+    "name": "Vaso polipapel blanco 12oz x 50 und",
+    "price": 73
+  },
+  {
+    "name": "Vaso corrugado negro 8oz (240cc) 25 und",
+    "price": 2400
+  },
+  {
+    "name": "Vaso corrugado negro 12oz (350cc) 25 und",
+    "price": 2800
+  },
+  {
+    "name": "Cubre vaso 8/10 oz Kraft",
+    "price": 34
+  },
+  {
+    "name": "Porta vasos 4 cavidades x 75 und",
+    "price": 170
+  },
+  {
+    "name": "Porta vasos 2 cavidades x 75 und",
+    "price": 90
+  },
+  {
+    "name": "Toalla interfoliada x 200 und",
+    "price": 1900
+  },
+  {
+    "name": "Servilleta x 300 und",
+    "price": 1300
+  },
+  {
+    "name": "Servilleta lunch x 500 und",
+    "price": 1700
+  },
+  {
+    "name": "Bandeja redonda de carton N7, 30,8 cms, 100 und",
+    "price": 275
+  },
+  {
+    "name": "Bandeja Rectangular N° 1, 200 und, 16x9 cm",
+    "price": 25
+  },
+  {
+    "name": "Bandeja Rectangular N° 2, 200 und, 16x9 cm",
+    "price": 27
+  },
+  {
+    "name": "Bandeja Rectangular N° 3, 200 und, 17x10 cm",
+    "price": 33
+  },
+  {
+    "name": "Bandeja Rectangular N° 4, 200 und, 19x11 cms",
+    "price": 42
+  },
+  {
+    "name": "Bandeja Rectangular N° 5, 200 und, 19x13 cms",
+    "price": 60
+  },
+  {
+    "name": "Bandeja Rectangular N° 6, 200 und, 21x15 cms",
+    "price": 68
+  },
+  {
+    "name": "Bandeja Rectangular N° 7, 100 und, 23x16 cm",
+    "price": 77
+  },
+  {
+    "name": "Bandeja Rectangular N° 8, 100 und, 24x17 cms",
+    "price": 92
+  },
+  {
+    "name": "Bandeja Rectangular N° 10, 100 und",
+    "price": 130
+  },
+  {
+    "name": "Bandeja Rectangular N°12, 100 und, 32x24 cm",
+    "price": 255
+  },
+  {
+    "name": "Bandeja Rectangular N°14, 100 und",
+    "price": 460
+  },
+  {
+    "name": "Bolsa Kraft blanca 0,125 kl (1.000 und)",
+    "price": 9700
+  },
+  {
+    "name": "Bolsa Kraft blanca 0,25 kl (1.000 und)",
+    "price": 11800
+  },
+  {
+    "name": "Bolsa Kraft blanca 0,5 kl (1.000 und)",
+    "price": 13400
+  },
+  {
+    "name": "Bolsa Kraft 0,75 kl (1000 und)",
+    "price": 11900
+  },
+  {
+    "name": "Bolsa Kraft 1 kl (1000 und)",
+    "price": 12900
+  },
+  {
+    "name": "Bolsa Kraft 2 kl (1000 und)",
+    "price": 20000
+  },
+  {
+    "name": "Bolsa Kraft 3 kl ( 1000 und)",
+    "price": 22400
+  },
+  {
+    "name": "Bolsa Kraft 4 kl (500 und)",
+    "price": 16800
+  },
+  {
+    "name": "Bolsa Kraft 5 kl ( 500 und)",
+    "price": 17400
+  },
+  {
+    "name": "Bolsa Kraft 6 kl ( 500 und)",
+    "price": 19300
+  },
+  {
+    "name": "Bolsa Kraft 7 kl ( 500 und)",
+    "price": 31500
+  },
+  {
+    "name": "Bolsa Kraft 8 kl ( 500 und)",
+    "price": 33400
+  },
+  {
+    "name": "Toalla pre picada o continua 2 x 180 mts",
+    "price": 6600
+  },
+  {
+    "name": "Toalla continua 2 x 250 mts",
+    "price": 8300
+  },
+  {
+    "name": "Confort industrial 6 x 180 mts",
+    "price": 7200
+  },
+  {
+    "name": "Caja de pizza chica 25x25, 50 und",
+    "price": 270
+  },
+  {
+    "name": "Caja de pizza mediana 33x33, 50 und",
+    "price": 360
+  },
+  {
+    "name": "Caja de pizza grande 38x38, 50 und",
+    "price": 380
+  },
+  {
+    "name": "Bolsa Kraft riñón chica 28x15x28",
+    "price": 130
+  },
+  {
+    "name": "Bolsa Kraft riñón mediana 28x15x36",
+    "price": 140
+  },
+  {
+    "name": "Bolsa Kraft riñón grande 28x15x41",
+    "price": 150
+  },
+  {
+    "name": "Bolsa Kraft riñón extra grande 32x32x18",
+    "price": 160
+  },
+  {
+    "name": "Bombilla Polipapel 8 MM 200 und",
+    "price": 7000
+  },
+  {
+    "name": "Bombilla polipapel 6mm, 400 und",
+    "price": 8000
+  },
+  {
+    "name": "Bowl Kraft 500 cc, con tapa, 50 und",
+    "price": 160
+  },
+  {
+    "name": "Bowl kraft 750 cc, con tapa, 25 und",
+    "price": 190
+  },
+  {
+    "name": "Bowl kraft 1.000 cc, con tapa, 50 und",
+    "price": 205
+  },
+  {
+    "name": "Bowl kraft 1.300 cc, con tapa, 50 und",
+    "price": 260
+  },
+  {
+    "name": "Porta comida organico 950 ml con división, 50 und",
+    "price": 105
+  },
+  {
+    "name": "Palos chinos, 100 und",
+    "price": 2500
+  },
+  {
+    "name": "Revolvedor madera grande 170mm, 1.000 und",
+    "price": 4600
+  },
+  {
+    "name": "Mondadientes, 25 paq de 100 unds",
+    "price": 5500
+  },
+  {
+    "name": "cuchara, cuchillo o tenedor madera 160 MM, 100 UND",
+    "price": 2300
+  },
+  {
+    "name": "Canoa chica carton, 100 und",
+    "price": 30
+  },
+  {
+    "name": "Canoa grande carton, 100 und",
+    "price": 38
+  },
+  {
+    "name": "Canasto 00 de carton, 100 und",
+    "price": 40
+  },
+  {
+    "name": "Canasto de carton 01",
+    "price": 50
+  },
+  {
+    "name": "Canasto 1 de carton, 200 und",
+    "price": 70
+  },
+  {
+    "name": "Rollo termico transbank, 10 und",
+    "price": 390
+  },
+  {
+    "name": "Rollo termico 80x80",
+    "price": 1900
+  },
+  {
+    "name": "Resma carta",
+    "price": 5000
+  },
+  {
+    "name": "Borrador garzon",
+    "price": 350
+  },
+  {
+    "name": "Envase de aluminio C20 x 20 und",
+    "price": 150
+  },
+  {
+    "name": "Envase aluminio C20 tapa plastica x 100 und",
+    "price": 185
+  },
+  {
+    "name": "Envase de aluminio C25/2 x 20 und",
+    "price": 200
+  },
+  {
+    "name": "Envase de aluminio C10 x 20 und",
+    "price": 80
+  },
+  {
+    "name": "Foil aluminio 100 mts x 30 cms con estuche",
+    "price": 8400
+  },
+  {
+    "name": "Cuchara, cuchillo o tenedor  x 100 und",
+    "price": 1200
+  },
+  {
+    "name": "Bombilla plastica 10x195 MM x 50 und",
+    "price": 1100
+  },
+  {
+    "name": "Bombillas plásticas x 100 und",
+    "price": 1300
+  },
+  {
+    "name": "Bolsa camiseta 28x35 ( 100 und)",
+    "price": 1000
+  },
+  {
+    "name": "Bolsa camiseta 35x40 y 35x45 ( 100 und)",
+    "price": 1100
+  },
+  {
+    "name": "Bolsa camiseta 40x50 (100 und)",
+    "price": 1700
+  },
+  {
+    "name": "Bolsa camiseta 50x60 (100 und)",
+    "price": 2800
+  },
+  {
+    "name": "Bolsa camiseta 60x70 x 100 und",
+    "price": 4000
+  },
+  {
+    "name": "Bolsa botillera 35x50 x 100 und",
+    "price": 2400
+  },
+  {
+    "name": "Bolsa botillera 40x50 x 100 und",
+    "price": 2800
+  },
+  {
+    "name": "FullPack 7 35x50 700 und",
+    "price": 7700
+  },
+  {
+    "name": "Prepicado 70x90 x Kilo",
+    "price": 4100
+  },
+  {
+    "name": "Prepicado 40x60 x Kilo",
+    "price": 4100
+  },
+  {
+    "name": "Prepicado 30x40 x Kilo y Lamina",
+    "price": 4100
+  },
+  {
+    "name": "Prepicado 20x30 x Kilo",
+    "price": 4100
+  },
+  {
+    "name": "Prepicado 15x25 x Kilo",
+    "price": 4100
+  },
+  {
+    "name": "Bolsa baja densidad, 15x30, 100 unds",
+    "price": 1400
+  },
+  {
+    "name": "Bolsa baja densidad, 20x30, 100 unds",
+    "price": 1600
+  },
+  {
+    "name": "Bolsa baja densidad, 25x35, 100 unds",
+    "price": 2200
+  },
+  {
+    "name": "Bolsa baja densidad, 30x40, 100 unds",
+    "price": 2900
+  },
+  {
+    "name": "Bolsa Celofan o Polipropileno 12x20, 500 und",
+    "price": 4600
+  },
+  {
+    "name": "Bolsa Celofan o Polipropileno 20x30, 100 und",
+    "price": 2400
+  },
+  {
+    "name": "Bolsa Celofan o Polipropileno 30*40, 100 und",
+    "price": 4700
+  },
+  {
+    "name": "Bolsa taco 20x30 ( 100 und)",
+    "price": 700
+  },
+  {
+    "name": "Bolsa BD/PA vacio 20x30x0,8 natural, 100 und",
+    "price": 107
+  },
+  {
+    "name": "Bolsa BD/PA vacio 30x40x0,8 natural, 100 und",
+    "price": 180
+  },
+  {
+    "name": "Bolsa de basura 50x70 0.3 (10 und)",
+    "price": 1400
+  },
+  {
+    "name": "Bolsa de basura 70x90 0.3 ( 10 und)",
+    "price": 1800
+  },
+  {
+    "name": "Bolsa de basura 80x110 0.3( 10 und)",
+    "price": 2100
+  },
+  {
+    "name": "Bolsa de basura 90x120 0.3 ( 10 und)",
+    "price": 3800
+  },
+  {
+    "name": "Bolsa de basura 110x130 0.6 ( 10 und)",
+    "price": 6800
+  },
+  {
+    "name": "Bolsa de basura 140x160 0.6 ( 5 und)",
+    "price": 8900
+  },
+  {
+    "name": "Bolsa de basura rollo 50x70, 10 und",
+    "price": 500
+  },
+  {
+    "name": "Bolsa de basura rollo 70x90, 10 und",
+    "price": 900
+  },
+  {
+    "name": "Bolsa de basura rollo 80x110, 10 und",
+    "price": 1400
+  },
+  {
+    "name": "Films rollo 38x1.400mts",
+    "price": 29000
+  },
+  {
+    "name": "Films rollo 45x1.400mts",
+    "price": 35000
+  },
+  {
+    "name": "Film camiplast 300 mts con estuche y cortadora",
+    "price": 6500
+  },
+  {
+    "name": "Films 300x100 Mts Rollo CPack",
+    "price": 5600
+  },
+  {
+    "name": "Films paletizador",
+    "price": 5300
+  },
+  {
+    "name": "Films paletizador negro",
+    "price": 5900
+  },
+  {
+    "name": "Vaso plástico 300cc x 50 und",
+    "price": 30
+  },
+  {
+    "name": "Vaso plástico 16 onzas",
+    "price": 45
+  },
+  {
+    "name": "Vaso plástico esp PET 12 oz (350cc) (50 und)",
+    "price": 75
+  },
+  {
+    "name": "Vaso plástico esp PET 16 oz (500cc) (50 und)",
+    "price": 80
+  },
+  {
+    "name": "Vaso plástico especial PET 9 oz (250cc) (50und)",
+    "price": 58
+  },
+  {
+    "name": "Inserto vaso 12 oz, 100 und",
+    "price": 44
+  },
+  {
+    "name": "Tapa plástica domo cúpula sin hoyo 9/12 oz (100und)",
+    "price": 37
+  },
+  {
+    "name": "Tapa plástica domo cúpula sin hoyo 16 oz (100und)",
+    "price": 40
+  },
+  {
+    "name": "Tapa plana 92 mm",
+    "price": 30
+  },
+  {
+    "name": "Envase plástico con tapa 24 oz (750cc) (50 und)",
+    "price": 190
+  },
+  {
+    "name": "Envase plástico con tapa 32 oz (1.000cc) (50 und)",
+    "price": 200
+  },
+  {
+    "name": "Pote facetado 200cc, 50 und con tapa",
+    "price": 118
+  },
+  {
+    "name": "Pote facetado 250cc, 50 und con tapa",
+    "price": 120
+  },
+  {
+    "name": "Tapa plástica vaso plumavit 8 oz (100und)",
+    "price": 55
+  },
+  {
+    "name": "Tapa plástica vaso plumavit 10 oz ( 100 und)",
+    "price": 65
+  },
+  {
+    "name": "Tapa capuchino negra 6 oz (100und)",
+    "price": 35
+  },
+  {
+    "name": "Tapa capuchino negra 8 oz (100und)",
+    "price": 40
+  },
+  {
+    "name": "Tapa capuchino negra 12 oz (50und)",
+    "price": 60
+  },
+  {
+    "name": "Guantes de polietileno x 100 und",
+    "price": 500
+  },
+  {
+    "name": "Envase redondo con bisagra, 40-8 Domo, semi domo y plana",
+    "price": 80
+  },
+  {
+    "name": "Envase redondo con bisagra, 40-12 Domo y plana",
+    "price": 85
+  },
+  {
+    "name": "Envase redondo con bisagra, 40-16 Domo",
+    "price": 95
+  },
+  {
+    "name": "Envase 401 AA, 50 und",
+    "price": 246
+  },
+  {
+    "name": "Envase 401 A",
+    "price": 246
+  },
+  {
+    "name": "Envase 7190, 100 und",
+    "price": 140
+  },
+  {
+    "name": "Envase 247",
+    "price": 175
+  },
+  {
+    "name": "Envase triangular 7187 B, 100 und",
+    "price": 120
+  },
+  {
+    "name": "Envase triangular 7187 A, 100 und",
+    "price": 150
+  },
+  {
+    "name": "Envase triangular 11x5 y 11x7 Darnel",
+    "price": 151
+  },
+  {
+    "name": "Envase Rectangular 7189, 100 unds",
+    "price": 110
+  },
+  {
+    "name": "Clamshell kilo falso, 440 UxC, con hoyo",
+    "price": 195
+  },
+  {
+    "name": "Clamshell medio falso, 400 UxC, con hoyo",
+    "price": 180
+  },
+  {
+    "name": "Clamshell 5050 No ventilado, 6 oz",
+    "price": 110
+  },
+  {
+    "name": "Clamshell 200 Gr  3535-160",
+    "price": 90
+  },
+  {
+    "name": "Sushi 3 Roll",
+    "price": 220
+  },
+  {
+    "name": "Sushi 2 Roll",
+    "price": 155
+  },
+  {
+    "name": "Plato ovalado con tapa microndeable, 50 und",
+    "price": 10800
+  },
+  {
+    "name": "Envase rectangular, GA 70",
+    "price": 2000
+  },
+  {
+    "name": "Cupula torta 98-45  (70)",
+    "price": 550
+  },
+  {
+    "name": "Cupula torta 1025-5  (70)",
+    "price": 570
+  },
+  {
+    "name": "Pote degustacion 0,75 oz con tapa, 100 und",
+    "price": 16
+  },
+  {
+    "name": "Pote degustacion 1 oz con tapa, 100 und",
+    "price": 18
+  },
+  {
+    "name": "Pote degustacion 1,5 oz con tapa",
+    "price": 24
+  },
+  {
+    "name": "Pote degustacion 2 oz con tapa",
+    "price": 28
+  },
+  {
+    "name": "Pote degustacion 5,5 oz con tapa, 100 und",
+    "price": 49
+  },
+  {
+    "name": "Gelatinero con tapa 4 oz, 50 und",
+    "price": 70
+  },
+  {
+    "name": "Guantes nitrilo negro talla S/M/L/XL",
+    "price": 4800
+  },
+  {
+    "name": "Guantes nitrilo azul S/M/L",
+    "price": 4700
+  },
+  {
+    "name": "Guante latex M",
+    "price": 4600
+  },
+  {
+    "name": "Guante Vinilo, talla L",
+    "price": 2800
+  },
+  {
+    "name": "Gorro clip blanco (cofia) x 100 und",
+    "price": 2500
+  },
+  {
+    "name": "Gorro clip negro (cofia) x 100 und",
+    "price": 2500
+  },
+  {
+    "name": "Cinta embalaje 100 Mts Fixo pack, 6 und",
+    "price": 6300
+  },
+  {
+    "name": "Elastico billetes numero 60 (500 und)",
+    "price": 4500
+  },
+  {
+    "name": "Contenedor térmico hot dog x und",
+    "price": 102
+  },
+  {
+    "name": "Contenedor térmico completo grande, x und",
+    "price": 170
+  },
+  {
+    "name": "Contenedor térmico Ct1 x 25 und Pamolsa",
+    "price": 5800
+  },
+  {
+    "name": "Contenedor termico T1 Darnel",
+    "price": 270
+  },
+  {
+    "name": "Contenedor térmico Ct2 x 50 und Pamolsa",
+    "price": 9200
+  },
+  {
+    "name": "Contenedor térmico Ct3 x 50 und Pamolsa",
+    "price": 9600
+  },
+  {
+    "name": "Contenedor térmico Ct5 con o sin división x 50 und",
+    "price": 5300
+  },
+  {
+    "name": "Contenedor térmico J1L",
+    "price": 98
+  },
+  {
+    "name": "Contenedor termico J1M",
+    "price": 117
+  },
+  {
+    "name": "Contenedor térmico hamburguesero",
+    "price": 90
+  },
+  {
+    "name": "Portacomidas wabe B-1 CT6, und",
+    "price": 80
+  },
+  {
+    "name": "Marmita Darnel, 25 und",
+    "price": 160
+  },
+  {
+    "name": "Bandeja plumavit S1",
+    "price": 45
+  },
+  {
+    "name": "Bandeja plumavit S2",
+    "price": 70
+  },
+  {
+    "name": "Bandeja plumavit S4",
+    "price": 103
+  },
+  {
+    "name": "Bandeja plumavit S8",
+    "price": 135
+  },
+  {
+    "name": "Vaso plumavit dart 8oz 240 cc (25 und)",
+    "price": 52
+  },
+  {
+    "name": "Vaso plumavit dart 10 oz (300 cc) (25 und)",
+    "price": 56
+  }
+]

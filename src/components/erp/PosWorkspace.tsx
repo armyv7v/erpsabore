@@ -1085,6 +1085,20 @@ export default function PosWorkspace({ products: initialProducts, branches }: Po
               </button>
             </div>
 
+            {/* Mensaje de Error dentro del Modal */}
+            {formState.status === "error" && (
+              <div className="mx-6 mt-4 bg-red-50 dark:bg-red-950/20 border border-red-200 dark:border-red-900/30 text-red-700 dark:text-red-400 rounded-xl px-4 py-3 text-xs font-bold flex items-center justify-between animate-fade-in shrink-0">
+                <span>{formState.message}</span>
+                <button
+                  type="button"
+                  onClick={() => setFormState({ status: "idle", message: "" })}
+                  className="text-red-700 dark:text-red-400 hover:underline text-[10px] font-extrabold uppercase ml-3 shrink-0"
+                >
+                  Cerrar
+                </button>
+              </div>
+            )}
+
             {/* Cuerpo del Modal */}
             <div className="flex-1 overflow-y-auto p-6 grid grid-cols-1 md:grid-cols-5 gap-6">
               
