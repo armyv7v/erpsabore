@@ -3,7 +3,8 @@
 import { useState, useEffect, useRef, useTransition, useMemo } from "react";
 import { 
   Search, ShoppingCart, CreditCard, Banknote, Landmark, Smartphone, 
-  Trash2, User, FileText, ShoppingBag, Plus, Minus, Send, Copy, Clipboard, Check, X, RefreshCw 
+  Trash2, User, FileText, ShoppingBag, Plus, Minus, Send, Copy, Clipboard, Check, X, RefreshCw,
+  MapPin, ArrowUpDown, Filter
 } from "lucide-react";
 import { submitPosSaleAction, syncDatabaseProductImagesAction } from "@/app/actions/pos";
 import TicketReceipt from "./TicketReceipt";
@@ -17,12 +18,37 @@ interface Product {
   stockQuantity: number;
   stockStatus: "normal" | "low" | "out_of_stock";
   imageUrl: string | null;
+  description?: string | null;
+  category?: string;
 }
 
 interface PosWorkspaceProps {
   products: Product[];
   branches: Array<{ id: string; name: string }>;
 }
+
+function detectCategory(name: string) {
+  const text = name.toLowerCase();
+
+  if (text.includes("plumavit") || text.includes("contenedor") || text.includes("marmita")) {
+    return "Plumavit";
+  }
+
+  if (text.includes("plast") || text.includes("pet") || text.includes("bolsa") || text.includes("vaso plástico")) {
+    return "Plastico";
+  }
+
+  if (text.includes("aluminio") || text.includes("foil")) {
+    return "Aluminio";
+  }
+
+  if (text.includes("papel") || text.includes("kraft") || text.includes("carton") || text.includes("servilleta")) {
+    return "Papeleria y carton";
+  }
+
+  return "Insumos";
+}
+
 
 interface CartItem {
   product: Product;
@@ -33,6 +59,43 @@ export default function PosWorkspace({ products: initialProducts, branches }: Po
   const [products, setProducts] = useState<Product[]>(initialProducts);
   const [cart, setCart] = useState<CartItem[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
+
+  // Estados de Filtros Avanzados
+  const [stockFilter, setStockFilter] = useState<"all" | "critical" | "out_of_stock">("all");
+  const [activeCategory, setActiveCategory] = useState("Todos");
+  const [activeBranch, setActiveBranch] = useState("Todos");
+  const [sortBy, setSortBy] = useState("name-asc");
+  const [isCategoryDropdownOpen, setIsCategoryDropdownOpen] = useState(false);
+  const [isBranchDropdownOpen, setIsBranchDropdownOpen] = useState(false);
+  const [isSortDropdownOpen, setIsSortDropdownOpen] = useState(false);
+
+  // Mapear productos con categorías
+  const productsWithCategories = useMemo(() => {
+    return products.map((p) => ({
+      ...p,
+      category: p.description ?? detectCategory(p.name)
+    }));
+  }, [products]);
+
+  // Obtener categorías únicas dinámicamente
+  const categories = useMemo(() => {
+    const unique = [
+      ...new Set(productsWithCategories.map((p) => p.category).filter(Boolean) as string[]),
+    ].sort();
+    return ["Todos", ...unique];
+  }, [productsWithCategories]);
+
+  // Obtener sucursales/almacenes dinámicamente
+  const branchOptions = useMemo(() => {
+    return ["Todos", ...branches.map((b) => b.name)];
+  }, [branches]);
+
+  const sortOptions = [
+    { value: "name-asc", label: "A-Z" },
+    { value: "name-desc", label: "Z-A" },
+    { value: "price-asc", label: "Precio: Menor a Mayor" },
+    { value: "price-desc", label: "Precio: Mayor a Menor" },
+  ];
   
   // Datos cliente
   const [customerName, setCustomerName] = useState("Cliente General");
@@ -390,13 +453,47 @@ export default function PosWorkspace({ products: initialProducts, branches }: Po
     });
   };
 
-  // Filtrar productos
+  // Filtrar y ordenar productos
   const filteredProducts = useMemo(() => {
-    return products.filter((p) => {
-      const query = searchQuery.toLowerCase();
-      return p.name.toLowerCase().includes(query) || p.sku.toLowerCase().includes(query);
+    const filtered = productsWithCategories.filter((p) => {
+      // 1. Search Query Filter
+      const query = searchQuery.toLowerCase().trim();
+      const matchesSearch =
+        query.length === 0 ||
+        p.name.toLowerCase().includes(query) ||
+        p.sku.toLowerCase().includes(query);
+
+      // 2. Category Filter
+      const matchesCategory =
+        activeCategory === "Todos" || p.category === activeCategory;
+
+      // 3. Stock Filter
+      let matchesStock = true;
+      if (stockFilter === "critical") {
+        matchesStock = p.stockQuantity > 0 && p.stockQuantity < 10;
+      } else if (stockFilter === "out_of_stock") {
+        matchesStock = p.stockQuantity === 0;
+      }
+
+      return matchesSearch && matchesCategory && matchesStock;
     });
-  }, [products, searchQuery]);
+
+    // 4. Sorting
+    if (sortBy === "name-asc") {
+      return filtered.sort((a, b) => a.name.localeCompare(b.name));
+    }
+    if (sortBy === "name-desc") {
+      return filtered.sort((a, b) => b.name.localeCompare(a.name));
+    }
+    if (sortBy === "price-asc") {
+      return filtered.sort((a, b) => a.unitPrice - b.unitPrice);
+    }
+    if (sortBy === "price-desc") {
+      return filtered.sort((a, b) => b.unitPrice - a.unitPrice);
+    }
+    
+    return filtered;
+  }, [productsWithCategories, searchQuery, activeCategory, stockFilter, sortBy]);
 
   return (
     <div className="flex h-screen w-screen overflow-hidden bg-slate-50 dark:bg-slate-900">
@@ -473,110 +570,279 @@ export default function PosWorkspace({ products: initialProducts, branches }: Po
         {/* CONTENIDO TAB */}
         <div className="flex-1 overflow-y-auto p-3">
           {activeTab === "catalog" ? (
-            <div className="grid grid-cols-2 xs:grid-cols-3 sm:grid-cols-4 md:grid-cols-5 xl:grid-cols-6 gap-2.5">
-              {filteredProducts.map((p) => {
-                const cartQty = cart.find((item) => item.product.id === p.id)?.qty || 0;
-                return (
-                  <div
-                    key={p.id}
-                    className={`relative flex flex-col rounded-xl bg-white border p-2.5 shadow-sm hover:shadow-md transition-all dark:bg-slate-950 dark:border-slate-800 ${
-                      p.stockQuantity <= 0 ? "opacity-50" : ""
-                    }`}
+            <div className="flex flex-col h-full space-y-4">
+              {/* Pestañas de Stock */}
+              <div className="border-b border-slate-200 dark:border-slate-800 flex gap-6 pb-0.5">
+                <button
+                  type="button"
+                  onClick={() => setStockFilter("all")}
+                  className={`pb-2.5 text-xs font-bold border-b-2 transition-all cursor-pointer ${
+                    stockFilter === "all"
+                      ? "border-primary text-primary"
+                      : "border-transparent text-slate-500 hover:text-slate-800 dark:hover:text-slate-250"
+                  }`}
+                >
+                  Todos los Productos
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setStockFilter("critical")}
+                  className={`pb-2.5 text-xs font-bold border-b-2 transition-all cursor-pointer ${
+                    stockFilter === "critical"
+                      ? "border-primary text-primary"
+                      : "border-transparent text-slate-500 hover:text-slate-800 dark:hover:text-slate-250"
+                  }`}
+                >
+                  Stock Crítico
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setStockFilter("out_of_stock")}
+                  className={`pb-2.5 text-xs font-bold border-b-2 transition-all cursor-pointer ${
+                    stockFilter === "out_of_stock"
+                      ? "border-primary text-primary"
+                      : "border-transparent text-slate-500 hover:text-slate-800 dark:hover:text-slate-250"
+                  }`}
+                >
+                  Agotados
+                </button>
+              </div>
+
+              {/* Dropdowns de Filtrado y Ordenamiento */}
+              <div className="flex flex-wrap items-center gap-2 pb-1">
+                {/* Dropdown Categoría */}
+                <div className="relative">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setIsCategoryDropdownOpen(!isCategoryDropdownOpen);
+                      setIsBranchDropdownOpen(false);
+                      setIsSortDropdownOpen(false);
+                    }}
+                    className="flex items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-2.5 py-1.5 text-[11px] font-bold text-slate-700 dark:border-slate-850 dark:bg-slate-950 dark:text-slate-200 hover:border-primary transition-all active:scale-95 cursor-pointer shadow-sm"
                   >
-                    {/* Contenido principal clickable */}
-                    <div
-                      onClick={() => p.stockQuantity > 0 && addToCart(p)}
-                      className="cursor-pointer flex flex-col flex-1"
-                    >
-                      {/* Imagen de Catálogo */}
-                      <div className="aspect-square w-full rounded-lg bg-slate-100 dark:bg-slate-900 mb-1.5 overflow-hidden relative">
-                        {p.imageUrl ? (
-                          <img src={p.imageUrl} alt={p.name} className="w-full h-full object-cover" />
-                        ) : (
-                          <div className="w-full h-full flex items-center justify-center text-slate-400">
-                            <ShoppingBag className="w-6 h-6" />
+                    <Filter className="w-3 h-3 text-slate-400" />
+                    <span>Categoría: <strong>{activeCategory}</strong></span>
+                  </button>
+                  {isCategoryDropdownOpen && (
+                    <>
+                      <div className="fixed inset-0 z-10" onClick={() => setIsCategoryDropdownOpen(false)} />
+                      <div className="absolute left-0 mt-1 w-52 rounded-xl border border-slate-200 bg-white p-1 shadow-xl dark:border-slate-800 dark:bg-slate-950 z-20 animate-in slide-in-from-top-1 duration-150 max-h-56 overflow-y-auto">
+                        {categories.map((cat) => (
+                          <button
+                            key={cat}
+                            type="button"
+                            onClick={() => {
+                              setActiveCategory(cat);
+                              setIsCategoryDropdownOpen(false);
+                            }}
+                            className={`w-full text-left rounded-lg px-2 py-1.5 text-[11px] font-semibold transition-colors cursor-pointer ${
+                              activeCategory === cat
+                                ? "bg-primary text-white"
+                                : "text-slate-600 hover:bg-slate-50 dark:text-slate-350 dark:hover:bg-slate-900"
+                            }`}
+                          >
+                            {cat}
+                          </button>
+                        ))}
+                      </div>
+                    </>
+                  )}
+                </div>
+
+                {/* Dropdown Almacén */}
+                <div className="relative">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setIsBranchDropdownOpen(!isBranchDropdownOpen);
+                      setIsCategoryDropdownOpen(false);
+                      setIsSortDropdownOpen(false);
+                    }}
+                    className="flex items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-2.5 py-1.5 text-[11px] font-bold text-slate-700 dark:border-slate-850 dark:bg-slate-950 dark:text-slate-200 hover:border-primary transition-all active:scale-95 cursor-pointer shadow-sm"
+                  >
+                    <MapPin className="w-3 h-3 text-slate-400" />
+                    <span>Almacén: <strong>{activeBranch}</strong></span>
+                  </button>
+                  {isBranchDropdownOpen && (
+                    <>
+                      <div className="fixed inset-0 z-10" onClick={() => setIsBranchDropdownOpen(false)} />
+                      <div className="absolute left-0 mt-1 w-52 rounded-xl border border-slate-200 bg-white p-1 shadow-xl dark:border-slate-800 dark:bg-slate-950 z-20 animate-in slide-in-from-top-1 duration-150">
+                        {branchOptions.map((branchName) => (
+                          <button
+                            key={branchName}
+                            type="button"
+                            onClick={() => {
+                              setActiveBranch(branchName);
+                              setIsBranchDropdownOpen(false);
+                            }}
+                            className={`w-full text-left rounded-lg px-2 py-1.5 text-[11px] font-semibold transition-colors cursor-pointer ${
+                              activeBranch === branchName
+                                ? "bg-primary text-white"
+                                : "text-slate-600 hover:bg-slate-50 dark:text-slate-350 dark:hover:bg-slate-900"
+                            }`}
+                          >
+                            {branchName}
+                          </button>
+                        ))}
+                      </div>
+                    </>
+                  )}
+                </div>
+
+                {/* Dropdown Ordenar por */}
+                <div className="relative">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setIsSortDropdownOpen(!isSortDropdownOpen);
+                      setIsCategoryDropdownOpen(false);
+                      setIsBranchDropdownOpen(false);
+                    }}
+                    className="flex items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-2.5 py-1.5 text-[11px] font-bold text-slate-700 dark:border-slate-850 dark:bg-slate-950 dark:text-slate-200 hover:border-primary transition-all active:scale-95 cursor-pointer shadow-sm"
+                  >
+                    <ArrowUpDown className="w-3 h-3 text-slate-400" />
+                    <span>Ordenar por: <strong>{sortOptions.find(o => o.value === sortBy)?.label}</strong></span>
+                  </button>
+                  {isSortDropdownOpen && (
+                    <>
+                      <div className="fixed inset-0 z-10" onClick={() => setIsSortDropdownOpen(false)} />
+                      <div className="absolute left-0 mt-1 w-52 rounded-xl border border-slate-200 bg-white p-1 shadow-xl dark:border-slate-800 dark:bg-slate-950 z-20 animate-in slide-in-from-top-1 duration-150">
+                        {sortOptions.map((opt) => (
+                          <button
+                            key={opt.value}
+                            type="button"
+                            onClick={() => {
+                              setSortBy(opt.value);
+                              setIsSortDropdownOpen(false);
+                            }}
+                            className={`w-full text-left rounded-lg px-2 py-1.5 text-[11px] font-semibold transition-colors cursor-pointer ${
+                              sortBy === opt.value
+                                ? "bg-primary text-white"
+                                : "text-slate-600 hover:bg-slate-50 dark:text-slate-350 dark:hover:bg-slate-900"
+                            }`}
+                          >
+                            {opt.label}
+                          </button>
+                        ))}
+                      </div>
+                    </>
+                  )}
+                </div>
+              </div>
+
+              {/* Grid de Productos */}
+              {filteredProducts.length === 0 ? (
+                <div className="rounded-xl border border-slate-200 bg-white p-6 text-center text-xs text-slate-500 dark:border-slate-800 dark:bg-slate-950">
+                  No se encontraron productos para los filtros actuales.
+                </div>
+              ) : (
+                <div className="grid grid-cols-2 xs:grid-cols-3 sm:grid-cols-4 md:grid-cols-5 xl:grid-cols-6 gap-2.5 max-h-[calc(100vh-230px)] overflow-y-auto pr-1 pb-4">
+                  {filteredProducts.map((p) => {
+                    const cartQty = cart.find((item) => item.product.id === p.id)?.qty || 0;
+                    return (
+                      <div
+                        key={p.id}
+                        className={`relative flex flex-col rounded-xl bg-white border p-2.5 shadow-sm hover:shadow-md transition-all dark:bg-slate-950 dark:border-slate-800 ${
+                          p.stockQuantity <= 0 ? "opacity-50" : ""
+                        }`}
+                      >
+                        {/* Contenido principal clickable */}
+                        <div
+                          onClick={() => p.stockQuantity > 0 && addToCart(p)}
+                          className="cursor-pointer flex flex-col flex-1"
+                        >
+                          {/* Imagen de Catálogo */}
+                          <div className="aspect-square w-full rounded-lg bg-slate-100 dark:bg-slate-900 mb-1.5 overflow-hidden relative">
+                            {p.imageUrl ? (
+                              <img src={p.imageUrl} alt={p.name} className="w-full h-full object-cover" />
+                            ) : (
+                              <div className="w-full h-full flex items-center justify-center text-slate-400">
+                                <ShoppingBag className="w-6 h-6" />
+                              </div>
+                            )}
+                            
+                            {/* Cantidad en Carrito (Badge) */}
+                            {cartQty > 0 && (
+                              <span className="absolute top-1.5 right-1.5 bg-primary text-white text-[9px] font-extrabold rounded-full w-4.5 h-4.5 flex items-center justify-center shadow-md animate-scale-up">
+                                {cartQty}
+                              </span>
+                            )}
                           </div>
-                        )}
-                        
-                        {/* Cantidad en Carrito (Badge) */}
-                        {cartQty > 0 && (
-                          <span className="absolute top-1.5 right-1.5 bg-primary text-white text-[9px] font-extrabold rounded-full w-4.5 h-4.5 flex items-center justify-center shadow-md animate-scale-up">
-                            {cartQty}
-                          </span>
-                        )}
-                      </div>
 
-                      <h4 className="font-extrabold text-[11px] leading-tight text-slate-800 dark:text-slate-250 line-clamp-2 h-7.5">
-                        {p.name}
-                      </h4>
-                      <p className="text-[9px] text-slate-400 font-mono pt-0.5">{p.sku.substring(0, 12)}...</p>
+                          <h4 className="font-extrabold text-[11px] leading-tight text-slate-800 dark:text-slate-250 line-clamp-2 h-7.5">
+                            {p.name}
+                          </h4>
+                          <p className="text-[9px] text-slate-400 font-mono pt-0.5">{p.sku.substring(0, 12)}...</p>
 
-                      {/* Precio */}
-                      <div className="pt-1.5 mt-auto">
-                        <span className="font-extrabold text-xs text-slate-900 dark:text-slate-150">
-                          ${p.unitPrice.toLocaleString("es-CL")}
-                        </span>
-                      </div>
-                    </div>
-
-                    {/* Fila de Controles de Cantidad / Stock */}
-                    <div className="flex items-center justify-between pt-1.5 border-t border-slate-150 dark:border-slate-800 mt-1.5 h-7">
-                      {cartQty > 0 ? (
-                        <div className="flex items-center gap-1 bg-slate-50 dark:bg-slate-900 p-0.5 rounded-lg border border-slate-200 dark:border-slate-700 w-full justify-between">
-                          <button
-                            type="button"
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              removeFromCart(p.id);
-                            }}
-                            className="p-0.5 rounded bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:bg-slate-100 text-slate-700 dark:text-slate-200"
-                          >
-                            <Minus className="w-2.5 h-2.5" />
-                          </button>
-                          
-                          <input
-                            type="number"
-                            value={cartQty}
-                            onClick={(e) => e.stopPropagation()}
-                            onChange={(e) => {
-                              const val = parseInt(e.target.value) || 0;
-                              updateCartQty(p.id, val);
-                            }}
-                            className="w-8 text-center font-extrabold text-[10px] outline-none bg-transparent text-slate-800 dark:text-slate-200 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
-                          />
-                          
-                          <button
-                            type="button"
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              addToCart(p);
-                            }}
-                            className="p-0.5 rounded bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:bg-slate-100 text-slate-700 dark:text-slate-200"
-                          >
-                            <Plus className="w-2.5 h-2.5" />
-                          </button>
+                          {/* Precio */}
+                          <div className="pt-1.5 mt-auto">
+                            <span className="font-extrabold text-xs text-slate-900 dark:text-slate-150">
+                              ${p.unitPrice.toLocaleString("es-CL")}
+                            </span>
+                          </div>
                         </div>
-                      ) : (
-                        <>
-                          <span className="text-[9px] text-slate-400 font-bold">
-                            Stock: {p.stockQuantity}
-                          </span>
 
-                          <span className={`px-1.5 py-0.5 rounded-full text-[8px] font-extrabold ${
-                            p.stockQuantity === 0
-                              ? "bg-red-100 text-red-700 dark:bg-red-950/40 dark:text-red-300"
-                              : p.stockQuantity <= 10
-                                ? "bg-amber-100 text-amber-700 dark:bg-amber-950/40 dark:text-amber-300"
-                                : "bg-green-100 text-green-700 dark:bg-green-950/40 dark:text-green-300"
-                          }`}>
-                            {p.stockQuantity === 0 ? "Agotado" : p.stockQuantity <= 10 ? "Bajo" : "Stock"}
-                          </span>
-                        </>
-                      )}
-                    </div>
-                  </div>
-                );
-              })}
+                        {/* Fila de Controles de Cantidad / Stock */}
+                        <div className="flex items-center justify-between pt-1.5 border-t border-slate-150 dark:border-slate-800 mt-1.5 h-7">
+                          {cartQty > 0 ? (
+                            <div className="flex items-center gap-1 bg-slate-50 dark:bg-slate-900 p-0.5 rounded-lg border border-slate-200 dark:border-slate-700 w-full justify-between">
+                              <button
+                                type="button"
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  removeFromCart(p.id);
+                                }}
+                                className="p-0.5 rounded bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:bg-slate-100 text-slate-700 dark:text-slate-200 cursor-pointer"
+                              >
+                                <Minus className="w-2.5 h-2.5" />
+                              </button>
+                              
+                              <input
+                                type="number"
+                                value={cartQty}
+                                onClick={(e) => e.stopPropagation()}
+                                onChange={(e) => {
+                                  const val = parseInt(e.target.value) || 0;
+                                  updateCartQty(p.id, val);
+                                }}
+                                className="w-8 text-center font-extrabold text-[10px] outline-none bg-transparent text-slate-800 dark:text-slate-200 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                              />
+                              
+                              <button
+                                type="button"
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  addToCart(p);
+                                }}
+                                className="p-0.5 rounded bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:bg-slate-100 text-slate-700 dark:text-slate-200 cursor-pointer"
+                              >
+                                <Plus className="w-2.5 h-2.5" />
+                              </button>
+                            </div>
+                          ) : (
+                            <>
+                              <span className="text-[9px] text-slate-400 font-bold">
+                                Stock: {p.stockQuantity}
+                              </span>
+
+                              <span className={`px-1.5 py-0.5 rounded-full text-[8px] font-extrabold ${
+                                p.stockQuantity === 0
+                                  ? "bg-red-100 text-red-700 dark:bg-red-950/40 dark:text-red-300"
+                                  : p.stockQuantity <= 10
+                                    ? "bg-amber-100 text-amber-700 dark:bg-amber-950/40 dark:text-amber-300"
+                                    : "bg-green-100 text-green-700 dark:bg-green-950/40 dark:text-green-300"
+                              }`}>
+                                {p.stockQuantity === 0 ? "Agotado" : p.stockQuantity <= 10 ? "Bajo" : "Stock"}
+                              </span>
+                            </>
+                          )}
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
             </div>
           ) : (
             /* TAB: PEDIDOS EXTERNOS / WHATSAPP QUEUE */

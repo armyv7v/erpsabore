@@ -21,7 +21,18 @@ import {
   Check,
   Users,
   Loader2,
+  MapPin,
+  ArrowUpDown,
 } from "lucide-react";
+
+const MOCK_BRANCHES = ["Todos", "Almacén Central", "Sucursal Providencia", "Sucursal Las Condes"];
+const SORT_OPTIONS = [
+  { value: "name-asc", label: "A-Z" },
+  { value: "name-desc", label: "Z-A" },
+  { value: "price-asc", label: "Precio: Menor a Mayor" },
+  { value: "price-desc", label: "Precio: Mayor a Menor" },
+];
+
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import type { CustomerRecord } from "@/lib/types/erp";
@@ -61,6 +72,14 @@ export default function CatalogClient({ products, customers = [] }: Props) {
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [detailsProduct, setDetailsProduct] = useState<CatalogProduct | null>(null);
+
+  // Estados de Filtros Avanzados
+  const [stockFilter, setStockFilter] = useState<"all" | "critical" | "out_of_stock">("all");
+  const [activeBranch, setActiveBranch] = useState("Todos");
+  const [sortBy, setSortBy] = useState("name-asc");
+  const [isCategoryDropdownOpen, setIsCategoryDropdownOpen] = useState(false);
+  const [isBranchDropdownOpen, setIsBranchDropdownOpen] = useState(false);
+  const [isSortDropdownOpen, setIsSortDropdownOpen] = useState(false);
 
   // Estados de Paginación
   const [currentPage, setCurrentPage] = useState(1);
@@ -106,22 +125,51 @@ export default function CatalogClient({ products, customers = [] }: Props) {
 
   const filteredProducts = useMemo(() => {
     return products.filter((product) => {
+      // 1. Category Filter
       const matchesCategory =
         activeCategory === "Todos" || product.category === activeCategory;
+      
+      // 2. Search Filter
       const query = searchQuery.trim().toLowerCase();
       const matchesSearch =
         query.length === 0 ||
         product.name.toLowerCase().includes(query) ||
         product.sku.toLowerCase().includes(query);
-      return matchesCategory && matchesSearch;
+      
+      // 3. Stock Filter
+      let matchesStock = true;
+      if (stockFilter === "critical") {
+        matchesStock = product.stockQuantity > 0 && product.stockQuantity < 10;
+      } else if (stockFilter === "out_of_stock") {
+        matchesStock = product.stockQuantity === 0;
+      }
+
+      return matchesCategory && matchesSearch && matchesStock;
     });
-  }, [products, activeCategory, searchQuery]);
+  }, [products, activeCategory, searchQuery, stockFilter]);
+
+  const sortedProducts = useMemo(() => {
+    const items = [...filteredProducts];
+    if (sortBy === "name-asc") {
+      return items.sort((a, b) => a.name.localeCompare(b.name));
+    }
+    if (sortBy === "name-desc") {
+      return items.sort((a, b) => b.name.localeCompare(a.name));
+    }
+    if (sortBy === "price-asc") {
+      return items.sort((a, b) => a.unitPrice - b.unitPrice);
+    }
+    if (sortBy === "price-desc") {
+      return items.sort((a, b) => b.unitPrice - a.unitPrice);
+    }
+    return items;
+  }, [filteredProducts, sortBy]);
 
   const paginatedProducts = useMemo(() => {
     const startIndex = (currentPage - 1) * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
-    return filteredProducts.slice(startIndex, endIndex);
-  }, [filteredProducts, currentPage, itemsPerPage]);
+    return sortedProducts.slice(startIndex, endIndex);
+  }, [sortedProducts, currentPage, itemsPerPage]);
 
   const totalPages = useMemo(() => {
     return Math.max(1, Math.ceil(filteredProducts.length / itemsPerPage));
@@ -129,7 +177,7 @@ export default function CatalogClient({ products, customers = [] }: Props) {
 
   useEffect(() => {
     setCurrentPage(1);
-  }, [searchQuery, activeCategory, itemsPerPage]);
+  }, [searchQuery, activeCategory, itemsPerPage, stockFilter]);
 
   const getPageNumbers = () => {
     const pages = [];
@@ -376,22 +424,164 @@ export default function CatalogClient({ products, customers = [] }: Props) {
           </label>
         </div>
 
-        {/* Category chips */}
-        <div className="no-scrollbar flex gap-2 overflow-x-auto px-4 pb-4 md:px-0">
-          {categories.map((category) => (
+        {/* Pestañas de Stock */}
+        <div className="border-b border-slate-200 dark:border-slate-800 mb-4 px-4 md:px-0 flex gap-6">
+          <button
+            type="button"
+            onClick={() => setStockFilter("all")}
+            className={`pb-3 text-sm font-bold border-b-2 transition-all cursor-pointer ${
+              stockFilter === "all"
+                ? "border-primary text-primary"
+                : "border-transparent text-slate-500 hover:text-slate-800 dark:hover:text-slate-250"
+            }`}
+          >
+            Todos los Productos
+          </button>
+          <button
+            type="button"
+            onClick={() => setStockFilter("critical")}
+            className={`pb-3 text-sm font-bold border-b-2 transition-all cursor-pointer ${
+              stockFilter === "critical"
+                ? "border-primary text-primary"
+                : "border-transparent text-slate-500 hover:text-slate-800 dark:hover:text-slate-250"
+            }`}
+          >
+            Stock Crítico
+          </button>
+          <button
+            type="button"
+            onClick={() => setStockFilter("out_of_stock")}
+            className={`pb-3 text-sm font-bold border-b-2 transition-all cursor-pointer ${
+              stockFilter === "out_of_stock"
+                ? "border-primary text-primary"
+                : "border-transparent text-slate-500 hover:text-slate-800 dark:hover:text-slate-250"
+            }`}
+          >
+            Agotados
+          </button>
+        </div>
+
+        {/* Dropdowns de Filtrado y Ordenamiento */}
+        <div className="flex flex-wrap items-center gap-3 px-4 md:px-0 mb-6">
+          {/* Dropdown Categoría */}
+          <div className="relative">
             <button
-              key={category}
               type="button"
-              onClick={() => setActiveCategory(category)}
-              className={`flex h-9 shrink-0 items-center justify-center rounded-full px-4 text-sm font-medium transition-colors ${
-                activeCategory === category
-                  ? "bg-primary text-white shadow-md shadow-primary/20"
-                  : "bg-white border border-slate-200 text-slate-600 hover:border-primary dark:bg-slate-800 dark:border-slate-700 dark:text-slate-300"
-              }`}
+              onClick={() => {
+                setIsCategoryDropdownOpen(!isCategoryDropdownOpen);
+                setIsBranchDropdownOpen(false);
+                setIsSortDropdownOpen(false);
+              }}
+              className="flex items-center gap-1.5 rounded-xl border border-slate-200 bg-white px-3 py-2 text-xs font-bold text-slate-700 dark:border-slate-800 dark:bg-slate-950 dark:text-slate-200 hover:border-primary transition-all active:scale-95 cursor-pointer shadow-sm"
             >
-              {category}
+              <Filter className="w-3.5 h-3.5 text-slate-400" />
+              <span>Categoría: <strong>{activeCategory}</strong></span>
             </button>
-          ))}
+            {isCategoryDropdownOpen && (
+              <>
+                <div className="fixed inset-0 z-10" onClick={() => setIsCategoryDropdownOpen(false)} />
+                <div className="absolute left-0 mt-1.5 w-56 rounded-xl border border-slate-200 bg-white p-1.5 shadow-xl dark:border-slate-800 dark:bg-slate-950 z-20 animate-in slide-in-from-top-1 duration-150 max-h-60 overflow-y-auto">
+                  {categories.map((cat) => (
+                    <button
+                      key={cat}
+                      type="button"
+                      onClick={() => {
+                        setActiveCategory(cat);
+                        setIsCategoryDropdownOpen(false);
+                      }}
+                      className={`w-full text-left rounded-lg px-2.5 py-2 text-xs font-semibold transition-colors cursor-pointer ${
+                        activeCategory === cat
+                          ? "bg-primary text-white"
+                          : "text-slate-600 hover:bg-slate-50 dark:text-slate-300 dark:hover:bg-slate-900"
+                      }`}
+                    >
+                      {cat}
+                    </button>
+                  ))}
+                </div>
+              </>
+            )}
+          </div>
+
+          {/* Dropdown Almacén */}
+          <div className="relative">
+            <button
+              type="button"
+              onClick={() => {
+                setIsBranchDropdownOpen(!isBranchDropdownOpen);
+                setIsCategoryDropdownOpen(false);
+                setIsSortDropdownOpen(false);
+              }}
+              className="flex items-center gap-1.5 rounded-xl border border-slate-200 bg-white px-3 py-2 text-xs font-bold text-slate-700 dark:border-slate-800 dark:bg-slate-950 dark:text-slate-200 hover:border-primary transition-all active:scale-95 cursor-pointer shadow-sm"
+            >
+              <MapPin className="w-3.5 h-3.5 text-slate-400" />
+              <span>Almacén: <strong>{activeBranch}</strong></span>
+            </button>
+            {isBranchDropdownOpen && (
+              <>
+                <div className="fixed inset-0 z-10" onClick={() => setIsBranchDropdownOpen(false)} />
+                <div className="absolute left-0 mt-1.5 w-56 rounded-xl border border-slate-200 bg-white p-1.5 shadow-xl dark:border-slate-800 dark:bg-slate-950 z-20 animate-in slide-in-from-top-1 duration-150">
+                  {MOCK_BRANCHES.map((branchName) => (
+                    <button
+                      key={branchName}
+                      type="button"
+                      onClick={() => {
+                        setActiveBranch(branchName);
+                        setIsBranchDropdownOpen(false);
+                      }}
+                      className={`w-full text-left rounded-lg px-2.5 py-2 text-xs font-semibold transition-colors cursor-pointer ${
+                        activeBranch === branchName
+                          ? "bg-primary text-white"
+                          : "text-slate-600 hover:bg-slate-50 dark:text-slate-300 dark:hover:bg-slate-900"
+                      }`}
+                    >
+                      {branchName}
+                    </button>
+                  ))}
+                </div>
+              </>
+            )}
+          </div>
+
+          {/* Dropdown Ordenar por */}
+          <div className="relative">
+            <button
+              type="button"
+              onClick={() => {
+                setIsSortDropdownOpen(!isSortDropdownOpen);
+                setIsCategoryDropdownOpen(false);
+                setIsBranchDropdownOpen(false);
+              }}
+              className="flex items-center gap-1.5 rounded-xl border border-slate-200 bg-white px-3 py-2 text-xs font-bold text-slate-700 dark:border-slate-800 dark:bg-slate-950 dark:text-slate-200 hover:border-primary transition-all active:scale-95 cursor-pointer shadow-sm"
+            >
+              <ArrowUpDown className="w-3.5 h-3.5 text-slate-400" />
+              <span>Ordenar por: <strong>{SORT_OPTIONS.find(o => o.value === sortBy)?.label}</strong></span>
+            </button>
+            {isSortDropdownOpen && (
+              <>
+                <div className="fixed inset-0 z-10" onClick={() => setIsSortDropdownOpen(false)} />
+                <div className="absolute right-0 mt-1.5 w-56 rounded-xl border border-slate-200 bg-white p-1.5 shadow-xl dark:border-slate-800 dark:bg-slate-950 z-20 animate-in slide-in-from-top-1 duration-150">
+                  {SORT_OPTIONS.map((opt) => (
+                    <button
+                      key={opt.value}
+                      type="button"
+                      onClick={() => {
+                        setSortBy(opt.value);
+                        setIsSortDropdownOpen(false);
+                      }}
+                      className={`w-full text-left rounded-lg px-2.5 py-2 text-xs font-semibold transition-colors cursor-pointer ${
+                        sortBy === opt.value
+                          ? "bg-primary text-white"
+                          : "text-slate-600 hover:bg-slate-50 dark:text-slate-300 dark:hover:bg-slate-900"
+                      }`}
+                    >
+                      {opt.label}
+                    </button>
+                  ))}
+                </div>
+              </>
+            )}
+          </div>
         </div>
 
         {/* Product grid */}
