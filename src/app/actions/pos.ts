@@ -204,6 +204,9 @@ export async function submitPosSaleAction(
 
       revalidateERPPaths();
 
+      const isCash = parsed.paymentMethod === "cash";
+      const changeDue = isCash ? Math.max(0, parsed.amountPaid - exactInvoiceTotal) : 0;
+
       // Usar el total exacto en la respuesta
       return {
         status: "success",
@@ -219,13 +222,16 @@ export async function submitPosSaleAction(
           siiMessage: dteResult.siiMessage,
           total: exactInvoiceTotal,
           paymentMethod: parsed.paymentMethod,
-          change: Math.max(0, parsed.amountPaid - exactInvoiceTotal),
+          change: changeDue,
         },
       };
     } else {
       console.log("[POS Mock] Venta registrada correctamente con Folio", dteResult.folio);
       
       revalidateERPPaths();
+
+      const isCash = parsed.paymentMethod === "cash";
+      const changeDueMock = isCash ? Math.max(0, parsed.amountPaid - totalSale) : 0;
 
       return {
         status: "success",
@@ -241,7 +247,7 @@ export async function submitPosSaleAction(
           siiMessage: dteResult.siiMessage,
           total: totalSale,
           paymentMethod: parsed.paymentMethod,
-          change: Math.max(0, parsed.amountPaid - totalSale),
+          change: changeDueMock,
         },
       };
     }
