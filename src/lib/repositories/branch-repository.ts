@@ -69,3 +69,40 @@ export async function listBranches(
 
   return ((data ?? []) as BranchRow[]).map(mapBranch);
 }
+
+export async function createBranch(
+  supabase: SupabaseClient,
+  tenantId: string,
+  input: {
+    name: string;
+    address?: string | null;
+    city?: string | null;
+    region?: string | null;
+    phone?: string | null;
+    email?: string | null;
+    manager?: string | null;
+    status: "active" | "inactive" | "maintenance";
+  }
+): Promise<BranchRecord> {
+  const { data, error } = await supabase
+    .from("branches")
+    .insert({
+      tenant_id: tenantId,
+      name: input.name,
+      address: input.address || null,
+      city: input.city || null,
+      region: input.region || null,
+      phone: input.phone || null,
+      email: input.email || null,
+      manager: input.manager || null,
+      status: input.status,
+    })
+    .select(BRANCH_SELECT)
+    .single();
+
+  if (error || !data) {
+    throw new Error(`No se pudo crear la sucursal. ${error ? error.message : "Error desconocido"}`.trim());
+  }
+
+  return mapBranch(data as BranchRow);
+}
