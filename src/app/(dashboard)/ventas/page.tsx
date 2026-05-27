@@ -3,6 +3,8 @@ import SalesWorkspace from "@/components/erp/SalesWorkspace";
 import { requireAuthenticatedContext } from "@/lib/services/auth-service";
 import { getSalesWorkspace } from "@/lib/services/invoice-service";
 
+export const dynamic = "force-dynamic";
+
 export default async function SalesPage({
   searchParams,
 }: {

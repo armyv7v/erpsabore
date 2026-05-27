@@ -3,6 +3,8 @@ import { requireAuthenticatedUser, createAuthenticatedSupabaseClient } from "@/l
 import { listProducts } from "@/lib/repositories/product-repository";
 import { listBranches } from "@/lib/repositories/branch-repository";
 import { isSupabaseConfigured } from "@/lib/supabase/config";
+
+export const dynamic = "force-dynamic";
 import { mockProducts } from "@/data/inventory";
 import { mockBranches } from "@/data/branches";
 import PosWorkspace from "@/components/erp/PosWorkspace";

@@ -5,6 +5,8 @@ import { formatCashMovementStatus } from "@/lib/formatters/status";
 import { requireAuthenticatedUser } from "@/lib/services/auth-service";
 import { getFinanceMetrics } from "@/lib/services/metrics-service";
 
+export const dynamic = "force-dynamic";
+
 export default async function CashFlowPage() {
   const user = await requireAuthenticatedUser();
   const { cashFlow } = await getFinanceMetrics(user);

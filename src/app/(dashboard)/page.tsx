@@ -5,6 +5,8 @@ import { formatInvoiceStatus } from "@/lib/formatters/status";
 import { requireAuthenticatedUser } from "@/lib/services/auth-service";
 import { getDashboardMetrics } from "@/lib/services/metrics-service";
 
+export const dynamic = "force-dynamic";
+
 export default async function DashboardPage() {
   const user = await requireAuthenticatedUser();
 

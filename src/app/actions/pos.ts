@@ -111,7 +111,7 @@ export async function submitPosSaleAction(
         productId: item.productId || null,
         description: item.name,
         qty: item.qty,
-        unitPrice: item.unitPrice,
+        unitPrice: item.unitPrice / 1.19, // Convert gross price to net price
       })),
     };
 
