@@ -438,14 +438,14 @@ function resolveImageUrlByCatalogOrder(productIndex: number) {
     "/catalogo_webp/page-03-img-01-0018.webp", // Bandeja rectangular N°4 200 und 19x11 cm
     "/catalogo_webp/page-03-img-01-0018.webp", // Bandeja rectangular N°5 200 und 19x13 cm
     "/catalogo_webp/page-03-img-01-0018.webp", // Bandeja rectangular N°6 200 und 21x15 cm
-    "/catalogo_webp/page-03-img-02-0019.webp", // Bandeja rectangular N°7 200 und 23x16 cm
-    "/catalogo_webp/page-03-img-02-0019.webp", // Bandeja rectangular N°8 200 und 24x17 cm
-    "/catalogo_webp/page-03-img-02-0019.webp", // Bandeja rectangular N°10 200 und
-    "/catalogo_webp/page-03-img-02-0019.webp", // Bandeja rectangular N°12 100 und 32x24 cm
-    "/catalogo_webp/page-03-img-02-0019.webp", // Bandeja rectangular N°14 100 und
-    "/catalogo_webp/page-03-img-03-0020.webp", // Bolsa Kraft blanca 0,125 kl (1.000 und)
-    "/catalogo_webp/page-03-img-03-0020.webp", // Bolsa Kraft blanca 0,25 kl (1.000 und)
-    "/catalogo_webp/page-03-img-03-0020.webp", // Bolsa Kraft blanca 0,5 kl (1.000 und)
+    "/catalogo_webp/page-03-img-01-0018.webp", // Bandeja rectangular N°7 200 und 23x16 cm
+    "/catalogo_webp/page-03-img-01-0018.webp", // Bandeja rectangular N°8 200 und 24x17 cm
+    "/catalogo_webp/page-03-img-01-0018.webp", // Bandeja rectangular N°10 200 und
+    "/catalogo_webp/page-03-img-01-0018.webp", // Bandeja rectangular N°12 100 und 32x24 cm
+    "/catalogo_webp/page-03-img-01-0018.webp", // Bandeja rectangular N°14 100 und
+    "/catalogo_webp/page-03-img-02-0019.webp", // Bolsa Kraft blanca 0,125 kl (1.000 und)
+    "/catalogo_webp/page-03-img-02-0019.webp", // Bolsa Kraft blanca 0,25 kl (1.000 und)
+    "/catalogo_webp/page-03-img-02-0019.webp", // Bolsa Kraft blanca 0,5 kl (1.000 und)
     "/catalogo_webp/page-03-img-03-0020.webp", // Bolsa Kraft 0,75 kl (1.000 und)
     "/catalogo_webp/page-03-img-03-0020.webp", // Bolsa Kraft 1 kl (1.000 und)
     "/catalogo_webp/page-03-img-03-0020.webp", // Bolsa Kraft 2 kl (1.000 und)
