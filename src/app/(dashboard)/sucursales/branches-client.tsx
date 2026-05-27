@@ -19,6 +19,7 @@ import {
 import type { BranchRecord } from "@/lib/repositories/branch-repository";
 import { createBranchAction } from "@/app/actions/branches";
 import type { ActionState } from "@/lib/types/erp";
+import { CHILE_REGIONS } from "@/data/chile-regions";
 
 interface Props {
   branches: BranchRecord[];
@@ -62,8 +63,8 @@ export default function BranchesClient({ branches }: Props) {
   const [showAddModal, setShowAddModal] = useState(false);
   const [name, setName] = useState("");
   const [address, setAddress] = useState("");
-  const [city, setCity] = useState("");
-  const [region, setRegion] = useState("Metropolitana");
+  const [region, setRegion] = useState("Región Metropolitana de Santiago");
+  const [city, setCity] = useState("Santiago");
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
   const [manager, setManager] = useState("");
@@ -71,6 +72,21 @@ export default function BranchesClient({ branches }: Props) {
   
   const [formState, setFormState] = useState<ActionState>({ status: "idle", message: "" });
   const [isPending, startTransition] = useTransition();
+
+  const activeCommunes = useMemo(() => {
+    const reg = CHILE_REGIONS.find((r) => r.name === region);
+    return reg ? reg.communes : [];
+  }, [region]);
+
+  const handleRegionChange = (selectedRegName: string) => {
+    setRegion(selectedRegName);
+    const reg = CHILE_REGIONS.find(r => r.name === selectedRegName);
+    if (reg && reg.communes.length > 0) {
+      setCity(reg.communes[0]);
+    } else {
+      setCity("");
+    }
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -92,8 +108,8 @@ export default function BranchesClient({ branches }: Props) {
       if (res.status === "success") {
         setName("");
         setAddress("");
-        setCity("");
-        setRegion("Metropolitana");
+        setRegion("Región Metropolitana de Santiago");
+        setCity("Santiago");
         setPhone("");
         setEmail("");
         setManager("");
@@ -384,29 +400,36 @@ export default function BranchesClient({ branches }: Props) {
                 <div className="grid grid-cols-2 gap-4">
                   <div>
                     <label className="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1.5">
-                      Ciudad
-                    </label>
-                    <input
-                      type="text"
-                      value={city}
-                      onChange={(e) => setCity(e.target.value)}
-                      placeholder="Ej. Santiago"
-                      className="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary text-sm transition-all"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1.5">
                       Región
                     </label>
                     <div className="relative">
                       <select
                         value={region}
-                        onChange={(e) => setRegion(e.target.value)}
-                        className="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary text-sm transition-all appearance-none cursor-pointer"
+                        onChange={(e) => handleRegionChange(e.target.value)}
+                        className="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary text-sm transition-all appearance-none cursor-pointer text-ellipsis overflow-hidden"
                       >
-                        {REGION_FILTERS.filter(r => r !== "Todas").map((r) => (
-                          <option key={r} value={r}>
-                            {r}
+                        {CHILE_REGIONS.map((r) => (
+                          <option key={r.name} value={r.name}>
+                            {r.name}
+                          </option>
+                        ))}
+                      </select>
+                      <ChevronDown className="w-4 h-4 text-slate-400 absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none" />
+                    </div>
+                  </div>
+                  <div>
+                    <label className="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1.5">
+                      Comuna / Ciudad
+                    </label>
+                    <div className="relative">
+                      <select
+                        value={city}
+                        onChange={(e) => setCity(e.target.value)}
+                        className="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary text-sm transition-all appearance-none cursor-pointer text-ellipsis overflow-hidden"
+                      >
+                        {activeCommunes.map((c) => (
+                          <option key={c} value={c}>
+                            {c}
                           </option>
                         ))}
                       </select>
