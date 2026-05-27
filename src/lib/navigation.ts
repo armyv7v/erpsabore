@@ -36,6 +36,7 @@ export const navigationSections: NavigationSection[] = [
     label: "Principal",
     items: [
       { href: "/", label: "Inicio", icon: LayoutDashboard, roles: ["admin", "ventas", "finanzas", "bodega", "rrhh"] },
+      { href: "/pos", label: "Punto de Venta (POS)", icon: Store, roles: ["admin", "ventas"] },
       { href: "/ventas", label: "Ventas", icon: Wallet, roles: ["admin", "ventas", "finanzas"] },
       { href: "/cotizaciones", label: "Cotizaciones", icon: FileText, roles: ["admin", "ventas"] },
       { href: "/inventario", label: "Inventario", icon: Package, roles: ["admin", "bodega"] },
@@ -78,6 +79,7 @@ export const navigationSections: NavigationSection[] = [
 
 export const mobileNavigation = [
   { href: "/", label: "Inicio", icon: LayoutDashboard, roles: ["admin", "ventas", "finanzas", "bodega", "rrhh"] },
+  { href: "/pos", label: "POS", icon: Store, roles: ["admin", "ventas"] },
   { href: "/ventas", label: "Ventas", icon: Wallet, roles: ["admin", "ventas", "finanzas"] },
   { href: "/facturacion", label: "Facturas", icon: FileText, roles: ["admin", "ventas", "finanzas"] },
   { href: "/inventario", label: "Inventario", icon: Package, roles: ["admin", "bodega"] },
