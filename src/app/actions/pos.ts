@@ -8,6 +8,7 @@ import { createDraftInvoice, issueInvoice, registerInvoicePayment } from "@/lib/
 import { getProductById, updateProductStock } from "@/lib/repositories/product-repository";
 import { LocalDteAdapter } from "@/lib/dte/local-dte-adapter";
 import type { ActionState, CreateInvoiceInput } from "@/lib/types/erp";
+import { getActiveShift } from "@/lib/services/shift-service";
 
 const posSaleSchema = z.object({
   customerName: z.string().min(1, "El nombre del cliente es obligatorio."),
@@ -37,6 +38,12 @@ export async function submitPosSaleAction(
 ): Promise<ActionState & { invoiceId?: string; dteResult?: any }> {
   try {
     const { user, supabase } = await requireAuthenticatedContext();
+
+    // Enforce active work shift/drawer verification
+    const activeShift = await getActiveShift(user, supabase);
+    if (!activeShift) {
+      throw new Error("No tenés una jornada activa abierta. Abrí la caja en el POS para poder registrar ventas.");
+    }
 
     // 1. Validar inputs
     const rawData = {

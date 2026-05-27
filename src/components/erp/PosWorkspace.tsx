@@ -7,6 +7,7 @@ import {
   MapPin, ArrowUpDown, Filter
 } from "lucide-react";
 import { submitPosSaleAction, syncDatabaseProductImagesAction } from "@/app/actions/pos";
+import { getActiveShiftAction, openShiftAction, getShiftExpectedTotalsAction, closeShiftAction } from "@/app/actions/shifts";
 import TicketReceipt from "./TicketReceipt";
 import type { ActionState } from "@/lib/types/erp";
 
@@ -59,6 +60,27 @@ export default function PosWorkspace({ products: initialProducts, branches }: Po
   const [products, setProducts] = useState<Product[]>(initialProducts);
   const [cart, setCart] = useState<CartItem[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
+
+  // Estados de Jornada y Cierre de Caja (Arqueo)
+  const [activeShift, setActiveShift] = useState<any | null>(null);
+  const [isLoadingShift, setIsLoadingShift] = useState(true);
+  
+  // Modal de Apertura de Caja
+  const [openingCashInput, setOpeningCashInput] = useState("");
+  const [selectedBranchId, setSelectedBranchId] = useState("");
+  const [openShiftError, setOpenShiftError] = useState("");
+  const [isOpeningShiftPending, startOpeningShiftTransition] = useTransition();
+
+  // Modal de Arqueo / Cierre de Caja
+  const [showCloseShiftModal, setShowCloseShiftModal] = useState(false);
+  const [expectedTotals, setExpectedTotals] = useState({ cash: 0, debit: 0, credit: 0, transfer: 0 });
+  const [actualCashInput, setActualCashInput] = useState("");
+  const [actualDebitInput, setActualDebitInput] = useState("");
+  const [actualCreditInput, setActualCreditInput] = useState("");
+  const [actualTransferInput, setActualTransferInput] = useState("");
+  const [closeShiftNotes, setCloseShiftNotes] = useState("");
+  const [closeShiftError, setCloseShiftError] = useState("");
+  const [isClosingShiftPending, startClosingShiftTransition] = useTransition();
 
   // Estados de Filtros Avanzados
   const [stockFilter, setStockFilter] = useState<"all" | "critical" | "out_of_stock">("all");
@@ -282,6 +304,109 @@ export default function PosWorkspace({ products: initialProducts, branches }: Po
     setCart((currentCart) => currentCart.filter((item) => item.product.id !== productId));
   };
 
+  // Cargar jornada activa al montar
+  useEffect(() => {
+    async function loadShift() {
+      try {
+        const res = await getActiveShiftAction();
+        if (res.status === "success" && res.shift) {
+          setActiveShift(res.shift);
+          if (res.shift.branchId) {
+            setSelectedBranchId(res.shift.branchId);
+          }
+        }
+      } catch (err) {
+        console.error("Error al recuperar la jornada activa:", err);
+      } finally {
+        setIsLoadingShift(false);
+      }
+    }
+    loadShift();
+  }, []);
+
+  const handleOpenShift = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setOpenShiftError("");
+
+    const initialCash = parseFloat(openingCashInput) || 0;
+    if (initialCash < 0) {
+      setOpenShiftError("El monto inicial no puede ser negativo.");
+      return;
+    }
+
+    const fd = new FormData();
+    fd.append("initialCash", String(initialCash));
+    fd.append("branchId", selectedBranchId);
+
+    startOpeningShiftTransition(async () => {
+      const res = await openShiftAction({ status: "idle", message: "" }, fd);
+      if (res.status === "success" && res.shift) {
+        setActiveShift(res.shift);
+        setOpeningCashInput("");
+        setOpenShiftError("");
+      } else {
+        setOpenShiftError(res.message || "Error al abrir la jornada.");
+      }
+    });
+  };
+
+  const handleOpenCloseShiftModal = async () => {
+    if (!activeShift) return;
+    setCloseShiftError("");
+    setCloseShiftNotes("");
+    
+    try {
+      const res = await getShiftExpectedTotalsAction(activeShift.openedAt, activeShift.initialCash);
+      if (res.status === "success") {
+        setExpectedTotals(res.totals);
+        setActualCashInput(String(res.totals.cash));
+        setActualDebitInput(String(res.totals.debit));
+        setActualCreditInput(String(res.totals.credit));
+        setActualTransferInput(String(res.totals.transfer));
+        setShowCloseShiftModal(true);
+      } else {
+        setCloseShiftError(res.message || "Error al calcular montos esperados.");
+      }
+    } catch (err) {
+      setCloseShiftError("Error de red al recuperar totales calculados.");
+    }
+  };
+
+  const handleCloseShift = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setCloseShiftError("");
+
+    if (!activeShift) return;
+
+    const actualCash = parseFloat(actualCashInput) || 0;
+    const actualDebit = parseFloat(actualDebitInput) || 0;
+    const actualCredit = parseFloat(actualCreditInput) || 0;
+    const actualTransfer = parseFloat(actualTransferInput) || 0;
+
+    const fd = new FormData();
+    fd.append("shiftId", activeShift.id);
+    fd.append("actualCash", String(actualCash));
+    fd.append("actualDebit", String(actualDebit));
+    fd.append("actualCredit", String(actualCredit));
+    fd.append("actualTransfer", String(actualTransfer));
+    fd.append("notes", closeShiftNotes);
+
+    startClosingShiftTransition(async () => {
+      const res = await closeShiftAction({ status: "idle", message: "" }, fd);
+      if (res.status === "success") {
+        setActiveShift(null);
+        setShowCloseShiftModal(false);
+        setActualCashInput("");
+        setActualDebitInput("");
+        setActualCreditInput("");
+        setActualTransferInput("");
+        setCloseShiftNotes("");
+      } else {
+        setCloseShiftError(res.message || "Error al guardar el cierre de caja.");
+      }
+    });
+  };
+
   // Lector de códigos de barra (Hook de teclado global)
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -488,15 +613,97 @@ export default function PosWorkspace({ products: initialProducts, branches }: Po
     if (sortBy === "price-asc") {
       return filtered.sort((a, b) => a.unitPrice - b.unitPrice);
     }
-    if (sortBy === "price-desc") {
+      if (sortBy === "price-desc") {
       return filtered.sort((a, b) => b.unitPrice - a.unitPrice);
     }
     
     return filtered;
   }, [productsWithCategories, searchQuery, activeCategory, stockFilter, sortBy]);
 
+  if (isLoadingShift) {
+    return (
+      <div className="flex h-screen w-screen flex-col items-center justify-center bg-slate-50 dark:bg-slate-900 text-slate-500 space-y-4">
+        <div className="w-10 h-10 border-4 border-primary border-t-transparent rounded-full animate-spin" />
+        <p className="text-sm font-extrabold uppercase tracking-wider text-slate-400 animate-pulse">Cargando Jornada de Caja...</p>
+      </div>
+    );
+  }
+
   return (
-    <div className="flex h-screen w-screen overflow-hidden bg-slate-50 dark:bg-slate-900">
+    <div className="flex h-screen w-screen overflow-hidden bg-slate-50 dark:bg-slate-900 relative">
+      
+      {/* POPUP DE APERTURA DE JORNADA BLUR (SI NO HAY JORNADA ACTIVA) */}
+      {!activeShift && (
+        <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-md z-40 flex items-center justify-center p-4">
+          <div className="bg-white/95 dark:bg-slate-950/95 border border-slate-200 dark:border-slate-800 rounded-3xl w-full max-w-md overflow-hidden shadow-2xl p-6 space-y-6 animate-scale-up">
+            
+            <div className="text-center space-y-2">
+              <div className="mx-auto w-12 h-12 rounded-full bg-primary/10 text-primary flex items-center justify-center">
+                <Landmark className="w-6 h-6" />
+              </div>
+              <h2 className="text-lg font-extrabold text-slate-900 dark:text-slate-100 uppercase tracking-wide">Abrir Jornada de Trabajo</h2>
+              <p className="text-xs text-slate-500 dark:text-slate-400">
+                Ingresá el monto de efectivo inicial en caja y seleccioná tu sucursal para habilitar las ventas.
+              </p>
+            </div>
+
+            <form onSubmit={handleOpenShift} className="space-y-4">
+              {/* Sucursal Select */}
+              <div className="space-y-1.5">
+                <label className="block text-xs font-bold text-slate-550 dark:text-slate-400 uppercase tracking-wider">Sucursal / Almacén</label>
+                <select
+                  value={selectedBranchId}
+                  onChange={(e) => setSelectedBranchId(e.target.value)}
+                  required
+                  className="w-full rounded-2xl border border-slate-250 dark:border-slate-700 px-3.5 py-3 bg-slate-50/50 dark:bg-slate-900 text-xs font-bold outline-none focus:ring-2 focus:ring-primary/20 transition-all text-slate-850 dark:text-slate-150"
+                >
+                  <option value="" disabled>Selecciona una Sucursal...</option>
+                  {branches.map((b) => (
+                    <option key={b.id} value={b.id}>{b.name}</option>
+                  ))}
+                </select>
+              </div>
+
+              {/* Monto Inicial Input */}
+              <div className="space-y-1.5">
+                <label className="block text-xs font-bold text-slate-550 dark:text-slate-400 uppercase tracking-wider">Efectivo Inicial en Caja</label>
+                <div className="relative">
+                  <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 font-extrabold text-base">$</span>
+                  <input
+                    type="number"
+                    value={openingCashInput}
+                    onChange={(e) => setOpeningCashInput(e.target.value)}
+                    required
+                    min="0"
+                    placeholder="Ej: 50000"
+                    className="w-full rounded-2xl border border-slate-250 dark:border-slate-700 pl-8 pr-4 py-3 bg-slate-50/50 dark:bg-slate-900 text-sm font-extrabold outline-none focus:ring-2 focus:ring-primary/20 transition-all text-slate-850 dark:text-slate-150"
+                  />
+                </div>
+              </div>
+
+              {openShiftError && (
+                <div className="bg-red-50 dark:bg-red-950/20 text-red-700 dark:text-red-400 border border-red-250 dark:border-red-900/30 rounded-xl px-4 py-2.5 text-xs font-semibold">
+                  {openShiftError}
+                </div>
+              )}
+
+              <button
+                type="submit"
+                disabled={isOpeningShiftPending}
+                className="w-full py-3.5 rounded-2xl bg-primary hover:bg-primary/95 text-white font-extrabold text-xs transition-colors shadow-md shadow-primary/10 active:scale-[0.98] disabled:opacity-50 flex items-center justify-center gap-1.5"
+              >
+                {isOpeningShiftPending ? (
+                  <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                ) : (
+                  <Check className="w-4 h-4" />
+                )}
+                <span>Habilitar Caja POS</span>
+              </button>
+            </form>
+            
+          </div>
+        </div>
+      )}
       
       {/* PANEL IZQUIERDO: Catálogo de Productos y Cola Pedidos */}
       <div className="flex-1 flex flex-col overflow-hidden border-r border-slate-200 dark:border-slate-800">
@@ -548,6 +755,18 @@ export default function PosWorkspace({ products: initialProducts, branches }: Po
             >
               <RefreshCw className={`w-3.5 h-3.5 ${isSyncing ? "animate-spin text-primary" : ""}`} />
             </button>
+
+            {activeShift && (
+              <button
+                type="button"
+                onClick={handleOpenCloseShiftModal}
+                title="Realizar Arqueo y Cerrar Caja"
+                className="ml-2 px-3 py-1.5 rounded-lg border border-red-200 hover:border-red-300 dark:border-red-950 dark:hover:border-red-900 bg-red-500/10 hover:bg-red-500/15 text-red-600 dark:text-red-400 text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer active:scale-95 shrink-0"
+              >
+                <Landmark className="w-3.5 h-3.5" />
+                <span>Cerrar Caja</span>
+              </button>
+            )}
           </div>
         </div>
 
@@ -1620,6 +1839,161 @@ export default function PosWorkspace({ products: initialProducts, branches }: Po
                 Validar y Confirmar
               </button>
             </div>
+
+          </div>
+        </div>
+      )}
+
+      {/* POPUP DE ARQUEO Y CIERRE DE CAJA (MODAL) */}
+      {showCloseShiftModal && activeShift && (
+        <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 overflow-y-auto animate-fade-in">
+          <div className="bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-3xl w-full max-w-lg overflow-hidden shadow-2xl animate-scale-up flex flex-col relative">
+            
+            {/* Loading Overlay */}
+            {isClosingShiftPending && (
+              <div className="absolute inset-0 bg-slate-950/80 backdrop-blur-sm z-50 flex flex-col items-center justify-center text-white space-y-4 rounded-3xl">
+                <div className="w-12 h-12 border-4 border-red-500 border-t-transparent rounded-full animate-spin" />
+                <p className="font-extrabold text-base">Registrando Arqueo y Cerrando Caja...</p>
+                <p className="text-xs text-slate-400">Consolidando flujos de caja del turno...</p>
+              </div>
+            )}
+
+            {/* Cabecera */}
+            <div className="p-5 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between bg-slate-50/50 dark:bg-slate-900/20">
+              <div className="flex items-center gap-2">
+                <Landmark className="w-5 h-5 text-red-550" />
+                <h3 className="font-extrabold text-base text-slate-900 dark:text-slate-100">Arqueo y Cierre de Caja</h3>
+              </div>
+              <button 
+                type="button"
+                onClick={() => setShowCloseShiftModal(false)}
+                className="p-1 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-400 hover:text-slate-650"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+
+            {/* Formulario */}
+            <form onSubmit={handleCloseShift} className="flex-1 overflow-y-auto p-6 space-y-4">
+              <p className="text-xs text-slate-500 dark:text-slate-400">
+                Por favor, cuenta los montos físicos que tenés en caja por cada medio de pago e ingresalos a continuación.
+              </p>
+
+              {/* Grid Comparativo */}
+              <div className="space-y-2.5">
+                {[
+                  { label: "Efectivo (Inc. Apertura)", expected: expectedTotals.cash, value: actualCashInput, setter: setActualCashInput },
+                  { label: "Tarjeta Débito", expected: expectedTotals.debit, value: actualDebitInput, setter: setActualDebitInput },
+                  { label: "Tarjeta Crédito", expected: expectedTotals.credit, value: actualCreditInput, setter: setActualCreditInput },
+                  { label: "Transferencia Bancaria", expected: expectedTotals.transfer, value: actualTransferInput, setter: setActualTransferInput },
+                ].map((row, idx) => (
+                  <div key={idx} className="grid grid-cols-[1.5fr_1fr_1fr] gap-3 items-center text-xs p-3 rounded-2xl border border-slate-150 dark:border-slate-850 bg-slate-50/30 dark:bg-slate-900/10">
+                    <span className="font-extrabold text-slate-700 dark:text-slate-350">{row.label}</span>
+                    
+                    {/* Esperado por Sistema */}
+                    <div className="flex flex-col text-right pr-2">
+                      <span className="text-[10px] font-bold text-slate-400 uppercase">Esperado</span>
+                      <span className="font-mono font-extrabold text-slate-600 dark:text-slate-400">${row.expected.toLocaleString("es-CL")}</span>
+                    </div>
+
+                    {/* Contado Físico */}
+                    <div className="relative">
+                      <span className="absolute left-2.5 top-1/2 -translate-y-1/2 text-slate-400 font-bold">$</span>
+                      <input
+                        type="number"
+                        value={row.value}
+                        onChange={(e) => row.setter(e.target.value)}
+                        required
+                        min="0"
+                        placeholder="0"
+                        className="w-full rounded-xl border border-slate-250 dark:border-slate-700 pl-6 pr-2 py-1.5 bg-white dark:bg-slate-950 font-bold font-mono outline-none focus:ring-2 focus:ring-primary/20 text-slate-800 dark:text-slate-200"
+                      />
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {/* Resumen y Descuadre */}
+              {(() => {
+                const totalExpected = expectedTotals.cash + expectedTotals.debit + expectedTotals.credit + expectedTotals.transfer;
+                const totalActual = (parseFloat(actualCashInput) || 0) + (parseFloat(actualDebitInput) || 0) + (parseFloat(actualCreditInput) || 0) + (parseFloat(actualTransferInput) || 0);
+                const discrepancy = totalActual - totalExpected;
+
+                return (
+                  <div className="p-4 rounded-2xl border border-slate-200 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-900/40 space-y-2.5">
+                    <div className="flex justify-between items-center text-xs text-slate-500 font-semibold">
+                      <span>Total Esperado por Sistema:</span>
+                      <span className="font-mono text-slate-800 dark:text-slate-300">${totalExpected.toLocaleString("es-CL")}</span>
+                    </div>
+                    <div className="flex justify-between items-center text-xs text-slate-500 font-semibold">
+                      <span>Total Contado Físico:</span>
+                      <span className="font-mono text-slate-900 dark:text-slate-100 font-extrabold">${totalActual.toLocaleString("es-CL")}</span>
+                    </div>
+                    
+                    <div className="pt-2 border-t border-dashed border-slate-200 dark:border-slate-800 flex justify-between items-center">
+                      <span className="text-xs font-bold uppercase tracking-wider text-slate-500">Diferencia de Caja:</span>
+                      
+                      {discrepancy === 0 ? (
+                        <span className="px-2.5 py-1 rounded-full bg-green-500/10 border border-green-500/20 text-green-600 dark:text-green-400 font-extrabold text-[10px] uppercase">
+                          Caja Cuadrada ✓
+                        </span>
+                      ) : discrepancy < 0 ? (
+                        <span className="px-2.5 py-1 rounded-full bg-red-500/10 border border-red-500/20 text-red-600 dark:text-red-400 font-extrabold text-[10px] uppercase font-mono">
+                          Faltante: -${Math.abs(discrepancy).toLocaleString("es-CL")}
+                        </span>
+                      ) : (
+                        <span className="px-2.5 py-1 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-600 dark:text-amber-400 font-extrabold text-[10px] uppercase font-mono">
+                          Sobrante: +${discrepancy.toLocaleString("es-CL")}
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                );
+              })()}
+
+              {/* Notas */}
+              <div className="space-y-1.5">
+                <label className="block text-xs font-bold text-slate-550 dark:text-slate-400 uppercase tracking-wider">Observaciones / Novedades del Cierre</label>
+                <textarea
+                  value={closeShiftNotes}
+                  onChange={(e) => setCloseShiftNotes(e.target.value)}
+                  placeholder="Añadí cualquier novedad relevante del turno..."
+                  rows={3}
+                  className="w-full rounded-2xl border border-slate-250 dark:border-slate-700 p-3 bg-white dark:bg-slate-950 text-xs font-medium outline-none focus:ring-2 focus:ring-primary/20 text-slate-800 dark:text-slate-200"
+                />
+              </div>
+
+              {closeShiftError && (
+                <div className="bg-red-50 dark:bg-red-950/20 text-red-700 dark:text-red-400 border border-red-250 dark:border-red-900/30 rounded-xl px-4 py-2.5 text-xs font-semibold">
+                  {closeShiftError}
+                </div>
+              )}
+
+              {/* Botones */}
+              <div className="flex gap-2 pt-2 border-t border-slate-100 dark:border-slate-800">
+                <button
+                  type="button"
+                  onClick={() => setShowCloseShiftModal(false)}
+                  className="flex-1 py-3 rounded-2xl border border-slate-250 dark:border-slate-700 text-xs font-bold text-slate-655 dark:text-slate-350 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors"
+                >
+                  Cancelar Cierre
+                </button>
+                
+                <button
+                  type="submit"
+                  disabled={isClosingShiftPending}
+                  className="flex-1 py-3 rounded-2xl bg-red-600 hover:bg-red-700 text-white font-extrabold text-xs transition-all shadow-md shadow-red-600/10 active:scale-[0.98] disabled:opacity-50 flex items-center justify-center gap-1.5"
+                >
+                  {isClosingShiftPending ? (
+                    <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                  ) : (
+                    <Check className="w-4 h-4" />
+                  )}
+                  <span>Confirmar Cierre de Caja</span>
+                </button>
+              </div>
+
+            </form>
 
           </div>
         </div>
