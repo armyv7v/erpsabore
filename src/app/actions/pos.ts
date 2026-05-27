@@ -49,6 +49,9 @@ export async function submitPosSaleAction(
       itemsJson: String(formData.get("itemsJson") ?? "").trim(),
     };
 
+    const transferTxId = String(formData.get("transferTxId") ?? "").trim();
+    const transferTimestamp = String(formData.get("transferTimestamp") ?? "").trim();
+
     const parsed = posSaleSchema.parse(rawData);
 
     // Parsear items del carrito
@@ -105,7 +108,9 @@ export async function submitPosSaleAction(
       issueDate: today,
       dueDate: today,
       currency: "CLP",
-      notes: `Venta POS Local Físico - Pago vía ${parsed.paymentMethod}`,
+      notes: parsed.paymentMethod === "transfer" && transferTxId
+        ? `Venta POS Local Físico - Transferencia TX: ${transferTxId} - Validador: ${transferTimestamp}`
+        : `Venta POS Local Físico - Pago vía ${parsed.paymentMethod}`,
       taxRate: 0.19, // IVA Chile
       items: items.map((item) => ({
         productId: item.productId || null,
@@ -196,7 +201,9 @@ export async function submitPosSaleAction(
           invoiceId,
           amount: exactInvoiceTotal,
           paymentDate: today,
-          reference: `POS-REF-${dteResult.folio}`,
+          reference: parsed.paymentMethod === "transfer" && transferTxId
+            ? `TX-${transferTxId}`
+            : `POS-REF-${dteResult.folio}`,
           method: parsed.paymentMethod,
         },
         supabase

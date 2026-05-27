@@ -78,6 +78,11 @@ export default function PosWorkspace({ products: initialProducts, branches }: Po
   const [completedSale, setCompletedSale] = useState<any | null>(null);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [showCashPopup, setShowCashPopup] = useState(false);
+  const [showTransferPopup, setShowTransferPopup] = useState(false);
+  const [transferTxId, setTransferTxId] = useState("");
+  const [transferTimestamp, setTransferTimestamp] = useState("");
+  const [transferReceiptName, setTransferReceiptName] = useState("");
+  const [transferReceiptUrl, setTransferReceiptUrl] = useState<string | null>(null);
 
   // Escáner de código de barras físico (Simulado por teclado a nivel global)
   const barcodeBuffer = useRef<string>("");
@@ -300,6 +305,11 @@ export default function PosWorkspace({ products: initialProducts, branches }: Po
     fd.append("paymentMethod", paymentMethod);
     fd.append("amountPaid", amountPaid || String(subtotal));
 
+    if (paymentMethod === "transfer") {
+      fd.append("transferTxId", transferTxId);
+      fd.append("transferTimestamp", transferTimestamp);
+    }
+
     // Cart items a JSON
     const itemsJson = JSON.stringify(
       cart.map((item) => ({
@@ -349,6 +359,10 @@ export default function PosWorkspace({ products: initialProducts, branches }: Po
         setCustomerName("Cliente General");
         setCustomerRut("66.666.666-6");
         setCustomerEmail("");
+        setTransferTxId("");
+        setTransferTimestamp("");
+        setTransferReceiptName("");
+        setTransferReceiptUrl(null);
       }
     });
   };
@@ -783,6 +797,9 @@ export default function PosWorkspace({ products: initialProducts, branches }: Po
                       setPaymentMethod(method.id);
                       if (method.id === "cash") {
                         setShowCashPopup(true);
+                      } else if (method.id === "transfer") {
+                        setTransferTimestamp(new Date().toLocaleString("es-CL"));
+                        setShowTransferPopup(true);
                       } else {
                         setAmountPaid("");
                       }
@@ -790,7 +807,7 @@ export default function PosWorkspace({ products: initialProducts, branches }: Po
                     className={`flex items-center justify-center py-2 px-1 rounded-xl border transition-all text-[10px] font-extrabold gap-1 ${
                       paymentMethod === method.id
                         ? "border-primary bg-primary/5 text-primary ring-1 ring-primary"
-                        : "border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-900 text-slate-650 dark:text-slate-450"
+                        : "border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-900 text-slate-655 dark:text-slate-450"
                     }`}
                   >
                     <Icon className="w-3.5 h-3.5 shrink-0" />
@@ -830,6 +847,42 @@ export default function PosWorkspace({ products: initialProducts, branches }: Po
             >
               <Banknote className="w-4 h-4" />
               <span>Ingresar Monto Recibido</span>
+            </button>
+          )}
+
+          {/* Indicador compacto de pago por transferencia */}
+          {paymentMethod === "transfer" && transferTxId && cart.length > 0 && (
+            <div className="flex items-center justify-between bg-slate-50 dark:bg-slate-900/40 px-3 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 text-xs font-semibold animate-fade-in gap-2">
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center gap-1.5 text-slate-650 dark:text-slate-350">
+                  <Landmark className="w-4 h-4 text-purple-500 shrink-0" />
+                  <span className="truncate">TX: <strong className="text-slate-855 dark:text-slate-100">{transferTxId}</strong></span>
+                </div>
+                {transferReceiptName && (
+                  <p className="text-[10px] text-slate-400 font-mono truncate pl-5.5">{transferReceiptName}</p>
+                )}
+              </div>
+              <button 
+                type="button" 
+                onClick={() => setShowTransferPopup(true)} 
+                className="text-[10px] font-bold text-primary hover:underline shrink-0"
+              >
+                Editar
+              </button>
+            </div>
+          )}
+
+          {paymentMethod === "transfer" && !transferTxId && cart.length > 0 && (
+            <button
+              type="button"
+              onClick={() => {
+                setTransferTimestamp(new Date().toLocaleString("es-CL"));
+                setShowTransferPopup(true);
+              }}
+              className="w-full flex items-center justify-center gap-1.5 py-2.5 rounded-xl border border-dashed border-primary/40 bg-primary/5 text-primary text-xs font-bold hover:bg-primary/10 transition-all animate-fade-in"
+            >
+              <Landmark className="w-4 h-4" />
+              <span>Validar Transferencia</span>
             </button>
           )}
 
@@ -958,7 +1011,7 @@ export default function PosWorkspace({ products: initialProducts, branches }: Po
                     </div>
                     {paymentMethod === "cash" && (
                       <>
-                        <div className="flex justify-between text-slate-650 dark:text-slate-400">
+                        <div className="flex justify-between text-slate-655 dark:text-slate-400">
                           <span>Entregado:</span>
                           <span className="font-bold text-slate-850 dark:text-slate-200">
                             ${(parseFloat(amountPaid) || subtotal).toLocaleString("es-CL")}
@@ -969,6 +1022,18 @@ export default function PosWorkspace({ products: initialProducts, branches }: Po
                           <span className="font-extrabold text-sm">
                             ${changeDue.toLocaleString("es-CL")}
                           </span>
+                        </div>
+                      </>
+                    )}
+                    {paymentMethod === "transfer" && transferTxId && (
+                      <>
+                        <div className="flex justify-between text-slate-655 dark:text-slate-400">
+                          <span>Operación TX:</span>
+                          <span className="font-bold text-slate-850 dark:text-slate-205">{transferTxId}</span>
+                        </div>
+                        <div className="flex justify-between text-slate-655 dark:text-slate-400">
+                          <span>Validado en:</span>
+                          <span className="font-bold text-[10px] text-slate-500">{transferTimestamp}</span>
                         </div>
                       </>
                     )}
@@ -1104,6 +1169,142 @@ export default function PosWorkspace({ products: initialProducts, branches }: Po
                 className="flex-1 py-2.5 rounded-xl bg-green-600 hover:bg-green-700 text-white font-extrabold text-xs transition-colors shadow-md shadow-green-600/10 active:scale-[0.98]"
               >
                 Confirmar Monto
+              </button>
+            </div>
+
+          </div>
+        </div>
+      )}
+
+      {/* POPUP DE VALIDACIÓN DE TRANSFERENCIA TRANSLÚCIDO (MODAL) */}
+      {showTransferPopup && (
+        <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 animate-fade-in">
+          <div className="bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-3xl w-full max-w-md overflow-hidden shadow-2xl animate-scale-up p-5 space-y-4">
+            
+            {/* Cabecera */}
+            <div className="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-slate-800/85">
+              <div className="flex items-center gap-2">
+                <Landmark className="w-5 h-5 text-purple-500" />
+                <h3 className="font-extrabold text-base text-slate-900 dark:text-slate-100">Validar Transferencia</h3>
+              </div>
+              <button 
+                type="button"
+                onClick={() => setShowTransferPopup(false)}
+                className="p-1 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-400 hover:text-slate-650"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+
+            {/* Caja de Total */}
+            <div className="bg-slate-50 dark:bg-slate-900/50 p-4 rounded-2xl border border-slate-150 dark:border-slate-850 flex items-center justify-between">
+              <span className="text-xs font-bold text-slate-500 uppercase">Monto Transferido:</span>
+              <span className="text-2xl font-extrabold text-slate-900 dark:text-slate-100">
+                ${subtotal.toLocaleString("es-CL")}
+              </span>
+            </div>
+
+            {/* Input ID Transaccion */}
+            <div className="space-y-1.5">
+              <label className="block text-xs font-bold text-slate-500">ID de Transacción / Código Operación</label>
+              <input
+                type="text"
+                value={transferTxId}
+                autoFocus
+                onChange={(e) => setTransferTxId(e.target.value)}
+                placeholder="Ej: TX-902381"
+                className="w-full rounded-2xl border border-slate-250 dark:border-slate-700 px-4 py-3 bg-slate-50/50 dark:bg-slate-900/20 text-sm font-extrabold outline-none focus:ring-2 focus:ring-primary/20 transition-all text-slate-850 dark:text-slate-150"
+              />
+            </div>
+
+            {/* Input Timestamp */}
+            <div className="space-y-1.5">
+              <label className="block text-xs font-bold text-slate-500">Fecha y Hora de Validación</label>
+              <input
+                type="text"
+                value={transferTimestamp}
+                onChange={(e) => setTransferTimestamp(e.target.value)}
+                className="w-full rounded-2xl border border-slate-250 dark:border-slate-700 px-4 py-3 bg-slate-50/50 dark:bg-slate-900/20 text-xs font-bold outline-none focus:ring-2 focus:ring-primary/20 transition-all text-slate-600 dark:text-slate-450"
+              />
+            </div>
+
+            {/* Captura de Comprobante / Dropzone */}
+            <div className="space-y-1.5">
+              <label className="block text-xs font-bold text-slate-500">Adjuntar Comprobante de Pago</label>
+              <div className="flex flex-col items-center justify-center border-2 border-dashed border-slate-200 dark:border-slate-800 rounded-2xl p-4 bg-slate-50/20 hover:bg-slate-50/50 dark:hover:bg-slate-900/10 cursor-pointer relative group transition-colors">
+                <input
+                  type="file"
+                  accept="image/*,application/pdf"
+                  onChange={(e) => {
+                    const file = e.target.files?.[0];
+                    if (file) {
+                      setTransferReceiptName(file.name);
+                      const url = URL.createObjectURL(file);
+                      setTransferReceiptUrl(url);
+                    }
+                  }}
+                  className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                />
+                
+                {transferReceiptUrl ? (
+                  <div className="flex flex-col items-center space-y-2">
+                    {transferReceiptName.match(/\.(pdf)$/i) ? (
+                      <div className="bg-red-500/15 text-red-500 p-2.5 rounded-xl">
+                        <FileText className="w-8 h-8" />
+                      </div>
+                    ) : (
+                      <img src={transferReceiptUrl} alt="Comprobante" className="w-16 h-16 object-cover rounded-xl border" />
+                    )}
+                    <span className="text-[10px] font-bold text-slate-700 dark:text-slate-350 truncate max-w-[200px]">{transferReceiptName}</span>
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        setTransferReceiptName("");
+                        setTransferReceiptUrl(null);
+                      }}
+                      className="text-[9px] font-bold text-red-500 hover:underline"
+                    >
+                      Remover comprobante
+                    </button>
+                  </div>
+                ) : (
+                  <div className="flex flex-col items-center text-slate-400 space-y-1">
+                    <Smartphone className="w-7 h-7 stroke-[1.5]" />
+                    <span className="text-[11px] font-bold">Subir foto o PDF del comprobante</span>
+                    <span className="text-[9px] text-slate-450">o arrastrar archivo aquí</span>
+                  </div>
+                )}
+              </div>
+            </div>
+
+            {/* Botones */}
+            <div className="flex gap-2 pt-2">
+              <button
+                type="button"
+                onClick={() => {
+                  setTransferTxId("");
+                  setTransferReceiptName("");
+                  setTransferReceiptUrl(null);
+                  setShowTransferPopup(false);
+                }}
+                className="flex-1 py-2.5 rounded-xl border border-slate-250 dark:border-slate-700 text-xs font-bold text-slate-655 dark:text-slate-350 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors"
+              >
+                Cancelar
+              </button>
+              
+              <button
+                type="button"
+                onClick={() => {
+                  if (!transferTxId) {
+                    setTransferTxId(`TX-AUTO-${Math.floor(100000 + Math.random() * 900000)}`);
+                  }
+                  setShowTransferPopup(false);
+                }}
+                className="flex-1 py-2.5 rounded-xl bg-purple-600 hover:bg-purple-700 text-white font-extrabold text-xs transition-colors shadow-md shadow-purple-600/10 active:scale-[0.98]"
+              >
+                Validar y Confirmar
               </button>
             </div>
 
