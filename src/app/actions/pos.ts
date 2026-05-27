@@ -266,3 +266,67 @@ export async function submitPosSaleAction(
     };
   }
 }
+
+export async function syncDatabaseProductImagesAction(): Promise<ActionState> {
+  try {
+    const { user, supabase } = await requireAuthenticatedContext();
+    const { mockProducts } = await import("@/data/inventory");
+
+    // Fetch all products from DB for this tenant
+    const { data: dbProducts, error: fetchError } = await supabase
+      .from("products")
+      .select("id, sku, name")
+      .eq("tenant_id", user.tenantId);
+
+    if (fetchError) {
+      throw new Error(`Error al leer productos de la base de datos: ${fetchError.message}`);
+    }
+
+    if (!dbProducts || dbProducts.length === 0) {
+      return {
+        status: "error",
+        message: "No se encontraron productos en la base de datos para sincronizar."
+      };
+    }
+
+    let updatedCount = 0;
+    for (const dbProd of dbProducts) {
+      // Find matching mock product by SKU or Name
+      const matchedMock = mockProducts.find(
+        (p) => p.sku.toUpperCase() === dbProd.sku.toUpperCase() || 
+               p.name.toLowerCase().trim() === dbProd.name.toLowerCase().trim()
+      );
+
+      if (matchedMock) {
+        const { error: updateError } = await supabase
+          .from("products")
+          .update({ image_url: matchedMock.imageUrl })
+          .eq("id", dbProd.id);
+
+        if (!updateError) {
+          updatedCount++;
+        } else {
+          console.error(`[Sync] Error updating image for ${dbProd.name}:`, updateError.message);
+        }
+      }
+    }
+
+    try {
+      revalidateERPPaths();
+    } catch (e) {
+      // Revalidation might fail in tests or other contexts
+    }
+
+    return {
+      status: "success",
+      message: `Sincronización completada. Se actualizaron las imágenes de ${updatedCount} de ${dbProducts.length} productos en la base de datos.`
+    };
+  } catch (error) {
+    console.error("[Sync Action Error] Falló la sincronización de imágenes:", error);
+    return {
+      status: "error",
+      message: error instanceof Error ? error.message : "Error inesperado al sincronizar imágenes."
+    };
+  }
+}
+

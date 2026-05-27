@@ -3,9 +3,9 @@
 import { useState, useEffect, useRef, useTransition, useMemo } from "react";
 import { 
   Search, ShoppingCart, CreditCard, Banknote, Landmark, Smartphone, 
-  Trash2, User, FileText, ShoppingBag, Plus, Minus, Send, Copy, Clipboard, Check, X 
+  Trash2, User, FileText, ShoppingBag, Plus, Minus, Send, Copy, Clipboard, Check, X, RefreshCw 
 } from "lucide-react";
-import { submitPosSaleAction } from "@/app/actions/pos";
+import { submitPosSaleAction, syncDatabaseProductImagesAction } from "@/app/actions/pos";
 import TicketReceipt from "./TicketReceipt";
 import type { ActionState } from "@/lib/types/erp";
 
@@ -84,6 +84,29 @@ export default function PosWorkspace({ products: initialProducts, branches }: Po
   const [transferReceiptName, setTransferReceiptName] = useState("");
   const [transferReceiptUrl, setTransferReceiptUrl] = useState<string | null>(null);
   const [showPaymentModal, setShowPaymentModal] = useState(false);
+  const [isSyncing, setIsSyncing] = useState(false);
+  const [syncMessage, setSyncMessage] = useState("");
+
+  const handleSyncImages = async () => {
+    setIsSyncing(true);
+    setSyncMessage("");
+    try {
+      const res = await syncDatabaseProductImagesAction();
+      if (res.status === "success") {
+        setSyncMessage(res.message);
+        // Reload to refresh images in client-side components
+        setTimeout(() => {
+          window.location.reload();
+        }, 1500);
+      } else {
+        setSyncMessage(`Error: ${res.message}`);
+      }
+    } catch (err) {
+      setSyncMessage("Error al conectar con el servidor para la sincronización.");
+    } finally {
+      setIsSyncing(false);
+    }
+  };
 
   // Escáner de código de barras físico (Simulado por teclado a nivel global)
   const barcodeBuffer = useRef<string>("");
@@ -420,6 +443,14 @@ export default function PosWorkspace({ products: initialProducts, branches }: Po
                 </span>
               )}
             </button>
+            <button
+              onClick={handleSyncImages}
+              disabled={isSyncing}
+              title="Sincronizar imágenes del catálogo con la base de datos Supabase"
+              className="ml-1 p-2 rounded-lg hover:bg-white dark:hover:bg-slate-800 text-slate-500 hover:text-primary transition-all disabled:opacity-50 flex items-center justify-center cursor-pointer"
+            >
+              <RefreshCw className={`w-3.5 h-3.5 ${isSyncing ? "animate-spin text-primary" : ""}`} />
+            </button>
           </div>
         </div>
 
@@ -428,6 +459,14 @@ export default function PosWorkspace({ products: initialProducts, branches }: Po
           <div className="mx-4 mt-3 bg-primary/10 border border-primary/20 text-primary rounded-xl px-4 py-2.5 text-xs font-semibold flex items-center justify-between">
             <span>{parsedItemsMessage}</span>
             <button onClick={() => setParsedItemsMessage("")} className="text-primary hover:underline text-[10px] font-extrabold uppercase">Cerrar</button>
+          </div>
+        )}
+
+        {/* FEEDBACK MENSAJE DE SINCRONIZACIÓN DE IMÁGENES */}
+        {syncMessage && (
+          <div className="mx-4 mt-3 bg-green-500/10 border border-green-500/20 text-green-600 dark:text-green-400 rounded-xl px-4 py-2.5 text-xs font-semibold flex items-center justify-between">
+            <span>{syncMessage}</span>
+            <button onClick={() => setSyncMessage("")} className="text-green-600 dark:text-green-400 hover:underline text-[10px] font-extrabold uppercase">Cerrar</button>
           </div>
         )}
 
