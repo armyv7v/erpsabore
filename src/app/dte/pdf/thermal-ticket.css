@@ -1,32 +1,45 @@
 /* Estilos para impresión de ticket térmico físico de 80mm o 58mm */
 @media print {
-  body {
-    background: white;
-    color: black;
-    font-family: 'Courier New', Courier, monospace;
-    font-size: 12px;
-    line-height: 1.2;
+  html, body {
+    width: 80mm;
     margin: 0;
     padding: 0;
-    width: 80mm; /* Ancho estándar de papel térmico */
+    background: white !important;
+    color: black !important;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 11px;
+    line-height: 1.2;
   }
 
-  /* Ocultar elementos generales de la app al imprimir */
-  header, footer, nav, aside, button, .no-print {
-    display: none !important;
+  /* Ocultar absolutamente todo en la página por defecto */
+  body * {
+    visibility: hidden !important;
+  }
+
+  /* Hacer visible de forma única el ticket impreso y todos sus descendientes */
+  #printable-ticket, #printable-ticket * {
+    visibility: visible !important;
+  }
+
+  /* Posicionar el ticket impreso de forma absoluta para ocupar la esquina superior izquierda del papel térmico */
+  #printable-ticket {
+    position: absolute !important;
+    left: 0 !important;
+    top: 0 !important;
+    width: 80mm !important;
+    max-width: 80mm !important;
+    padding: 2mm !important;
+    margin: 0 !important;
+    border: none !important;
+    box-shadow: none !important;
+    background: white !important;
+    color: black !important;
   }
 
   /* Remueve márgenes y cabeceras automáticos de navegadores */
   @page {
     size: auto;
     margin: 0mm;
-  }
-
-  .thermal-ticket-container {
-    width: 100% !important;
-    max-width: 80mm !important;
-    padding: 2mm !important;
-    box-sizing: border-box;
   }
 }
 

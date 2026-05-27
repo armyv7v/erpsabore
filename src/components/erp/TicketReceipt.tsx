@@ -67,7 +67,7 @@ export default function TicketReceipt({ sale, customer, items, dteType, onClose 
 </TED>`;
 
   return (
-    <div className="fixed inset-0 z-[10000] flex items-center justify-center bg-slate-900/60 p-4 backdrop-blur-sm no-print">
+    <div className="fixed inset-0 z-[10000] flex items-center justify-center bg-slate-900/60 p-4 backdrop-blur-sm">
       <div className="flex max-h-[90dvh] w-full max-w-sm flex-col overflow-hidden rounded-2xl bg-white border border-slate-200 shadow-2xl animate-in fade-in zoom-in duration-200 dark:border-slate-800 dark:bg-slate-950">
         
         {/* Cabecera del visualizador */}
