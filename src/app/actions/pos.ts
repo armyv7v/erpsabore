@@ -176,41 +176,75 @@ export async function submitPosSaleAction(
       // Emitir factura (cambia estado a issued)
       await issueInvoice(user, invoiceId, supabase);
 
+      // Obtener el total real calculado por la base de datos para evitar descalces de redondeo centesimal
+      const { data: dbInvoice, error: fetchError } = await supabase
+        .from("invoices")
+        .select("total")
+        .eq("id", invoiceId)
+        .single();
+
+      if (fetchError || !dbInvoice) {
+        throw new Error(`No se pudo verificar el total de la factura en base de datos: ${fetchError?.message}`);
+      }
+
+      const exactInvoiceTotal = Number(dbInvoice.total);
+
       // Registrar pago completo en caja
       await registerInvoicePayment(
         user,
         {
           invoiceId,
-          amount: totalSale,
+          amount: exactInvoiceTotal,
           paymentDate: today,
           reference: `POS-REF-${dteResult.folio}`,
           method: parsed.paymentMethod,
         },
         supabase
       );
+
+      revalidateERPPaths();
+
+      // Usar el total exacto en la respuesta
+      return {
+        status: "success",
+        message: `Venta POS procesada con éxito. ${parsed.dteType === 33 ? "Factura" : "Boleta"} emitida bajo Folio ${
+          dteResult.folio
+        }.`,
+        invoiceId,
+        dteResult: {
+          folio: dteResult.folio,
+          pdfUrl: dteResult.pdfUrl,
+          xmlUrl: dteResult.xmlUrl,
+          trackId: dteResult.trackId,
+          siiMessage: dteResult.siiMessage,
+          total: exactInvoiceTotal,
+          paymentMethod: parsed.paymentMethod,
+          change: Math.max(0, parsed.amountPaid - exactInvoiceTotal),
+        },
+      };
     } else {
       console.log("[POS Mock] Venta registrada correctamente con Folio", dteResult.folio);
+      
+      revalidateERPPaths();
+
+      return {
+        status: "success",
+        message: `Venta POS procesada con éxito. ${parsed.dteType === 33 ? "Factura" : "Boleta"} emitida bajo Folio ${
+          dteResult.folio
+        }.`,
+        invoiceId,
+        dteResult: {
+          folio: dteResult.folio,
+          pdfUrl: dteResult.pdfUrl,
+          xmlUrl: dteResult.xmlUrl,
+          trackId: dteResult.trackId,
+          siiMessage: dteResult.siiMessage,
+          total: totalSale,
+          paymentMethod: parsed.paymentMethod,
+          change: Math.max(0, parsed.amountPaid - totalSale),
+        },
+      };
     }
-
-    revalidateERPPaths();
-
-    return {
-      status: "success",
-      message: `Venta POS procesada con éxito. ${parsed.dteType === 33 ? "Factura" : "Boleta"} emitida bajo Folio ${
-        dteResult.folio
-      }.`,
-      invoiceId,
-      dteResult: {
-        folio: dteResult.folio,
-        pdfUrl: dteResult.pdfUrl,
-        xmlUrl: dteResult.xmlUrl,
-        trackId: dteResult.trackId,
-        siiMessage: dteResult.siiMessage,
-        total: totalSale,
-        paymentMethod: parsed.paymentMethod,
-        change: Math.max(0, parsed.amountPaid - totalSale),
-      },
-    };
   } catch (error) {
     console.error("[POS Action Error] Falló el cobro de la venta física:", error);
     return {
