@@ -587,13 +587,13 @@ function resolveImageUrlByCatalogOrder(productIndex: number) {
     // Page 12 (10 products)
     "/catalogo_webp/page-12-img-01-0081.webp", // Pote degustacion 0,75 oz con tapa 100 und
     "/catalogo_webp/page-12-img-01-0081.webp", // Pote degustacion 1 oz con tapa 100 und
-    "/catalogo_webp/page-12-img-01-0081.webp", // Pote degustacion 1,5 oz con tapa
-    "/catalogo_webp/page-12-img-01-0081.webp", // Pote degustacion 2 oz con tapa
-    "/catalogo_webp/page-12-img-02-0082.webp", // Pote degustacion 5,5 oz con tapa 100 und
-    "/catalogo_webp/page-12-img-03-0083.webp", // Gelatinero con tapa 4 oz 50 und
-    "/catalogo_webp/page-12-img-04-0084.webp", // Guantes nitrilo negro talla S/M/L/XL
-    "/catalogo_webp/page-12-img-05-0085.webp", // Guantes nitrilo azul talla S/M/L
-    "/catalogo_webp/page-12-img-06-0086.webp", // Guante latex talla M
+    "/catalogo_webp/page-12-img-02-0082.webp", // Pote degustacion 1,5 oz con tapa
+    "/catalogo_webp/page-12-img-02-0082.webp", // Pote degustacion 2 oz con tapa
+    "/catalogo_webp/page-12-img-03-0083.webp", // Pote degustacion 5,5 oz con tapa 100 und
+    "/catalogo_webp/page-12-img-04-0084.webp", // Gelatinero con tapa 4 oz 50 und
+    "/catalogo_webp/page-12-img-05-0085.webp", // Guantes nitrilo negro talla S/M/L/XL
+    "/catalogo_webp/page-12-img-06-0086.webp", // Guantes nitrilo azul talla S/M/L
+    "/catalogo_webp/page-12-img-07-0087.webp", // Guante latex talla M
     "/catalogo_webp/page-12-img-08-0088.webp", // Guante vinilo talla L
 
     // Page 13 (12 products)
