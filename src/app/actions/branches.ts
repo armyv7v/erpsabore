@@ -3,7 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { requireAuthenticatedContext } from "@/lib/services/auth-service";
-import { createBranch } from "@/lib/repositories/branch-repository";
+import { createBranch, updateBranch } from "@/lib/repositories/branch-repository";
 import type { ActionState } from "@/lib/types/erp";
 import { createClient } from "@supabase/supabase-js";
 import { getSupabaseAdminEnv } from "@/lib/supabase/config";
@@ -69,6 +69,61 @@ export async function createBranchAction(
       message: error instanceof z.ZodError 
         ? error.issues.map((e) => e.message).join(" ") 
         : error.message || "Error inesperado al crear la sucursal.",
+    };
+  }
+}
+
+export async function updateBranchAction(
+  branchId: string,
+  _previousState: ActionState,
+  formData: FormData
+): Promise<ActionState & { branch?: any }> {
+  try {
+    const { user } = await requireAuthenticatedContext();
+
+    const { url, serviceRoleKey } = getSupabaseAdminEnv();
+    if (!url || !serviceRoleKey) {
+      throw new Error("Supabase admin client is not configured properly in production.");
+    }
+    const adminSupabase = createClient(url, serviceRoleKey, {
+      auth: {
+        autoRefreshToken: false,
+        persistSession: false,
+      },
+    });
+
+    const rawData = {
+      name: String(formData.get("name") ?? "").trim(),
+      address: String(formData.get("address") ?? "").trim() || null,
+      city: String(formData.get("city") ?? "").trim() || null,
+      region: String(formData.get("region") ?? "").trim() || null,
+      phone: String(formData.get("phone") ?? "").trim() || null,
+      email: String(formData.get("email") ?? "").trim() || null,
+      manager: String(formData.get("manager") ?? "").trim() || null,
+      status: (formData.get("status") ?? "active") as any,
+    };
+
+    const parsed = branchSchema.parse(rawData);
+
+    const branch = await updateBranch(adminSupabase, user.tenantId, branchId, parsed);
+
+    try {
+      revalidatePath("/sucursales");
+      revalidatePath("/pos");
+    } catch (e) {}
+
+    return {
+      status: "success",
+      message: `La sucursal "${branch.name}" se actualizó con éxito.`,
+      branch,
+    };
+  } catch (error: any) {
+    console.error("[updateBranchAction Error]:", error);
+    return {
+      status: "error",
+      message: error instanceof z.ZodError 
+        ? error.issues.map((e) => e.message).join(" ") 
+        : error.message || "Error inesperado al actualizar la sucursal.",
     };
   }
 }

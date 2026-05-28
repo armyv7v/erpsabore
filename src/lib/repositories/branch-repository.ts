@@ -106,3 +106,43 @@ export async function createBranch(
 
   return mapBranch(data as BranchRow);
 }
+
+export async function updateBranch(
+  supabase: SupabaseClient,
+  tenantId: string,
+  branchId: string,
+  input: {
+    name?: string;
+    address?: string | null;
+    city?: string | null;
+    region?: string | null;
+    phone?: string | null;
+    email?: string | null;
+    manager?: string | null;
+    status?: "active" | "inactive" | "maintenance";
+  }
+): Promise<BranchRecord> {
+  const { data, error } = await supabase
+    .from("branches")
+    .update({
+      name: input.name,
+      address: input.address,
+      city: input.city,
+      region: input.region,
+      phone: input.phone,
+      email: input.email,
+      manager: input.manager,
+      status: input.status,
+      updated_at: new Date().toISOString(),
+    })
+    .eq("tenant_id", tenantId)
+    .eq("id", branchId)
+    .select(BRANCH_SELECT)
+    .single();
+
+  if (error || !data) {
+    throw new Error(`No se pudo actualizar la sucursal. ${error ? error.message : "Error desconocido"}`.trim());
+  }
+
+  return mapBranch(data as BranchRow);
+}
