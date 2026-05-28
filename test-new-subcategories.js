@@ -4,41 +4,102 @@ const supabaseUrl = 'https://tpwrvrrvabgmibplkenv.supabase.co';
 const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRwd3J2cnJ2YWJnbWlicGxrZW52Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3MzcwNTUxMCwiZXhwIjoyMDg5MjgxNTEwfQ.QOUNcZDrtmlqd9OmPTcEj66T8kvw4dHbHzugAfnffuI';
 const supabase = createClient(supabaseUrl, supabaseKey);
 
-const PRODUCT_CATEGORIES = [
-  { id: '01', name: 'Papeles y Rollos Kraft', keywords: ['kraft', 'mantequilla', 'antigrasa'] },
-  { id: '02', name: 'Cajas y Porta Alimentos', keywords: ['caja', 'porta completo', 'porta completo carton'] },
-  { id: '03', name: 'Vasos, Tapas y Accesorios', keywords: ['vaso', 'tapa', 'cubre vaso', 'porta vaso', 'porta vasos'] },
-  { id: '04', name: 'Bandejas', keywords: ['bandeja'] },
-  { id: '05', name: 'Bolsas y Prepicados', keywords: ['bolsa', 'fullpack', 'prepicado'] },
-  { id: '06', name: 'Higiene y Papel Tisú', keywords: ['toalla', 'servilleta', 'confort'] },
-  { id: '07', name: 'Envases de Plástico', keywords: ['bowl', 'pote', 'gelatinero', 'clamshell', 'sushi', 'plato', 'marmita', 'envase redondo', 'envase rectangular', 'envase triangular', 'envase 401', 'envase 7190', 'envase 247', 'portacomidas wabe', 'envase plastico', 'inserto vaso', 'vaso plastico', 'tapa plana', 'tapa plastica domo', 'tapa capuchino'] },
-  { id: '08', name: 'Cubiertos, Bombillas y Utensilios', keywords: ['bombilla', 'chinos', 'revolvedor', 'mondadientes', 'cuchara', 'cuchillo', 'tenedor'] },
-  { id: '09', name: 'Protección e Higiene Personal', keywords: ['guante', 'gorro', 'cofia'] },
-  { id: '10', name: 'Librería, Embalaje y Oficina', keywords: ['rollo termico', 'resma', 'borrador', 'cinta embalaje'] },
-  { id: '11', name: 'Aluminio y Metálicos', keywords: ['aluminio', 'foil'] },
-  { id: '12', name: 'Otros', keywords: [] }
-];
-
 function getProductCategory(name) {
   const lowerName = name.toLowerCase();
-  
-  // 1. Rollos térmicos y Transbank
-  if (lowerName.includes("rollo termico") || lowerName.includes("transbank")) {
-    return 'Librería, Embalaje y Oficina';
+
+  // 1. Aluminio y Metálicos
+  if (lowerName.includes("aluminio") || lowerName.includes("foil")) {
+    return 'Aluminio y Metálicos';
   }
 
-  // 2. Envases de Plumavit (vasos, tapas, bandejas de plumavit y todos los contenedores térmicos)
-  if (lowerName.includes("plumavit") || lowerName.includes("termico")) {
+  // 2. Envases de Plumavit
+  if (
+    lowerName.includes("plumavit") || 
+    (lowerName.includes("termico") && !lowerName.includes("rollo termico") && !lowerName.includes("transbank")) || 
+    lowerName.includes("wabe") || 
+    lowerName.includes("darnel")
+  ) {
     return 'Envases de Plumavit';
   }
 
-  for (const cat of PRODUCT_CATEGORIES) {
-    if (cat.keywords.length === 0) continue;
-    if (cat.keywords.some(keyword => lowerName.includes(keyword))) {
-      return cat.name;
-    }
+  // 3. Papeles y Rollos Kraft
+  if (
+    lowerName.includes("kraft") || 
+    lowerName.includes("mantequilla") || 
+    lowerName.includes("antigrasa") || 
+    lowerName.includes("rollo termico") || 
+    lowerName.includes("transbank") || 
+    lowerName.includes("resma") ||
+    (lowerName.includes("papel") && !lowerName.includes("polipapel") && !lowerName.includes("confort") && !lowerName.includes("toalla") && !lowerName.includes("servilleta"))
+  ) {
+    return 'Papeles y Rollos Kraft';
   }
-  return 'Otros';
+
+  // 4. Cajas y Porta Alimentos
+  if (
+    lowerName.includes("caja") || 
+    lowerName.includes("porta completo") || 
+    lowerName.includes("completo carton") ||
+    lowerName.includes("canasto") || 
+    lowerName.includes("canoa") ||
+    lowerName.includes("organico")
+  ) {
+    return 'Cajas y Porta Alimentos';
+  }
+
+  // 5. Higiene y Papel Tisú
+  if (
+    lowerName.includes("toalla") || 
+    lowerName.includes("servilleta") || 
+    lowerName.includes("confort") || 
+    lowerName.includes("sabanilla")
+  ) {
+    return 'Higiene y Papel Tisú';
+  }
+
+  // 6. Cubiertos, Bombillas y Utensilios
+  if (
+    lowerName.includes("bombilla") || 
+    lowerName.includes("chinos") || 
+    lowerName.includes("revolvedor") || 
+    lowerName.includes("mondadientes") || 
+    lowerName.includes("cuchara") || 
+    lowerName.includes("cuchillo") || 
+    lowerName.includes("tenedor") ||
+    lowerName.includes("cubierto")
+  ) {
+    return 'Cubiertos, Bombillas y Utensilios';
+  }
+
+  // 7. Vasos, Tapas y Accesorios
+  if (
+    lowerName.includes("vaso") || 
+    lowerName.includes("tapa capuchino") || 
+    lowerName.includes("tapa plana") || 
+    lowerName.includes("tapa plastica domo") || 
+    lowerName.includes("inserto") ||
+    lowerName.includes("cubre vaso") ||
+    lowerName.includes("porta vaso")
+  ) {
+    return 'Vasos, Tapas y Accesorios';
+  }
+
+  // 8. Bolsas y Prepicados
+  if (
+    lowerName.includes("bolsa") || 
+    lowerName.includes("fullpack") || 
+    lowerName.includes("prepicado")
+  ) {
+    return 'Bolsas y Prepicados';
+  }
+
+  // 9. Bandejas
+  if (lowerName.includes("bandeja")) {
+    return 'Bandejas';
+  }
+
+  // 10. Envases de Plástico
+  return 'Envases de Plástico';
 }
 
 async function main() {

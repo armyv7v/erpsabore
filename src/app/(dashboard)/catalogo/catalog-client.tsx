@@ -136,6 +136,28 @@ export default function CatalogClient({ products, customers = [] }: Props) {
 
     return pages;
   }, [products]);
+
+  const tableOfContents = useMemo(() => {
+    const toc: { category: string; subcategory: string; pageNumber: number }[] = [];
+    const seenSubcategories = new Set<string>();
+
+    printPages.forEach((page, pageIdx) => {
+      page.products.forEach(prod => {
+        const subcat = getProductCategory(prod.name);
+        if (!seenSubcategories.has(subcat)) {
+          seenSubcategories.add(subcat);
+          toc.push({
+            category: page.category,
+            subcategory: subcat,
+            pageNumber: pageIdx + 3, // Pág 1: Portada, Pág 2: Índice, Grillas inician en 3
+          });
+        }
+      });
+    });
+
+    return toc;
+  }, [printPages]);
+
   const [activeCategory, setActiveCategory] = useState("Todos");
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
@@ -445,8 +467,10 @@ export default function CatalogClient({ products, customers = [] }: Props) {
 
   return (
     <div className="flex min-h-screen flex-col bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100">
-      {/* Header */}
-      <div className="no-print sticky top-0 z-40 flex items-center justify-between border-b border-slate-200 bg-white/80 px-4 py-4 backdrop-blur-md dark:border-slate-800 dark:bg-slate-900/80 md:px-8">
+      {/* Interfaz Web Interactiva — Se oculta por completo durante la impresión */}
+      <div className="no-print flex flex-col w-full min-h-screen">
+        {/* Header */}
+        <div className="sticky top-0 z-40 flex items-center justify-between border-b border-slate-200 bg-white/80 px-4 py-4 backdrop-blur-md dark:border-slate-800 dark:bg-slate-900/80 md:px-8">
         <div className="flex items-center gap-3">
           <div className="text-primary flex size-10 items-center justify-center rounded-lg bg-primary/10">
             <PackageSearch className="w-6 h-6" />
@@ -1267,6 +1291,8 @@ export default function CatalogClient({ products, customers = [] }: Props) {
         />
       )}
 
+      </div>
+
       {/* Área Imprimible - Oculta en pantalla, visible al imprimir */}
       <div id="catalog-print-area" className="hidden print:block bg-white text-black font-sans">
         <style dangerouslySetInnerHTML={{ __html: `
@@ -1278,33 +1304,47 @@ export default function CatalogClient({ products, customers = [] }: Props) {
             .mobile-nav,
             div.h-16.md:hidden,
             button,
-            form {
+            form,
+            header,
+            footer {
               display: none !important;
               height: 0 !important;
               margin: 0 !important;
               padding: 0 !important;
               overflow: hidden !important;
+              visibility: hidden !important;
             }
 
-            body, html {
+            /* Forzar a que todos los contenedores ancestros liberen su altura fija y scrolls */
+            html, 
+            body, 
+            div.flex.h-screen.overflow-hidden,
+            main.flex.min-w-0.flex-1.flex-col.overflow-hidden,
+            div.flex-1.overflow-y-auto {
+              height: auto !important;
+              min-height: 0 !important;
+              max-height: none !important;
+              overflow: visible !important;
+              display: block !important;
+              position: static !important;
               background: white !important;
               color: black !important;
+              box-shadow: none !important;
               margin: 0 !important;
               padding: 0 !important;
-              height: auto !important;
-              overflow: visible !important;
             }
 
             #catalog-print-area {
               display: block !important;
-              position: absolute !important;
-              left: 0 !important;
-              top: 0 !important;
+              position: relative !important;
               width: 210mm !important;
               background-color: white !important;
               color: black !important;
               z-index: 999999 !important;
+              margin: 0 !important;
+              padding: 0 !important;
             }
+
             .print-page {
               width: 210mm;
               height: 297mm;
@@ -1319,53 +1359,111 @@ export default function CatalogClient({ products, customers = [] }: Props) {
               color: black !important;
               overflow: hidden;
             }
+
             .print-cover-page {
               width: 210mm;
               height: 297mm;
               page-break-after: always;
               break-after: page;
               box-sizing: border-box;
-              padding: 40mm 20mm;
+              padding: 25mm 20mm;
               display: flex;
               flex-direction: column;
               justify-content: space-between;
               align-items: center;
               text-align: center;
-              background-color: #221610 !important;
-              color: #f8f6f6 !important;
+              background-color: #0f172a !important; /* Gris grafito oscuro premium */
+              color: #f8fafc !important;
               overflow: hidden;
               -webkit-print-color-adjust: exact;
               print-color-adjust: exact;
+              border: 8mm solid #0f172a;
             }
           }
         `}} />
         
-        {/* Portada del Libro de Catálogo */}
-        <div className="print-cover-page bg-[#221610] text-[#f8f6f6] flex flex-col justify-between items-center h-[297mm] box-border p-[40mm_20mm] text-center" style={{ backgroundColor: '#221610', color: '#f8f6f6' }}>
-          <div className="flex flex-col items-center mt-12">
-            <div className="w-20 h-20 rounded-2xl bg-[#ec5b13] flex items-center justify-center text-white text-5xl font-black shadow-lg mb-6" style={{ backgroundColor: '#ec5b13' }}>
+        {/* Página 1: Portada del Libro de Catálogo (Premium Editorial) */}
+        <div className="print-cover-page bg-[#0f172a] text-[#f8fafc] flex flex-col justify-between items-center h-[297mm] box-border p-[25mm_20mm] text-center" style={{ backgroundColor: '#0f172a', color: '#f8fafc' }}>
+          {/* Marco decorativo editorial */}
+          <div className="absolute inset-[15mm] border border-[#ec5b13]/25 pointer-events-none rounded-sm" style={{ border: '1px solid rgba(236, 91, 19, 0.25)' }}></div>
+          
+          <div className="flex flex-col items-center mt-16 z-10">
+            <div className="w-20 h-20 rounded-2xl bg-[#ec5b13] flex items-center justify-center text-white text-5xl font-black shadow-xl mb-6" style={{ backgroundColor: '#ec5b13' }}>
               S
             </div>
             <h1 className="text-5xl font-black tracking-tight text-white mb-2">SABORE</h1>
             <p className="text-[#ec5b13] text-xs font-bold tracking-[6px] uppercase" style={{ color: '#ec5b13' }}>DISTRIBUCIÓN & LOGÍSTICA</p>
           </div>
           
-          <div className="my-auto flex flex-col items-center">
-            <h2 className="text-3xl font-extrabold tracking-tight text-white mb-3 uppercase">CATÁLOGO DE PRODUCTOS</h2>
-            <div className="h-1 w-16 bg-[#ec5b13] rounded mb-5" style={{ backgroundColor: '#ec5b13' }}></div>
-            <p className="text-slate-400 text-xs max-w-sm leading-relaxed" style={{ color: '#94a3b8' }}>
-              Listado completo estructurado con código de barras EAN-13 secuencial por categoría para conexión de escáneres físicos y control optimizado de inventarios.
+          <div className="my-auto flex flex-col items-center z-10 px-6">
+            <h2 className="text-2xl font-extrabold tracking-tight text-white mb-3 uppercase">CATÁLOGO DE PRODUCTOS</h2>
+            <div className="h-0.5 w-12 bg-[#ec5b13] rounded mb-5" style={{ backgroundColor: '#ec5b13' }}></div>
+            <p className="text-slate-400 text-[11px] max-w-sm leading-relaxed" style={{ color: '#94a3b8' }}>
+              Catálogo corporativo optimizado de productos con códigos de barra EAN-13 secuenciales por subcategoría para conexión de lectores físicos y control de inventarios.
             </p>
           </div>
 
-          <div className="text-[10px] text-slate-500 font-semibold space-y-1.5" style={{ color: '#64748b' }}>
+          <div className="text-[10px] text-slate-500 font-semibold space-y-1.5 z-10" style={{ color: '#64748b' }}>
             <p className="text-slate-400 font-bold" style={{ color: '#94a3b8' }}>erpsabore.vercel.app</p>
             <p>Generado: {new Date().toLocaleDateString("es-CL", { day: 'numeric', month: 'long', year: 'numeric' })}</p>
             <p>Total de Productos: {products.length} Ítems</p>
+            <p className="text-[8px] text-slate-500 font-bold uppercase tracking-wider mt-1">Santiago, Chile</p>
           </div>
         </div>
 
-        {/* Páginas de Grilla en 4 Columnas */}
+        {/* Página 2: Índice de Lectura (Tabla de Contenidos Premium) */}
+        <div className="print-page bg-white text-black flex flex-col justify-between h-[297mm] box-border p-[20mm_20mm] overflow-hidden">
+          <div>
+            {/* Cabecera del Índice */}
+            <div className="flex justify-between items-end border-b border-slate-200 pb-3 mb-8" style={{ borderBottom: '2px solid #e2e8f0' }}>
+              <div className="text-left">
+                <span className="text-[9px] font-black tracking-wider text-[#ec5b13] uppercase" style={{ color: '#ec5b13' }}>SABORE</span>
+                <h2 className="text-lg font-bold text-slate-800 tracking-tight">Índice de Contenidos</h2>
+              </div>
+              <div className="text-right">
+                <span className="text-[8px] font-bold text-slate-400 uppercase tracking-widest">GUÍA DE REFERENCIA</span>
+              </div>
+            </div>
+
+            {/* Listado elegante con líneas punteadas (leaders) */}
+            <div className="space-y-6 mt-8">
+              {/* Agrupamos por Categoría Principal para dar orden visual premium */}
+              {["Plásticos", "Papel", "Aluminio"].map((majorCat) => {
+                const items = tableOfContents.filter(item => item.category === majorCat);
+                if (items.length === 0) return null;
+
+                return (
+                  <div key={majorCat} className="space-y-3">
+                    <h3 className="text-[10px] font-black uppercase tracking-wider text-[#ec5b13] border-b border-slate-100 pb-1" style={{ color: '#ec5b13', borderBottom: '1px solid #f1f5f9' }}>
+                      {majorCat}
+                    </h3>
+                    <div className="space-y-2.5 pl-2">
+                      {items.map((item) => (
+                        <div key={item.subcategory} className="flex items-end justify-between text-[10px] text-slate-700">
+                          <span className="font-semibold text-slate-800 pr-2 bg-white z-10 shrink-0">
+                            {item.subcategory}
+                          </span>
+                          <div className="flex-1 border-b border-dotted border-slate-350 mx-2 mb-1"></div>
+                          <span className="font-mono font-bold text-[#ec5b13] pl-2 bg-white z-10 shrink-0" style={{ color: '#ec5b13' }}>
+                            Pág. {item.pageNumber}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Pie de Página */}
+          <div className="flex justify-between items-center border-t border-slate-150 pt-2 text-[8px] font-bold text-slate-400" style={{ borderTop: '1px solid #e2e8f0', color: '#94a3b8' }}>
+            <span>Generado automáticamente por erpsabore.vercel.app</span>
+            <span>Página 2 de {printPages.length + 2}</span>
+          </div>
+        </div>
+
+        {/* Páginas de Grilla en 4 Columnas (Inician en la Página 3) */}
         {printPages.map((page, pageIdx) => {
           const pageCategory = page.category;
           const pageProducts = page.products;
@@ -1384,7 +1482,7 @@ export default function CatalogClient({ products, customers = [] }: Props) {
                       Categoría: {pageCategory}
                     </span>
                     <span className="text-[7px] text-slate-400 font-semibold italic">
-                      Sub-Categorías: {Array.from(new Set(pageProducts.map(p => getShortSubcategory(p.name)))).join(", ")}
+                      Sub-Categorías: {pageProducts.length > 0 ? Array.from(new Set(pageProducts.map(p => getShortSubcategory(p.name)))).join(", ") : ""}
                     </span>
                   </div>
                 </div>
@@ -1469,7 +1567,7 @@ export default function CatalogClient({ products, customers = [] }: Props) {
               {/* Pie de Página */}
               <div className="flex justify-between items-center border-t border-slate-150 pt-2 text-[8px] font-bold text-slate-400" style={{ borderTop: '1px solid #e2e8f0', color: '#94a3b8' }}>
                 <span>Generado automáticamente por erpsabore.vercel.app</span>
-                <span>Página {pageIdx + 2} de {printPages.length + 1}</span>
+                <span>Página {pageIdx + 3} de {printPages.length + 2}</span>
               </div>
             </div>
           );
