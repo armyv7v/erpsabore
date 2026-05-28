@@ -265,7 +265,7 @@ export default function BranchesClient({ branches }: Props) {
           <div className="py-16 px-4 text-center text-slate-500 bg-slate-50 dark:bg-slate-900/50 rounded-2xl border-2 border-dashed border-slate-200 dark:border-slate-800 flex flex-col items-center justify-center gap-4">
             <p className="text-sm font-medium">
               {branches.length === 0
-                ? "No hay sucursales registradas. Agregá la primera."
+                ? "No hay sucursales registradas. Agregue la primera."
                 : "No se encontraron sucursales con esos filtros."}
             </p>
             {branches.length === 0 && (
@@ -406,7 +406,7 @@ export default function BranchesClient({ branches }: Props) {
                   Añadir Nueva Sucursal
                 </h3>
                 <p className="text-xs text-slate-500 dark:text-slate-400">
-                  Ingresá los detalles de la nueva sucursal.
+                  Ingrese los detalles de la nueva sucursal.
                 </p>
               </div>
               <button

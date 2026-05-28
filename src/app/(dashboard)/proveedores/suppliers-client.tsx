@@ -155,7 +155,7 @@ export default function SuppliersClient({ suppliers }: Props) {
         {filteredSuppliers.length === 0 ? (
           <div className="text-center py-16 text-slate-500">
             {suppliers.length === 0
-              ? "No hay proveedores registrados. Agregá el primero."
+              ? "No hay proveedores registrados. Agregue el primero."
               : "No se encontraron proveedores con esos filtros."}
           </div>
         ) : (

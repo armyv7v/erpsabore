@@ -467,7 +467,7 @@ export default function InventoryClient({ products, summary }: Props) {
           {filteredProducts.length === 0 ? (
             <div className="p-8 text-center text-slate-500">
               {products.length === 0
-                ? "No hay productos cargados. Agregá tu primer producto."
+                ? "No hay productos cargados. Agregue el primer producto."
                 : "No se encontraron productos con esos filtros."}
             </div>
           ) : (
@@ -628,7 +628,7 @@ export default function InventoryClient({ products, summary }: Props) {
 
                           <button
                             onClick={() => {
-                              if (confirm(`¿Estás seguro de que querés eliminar el producto "${product.name}"?`)) {
+                              if (confirm(`¿Está seguro de que desea eliminar el producto "${product.name}"?`)) {
                                 startDeleteTransition(async () => {
                                   await deleteProductAction(product.id);
                                 });

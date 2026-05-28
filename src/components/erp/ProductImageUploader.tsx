@@ -165,10 +165,10 @@ export default function ProductImageUploader({ currentImageUrl = null, name = "i
             <Upload className="w-6 h-6 text-primary" />
           </div>
           <p className="text-xs font-bold text-slate-800 dark:text-slate-250">
-            Cargá una foto del producto
+            Cargue una foto del producto
           </p>
           <p className="text-[10px] text-slate-450 mt-1">
-            Arrastrá y soltá aquí o hacé clic para explorar
+            Arrastre y suelte aquí o haga clic para explorar
           </p>
           <p className="text-[9px] text-slate-400 dark:text-slate-550 mt-3 font-medium uppercase tracking-wider">
             JPG, PNG, WEBP, GIF hasta 2MB

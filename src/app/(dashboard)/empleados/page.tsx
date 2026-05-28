@@ -1,8 +1,8 @@
 import { requireAuthenticatedUser } from "@/lib/services/auth-service";
-import { createAuthenticatedSupabaseClient } from "@/lib/services/auth-service";
 import { listEmployees } from "@/lib/repositories/employee-repository";
-import { isSupabaseConfigured } from "@/lib/supabase/config";
+import { isSupabaseConfigured, getSupabaseAdminEnv } from "@/lib/supabase/config";
 import { mockEmployees } from "@/data/employees";
+import { createClient } from "@supabase/supabase-js";
 import EmployeesClient from "./employees-client";
 
 async function getEmployees() {
@@ -21,8 +21,14 @@ async function getEmployees() {
   }
 
   const user = await requireAuthenticatedUser();
-  const supabase = await createAuthenticatedSupabaseClient();
-  return listEmployees(supabase, user.tenantId);
+  const { url, serviceRoleKey } = getSupabaseAdminEnv();
+  const adminSupabase = createClient(url, serviceRoleKey, {
+    auth: {
+      autoRefreshToken: false,
+      persistSession: false,
+    },
+  });
+  return listEmployees(adminSupabase, user.tenantId);
 }
 
 export default async function EmployeesPage() {

@@ -140,7 +140,7 @@ export default function EmployeesClient({ employees }: Props) {
         {filteredEmployees.length === 0 ? (
           <div className="col-span-full py-12 text-center text-slate-500 bg-slate-50 dark:bg-slate-900/50 rounded-2xl border-2 border-dashed border-slate-200 dark:border-slate-800">
             {employees.length === 0
-              ? "No hay empleados registrados. Agregá el primero."
+              ? "No hay empleados registrados. Agregue el primero."
               : "No se encontraron empleados que coincidan con la búsqueda."}
           </div>
         ) : (
