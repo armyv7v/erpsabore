@@ -42,7 +42,22 @@ import { submitCreateCustomerAction } from "@/app/actions/crm";
 import ProductDetailsModal from "@/components/erp/ProductDetailsModal";
 import { createDraftInvoiceAction } from "@/app/actions/invoices";
 import BarcodeSvg from "@/components/erp/BarcodeSvg";
-import { getMajorCategory } from "@/lib/utils/barcode-generator";
+import { getMajorCategory, getProductCategory } from "@/lib/utils/barcode-generator";
+
+function getShortSubcategory(name: string): string {
+  const sub = getProductCategory(name);
+  if (sub === 'Papeles y Rollos Kraft') return 'Papel y Kraft';
+  if (sub === 'Cajas y Porta Alimentos') return 'Cajas y Embalaje';
+  if (sub === 'Vasos, Tapas y Accesorios') return 'Vasos y Tapas';
+  if (sub === 'Bolsas y Prepicados') return 'Bolsas y Prepicados';
+  if (sub === 'Higiene y Papel Tisú') return 'Higiene y Tisú';
+  if (sub === 'Potes, Bowls y Envases Plásticos') return 'Potes y Envases';
+  if (sub === 'Cubiertos, Bombillas y Utensilios') return 'Utensilios';
+  if (sub === 'Protección e Higiene Personal') return 'Protección';
+  if (sub === 'Librería, Embalaje y Oficina') return 'Oficina y Embalaje';
+  if (sub === 'Aluminio y Metálicos') return 'Aluminio';
+  return sub;
+}
 
 export interface CatalogProduct {
   id: string;
@@ -88,9 +103,17 @@ export default function CatalogClient({ products, customers = [] }: Props) {
       groups[majorCat].push(p);
     });
 
-    // Ordenar alfabéticamente dentro de cada grupo
+    // Ordenar por subcategoría primero, y luego alfabéticamente dentro de cada subcategoría
+    // Esto asegura que productos que solo varían en tamaño o cantidad queden perfectamente agrupados de forma consecutiva.
     Object.keys(groups).forEach(cat => {
-      groups[cat].sort((a, b) => a.name.localeCompare(b.name));
+      groups[cat].sort((a, b) => {
+        const subA = getProductCategory(a.name);
+        const subB = getProductCategory(b.name);
+        if (subA !== subB) {
+          return subA.localeCompare(subB);
+        }
+        return a.name.localeCompare(b.name);
+      });
     });
 
     const itemsPerPage = 20;
@@ -689,9 +712,14 @@ export default function CatalogClient({ products, customers = [] }: Props) {
                     {product.name}
                   </h3>
                   {product.category && (
-                    <p className="text-slate-500 mb-2 text-[10px] font-semibold uppercase tracking-wide dark:text-slate-400">
-                      {product.category}
-                    </p>
+                    <div className="flex flex-wrap items-center gap-1.5 mb-2">
+                      <span className="bg-primary/10 text-primary px-1.5 py-0.5 rounded text-[8px] font-black uppercase tracking-wider">
+                        {product.category}
+                      </span>
+                      <span className="text-slate-400 dark:text-slate-500 text-[8px] font-bold uppercase tracking-wider">
+                        • {getShortSubcategory(product.name)}
+                      </span>
+                    </div>
                   )}
                   <p
                     className={`mt-auto text-lg font-bold leading-none ${
@@ -1349,9 +1377,14 @@ export default function CatalogClient({ products, customers = [] }: Props) {
                     <span className="text-[9px] font-black tracking-wider text-[#ec5b13] uppercase" style={{ color: '#ec5b13' }}>SABORE</span>
                     <h3 className="text-[10px] font-extrabold text-slate-700">Catálogo Oficial de Productos</h3>
                   </div>
-                  <span className="text-[9px] font-bold text-slate-500 uppercase tracking-wider bg-slate-100 px-2 py-0.5 rounded" style={{ backgroundColor: '#f1f5f9', color: '#64748b' }}>
-                    Categoría: {pageCategory}
-                  </span>
+                  <div className="text-right flex flex-col items-end">
+                    <span className="text-[9px] font-bold text-slate-500 uppercase tracking-wider bg-slate-100 px-2 py-0.5 rounded mb-1" style={{ backgroundColor: '#f1f5f9', color: '#64748b' }}>
+                      Categoría: {pageCategory}
+                    </span>
+                    <span className="text-[7px] text-slate-400 font-semibold italic">
+                      Sub-Categorías: {Array.from(new Set(pageProducts.map(p => getShortSubcategory(p.name)))).join(", ")}
+                    </span>
+                  </div>
                 </div>
 
                 {/* Grilla de 4 Columnas */}
@@ -1365,7 +1398,7 @@ export default function CatalogClient({ products, customers = [] }: Props) {
                       <div className="flex flex-col items-center w-full">
                         {/* Miniatura del Producto */}
                         <div 
-                          className="relative w-12 h-12 rounded-lg bg-slate-50 border border-slate-100 flex items-center justify-center overflow-hidden mb-1.5 shrink-0"
+                          className="relative w-12 h-12 rounded-lg bg-slate-50 border border-slate-100 flex items-center justify-center overflow-hidden mb-1 shrink-0"
                           style={{ backgroundColor: '#f8fafc', border: '1px solid #f1f5f9', borderRadius: '0.5rem' }}
                         >
                           {prod.imageUrl ? (
@@ -1379,8 +1412,13 @@ export default function CatalogClient({ products, customers = [] }: Props) {
                           )}
                         </div>
 
+                        {/* Subcategoría */}
+                        <span className="text-[6.5px] font-bold text-[#ec5b13] uppercase tracking-wider mb-0.5 shrink-0 block">
+                          {getShortSubcategory(prod.name)}
+                        </span>
+
                         {/* Nombre del Producto */}
-                        <h4 className="text-[8px] font-extrabold text-slate-900 leading-tight text-center line-clamp-2 h-5 tracking-tight w-full mb-0.5 overflow-hidden">
+                        <h4 className="text-[7.5px] font-extrabold text-slate-900 leading-tight text-center line-clamp-2 h-[18px] tracking-tight w-full mb-0.5 overflow-hidden">
                           {prod.name}
                         </h4>
                       </div>
