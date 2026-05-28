@@ -49,9 +49,11 @@ function getShortSubcategory(name: string): string {
   if (sub === 'Papeles y Rollos Kraft') return 'Papel y Kraft';
   if (sub === 'Cajas y Porta Alimentos') return 'Cajas y Embalaje';
   if (sub === 'Vasos, Tapas y Accesorios') return 'Vasos y Tapas';
+  if (sub === 'Envases de Plumavit') return 'Envases de Plumavit';
+  if (sub === 'Bandejas') return 'Bandejas';
   if (sub === 'Bolsas y Prepicados') return 'Bolsas y Prepicados';
   if (sub === 'Higiene y Papel Tisú') return 'Higiene y Tisú';
-  if (sub === 'Potes, Bowls y Envases Plásticos') return 'Potes y Envases';
+  if (sub === 'Envases de Plástico') return 'Envases de Plástico';
   if (sub === 'Cubiertos, Bombillas y Utensilios') return 'Utensilios';
   if (sub === 'Protección e Higiene Personal') return 'Protección';
   if (sub === 'Librería, Embalaje y Oficina') return 'Oficina y Embalaje';
