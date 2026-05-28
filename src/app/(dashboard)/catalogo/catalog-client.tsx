@@ -401,7 +401,7 @@ export default function CatalogClient({ products, customers = [] }: Props) {
   return (
     <div className="flex min-h-screen flex-col bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100">
       {/* Header */}
-      <div className="sticky top-0 z-40 flex items-center justify-between border-b border-slate-200 bg-white/80 px-4 py-4 backdrop-blur-md dark:border-slate-800 dark:bg-slate-900/80 md:px-8">
+      <div className="no-print sticky top-0 z-40 flex items-center justify-between border-b border-slate-200 bg-white/80 px-4 py-4 backdrop-blur-md dark:border-slate-800 dark:bg-slate-900/80 md:px-8">
         <div className="flex items-center gap-3">
           <div className="text-primary flex size-10 items-center justify-center rounded-lg bg-primary/10">
             <PackageSearch className="w-6 h-6" />
@@ -434,7 +434,7 @@ export default function CatalogClient({ products, customers = [] }: Props) {
         </div>
       </div>
 
-      <main className="flex-1 pb-24 md:p-8">
+      <main className="no-print flex-1 pb-24 md:p-8">
         {/* Search */}
         <div className="px-4 py-4 md:px-0">
           <label className="group flex w-full flex-col">
@@ -1221,17 +1221,39 @@ export default function CatalogClient({ products, customers = [] }: Props) {
       <div id="catalog-print-area" className="hidden print:block bg-white text-black font-sans">
         <style dangerouslySetInnerHTML={{ __html: `
           @media print {
-            body {
+            /* Ocultar barra de navegación, barra lateral, barra móvil y cualquier elemento no imprimible */
+            .no-print,
+            aside,
+            nav,
+            .mobile-nav,
+            div.h-16.md:hidden,
+            button,
+            form {
+              display: none !important;
+              height: 0 !important;
+              margin: 0 !important;
+              padding: 0 !important;
+              overflow: hidden !important;
+            }
+
+            body, html {
               background: white !important;
               color: black !important;
+              margin: 0 !important;
+              padding: 0 !important;
+              height: auto !important;
+              overflow: visible !important;
             }
+
             #catalog-print-area {
               display: block !important;
-              position: absolute;
-              left: 0;
-              top: 0;
-              width: 210mm;
+              position: absolute !important;
+              left: 0 !important;
+              top: 0 !important;
+              width: 210mm !important;
               background-color: white !important;
+              color: black !important;
+              z-index: 999999 !important;
             }
             .print-page {
               width: 210mm;
