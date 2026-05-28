@@ -15,6 +15,7 @@ interface Product {
   id: string;
   name: string;
   sku: string;
+  barcode?: string | null;
   unitPrice: number;
   stockQuantity: number;
   stockStatus: "normal" | "low" | "out_of_stock";
@@ -482,8 +483,12 @@ export default function PosWorkspace({ products: initialProducts, branches }: Po
       if (e.key === "Enter") {
         if (barcodeBuffer.current.length > 2) {
           const barcode = barcodeBuffer.current.trim().toUpperCase();
-          // Buscar SKU
-          const matched = products.find(p => p.sku.toUpperCase() === barcode || p.sku.toUpperCase().includes(barcode));
+          // Buscar primero por Código de Barras coincidente, y secundariamente por SKU
+          const matched = products.find(p => 
+            (p.barcode && p.barcode.toUpperCase() === barcode) ||
+            p.sku.toUpperCase() === barcode || 
+            p.sku.toUpperCase().includes(barcode)
+          );
           if (matched) {
             addToCart(matched);
             // Efecto de sonido corto simulado

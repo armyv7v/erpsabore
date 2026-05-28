@@ -19,6 +19,7 @@ async function getInventoryData() {
         tenantId: "mock",
         name: p.name,
         sku: p.sku,
+        barcode: null,
         description: null,
         unitPrice: p.price,
         stockQuantity: p.quantity,

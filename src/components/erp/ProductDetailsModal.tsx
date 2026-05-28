@@ -8,6 +8,7 @@ interface GeneralProduct {
   id: string;
   name: string;
   sku: string;
+  barcode?: string | null;
   unitPrice: number;
   stockQuantity: number;
   stockMinQuantity?: number;
@@ -109,11 +110,16 @@ export default function ProductDetailsModal({ product, onClose, onAddToCart, onE
             </button>
 
             <div className="space-y-4">
-              {/* SKU Badge */}
-              <div className="flex items-center gap-2">
+              {/* SKU & Barcode Badges */}
+              <div className="flex flex-wrap items-center gap-2">
                 <span className="bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700/80 rounded-lg px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-slate-650 dark:text-slate-350">
-                  {product.sku}
+                  SKU: {product.sku}
                 </span>
+                {product.barcode && (
+                  <span className="bg-blue-50 dark:bg-blue-950/40 border border-blue-100 dark:border-blue-900/50 rounded-lg px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-blue-600 dark:text-blue-400">
+                    Cód: {product.barcode}
+                  </span>
+                )}
                 <span className={`border rounded-lg px-2.5 py-1 text-[10px] font-extrabold uppercase tracking-wider ${stockBadgeClass}`}>
                   {stockLabel}
                 </span>

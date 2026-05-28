@@ -813,6 +813,17 @@ export default function InventoryClient({ products, summary }: Props) {
                     />
                   </div>
                 </div>
+                <div>
+                  <label className="block text-sm font-semibold mb-1">
+                    Código de Barras (Opcional)
+                  </label>
+                  <input
+                    type="text"
+                    name="barcode"
+                    className="w-full px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-transparent focus:ring-2 focus:ring-primary/20 outline-none"
+                    placeholder="Ej. 7801234567890"
+                  />
+                </div>
                 <div className="grid grid-cols-2 gap-4">
                   <div>
                     <label className="block text-sm font-semibold mb-1">
@@ -940,6 +951,18 @@ export default function InventoryClient({ products, summary }: Props) {
                       className="w-full px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-transparent focus:ring-2 focus:ring-primary/20 outline-none text-slate-800 dark:text-slate-150"
                     />
                   </div>
+                </div>
+                <div>
+                  <label className="block text-sm font-semibold mb-1 text-slate-700 dark:text-slate-350">
+                    Código de Barras (Opcional)
+                  </label>
+                  <input
+                    type="text"
+                    name="barcode"
+                    defaultValue={editingProduct.barcode || ""}
+                    className="w-full px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-transparent focus:ring-2 focus:ring-primary/20 outline-none text-slate-800 dark:text-slate-150"
+                    placeholder="Ej. 7801234567890"
+                  />
                 </div>
                 <div>
                   <label className="block text-sm font-semibold mb-1 text-slate-700 dark:text-slate-350">
@@ -1080,6 +1103,7 @@ export default function InventoryClient({ products, summary }: Props) {
             id: detailsProduct.id,
             name: detailsProduct.name,
             sku: detailsProduct.sku,
+            barcode: detailsProduct.barcode,
             unitPrice: detailsProduct.unitPrice,
             stockQuantity: detailsProduct.stockQuantity,
             stockMinQuantity: detailsProduct.stockMinQuantity,

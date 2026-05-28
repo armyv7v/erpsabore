@@ -7,6 +7,7 @@ export interface ProductRecord {
   tenantId: string;
   name: string;
   sku: string;
+  barcode: string | null;
   description: string | null;
   unitPrice: number;
   stockQuantity: number;
@@ -22,6 +23,7 @@ interface ProductRow {
   tenant_id: string;
   name: string;
   sku: string;
+  barcode: string | null;
   description: string | null;
   unit_price: number | string;
   stock_quantity: number;
@@ -42,6 +44,7 @@ function mapProduct(row: ProductRow): ProductRecord {
     tenantId: row.tenant_id,
     name: row.name,
     sku: row.sku,
+    barcode: row.barcode || null,
     description: row.description,
     unitPrice: numeric(row.unit_price),
     stockQuantity: row.stock_quantity,
@@ -54,7 +57,7 @@ function mapProduct(row: ProductRow): ProductRecord {
 }
 
 const PRODUCT_SELECT =
-  "id, tenant_id, name, sku, description, unit_price, stock_quantity, stock_min_quantity, stock_status, image_url, created_at, updated_at";
+  "id, tenant_id, name, sku, barcode, description, unit_price, stock_quantity, stock_min_quantity, stock_status, image_url, created_at, updated_at";
 
 export async function listProducts(
   supabase: SupabaseClient,
@@ -166,6 +169,7 @@ export async function updateProductStock(
 export interface InsertProductInput {
   name: string;
   sku: string;
+  barcode?: string | null;
   unitPrice: number;
   stockQuantity: number;
   stockMinQuantity?: number;
@@ -184,6 +188,7 @@ export async function insertProduct(
       tenant_id: tenantId,
       name: input.name,
       sku: input.sku,
+      barcode: input.barcode ?? null,
       unit_price: input.unitPrice,
       stock_quantity: input.stockQuantity,
       stock_min_quantity: input.stockMinQuantity ?? 10,
@@ -205,6 +210,7 @@ export async function insertProduct(
 export interface UpdateProductInput {
   name: string;
   sku: string;
+  barcode?: string | null;
   unitPrice: number;
   stockMinQuantity?: number;
   description?: string | null;
@@ -222,6 +228,7 @@ export async function updateProduct(
     .update({
       name: input.name,
       sku: input.sku,
+      barcode: input.barcode ?? null,
       unit_price: input.unitPrice,
       stock_min_quantity: input.stockMinQuantity ?? 10,
       description: input.description ?? null,

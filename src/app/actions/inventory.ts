@@ -20,6 +20,7 @@ function validateImageFile(file: File | null): string | null {
 const createProductSchema = z.object({
   name: z.string().min(2, "El nombre debe tener al menos 2 caracteres."),
   sku: z.string().min(1, "El SKU es obligatorio.").toUpperCase(),
+  barcode: z.string().optional().nullable().or(z.literal("")).nullable(),
   unitPrice: z.number({ error: "El precio debe ser un número." }).min(0, "El precio no puede ser negativo."),
   stockQuantity: z.number({ error: "La cantidad debe ser un número." }).int().min(0, "La cantidad no puede ser negativa."),
   stockMinQuantity: z.number().int().min(0).optional().default(10),
@@ -46,6 +47,7 @@ export async function createProductAction(
 
     const rawName = String(formData.get("name") ?? "").trim();
     const rawSku = String(formData.get("sku") ?? "").trim();
+    const rawBarcode = formData.get("barcode") ? String(formData.get("barcode")).trim() : null;
     const rawPrice = Number(formData.get("unitPrice") ?? 0);
     const rawQty = Number(formData.get("stockQuantity") ?? 0);
     const rawMinQty = Number(formData.get("stockMinQuantity") ?? 10);
@@ -62,6 +64,7 @@ export async function createProductAction(
     const input = createProductSchema.parse({
       name: rawName,
       sku: rawSku,
+      barcode: rawBarcode,
       unitPrice: rawPrice,
       stockQuantity: rawQty,
       stockMinQuantity: rawMinQty,
@@ -133,6 +136,7 @@ export async function updateProductStockAction(
 const updateProductSchema = z.object({
   name: z.string().min(2, "El nombre debe tener al menos 2 caracteres."),
   sku: z.string().min(1, "El SKU es obligatorio.").toUpperCase(),
+  barcode: z.string().optional().nullable().or(z.literal("")).nullable(),
   unitPrice: z.number({ error: "El precio debe ser un número." }).min(0, "El precio no puede ser negativo."),
   stockMinQuantity: z.number().int().min(0).optional().default(10),
   description: z.string().optional().nullable(),
@@ -157,6 +161,7 @@ export async function updateProductAction(
 
     const rawName = String(formData.get("name") ?? "").trim();
     const rawSku = String(formData.get("sku") ?? "").trim();
+    const rawBarcode = formData.get("barcode") ? String(formData.get("barcode")).trim() : null;
     const rawPrice = Number(formData.get("unitPrice") ?? 0);
     const rawMinQty = Number(formData.get("stockMinQuantity") ?? 10);
     const rawDescription = formData.get("description")
@@ -202,6 +207,7 @@ export async function updateProductAction(
     const input = updateProductSchema.parse({
       name: rawName,
       sku: rawSku,
+      barcode: rawBarcode,
       unitPrice: rawPrice,
       stockMinQuantity: rawMinQty,
       description: rawDescription,
