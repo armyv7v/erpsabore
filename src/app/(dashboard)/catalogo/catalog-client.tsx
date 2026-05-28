@@ -116,7 +116,7 @@ export default function CatalogClient({ products, customers = [] }: Props) {
       });
     });
 
-    const itemsPerPage = 20;
+    const itemsPerPage = 16;
     const pages: { category: string; products: CatalogProduct[] }[] = [];
     const categoriesOrder = ["Plásticos", "Papel", "Aluminio"];
     
@@ -1388,67 +1388,79 @@ export default function CatalogClient({ products, customers = [] }: Props) {
                 </div>
 
                 {/* Grilla de 4 Columnas */}
-                <div className="grid grid-cols-4 gap-x-4 gap-y-5" style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', columnGap: '1rem', rowGap: '1.25rem' }}>
-                  {pageProducts.map((prod) => (
-                    <div 
-                      key={prod.id} 
-                      className="flex flex-col border border-slate-150 rounded-xl p-2 bg-white box-border justify-between h-[45mm] max-h-[46mm] overflow-hidden items-center text-center"
-                      style={{ border: '1px solid #e2e8f0', borderRadius: '0.75rem', padding: '0.5rem' }}
-                    >
-                      <div className="flex flex-col items-center w-full">
-                        {/* Miniatura del Producto */}
-                        <div 
-                          className="relative w-12 h-12 rounded-lg bg-slate-50 border border-slate-100 flex items-center justify-center overflow-hidden mb-1 shrink-0"
-                          style={{ backgroundColor: '#f8fafc', border: '1px solid #f1f5f9', borderRadius: '0.5rem' }}
-                        >
-                          {prod.imageUrl ? (
-                            <img
-                              src={prod.imageUrl}
-                              alt={prod.name}
-                              className="w-full h-full object-cover"
-                            />
-                          ) : (
-                            <span className="text-slate-300 text-base font-black">{prod.name.charAt(0)}</span>
-                          )}
-                        </div>
+                <div className="grid grid-cols-4 gap-x-4 gap-y-4" style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', columnGap: '1rem', rowGap: '1rem' }}>
+                  {pageProducts.map((prod, idx) => {
+                    const subcat = getProductCategory(prod.name);
+                    const prevSubcat = idx > 0 ? getProductCategory(pageProducts[idx - 1].name) : null;
+                    const showHeader = idx === 0 || subcat !== prevSubcat;
 
-                        {/* Subcategoría */}
-                        <span className="text-[6.5px] font-bold text-[#ec5b13] uppercase tracking-wider mb-0.5 shrink-0 block">
-                          {getShortSubcategory(prod.name)}
-                        </span>
-
-                        {/* Nombre del Producto */}
-                        <h4 className="text-[7.5px] font-extrabold text-slate-900 leading-tight text-center line-clamp-2 h-[18px] tracking-tight w-full mb-0.5 overflow-hidden">
-                          {prod.name}
-                        </h4>
-                      </div>
-
-                      <div className="flex flex-col items-center w-full shrink-0">
-                        {/* SKU y Precio */}
-                        <div className="flex justify-between items-center w-full px-0.5 mb-1 text-[7px] font-bold text-slate-500">
-                          <span className="font-mono text-slate-400 uppercase tracking-tighter">
-                            {prod.sku.replace("INS-", "")}
-                          </span>
-                          <span className="text-[#ec5b13]" style={{ color: '#ec5b13' }}>
-                            ${prod.unitPrice.toLocaleString("es-CL")}
-                          </span>
-                        </div>
-
-                        {/* Código de barras dinámico */}
-                        {prod.barcode ? (
-                          <BarcodeSvg
-                            barcode={prod.barcode}
-                            width={90}
-                            height={20}
-                            showText={true}
-                            className="scale-95 origin-bottom"
-                          />
-                        ) : (
-                          <span className="text-[7.5px] text-red-500 font-bold">Sin Código</span>
+                    return (
+                      <React.Fragment key={prod.id}>
+                        {showHeader && (
+                          <div 
+                            className="col-span-4 text-left border-b border-[#ec5b13]/20 pb-1 mt-2 mb-1"
+                            style={{ gridColumn: 'span 4', borderBottom: '1px solid rgba(236, 91, 19, 0.2)', paddingBottom: '0.2rem', marginTop: '0.4rem', marginBottom: '0.3rem' }}
+                          >
+                            <h4 className="text-[9px] font-black uppercase tracking-wider text-[#ec5b13]" style={{ color: '#ec5b13', margin: 0 }}>
+                              {subcat}
+                            </h4>
+                          </div>
                         )}
-                      </div>
-                    </div>
-                  ))}
+                        <div 
+                          className="flex flex-col border border-slate-150 rounded-xl p-2 bg-white box-border justify-between h-[45mm] max-h-[46mm] overflow-hidden items-center text-center"
+                          style={{ border: '1px solid #e2e8f0', borderRadius: '0.75rem', padding: '0.5rem' }}
+                        >
+                          <div className="flex flex-col items-center w-full">
+                            {/* Miniatura del Producto */}
+                            <div 
+                              className="relative w-12 h-12 rounded-lg bg-slate-50 border border-slate-100 flex items-center justify-center overflow-hidden mb-1.5 shrink-0"
+                              style={{ backgroundColor: '#f8fafc', border: '1px solid #f1f5f9', borderRadius: '0.5rem' }}
+                            >
+                              {prod.imageUrl ? (
+                                <img
+                                  src={prod.imageUrl}
+                                  alt={prod.name}
+                                  className="w-full h-full object-cover"
+                                />
+                              ) : (
+                                <span className="text-slate-300 text-base font-black">{prod.name.charAt(0)}</span>
+                              )}
+                            </div>
+
+                            {/* Nombre del Producto */}
+                            <h4 className="text-[8px] font-extrabold text-slate-900 leading-tight text-center line-clamp-2 h-5 tracking-tight w-full mb-0.5 overflow-hidden">
+                              {prod.name}
+                            </h4>
+                          </div>
+
+                          <div className="flex flex-col items-center w-full shrink-0">
+                            {/* SKU y Precio */}
+                            <div className="flex justify-between items-center w-full px-0.5 mb-1 text-[7px] font-bold text-slate-500">
+                              <span className="font-mono text-slate-400 uppercase tracking-tighter">
+                                {prod.sku.replace("INS-", "")}
+                              </span>
+                              <span className="text-[#ec5b13]" style={{ color: '#ec5b13' }}>
+                                ${prod.unitPrice.toLocaleString("es-CL")}
+                              </span>
+                            </div>
+
+                            {/* Código de barras dinámico */}
+                            {prod.barcode ? (
+                              <BarcodeSvg
+                                barcode={prod.barcode}
+                                width={90}
+                                height={20}
+                                showText={true}
+                                className="scale-95 origin-bottom"
+                              />
+                            ) : (
+                              <span className="text-[7.5px] text-red-500 font-bold">Sin Código</span>
+                            )}
+                          </div>
+                        </div>
+                      </React.Fragment>
+                    );
+                  })}
                 </div>
               </div>
 
