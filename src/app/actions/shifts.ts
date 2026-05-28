@@ -4,11 +4,17 @@ import { revalidatePath } from "next/cache";
 import { requireAuthenticatedContext } from "@/lib/services/auth-service";
 import { getActiveShift, openShift, getShiftExpectedTotals, closeShift } from "@/lib/services/shift-service";
 import type { ActionState } from "@/lib/types/erp";
+import { createClient } from "@supabase/supabase-js";
+import { getSupabaseAdminEnv } from "@/lib/supabase/config";
 
 export async function getActiveShiftAction(): Promise<{ status: "success" | "error"; shift: any; message?: string }> {
   try {
-    const { user, supabase } = await requireAuthenticatedContext();
-    const shift = await getActiveShift(user, supabase);
+    const { user } = await requireAuthenticatedContext();
+    const { url, serviceRoleKey } = getSupabaseAdminEnv();
+    const adminSupabase = createClient(url, serviceRoleKey, {
+      auth: { autoRefreshToken: false, persistSession: false },
+    });
+    const shift = await getActiveShift(user, adminSupabase);
     return { status: "success", shift };
   } catch (error: any) {
     console.error("[getActiveShiftAction Error]:", error);
@@ -21,7 +27,11 @@ export async function openShiftAction(
   formData: FormData
 ): Promise<ActionState & { shift?: any }> {
   try {
-    const { user, supabase } = await requireAuthenticatedContext();
+    const { user } = await requireAuthenticatedContext();
+    const { url, serviceRoleKey } = getSupabaseAdminEnv();
+    const adminSupabase = createClient(url, serviceRoleKey, {
+      auth: { autoRefreshToken: false, persistSession: false },
+    });
     
     const initialCash = Number(formData.get("initialCash") ?? 0);
     const branchId = String(formData.get("branchId") ?? "").trim() || null;
@@ -30,7 +40,7 @@ export async function openShiftAction(
       throw new Error("El monto inicial debe ser un número positivo.");
     }
 
-    const shift = await openShift(user, initialCash, branchId, supabase);
+    const shift = await openShift(user, initialCash, branchId, adminSupabase);
     
     try {
       revalidatePath("/pos");
@@ -55,8 +65,12 @@ export async function getShiftExpectedTotalsAction(
   initialCash: number
 ): Promise<{ status: "success" | "error"; totals: any; message?: string }> {
   try {
-    const { user, supabase } = await requireAuthenticatedContext();
-    const totals = await getShiftExpectedTotals(user, shiftOpenedAt, initialCash, supabase);
+    const { user } = await requireAuthenticatedContext();
+    const { url, serviceRoleKey } = getSupabaseAdminEnv();
+    const adminSupabase = createClient(url, serviceRoleKey, {
+      auth: { autoRefreshToken: false, persistSession: false },
+    });
+    const totals = await getShiftExpectedTotals(user, shiftOpenedAt, initialCash, adminSupabase);
     return { status: "success", totals };
   } catch (error: any) {
     console.error("[getShiftExpectedTotalsAction Error]:", error);
@@ -73,7 +87,11 @@ export async function closeShiftAction(
   formData: FormData
 ): Promise<ActionState> {
   try {
-    const { user, supabase } = await requireAuthenticatedContext();
+    const { user } = await requireAuthenticatedContext();
+    const { url, serviceRoleKey } = getSupabaseAdminEnv();
+    const adminSupabase = createClient(url, serviceRoleKey, {
+      auth: { autoRefreshToken: false, persistSession: false },
+    });
     
     const shiftId = String(formData.get("shiftId") ?? "").trim();
     const actualCash = Number(formData.get("actualCash") ?? 0);
@@ -96,7 +114,7 @@ export async function closeShiftAction(
         transfer: actualTransfer,
       },
       notes,
-      supabase
+      adminSupabase
     );
 
     try {
