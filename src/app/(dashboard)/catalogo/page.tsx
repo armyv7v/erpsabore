@@ -5,23 +5,22 @@ import { isSupabaseConfigured } from "@/lib/supabase/config";
 import { listCustomers } from "@/lib/repositories/customer-repository";
 import { mockCatalogProducts } from "@/data/catalog";
 import type { CustomerRecord } from "@/lib/types/erp";
-import { getProductCategory, PRODUCT_CATEGORIES } from "@/lib/utils/barcode-generator";
+import { getMajorCategory } from "@/lib/utils/barcode-generator";
 import CatalogClient from "./catalog-client";
 
 async function getCatalogProducts() {
   if (!isSupabaseConfigured()) {
     const categoryCounters: Record<string, number> = {};
     return mockCatalogProducts.map((p) => {
-      const category = getProductCategory(p.name);
+      const category = getMajorCategory(p.name);
       if (!categoryCounters[category]) {
         categoryCounters[category] = 0;
       }
       categoryCounters[category]++;
       const sequence = String(categoryCounters[category]).padStart(4, "0");
       
-      const catIndex = String(
-        Math.max(1, PRODUCT_CATEGORIES.findIndex((c) => c.name === category) + 1)
-      ).padStart(2, "0");
+      // Map major category to a consistent index for local mock codes
+      const catIndex = category === "Plásticos" ? "01" : category === "Papel" ? "02" : "03";
       
       const base12 = `780123${catIndex}${sequence}`;
       let sum = 0;
@@ -54,7 +53,7 @@ async function getCatalogProducts() {
     name: p.name,
     sku: p.sku,
     barcode: p.barcode,
-    category: getProductCategory(p.name),
+    category: getMajorCategory(p.name),
     unitPrice: p.unitPrice,
     stockQuantity: p.stockQuantity,
     imageUrl: p.imageUrl,

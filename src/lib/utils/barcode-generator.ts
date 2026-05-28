@@ -64,7 +64,31 @@ export function getMajorCategory(name: string): 'Plásticos' | 'Papel' | 'Alumin
     return "Aluminio";
   }
 
-  // 2. Papel y Cartón (excluding specific plastic bags)
+  // 2. Plásticos (polystyrene/plumavit, pet, nitrile, vinyl, polyethylene, film, clamshell, sushi, pote, etc.)
+  if (
+    text.includes("plumavit") || 
+    text.includes("plastico") || 
+    text.includes("plastica") || 
+    text.includes("nitrilo") || 
+    text.includes("latex") || 
+    text.includes("vinilo") || 
+    text.includes("polietileno") || 
+    text.includes("clamshell") || 
+    text.includes("sushi") || 
+    text.includes("pote") || 
+    text.includes("marmita") || 
+    text.includes("gelatinero") || 
+    text.includes("camilplast") || 
+    text.includes("film") || 
+    text.includes("cupula") || 
+    text.includes("wabe") ||
+    (text.includes("termico") && !text.includes("rollo")) || // Contenedor termico, etc.
+    text.includes("cinta embalaje") // Cinta embalaje is plastic adhesive tape
+  ) {
+    return "Plásticos";
+  }
+
+  // 3. Papel y Cartón (excluding specific plastic/nitrile products checked above)
   const isPaper = 
     text.includes("kraft") || 
     text.includes("mantequilla") || 
@@ -77,17 +101,18 @@ export function getMajorCategory(name: string): 'Plásticos' | 'Papel' | 'Alumin
     text.includes("servilleta") || 
     text.includes("confort") || 
     text.includes("resma") || 
-    text.includes("termico") || // rollo termico
+    text.includes("rollo termico") || 
     text.includes("transbank") || // rollo termico transbank
     text.includes("borrador") || // borrador garzon
-    text.includes("cinta embalaje") ||
     text.includes("madera") || // revolvedores, cubiertos de madera
     text.includes("chinos") || // palos chinos
     text.includes("mondadientes") ||
     text.includes("organico") || // porta comida organico (bagazo)
     text.includes("porta vaso") || // porta vasos (pulpa de carton)
     text.includes("porta vasos") ||
-    text.includes("corrugado");
+    text.includes("corrugado") ||
+    text.includes("canasto") ||
+    text.includes("canoa");
 
   if (text.includes("bandeja")) {
     if (text.includes("plumavit")) {
@@ -107,7 +132,7 @@ export function getMajorCategory(name: string): 'Plásticos' | 'Papel' | 'Alumin
     return "Papel";
   }
 
-  // 3. Plásticos (covers all plastic, plumavit, nitrile, pet, potes, bowls)
+  // Default to Plásticos as most remaining are plastic items (vasos, tapas, potes, guantes, etc.)
   return "Plásticos";
 }
 
