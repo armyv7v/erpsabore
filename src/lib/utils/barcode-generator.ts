@@ -56,6 +56,61 @@ export function getProductCategory(name: string): string {
   return 'Otros';
 }
 
+export function getMajorCategory(name: string): 'Plásticos' | 'Papel' | 'Aluminio' {
+  const text = name.toLowerCase();
+  
+  // 1. Aluminio
+  if (text.includes("aluminio") || text.includes("foil")) {
+    return "Aluminio";
+  }
+
+  // 2. Papel y Cartón (excluding specific plastic bags)
+  const isPaper = 
+    text.includes("kraft") || 
+    text.includes("mantequilla") || 
+    text.includes("antigrasa") || 
+    text.includes("papel") || 
+    text.includes("carton") || 
+    text.includes("caja") || 
+    text.includes("completo") || // porta completo, completo carton
+    text.includes("toalla") || 
+    text.includes("servilleta") || 
+    text.includes("confort") || 
+    text.includes("resma") || 
+    text.includes("termico") || // rollo termico
+    text.includes("transbank") || // rollo termico transbank
+    text.includes("borrador") || // borrador garzon
+    text.includes("cinta embalaje") ||
+    text.includes("madera") || // revolvedores, cubiertos de madera
+    text.includes("chinos") || // palos chinos
+    text.includes("mondadientes") ||
+    text.includes("organico") || // porta comida organico (bagazo)
+    text.includes("porta vaso") || // porta vasos (pulpa de carton)
+    text.includes("porta vasos") ||
+    text.includes("corrugado");
+
+  if (text.includes("bandeja")) {
+    if (text.includes("plumavit")) {
+      return "Plásticos";
+    }
+    return "Papel";
+  }
+
+  if (text.includes("bolsa")) {
+    if (text.includes("kraft") || text.includes("blanca")) {
+      return "Papel";
+    }
+    return "Plásticos";
+  }
+
+  if (isPaper) {
+    return "Papel";
+  }
+
+  // 3. Plásticos (covers all plastic, plumavit, nitrile, pet, potes, bowls)
+  return "Plásticos";
+}
+
 /**
  * Generates an SVG string representation of an EAN-13 barcode
  * @param barcode 13-digit EAN-13 string

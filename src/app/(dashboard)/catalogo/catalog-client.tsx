@@ -42,6 +42,7 @@ import { submitCreateCustomerAction } from "@/app/actions/crm";
 import ProductDetailsModal from "@/components/erp/ProductDetailsModal";
 import { createDraftInvoiceAction } from "@/app/actions/invoices";
 import BarcodeSvg from "@/components/erp/BarcodeSvg";
+import { getMajorCategory } from "@/lib/utils/barcode-generator";
 
 export interface CatalogProduct {
   id: string;
@@ -74,21 +75,40 @@ export default function CatalogClient({ products, customers = [] }: Props) {
   const [searchQuery, setSearchQuery] = useState("");
   
   // Agrupar y paginar productos para el PDF Libro imprimible (20 productos por página A4: 4 columnas x 5 filas)
+  // Agrupados rígidamente por las 3 categorías principales: Plásticos, Papel, Aluminio
   const printPages = useMemo(() => {
-    const productsSortedForPrint = [...products].sort((a, b) => {
-      const catA = a.category || "Otros";
-      const catB = b.category || "Otros";
-      if (catA !== catB) {
-        return catA.localeCompare(catB);
-      }
-      return a.name.localeCompare(b.name);
+    const groups: Record<string, CatalogProduct[]> = {
+      "Plásticos": [],
+      "Papel": [],
+      "Aluminio": []
+    };
+
+    products.forEach(p => {
+      const majorCat = getMajorCategory(p.name);
+      groups[majorCat].push(p);
     });
 
-    const itemsPerPrintPage = 20;
-    const pages: CatalogProduct[][] = [];
-    for (let i = 0; i < productsSortedForPrint.length; i += itemsPerPrintPage) {
-      pages.push(productsSortedForPrint.slice(i, i + itemsPerPrintPage));
-    }
+    // Ordenar alfabéticamente dentro de cada grupo
+    Object.keys(groups).forEach(cat => {
+      groups[cat].sort((a, b) => a.name.localeCompare(b.name));
+    });
+
+    const itemsPerPage = 20;
+    const pages: { category: string; products: CatalogProduct[] }[] = [];
+    const categoriesOrder = ["Plásticos", "Papel", "Aluminio"];
+    
+    categoriesOrder.forEach(cat => {
+      const groupProducts = groups[cat];
+      if (groupProducts.length === 0) return;
+
+      for (let i = 0; i < groupProducts.length; i += itemsPerPage) {
+        pages.push({
+          category: cat,
+          products: groupProducts.slice(i, i + itemsPerPage)
+        });
+      }
+    });
+
     return pages;
   }, [products]);
   const [activeCategory, setActiveCategory] = useState("Todos");
@@ -1316,8 +1336,9 @@ export default function CatalogClient({ products, customers = [] }: Props) {
         </div>
 
         {/* Páginas de Grilla en 4 Columnas */}
-        {printPages.map((pageProducts, pageIdx) => {
-          const pageCategory = pageProducts[0]?.category || "Insumos";
+        {printPages.map((page, pageIdx) => {
+          const pageCategory = page.category;
+          const pageProducts = page.products;
 
           return (
             <div key={pageIdx} className="print-page bg-white text-black flex flex-col justify-between h-[297mm] box-border p-[15mm_15mm] overflow-hidden">
