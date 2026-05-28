@@ -5,15 +5,20 @@ import { requireAuthenticatedContext } from "@/lib/services/auth-service";
 import { getActiveShift, openShift, getShiftExpectedTotals, closeShift } from "@/lib/services/shift-service";
 import type { ActionState } from "@/lib/types/erp";
 import { createClient } from "@supabase/supabase-js";
-import { getSupabaseAdminEnv } from "@/lib/supabase/config";
+import { getSupabaseAdminEnv, isSupabaseConfigured } from "@/lib/supabase/config";
 
 export async function getActiveShiftAction(): Promise<{ status: "success" | "error"; shift: any; message?: string }> {
   try {
     const { user } = await requireAuthenticatedContext();
-    const { url, serviceRoleKey } = getSupabaseAdminEnv();
-    const adminSupabase = createClient(url, serviceRoleKey, {
-      auth: { autoRefreshToken: false, persistSession: false },
-    });
+    
+    let adminSupabase: any = undefined;
+    if (isSupabaseConfigured()) {
+      const { url, serviceRoleKey } = getSupabaseAdminEnv();
+      adminSupabase = createClient(url, serviceRoleKey, {
+        auth: { autoRefreshToken: false, persistSession: false },
+      });
+    }
+
     const shift = await getActiveShift(user, adminSupabase);
     return { status: "success", shift };
   } catch (error: any) {
@@ -28,10 +33,14 @@ export async function openShiftAction(
 ): Promise<ActionState & { shift?: any }> {
   try {
     const { user } = await requireAuthenticatedContext();
-    const { url, serviceRoleKey } = getSupabaseAdminEnv();
-    const adminSupabase = createClient(url, serviceRoleKey, {
-      auth: { autoRefreshToken: false, persistSession: false },
-    });
+    
+    let adminSupabase: any = undefined;
+    if (isSupabaseConfigured()) {
+      const { url, serviceRoleKey } = getSupabaseAdminEnv();
+      adminSupabase = createClient(url, serviceRoleKey, {
+        auth: { autoRefreshToken: false, persistSession: false },
+      });
+    }
     
     const initialCash = Number(formData.get("initialCash") ?? 0);
     const branchId = String(formData.get("branchId") ?? "").trim() || null;
@@ -66,10 +75,15 @@ export async function getShiftExpectedTotalsAction(
 ): Promise<{ status: "success" | "error"; totals: any; message?: string }> {
   try {
     const { user } = await requireAuthenticatedContext();
-    const { url, serviceRoleKey } = getSupabaseAdminEnv();
-    const adminSupabase = createClient(url, serviceRoleKey, {
-      auth: { autoRefreshToken: false, persistSession: false },
-    });
+    
+    let adminSupabase: any = undefined;
+    if (isSupabaseConfigured()) {
+      const { url, serviceRoleKey } = getSupabaseAdminEnv();
+      adminSupabase = createClient(url, serviceRoleKey, {
+        auth: { autoRefreshToken: false, persistSession: false },
+      });
+    }
+
     const totals = await getShiftExpectedTotals(user, shiftOpenedAt, initialCash, adminSupabase);
     return { status: "success", totals };
   } catch (error: any) {
@@ -88,10 +102,14 @@ export async function closeShiftAction(
 ): Promise<ActionState> {
   try {
     const { user } = await requireAuthenticatedContext();
-    const { url, serviceRoleKey } = getSupabaseAdminEnv();
-    const adminSupabase = createClient(url, serviceRoleKey, {
-      auth: { autoRefreshToken: false, persistSession: false },
-    });
+    
+    let adminSupabase: any = undefined;
+    if (isSupabaseConfigured()) {
+      const { url, serviceRoleKey } = getSupabaseAdminEnv();
+      adminSupabase = createClient(url, serviceRoleKey, {
+        auth: { autoRefreshToken: false, persistSession: false },
+      });
+    }
     
     const shiftId = String(formData.get("shiftId") ?? "").trim();
     const actualCash = Number(formData.get("actualCash") ?? 0);

@@ -39,10 +39,12 @@ export async function submitPosSaleAction(
   try {
     const { user, supabase } = await requireAuthenticatedContext();
 
-    // Enforce active work shift/drawer verification
-    const activeShift = await getActiveShift(user, supabase);
-    if (!activeShift) {
-      throw new Error("No tenés una jornada activa abierta. Abrí la caja en el POS para poder registrar ventas.");
+    // Enforce active work shift/drawer verification when database is configured
+    if (isSupabaseConfigured()) {
+      const activeShift = await getActiveShift(user, supabase);
+      if (!activeShift) {
+        throw new Error("No tenés una jornada activa abierta. Abrí la caja en el POS para poder registrar ventas.");
+      }
     }
 
     // 1. Validar inputs
