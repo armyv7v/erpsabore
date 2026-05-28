@@ -5,6 +5,8 @@ import { z } from "zod";
 import { requireAuthenticatedContext } from "@/lib/services/auth-service";
 import { createBranch } from "@/lib/repositories/branch-repository";
 import type { ActionState } from "@/lib/types/erp";
+import { createClient } from "@supabase/supabase-js";
+import { getSupabaseAdminEnv } from "@/lib/supabase/config";
 
 const branchSchema = z.object({
   name: z.string().min(3, "El nombre de la sucursal debe tener al menos 3 caracteres."),
@@ -22,7 +24,18 @@ export async function createBranchAction(
   formData: FormData
 ): Promise<ActionState & { branch?: any }> {
   try {
-    const { user, supabase } = await requireAuthenticatedContext();
+    const { user } = await requireAuthenticatedContext();
+
+    const { url, serviceRoleKey } = getSupabaseAdminEnv();
+    if (!url || !serviceRoleKey) {
+      throw new Error("Supabase admin client is not configured properly in production.");
+    }
+    const adminSupabase = createClient(url, serviceRoleKey, {
+      auth: {
+        autoRefreshToken: false,
+        persistSession: false,
+      },
+    });
 
     const rawData = {
       name: String(formData.get("name") ?? "").trim(),
@@ -37,7 +50,7 @@ export async function createBranchAction(
 
     const parsed = branchSchema.parse(rawData);
 
-    const branch = await createBranch(supabase, user.tenantId, parsed);
+    const branch = await createBranch(adminSupabase, user.tenantId, parsed);
 
     try {
       revalidatePath("/sucursales");
