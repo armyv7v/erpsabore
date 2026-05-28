@@ -60,3 +60,34 @@ export async function listEmployees(
 
   return ((data ?? []) as EmployeeRow[]).map(mapEmployee);
 }
+
+export async function createEmployee(
+  supabase: SupabaseClient,
+  tenantId: string,
+  input: {
+    fullName: string;
+    roleName: string;
+    department: string;
+    email?: string | null;
+    status: EmployeeStatus;
+  }
+): Promise<EmployeeRecord> {
+  const { data, error } = await supabase
+    .from("employees")
+    .insert({
+      tenant_id: tenantId,
+      full_name: input.fullName,
+      role_name: input.roleName,
+      department: input.department,
+      email: input.email || null,
+      status: input.status,
+    })
+    .select(EMPLOYEE_SELECT)
+    .single();
+
+  if (error || !data) {
+    throw new Error(`No se pudo crear el empleado. ${error ? error.message : "Error desconocido"}`.trim());
+  }
+
+  return mapEmployee(data as EmployeeRow);
+}

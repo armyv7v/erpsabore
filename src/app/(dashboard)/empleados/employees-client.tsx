@@ -1,8 +1,10 @@
 "use client";
 
-import React, { useState, useMemo } from "react";
-import { Search, UserPlus, MoreVertical, X, Upload } from "lucide-react";
+import React, { useState, useMemo, useTransition } from "react";
+import { Search, UserPlus, MoreVertical, X, Upload, AlertCircle, CheckCircle2 } from "lucide-react";
 import type { EmployeeRecord } from "@/lib/repositories/employee-repository";
+import { createEmployeeAction } from "@/app/actions/employees";
+import type { ActionState } from "@/lib/types/erp";
 
 interface Props {
   employees: EmployeeRecord[];
@@ -44,7 +46,9 @@ export default function EmployeesClient({ employees }: Props) {
   const [searchQuery, setSearchQuery] = useState("");
   const [activeDept, setActiveDept] = useState("Todos");
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [newHiring, setNewHiring] = useState({ name: "", role: "", dept: "" });
+  const [newHiring, setNewHiring] = useState({ name: "", role: "", dept: "", email: "" });
+  const [formState, setFormState] = useState<ActionState>({ status: "idle", message: "" });
+  const [isPending, startTransition] = useTransition();
 
   const filteredEmployees = useMemo(() => {
     return employees.filter((emp) => {
@@ -59,10 +63,26 @@ export default function EmployeesClient({ employees }: Props) {
 
   const handleHire = (e: React.FormEvent) => {
     e.preventDefault();
-    // TODO: Server Action para insertar empleado real
-    alert(`Simulando contratación de: ${newHiring.name}`);
-    setIsModalOpen(false);
-    setNewHiring({ name: "", role: "", dept: "" });
+    setFormState({ status: "idle", message: "" });
+
+    const fd = new FormData();
+    fd.append("fullName", newHiring.name);
+    fd.append("roleName", newHiring.role);
+    fd.append("department", newHiring.dept);
+    fd.append("email", newHiring.email);
+    fd.append("status", "active");
+
+    startTransition(async () => {
+      const res = await createEmployeeAction({ status: "idle", message: "" }, fd);
+      setFormState(res);
+      if (res.status === "success") {
+        setNewHiring({ name: "", role: "", dept: "", email: "" });
+        setTimeout(() => {
+          setIsModalOpen(false);
+          setFormState({ status: "idle", message: "" });
+        }, 1500);
+      }
+    });
   };
 
   return (
@@ -185,6 +205,23 @@ export default function EmployeesClient({ employees }: Props) {
             </div>
 
             <form onSubmit={handleHire} className="p-4 space-y-4">
+              {formState.status !== "idle" && (
+                <div
+                  className={`p-4 rounded-xl flex items-start gap-3 border ${
+                    formState.status === "success"
+                      ? "bg-green-50 dark:bg-green-950/20 border-green-200 dark:border-green-800 text-green-800 dark:text-green-200"
+                      : "bg-red-50 dark:bg-red-950/20 border-red-200 dark:border-red-800 text-red-800 dark:text-red-200"
+                  }`}
+                >
+                  {formState.status === "success" ? (
+                    <CheckCircle2 className="w-5 h-5 text-green-500 shrink-0 mt-0.5" />
+                  ) : (
+                    <AlertCircle className="w-5 h-5 text-red-500 shrink-0 mt-0.5" />
+                  )}
+                  <div className="text-sm font-medium">{formState.message}</div>
+                </div>
+              )}
+
               <div className="flex justify-center">
                 <div className="size-20 rounded-full bg-slate-100 dark:bg-slate-800 border-2 border-dashed border-slate-300 dark:border-slate-600 flex flex-col items-center justify-center cursor-pointer hover:border-primary transition-colors">
                   <Upload className="w-6 h-6 text-slate-400" />
@@ -192,34 +229,37 @@ export default function EmployeesClient({ employees }: Props) {
                 </div>
               </div>
               <div>
-                <label className="block text-sm font-semibold mb-1">Nombre Completo</label>
+                <label className="block text-sm font-semibold mb-1">Nombre Completo *</label>
                 <input
                   type="text"
                   required
+                  disabled={isPending}
                   value={newHiring.name}
                   onChange={(e) => setNewHiring({ ...newHiring, name: e.target.value })}
-                  className="w-full px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-transparent focus:ring-2 focus:ring-primary/20 outline-none"
+                  className="w-full px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-transparent focus:ring-2 focus:ring-primary/20 outline-none disabled:opacity-50"
                   placeholder="Nombre y Apellido"
                 />
               </div>
               <div>
-                <label className="block text-sm font-semibold mb-1">Cargo / Puesto</label>
+                <label className="block text-sm font-semibold mb-1">Cargo / Puesto *</label>
                 <input
                   type="text"
                   required
+                  disabled={isPending}
                   value={newHiring.role}
                   onChange={(e) => setNewHiring({ ...newHiring, role: e.target.value })}
-                  className="w-full px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-transparent focus:ring-2 focus:ring-primary/20 outline-none"
+                  className="w-full px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-transparent focus:ring-2 focus:ring-primary/20 outline-none disabled:opacity-50"
                   placeholder="Ej. Gerente Comercial"
                 />
               </div>
               <div>
-                <label className="block text-sm font-semibold mb-1">Departamento</label>
+                <label className="block text-sm font-semibold mb-1">Departamento *</label>
                 <select
                   required
+                  disabled={isPending}
                   value={newHiring.dept}
                   onChange={(e) => setNewHiring({ ...newHiring, dept: e.target.value })}
-                  className="w-full px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 focus:ring-2 focus:ring-primary/20 outline-none"
+                  className="w-full px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 focus:ring-2 focus:ring-primary/20 outline-none disabled:opacity-50"
                 >
                   <option value="">Seleccionar depto...</option>
                   {DEPARTMENTS.slice(1).map((department) => (
@@ -229,20 +269,40 @@ export default function EmployeesClient({ employees }: Props) {
                   ))}
                 </select>
               </div>
+              <div>
+                <label className="block text-sm font-semibold mb-1">Correo Electrónico</label>
+                <input
+                  type="email"
+                  disabled={isPending}
+                  value={newHiring.email}
+                  onChange={(e) => setNewHiring({ ...newHiring, email: e.target.value })}
+                  className="w-full px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-transparent focus:ring-2 focus:ring-primary/20 outline-none disabled:opacity-50"
+                  placeholder="correo@empresa.com"
+                />
+              </div>
 
               <div className="pt-4 flex gap-3">
                 <button
                   type="button"
+                  disabled={isPending}
                   onClick={() => setIsModalOpen(false)}
-                  className="flex-1 px-4 py-2.5 rounded-xl font-bold border border-slate-200 dark:border-slate-700 hover:bg-slate-50 transition-colors"
+                  className="flex-1 px-4 py-2.5 rounded-xl font-bold border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors disabled:opacity-50"
                 >
                   Cancelar
                 </button>
                 <button
                   type="submit"
-                  className="flex-1 px-4 py-2.5 rounded-xl font-bold bg-primary text-white hover:bg-primary/90 transition-colors shadow-sm"
+                  disabled={isPending}
+                  className="flex-1 px-4 py-2.5 rounded-xl font-bold bg-primary text-white hover:bg-primary/90 transition-colors shadow-sm disabled:opacity-50 flex items-center justify-center gap-2"
                 >
-                  Confirmar
+                  {isPending ? (
+                    <>
+                      <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                      <span>Registrando...</span>
+                    </>
+                  ) : (
+                    <span>Confirmar</span>
+                  )}
                 </button>
               </div>
             </form>
