@@ -1,9 +1,9 @@
 import React from "react";
 import { CheckCircle2, Lightbulb, TrendingUp, Wallet } from "lucide-react";
 import CashFlowActions from "@/components/erp/CashFlowActions";
-import { formatCashMovementStatus } from "@/lib/formatters/status";
 import { requireAuthenticatedUser } from "@/lib/services/auth-service";
 import { getFinanceMetrics } from "@/lib/services/metrics-service";
+import MovementsClient from "./movements-client";
 
 export const dynamic = "force-dynamic";
 
@@ -29,25 +29,25 @@ export default async function CashFlowPage() {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <div className="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
           <p className="text-slate-500 dark:text-slate-400 text-sm font-medium">Saldo Disponible</p>
-          <h3 className="text-2xl font-bold mt-1">\${cashFlow.availableCash.toLocaleString("es-CL")} CLP</h3>
+          <h3 className="text-2xl font-bold mt-1">${cashFlow.availableCash.toLocaleString("es-CL")} CLP</h3>
           <div className="mt-2 flex items-center gap-1 text-emerald-600 dark:text-emerald-400 text-sm font-medium">
             <TrendingUp className="w-4 h-4" />
-            <span>\${cashFlow.pendingReceivables.toLocaleString("es-CL")} por cobrar</span>
+            <span>${cashFlow.pendingReceivables.toLocaleString("es-CL")} por cobrar</span>
           </div>
         </div>
         <div className="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
           <p className="text-slate-500 dark:text-slate-400 text-sm font-medium">Entradas Confirmadas</p>
-          <h3 className="text-2xl font-bold mt-1 text-emerald-600 dark:text-emerald-500">\${cashFlow.monthlyIncome.toLocaleString("es-CL")} CLP</h3>
+          <h3 className="text-2xl font-bold mt-1 text-emerald-600 dark:text-emerald-500">${cashFlow.monthlyIncome.toLocaleString("es-CL")} CLP</h3>
           <p className="text-xs text-slate-400 mt-2">Derivadas de pagos registrados.</p>
         </div>
         <div className="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
           <p className="text-slate-500 dark:text-slate-400 text-sm font-medium">Salidas</p>
-          <h3 className="text-2xl font-bold mt-1 text-rose-600 dark:text-rose-500">\${cashFlow.monthlyExpenses.toLocaleString("es-CL")} CLP</h3>
-          <p className="text-xs text-slate-400 mt-2">\${cashFlow.committedPayments.toLocaleString("es-CL")} comprometidos con proveedores</p>
+          <h3 className="text-2xl font-bold mt-1 text-rose-600 dark:text-rose-500">${cashFlow.monthlyExpenses.toLocaleString("es-CL")} CLP</h3>
+          <p className="text-xs text-slate-400 mt-2">${cashFlow.committedPayments.toLocaleString("es-CL")} comprometidos con proveedores</p>
         </div>
         <div className="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
           <p className="text-slate-500 dark:text-slate-400 text-sm font-medium">Flujo Neto</p>
-          <h3 className="text-2xl font-bold mt-1 text-primary">\${cashFlow.netFlow.toLocaleString("es-CL")} CLP</h3>
+          <h3 className="text-2xl font-bold mt-1 text-primary">${cashFlow.netFlow.toLocaleString("es-CL")} CLP</h3>
           <div className="mt-2 flex items-center gap-1 text-emerald-600 dark:text-emerald-400 text-sm font-medium">
             <CheckCircle2 className="w-4 h-4" />
             <span>{cashFlow.netFlow >= 0 ? "Superávit operativo" : "Déficit operativo"}</span>
@@ -63,7 +63,7 @@ export default async function CashFlowPage() {
           </div>
           <div className="bg-primary/5 px-4 py-2 rounded-lg">
             <p className="text-xs text-primary font-bold uppercase tracking-wider">Saldo Proyectado</p>
-            <p className="text-xl font-bold text-primary">\${cashFlow.projectedCash.toLocaleString("es-CL")} CLP</p>
+            <p className="text-xl font-bold text-primary">${cashFlow.projectedCash.toLocaleString("es-CL")} CLP</p>
           </div>
         </div>
 
@@ -104,55 +104,12 @@ export default async function CashFlowPage() {
       </div>
 
       <div className="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
-        <div className="mb-4">
+        <div className="mb-6">
           <h4 className="text-lg font-bold">Movimientos recientes</h4>
-          <p className="text-sm text-slate-500 dark:text-slate-400">Entradas y salidas confirmadas/pedientes registradas en caja.</p>
+          <p className="text-sm text-slate-500 dark:text-slate-400">Entradas y salidas confirmadas/pendientes registradas en caja.</p>
         </div>
 
-        {cashFlow.movements.length === 0 ? (
-          <p className="text-sm text-slate-500">No hay movimientos persistidos todavía.</p>
-        ) : (
-          <div className="overflow-hidden rounded-xl border border-slate-200 dark:border-slate-800">
-            <div className="overflow-x-auto">
-              <table className="w-full text-left border-collapse">
-                <thead>
-                  <tr className="bg-slate-50 dark:bg-slate-800/50 text-slate-500 dark:text-slate-400 text-xs font-bold uppercase tracking-wider">
-                    <th className="px-4 py-3 border-b border-slate-200 dark:border-slate-800">Fecha</th>
-                    <th className="px-4 py-3 border-b border-slate-200 dark:border-slate-800">Tipo</th>
-                    <th className="px-4 py-3 border-b border-slate-200 dark:border-slate-800">Referencia</th>
-                    <th className="px-4 py-3 border-b border-slate-200 dark:border-slate-800">Método</th>
-                    <th className="px-4 py-3 border-b border-slate-200 dark:border-slate-800">Estado</th>
-                    <th className="px-4 py-3 border-b border-slate-200 dark:border-slate-800 text-right">Monto</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
-                  {cashFlow.movements.map((movement) => (
-                    <tr key={movement.id} className="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
-                      <td className="px-4 py-3 text-sm">{movement.movementDate}</td>
-                      <td className="px-4 py-3 text-sm">
-                        <span className={`inline-flex items-center rounded-full px-2 py-0.5 text-xs font-semibold ${
-                          movement.kind === "income"
-                            ? "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-300"
-                            : "bg-rose-100 text-rose-700 dark:bg-rose-900/40 dark:text-rose-300"
-                        }`}>
-                          {movement.kind === "income" ? "Entrada" : "Salida"}
-                        </span>
-                      </td>
-                      <td className="px-4 py-3 text-sm">{movement.reference ?? "-"}</td>
-                      <td className="px-4 py-3 text-sm">{movement.paymentMethod ?? "-"}</td>
-                      <td className="px-4 py-3 text-sm">{formatCashMovementStatus(movement.status)}</td>
-                      <td className={`px-4 py-3 text-sm text-right font-bold ${
-                        movement.kind === "income" ? "text-emerald-600 dark:text-emerald-400" : "text-rose-600 dark:text-rose-400"
-                      }`}>
-                        {movement.kind === "income" ? "+" : "-"}${movement.amount.toLocaleString("es-CL")}
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </div>
-        )}
+        <MovementsClient movements={cashFlow.movements} />
       </div>
     </div>
   );
