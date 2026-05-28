@@ -4,7 +4,7 @@ import { useState, useEffect, useRef, useTransition, useMemo } from "react";
 import { 
   Search, ShoppingCart, CreditCard, Banknote, Landmark, Smartphone, 
   Trash2, User, FileText, ShoppingBag, Plus, Minus, Send, Copy, Clipboard, Check, X, RefreshCw,
-  MapPin, ArrowUpDown, Filter
+  MapPin, ArrowUpDown, Filter, ChevronLeft, ChevronRight, FileSpreadsheet, Printer, History
 } from "lucide-react";
 import { submitPosSaleAction, syncDatabaseProductImagesAction } from "@/app/actions/pos";
 import { getActiveShiftAction, openShiftAction, getShiftExpectedTotalsAction, closeShiftAction } from "@/app/actions/shifts";
@@ -131,7 +131,7 @@ export default function PosWorkspace({ products: initialProducts, branches }: Po
   
   // WhatsApp & Pedidos Web Panel
   const [whatsAppText, setWhatsAppText] = useState("");
-  const [activeTab, setActiveTab] = useState<"catalog" | "orders">("catalog");
+  const [activeTab, setActiveTab] = useState<"catalog" | "orders" | "history">("catalog");
   const [parsedItemsMessage, setParsedItemsMessage] = useState("");
   const [orderQueue, setOrderQueue] = useState([
     {
@@ -156,6 +156,13 @@ export default function PosWorkspace({ products: initialProducts, branches }: Po
       source: "WhatsApp"
     }
   ]);
+
+  // Historial de Ventas (Turno Actual)
+  const [shiftSales, setShiftSales] = useState<any[]>([]);
+  const [historySearch, setHistorySearch] = useState("");
+  const [historyMethodFilter, setHistoryMethodFilter] = useState("all");
+  const [historyPage, setHistoryPage] = useState(1);
+  const [historyPageSize, setHistoryPageSize] = useState(10);
 
   // Transiciones y estados del DTE
   const [isPending, startTransition] = useTransition();
@@ -191,6 +198,59 @@ export default function PosWorkspace({ products: initialProducts, branches }: Po
     } finally {
       setIsSyncing(false);
     }
+  };
+
+  // Exportar PDF/XLS de Historial
+  const handleExportPDF = () => {
+    const printWindow = window.open("", "_blank");
+    if (!printWindow) return;
+    
+    const tableRows = shiftSales.map(s => `
+      <tr>
+        <td>${s.folio}</td>
+        <td>${new Date(s.createdAt).toLocaleTimeString("es-CL")}</td>
+        <td>${s.customerName}</td>
+        <td>${s.paymentMethod}</td>
+        <td style="text-align: right; font-weight: bold;">$${s.total.toLocaleString("es-CL")}</td>
+      </tr>
+    `).join("");
+
+    printWindow.document.write(`
+      <html>
+      <head><title>Reporte de Ventas POS</title>
+      <style>
+        body { font-family: sans-serif; padding: 20px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { border-bottom: 1px solid #ddd; padding: 8px; text-align: left; }
+        th { background-color: #f8f9fa; }
+      </style>
+      </head>
+      <body>
+        <h2>ERP Sabore - Historial de Ventas (Turno)</h2>
+        <p>Generado el: ${new Date().toLocaleString("es-CL")}</p>
+        <table>
+          <thead>
+            <tr><th>Folio</th><th>Hora</th><th>Cliente</th><th>Método</th><th style="text-align:right;">Total</th></tr>
+          </thead>
+          <tbody>${tableRows}</tbody>
+        </table>
+        <script>window.onload = () => window.print();</script>
+      </body>
+      </html>
+    `);
+    printWindow.document.close();
+  };
+
+  const handleExportXLS = () => {
+    const tableRows = shiftSales.map(s => `<tr><td>${s.folio}</td><td>${s.customerName}</td><td>${s.paymentMethod}</td><td>${s.total}</td></tr>`).join("");
+    const htmlTemplate = `<html xmlns:x="urn:schemas-microsoft-com:office:excel"><body><table><tr><th>Folio</th><th>Cliente</th><th>Método</th><th>Total</th></tr>${tableRows}</table></body></html>`;
+    const blob = new Blob([htmlTemplate], { type: "application/vnd.ms-excel" });
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.download = `ventas_pos_${new Date().getTime()}.xls`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
   };
 
   // Escáner de código de barras físico (Simulado por teclado a nivel global)
@@ -556,13 +616,20 @@ export default function PosWorkspace({ products: initialProducts, branches }: Po
         );
 
         // Abrir previsualización de ticket
-        setCompletedSale({
+        const newSale = {
           folio: res.dteResult.folio,
           pdfUrl: res.dteResult.pdfUrl,
           total: res.dteResult.total,
           paymentMethod: res.dteResult.paymentMethod,
           change: res.dteResult.change,
-        });
+          customerName,
+          createdAt: new Date().toISOString()
+        };
+        
+        setCompletedSale(newSale);
+        
+        // Añadir al historial local del turno para la pestaña de historial
+        setShiftSales(prev => [newSale, ...prev]);
 
         // Limpiar carrito
         setCart([]);
@@ -643,7 +710,7 @@ export default function PosWorkspace({ products: initialProducts, branches }: Po
               </div>
               <h2 className="text-lg font-extrabold text-slate-900 dark:text-slate-100 uppercase tracking-wide">Abrir Jornada de Trabajo</h2>
               <p className="text-xs text-slate-500 dark:text-slate-400">
-                Ingresá el monto de efectivo inicial en caja y seleccioná tu sucursal para habilitar las ventas.
+                Ingrese el monto de efectivo inicial en caja y seleccione su sucursal para habilitar las ventas.
               </p>
             </div>
 
@@ -746,6 +813,17 @@ export default function PosWorkspace({ products: initialProducts, branches }: Po
                   {orderQueue.length}
                 </span>
               )}
+            </button>
+            <button
+              onClick={() => setActiveTab("history")}
+              className={`px-4 py-2 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 ${
+                activeTab === "history"
+                  ? "bg-white dark:bg-slate-800 text-primary shadow-sm"
+                  : "text-slate-500 hover:text-slate-800 dark:hover:text-slate-200"
+              }`}
+            >
+              <History className="w-3.5 h-3.5" />
+              <span>Historial de Turno</span>
             </button>
             <button
               onClick={handleSyncImages}
@@ -1063,7 +1141,7 @@ export default function PosWorkspace({ products: initialProducts, branches }: Po
                 </div>
               )}
             </div>
-          ) : (
+          ) : activeTab === "orders" ? (
             /* TAB: PEDIDOS EXTERNOS / WHATSAPP QUEUE */
             <div className="space-y-6 max-w-2xl mx-auto">
               
@@ -1074,7 +1152,7 @@ export default function PosWorkspace({ products: initialProducts, branches }: Po
                   <h3 className="font-bold text-sm">Copiar y Pegar Carrito de WhatsApp</h3>
                 </div>
                 <p className="text-xs text-slate-500">
-                  Pegá el texto recibido del cliente y nuestro motor de IA local relacionará los productos con tu catálogo Sabore.
+                  Pegue el texto recibido del cliente y nuestro motor de IA local relacionará los productos con su catálogo Sabore.
                 </p>
                 <textarea
                   value={whatsAppText}
@@ -1133,7 +1211,97 @@ export default function PosWorkspace({ products: initialProducts, branches }: Po
               </div>
 
             </div>
-          )}
+          ) : activeTab === "history" ? (
+            /* TAB: HISTORIAL DE VENTAS DEL TURNO */
+            <div className="space-y-4 max-w-5xl mx-auto flex flex-col h-full">
+              <div className="flex flex-col md:flex-row gap-3">
+                <div className="relative flex-1 group">
+                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-primary transition-colors w-4 h-4" />
+                  <input
+                    type="text"
+                    value={historySearch}
+                    onChange={(e) => setHistorySearch(e.target.value)}
+                    className="w-full bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-lg py-2 pl-9 pr-4 focus:ring-2 focus:ring-primary/20 outline-none transition-all text-xs placeholder:text-slate-400"
+                    placeholder="Buscar folio o cliente..."
+                  />
+                </div>
+                <div className="flex items-center gap-2">
+                  <select
+                    value={historyMethodFilter}
+                    onChange={(e) => setHistoryMethodFilter(e.target.value)}
+                    className="px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-xs focus:ring-2 focus:ring-primary/20 outline-none"
+                  >
+                    <option value="all">Cualquier Método</option>
+                    <option value="cash">Efectivo</option>
+                    <option value="debit">Débito</option>
+                    <option value="credit">Crédito</option>
+                    <option value="transfer">Transferencia</option>
+                  </select>
+                  <button onClick={handleExportPDF} className="px-3 py-2 rounded-lg bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700 text-xs font-bold flex items-center gap-1.5 transition-colors text-red-500">
+                    <FileText className="w-3.5 h-3.5" /> PDF
+                  </button>
+                  <button onClick={handleExportXLS} className="px-3 py-2 rounded-lg bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700 text-xs font-bold flex items-center gap-1.5 transition-colors text-emerald-600">
+                    <FileSpreadsheet className="w-3.5 h-3.5" /> Excel
+                  </button>
+                </div>
+              </div>
+
+              {shiftSales.length === 0 ? (
+                <div className="py-12 text-center text-slate-400 bg-slate-50 dark:bg-slate-900/50 rounded-xl border border-dashed border-slate-200 dark:border-slate-800">
+                  <History className="w-8 h-8 mx-auto mb-2 opacity-50" />
+                  <p className="text-xs font-medium">Aún no hay ventas registradas en este turno.</p>
+                </div>
+              ) : (
+                <div className="flex-1 overflow-hidden flex flex-col border border-slate-200 dark:border-slate-800 rounded-xl bg-white dark:bg-slate-900">
+                  <div className="overflow-x-auto">
+                    <table className="w-full text-left border-collapse">
+                      <thead>
+                        <tr className="bg-slate-50 dark:bg-slate-800/50 text-slate-500 dark:text-slate-400 text-[10px] font-bold uppercase tracking-wider">
+                          <th className="px-4 py-2 border-b border-slate-200 dark:border-slate-800">Folio</th>
+                          <th className="px-4 py-2 border-b border-slate-200 dark:border-slate-800">Hora</th>
+                          <th className="px-4 py-2 border-b border-slate-200 dark:border-slate-800">Cliente</th>
+                          <th className="px-4 py-2 border-b border-slate-200 dark:border-slate-800">Método Pago</th>
+                          <th className="px-4 py-2 border-b border-slate-200 dark:border-slate-800 text-right">Total</th>
+                        </tr>
+                      </thead>
+                      <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
+                        {shiftSales
+                          .filter(s => (historyMethodFilter === "all" || s.paymentMethod === historyMethodFilter) && (s.folio.includes(historySearch) || (s.customerName || "").toLowerCase().includes(historySearch.toLowerCase())))
+                          .slice((historyPage - 1) * historyPageSize, historyPage * historyPageSize)
+                          .map((sale, idx) => (
+                            <tr key={idx} className="hover:bg-slate-50 dark:hover:bg-slate-800/30">
+                              <td className="px-4 py-2 text-xs font-bold text-primary">{sale.folio}</td>
+                              <td className="px-4 py-2 text-xs">{new Date(sale.createdAt).toLocaleTimeString("es-CL")}</td>
+                              <td className="px-4 py-2 text-xs">{sale.customerName}</td>
+                              <td className="px-4 py-2 text-[10px] uppercase font-bold text-slate-500">{sale.paymentMethod}</td>
+                              <td className="px-4 py-2 text-xs font-extrabold text-right text-slate-800 dark:text-slate-200">${sale.total.toLocaleString("es-CL")}</td>
+                            </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                  
+                  {/* Paginación */}
+                  <div className="mt-auto flex justify-between items-center p-3 bg-slate-50 dark:bg-slate-900/30 border-t border-slate-200 dark:border-slate-800 text-xs">
+                    <div className="flex items-center gap-2 text-slate-500">
+                      <span>Mostrar</span>
+                      <select value={historyPageSize} onChange={(e) => setHistoryPageSize(Number(e.target.value))} className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded px-1 outline-none">
+                        <option value={10}>10</option>
+                        <option value={20}>20</option>
+                        <option value={50}>50</option>
+                      </select>
+                      <span>por página</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <button onClick={() => setHistoryPage(p => Math.max(1, p - 1))} disabled={historyPage === 1} className="p-1 border border-slate-200 dark:border-slate-700 rounded hover:bg-slate-100 disabled:opacity-50"><ChevronLeft className="w-4 h-4"/></button>
+                      <span className="font-bold text-slate-600 dark:text-slate-300">Pág {historyPage}</span>
+                      <button onClick={() => setHistoryPage(p => p + 1)} disabled={shiftSales.length <= historyPage * historyPageSize} className="p-1 border border-slate-200 dark:border-slate-700 rounded hover:bg-slate-100 disabled:opacity-50"><ChevronRight className="w-4 h-4"/></button>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+          ) : null}
         </div>
       </div>
 
@@ -1292,7 +1460,7 @@ export default function PosWorkspace({ products: initialProducts, branches }: Po
                   <span>Consola de Cobro y Facturación</span>
                 </h3>
                 <p className="text-xs text-slate-500">
-                  Completá los datos del cliente, método de pago y emití el DTE correspondiente.
+                  Complete los datos del cliente, método de pago y emita el DTE correspondiente.
                 </p>
               </div>
               <button 
@@ -1876,7 +2044,7 @@ export default function PosWorkspace({ products: initialProducts, branches }: Po
             {/* Formulario */}
             <form onSubmit={handleCloseShift} className="flex-1 overflow-y-auto p-6 space-y-4">
               <p className="text-xs text-slate-500 dark:text-slate-400">
-                Por favor, cuenta los montos físicos que tenés en caja por cada medio de pago e ingresalos a continuación.
+                Por favor, cuente los montos físicos que tiene en caja por cada medio de pago e ingréselos a continuación.
               </p>
 
               {/* Grid Comparativo */}
@@ -1957,7 +2125,7 @@ export default function PosWorkspace({ products: initialProducts, branches }: Po
                 <textarea
                   value={closeShiftNotes}
                   onChange={(e) => setCloseShiftNotes(e.target.value)}
-                  placeholder="Añadí cualquier novedad relevante del turno..."
+                  placeholder="Añada cualquier novedad relevante del turno..."
                   rows={3}
                   className="w-full rounded-2xl border border-slate-250 dark:border-slate-700 p-3 bg-white dark:bg-slate-950 text-xs font-medium outline-none focus:ring-2 focus:ring-primary/20 text-slate-800 dark:text-slate-200"
                 />
