@@ -5,19 +5,44 @@ import { isSupabaseConfigured } from "@/lib/supabase/config";
 import { listCustomers } from "@/lib/repositories/customer-repository";
 import { mockCatalogProducts } from "@/data/catalog";
 import type { CustomerRecord } from "@/lib/types/erp";
+import { getProductCategory, PRODUCT_CATEGORIES } from "@/lib/utils/barcode-generator";
 import CatalogClient from "./catalog-client";
 
 async function getCatalogProducts() {
   if (!isSupabaseConfigured()) {
-    return mockCatalogProducts.map((p) => ({
-      id: p.id,
-      name: p.name,
-      sku: p.sku,
-      category: p.category,
-      unitPrice: p.price,
-      stockQuantity: p.stock,
-      imageUrl: p.imageUrl,
-    }));
+    const categoryCounters: Record<string, number> = {};
+    return mockCatalogProducts.map((p) => {
+      const category = getProductCategory(p.name);
+      if (!categoryCounters[category]) {
+        categoryCounters[category] = 0;
+      }
+      categoryCounters[category]++;
+      const sequence = String(categoryCounters[category]).padStart(4, "0");
+      
+      const catIndex = String(
+        Math.max(1, PRODUCT_CATEGORIES.findIndex((c) => c.name === category) + 1)
+      ).padStart(2, "0");
+      
+      const base12 = `780123${catIndex}${sequence}`;
+      let sum = 0;
+      for (let i = 0; i < 12; i++) {
+        const digit = parseInt(base12[i], 10);
+        sum += i % 2 === 0 ? digit * 1 : digit * 3;
+      }
+      const checkDigit = (10 - (sum % 10)) % 10;
+      const barcode = `${base12}${checkDigit}`;
+
+      return {
+        id: p.id,
+        name: p.name,
+        sku: p.sku,
+        barcode,
+        category,
+        unitPrice: p.price,
+        stockQuantity: p.stock,
+        imageUrl: p.imageUrl,
+      };
+    });
   }
 
   const user = await requireAuthenticatedUser();
@@ -28,7 +53,8 @@ async function getCatalogProducts() {
     id: p.id,
     name: p.name,
     sku: p.sku,
-    category: p.description ?? null, // sin categoría en schema actual — usamos description como proxy
+    barcode: p.barcode,
+    category: getProductCategory(p.name),
     unitPrice: p.unitPrice,
     stockQuantity: p.stockQuantity,
     imageUrl: p.imageUrl,

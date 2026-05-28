@@ -23,6 +23,8 @@ import {
   Loader2,
   MapPin,
   ArrowUpDown,
+  Printer,
+  BookOpen,
 } from "lucide-react";
 
 const MOCK_BRANCHES = ["Todos", "Almacén Central", "Sucursal Providencia", "Sucursal Las Condes"];
@@ -39,11 +41,13 @@ import type { CustomerRecord } from "@/lib/types/erp";
 import { submitCreateCustomerAction } from "@/app/actions/crm";
 import ProductDetailsModal from "@/components/erp/ProductDetailsModal";
 import { createDraftInvoiceAction } from "@/app/actions/invoices";
+import BarcodeSvg from "@/components/erp/BarcodeSvg";
 
 export interface CatalogProduct {
   id: string;
   name: string;
   sku: string;
+  barcode: string | null;
   category: string | null;
   unitPrice: number;
   stockQuantity: number;
@@ -68,6 +72,25 @@ interface Props {
 export default function CatalogClient({ products, customers = [] }: Props) {
   const router = useRouter();
   const [searchQuery, setSearchQuery] = useState("");
+  
+  // Agrupar y paginar productos para el PDF Libro imprimible (20 productos por página A4: 4 columnas x 5 filas)
+  const printPages = useMemo(() => {
+    const productsSortedForPrint = [...products].sort((a, b) => {
+      const catA = a.category || "Otros";
+      const catB = b.category || "Otros";
+      if (catA !== catB) {
+        return catA.localeCompare(catB);
+      }
+      return a.name.localeCompare(b.name);
+    });
+
+    const itemsPerPrintPage = 20;
+    const pages: CatalogProduct[][] = [];
+    for (let i = 0; i < productsSortedForPrint.length; i += itemsPerPrintPage) {
+      pages.push(productsSortedForPrint.slice(i, i + itemsPerPrintPage));
+    }
+    return pages;
+  }, [products]);
   const [activeCategory, setActiveCategory] = useState("Todos");
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
@@ -387,16 +410,28 @@ export default function CatalogClient({ products, customers = [] }: Props) {
             Catálogo Digital
           </h1>
         </div>
-        <button
-          type="button"
-          onClick={() => setIsCartOpen(true)}
-          className="relative flex size-12 cursor-pointer items-center justify-center rounded-full bg-slate-100 text-slate-700 transition-colors hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-700"
-        >
-          <ShoppingCart className="w-5 h-5" />
-          <span className="bg-primary absolute top-2 right-2 flex h-4 min-w-4 items-center justify-center rounded-full px-1 text-[10px] font-bold text-white">
-            {cartCount}
-          </span>
-        </button>
+        <div className="flex items-center gap-3">
+          <button
+            type="button"
+            onClick={() => window.print()}
+            className="flex items-center gap-2 px-4 h-12 rounded-xl bg-primary/10 hover:bg-primary/15 text-primary text-xs font-extrabold transition-all hover:scale-[1.02] active:scale-95 cursor-pointer shadow-sm shadow-primary/5"
+            title="Exportar catálogo completo a formato PDF Libro (A4) con códigos de barra"
+          >
+            <Printer className="w-4 h-4" />
+            <span className="hidden md:inline">Exportar PDF Libro (A4)</span>
+          </button>
+          
+          <button
+            type="button"
+            onClick={() => setIsCartOpen(true)}
+            className="relative flex size-12 cursor-pointer items-center justify-center rounded-full bg-slate-100 text-slate-700 transition-colors hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-700"
+          >
+            <ShoppingCart className="w-5 h-5" />
+            <span className="bg-primary absolute top-2 right-2 flex h-4 min-w-4 items-center justify-center rounded-full px-1 text-[10px] font-bold text-white">
+              {cartCount}
+            </span>
+          </button>
+        </div>
       </div>
 
       <main className="flex-1 pb-24 md:p-8">
@@ -1181,6 +1216,170 @@ export default function CatalogClient({ products, customers = [] }: Props) {
           onAddToCart={() => addToCart(detailsProduct)}
         />
       )}
+
+      {/* Área Imprimible - Oculta en pantalla, visible al imprimir */}
+      <div id="catalog-print-area" className="hidden print:block bg-white text-black font-sans">
+        <style dangerouslySetInnerHTML={{ __html: `
+          @media print {
+            body {
+              background: white !important;
+              color: black !important;
+            }
+            #catalog-print-area {
+              display: block !important;
+              position: absolute;
+              left: 0;
+              top: 0;
+              width: 210mm;
+              background-color: white !important;
+            }
+            .print-page {
+              width: 210mm;
+              height: 297mm;
+              page-break-after: always;
+              break-after: page;
+              box-sizing: border-box;
+              padding: 15mm 15mm;
+              display: flex;
+              flex-direction: column;
+              justify-content: space-between;
+              background-color: white !important;
+              color: black !important;
+              overflow: hidden;
+            }
+            .print-cover-page {
+              width: 210mm;
+              height: 297mm;
+              page-break-after: always;
+              break-after: page;
+              box-sizing: border-box;
+              padding: 40mm 20mm;
+              display: flex;
+              flex-direction: column;
+              justify-content: space-between;
+              align-items: center;
+              text-align: center;
+              background-color: #221610 !important;
+              color: #f8f6f6 !important;
+              overflow: hidden;
+              -webkit-print-color-adjust: exact;
+              print-color-adjust: exact;
+            }
+          }
+        `}} />
+        
+        {/* Portada del Libro de Catálogo */}
+        <div className="print-cover-page bg-[#221610] text-[#f8f6f6] flex flex-col justify-between items-center h-[297mm] box-border p-[40mm_20mm] text-center" style={{ backgroundColor: '#221610', color: '#f8f6f6' }}>
+          <div className="flex flex-col items-center mt-12">
+            <div className="w-20 h-20 rounded-2xl bg-[#ec5b13] flex items-center justify-center text-white text-5xl font-black shadow-lg mb-6" style={{ backgroundColor: '#ec5b13' }}>
+              S
+            </div>
+            <h1 className="text-5xl font-black tracking-tight text-white mb-2">SABORE</h1>
+            <p className="text-[#ec5b13] text-xs font-bold tracking-[6px] uppercase" style={{ color: '#ec5b13' }}>DISTRIBUCIÓN & LOGÍSTICA</p>
+          </div>
+          
+          <div className="my-auto flex flex-col items-center">
+            <h2 className="text-3xl font-extrabold tracking-tight text-white mb-3 uppercase">CATÁLOGO DE PRODUCTOS</h2>
+            <div className="h-1 w-16 bg-[#ec5b13] rounded mb-5" style={{ backgroundColor: '#ec5b13' }}></div>
+            <p className="text-slate-400 text-xs max-w-sm leading-relaxed" style={{ color: '#94a3b8' }}>
+              Listado completo estructurado con código de barras EAN-13 secuencial por categoría para conexión de escáneres físicos y control optimizado de inventarios.
+            </p>
+          </div>
+
+          <div className="text-[10px] text-slate-500 font-semibold space-y-1.5" style={{ color: '#64748b' }}>
+            <p className="text-slate-400 font-bold" style={{ color: '#94a3b8' }}>erpsabore.vercel.app</p>
+            <p>Generado: {new Date().toLocaleDateString("es-CL", { day: 'numeric', month: 'long', year: 'numeric' })}</p>
+            <p>Total de Productos: {products.length} Ítems</p>
+          </div>
+        </div>
+
+        {/* Páginas de Grilla en 4 Columnas */}
+        {printPages.map((pageProducts, pageIdx) => {
+          const pageCategory = pageProducts[0]?.category || "Insumos";
+
+          return (
+            <div key={pageIdx} className="print-page bg-white text-black flex flex-col justify-between h-[297mm] box-border p-[15mm_15mm] overflow-hidden">
+              <div>
+                {/* Encabezado de Página */}
+                <div className="flex justify-between items-end border-b border-slate-200 pb-1.5 mb-6" style={{ borderBottom: '1px solid #e2e8f0' }}>
+                  <div className="text-left">
+                    <span className="text-[9px] font-black tracking-wider text-[#ec5b13] uppercase" style={{ color: '#ec5b13' }}>SABORE</span>
+                    <h3 className="text-[10px] font-extrabold text-slate-700">Catálogo Oficial de Productos</h3>
+                  </div>
+                  <span className="text-[9px] font-bold text-slate-500 uppercase tracking-wider bg-slate-100 px-2 py-0.5 rounded" style={{ backgroundColor: '#f1f5f9', color: '#64748b' }}>
+                    Categoría: {pageCategory}
+                  </span>
+                </div>
+
+                {/* Grilla de 4 Columnas */}
+                <div className="grid grid-cols-4 gap-x-4 gap-y-5" style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', columnGap: '1rem', rowGap: '1.25rem' }}>
+                  {pageProducts.map((prod) => (
+                    <div 
+                      key={prod.id} 
+                      className="flex flex-col border border-slate-150 rounded-xl p-2 bg-white box-border justify-between h-[45mm] max-h-[46mm] overflow-hidden items-center text-center"
+                      style={{ border: '1px solid #e2e8f0', borderRadius: '0.75rem', padding: '0.5rem' }}
+                    >
+                      <div className="flex flex-col items-center w-full">
+                        {/* Miniatura del Producto */}
+                        <div 
+                          className="relative w-12 h-12 rounded-lg bg-slate-50 border border-slate-100 flex items-center justify-center overflow-hidden mb-1.5 shrink-0"
+                          style={{ backgroundColor: '#f8fafc', border: '1px solid #f1f5f9', borderRadius: '0.5rem' }}
+                        >
+                          {prod.imageUrl ? (
+                            <img
+                              src={prod.imageUrl}
+                              alt={prod.name}
+                              className="w-full h-full object-cover"
+                            />
+                          ) : (
+                            <span className="text-slate-300 text-base font-black">{prod.name.charAt(0)}</span>
+                          )}
+                        </div>
+
+                        {/* Nombre del Producto */}
+                        <h4 className="text-[8px] font-extrabold text-slate-900 leading-tight text-center line-clamp-2 h-5 tracking-tight w-full mb-0.5 overflow-hidden">
+                          {prod.name}
+                        </h4>
+                      </div>
+
+                      <div className="flex flex-col items-center w-full shrink-0">
+                        {/* SKU y Precio */}
+                        <div className="flex justify-between items-center w-full px-0.5 mb-1 text-[7px] font-bold text-slate-500">
+                          <span className="font-mono text-slate-400 uppercase tracking-tighter">
+                            {prod.sku.replace("INS-", "")}
+                          </span>
+                          <span className="text-[#ec5b13]" style={{ color: '#ec5b13' }}>
+                            ${prod.unitPrice.toLocaleString("es-CL")}
+                          </span>
+                        </div>
+
+                        {/* Código de barras dinámico */}
+                        {prod.barcode ? (
+                          <BarcodeSvg
+                            barcode={prod.barcode}
+                            width={90}
+                            height={20}
+                            showText={true}
+                            className="scale-95 origin-bottom"
+                          />
+                        ) : (
+                          <span className="text-[7.5px] text-red-500 font-bold">Sin Código</span>
+                        )}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Pie de Página */}
+              <div className="flex justify-between items-center border-t border-slate-150 pt-2 text-[8px] font-bold text-slate-400" style={{ borderTop: '1px solid #e2e8f0', color: '#94a3b8' }}>
+                <span>Generado automáticamente por erpsabore.vercel.app</span>
+                <span>Página {pageIdx + 2} de {printPages.length + 1}</span>
+              </div>
+            </div>
+          );
+        })}
+      </div>
     </div>
   );
 }
