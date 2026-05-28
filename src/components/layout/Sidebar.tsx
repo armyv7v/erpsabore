@@ -22,7 +22,7 @@ export default function Sidebar({ user, mode = "desktop", onNavigate }: SidebarP
       className={
         isMobile
           ? "absolute inset-y-0 left-0 z-50 flex w-[min(85vw,18rem)] flex-col border-r border-slate-200 bg-white shadow-2xl dark:border-slate-800 dark:bg-slate-900 md:hidden"
-          : "hidden w-64 flex-col border-r border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900 md:flex"
+          : "hidden w-64 h-full flex-col border-r border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900 md:flex"
       }
     >
       <div className="flex items-center justify-between p-6">
