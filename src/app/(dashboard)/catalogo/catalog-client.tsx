@@ -1297,7 +1297,7 @@ export default function CatalogClient({ products, customers = [] }: Props) {
       <div id="catalog-print-area" className="hidden print:block bg-white text-black font-sans">
         <style dangerouslySetInnerHTML={{ __html: `
           @media print {
-            /* Ocultar barra de navegación, barra lateral, barra móvil y cualquier elemento no imprimible */
+            /* Ocultar barra de navegación, barra lateral, barra móvil y cualquier elemento no imprimible de raíz */
             .no-print,
             aside,
             nav,
@@ -1306,13 +1306,20 @@ export default function CatalogClient({ products, customers = [] }: Props) {
             button,
             form,
             header,
-            footer {
+            footer,
+            .sidebar,
+            .navbar,
+            div.flex.h-screen.overflow-hidden > *:not(main),
+            main > *:not(div.flex-1.overflow-y-auto),
+            div.flex-1.overflow-y-auto > div.no-print {
               display: none !important;
               height: 0 !important;
+              width: 0 !important;
               margin: 0 !important;
               padding: 0 !important;
               overflow: hidden !important;
               visibility: hidden !important;
+              opacity: 0 !important;
             }
 
             /* Forzar a que todos los contenedores ancestros liberen su altura fija y scrolls */
@@ -1336,7 +1343,9 @@ export default function CatalogClient({ products, customers = [] }: Props) {
 
             #catalog-print-area {
               display: block !important;
-              position: relative !important;
+              position: absolute !important;
+              left: 0 !important;
+              top: 0 !important;
               width: 210mm !important;
               background-color: white !important;
               color: black !important;
