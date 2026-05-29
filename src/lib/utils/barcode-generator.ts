@@ -31,114 +31,147 @@ const PARITY_TABLE: Record<string, string[]> = {
 };
 
 export const PRODUCT_CATEGORIES = [
-  { id: '01', name: 'Papeles y Rollos Kraft', keywords: [] },
-  { id: '02', name: 'Cajas y Porta Alimentos', keywords: [] },
-  { id: '03', name: 'Vasos, Tapas y Accesorios', keywords: [] },
-  { id: '04', name: 'Envases de Plumavit', keywords: [] },
-  { id: '05', name: 'Bandejas', keywords: [] },
-  { id: '06', name: 'Bolsas y Prepicados', keywords: [] },
-  { id: '07', name: 'Higiene y Papel Tisú', keywords: [] },
-  { id: '08', name: 'Envases de Plástico', keywords: [] },
-  { id: '09', name: 'Cubiertos, Bombillas y Utensilios', keywords: [] },
-  { id: '10', name: 'Aluminio y Metálicos', keywords: [] }
+  { id: '01', name: 'Papel: Papeles, Resmas y Kraft', keywords: [] },
+  { id: '02', name: 'Papel: Cajas y Contenedores de Cartón', keywords: [] },
+  { id: '03', name: 'Papel: Bolsas y Vasos de Papel', keywords: [] },
+  { id: '04', name: 'Papel: Higiene y Papel Tisú', keywords: [] },
+  { id: '05', name: 'Papel: Rollos Térmicos y Oficina', keywords: [] },
+  { id: '06', name: 'Papel: Utensilios de Madera y Pulpa', keywords: [] },
+  { id: '07', name: 'Plástico: Bolsas Plásticas y Prepicados', keywords: [] },
+  { id: '08', name: 'Plástico: Vasos, Tapas y Domos Plásticos', keywords: [] },
+  { id: '09', name: 'Plástico: Envases y Potes de Plástico (PET/PP)', keywords: [] },
+  { id: '10', name: 'Plástico: Envases y Bandejas de Plumavit (PS)', keywords: [] },
+  { id: '11', name: 'Plástico: Películas y Films Plásticos', keywords: [] },
+  { id: '12', name: 'Plástico: Utensilios y Bombillas Plásticas', keywords: [] },
+  { id: '13', name: 'Plástico: Insumos de Protección e Higiene', keywords: [] },
+  { id: '14', name: 'Aluminio: Envases de Aluminio', keywords: [] },
+  { id: '15', name: 'Aluminio: Rollos y Hojas de Aluminio', keywords: [] }
 ];
 
 export function getProductCategory(name: string): string {
   const lowerName = name.toLowerCase();
 
-  // 1. Aluminio y Metálicos (Prioridad máxima para evitar que tapas o bandejas de aluminio caigan en otras categorías)
+  // ==================== 1. ALUMINIO Y METÁLICOS ====================
   if (lowerName.includes("aluminio") || lowerName.includes("foil")) {
-    return 'Aluminio y Metálicos';
+    if (lowerName.includes("c20") || lowerName.includes("envase") || lowerName.includes("marmita")) {
+      return "Aluminio: Envases de Aluminio";
+    }
+    return "Aluminio: Rollos y Hojas de Aluminio";
   }
 
-  // 2. Envases de Plumavit (Prioridad muy alta. Excluimos rollos térmicos y transbank que tienen la palabra 'termico')
-  if (
-    lowerName.includes("plumavit") || 
-    (lowerName.includes("termico") && !lowerName.includes("rollo termico") && !lowerName.includes("transbank")) || 
-    lowerName.includes("wabe") || 
-    lowerName.includes("darnel")
-  ) {
-    return 'Envases de Plumavit';
+  // ==================== 2. PAPEL Y CARTÓN ====================
+  // Rollos Térmicos y Oficina
+  if (lowerName.includes("rollo termico") || lowerName.includes("transbank") || lowerName.includes("resma")) {
+    return "Papel: Rollos Térmicos y Oficina";
   }
-
-  // 3. Papeles y Rollos Kraft (Excluimos polipapel para que las bombillas/vasos polipapel fluyan a sus respectivas categorías)
+  // Papeles y Kraft
   if (
-    lowerName.includes("kraft") || 
+    (lowerName.includes("kraft") && !lowerName.includes("bolsa") && !lowerName.includes("bowl") && !lowerName.includes("cubre vaso") && !lowerName.includes("pote")) ||
     lowerName.includes("mantequilla") || 
-    lowerName.includes("antigrasa") || 
-    lowerName.includes("rollo termico") || 
-    lowerName.includes("transbank") || 
-    lowerName.includes("resma") ||
+    lowerName.includes("antigrasa") ||
     (lowerName.includes("papel") && !lowerName.includes("polipapel") && !lowerName.includes("confort") && !lowerName.includes("toalla") && !lowerName.includes("servilleta"))
   ) {
-    return 'Papeles y Rollos Kraft';
+    return "Papel: Papeles, Resmas y Kraft";
   }
-
-  // 4. Cajas y Porta Alimentos (Para porta completo de cartón, canastas, canoas y orgánicos)
+  // Cajas, Bandejas y Contenedores de Cartón
   if (
     lowerName.includes("caja") || 
     lowerName.includes("porta completo") || 
     lowerName.includes("completo carton") ||
     lowerName.includes("canasto") || 
     lowerName.includes("canoa") ||
-    lowerName.includes("organico")
+    lowerName.includes("organico") ||
+    (lowerName.includes("bandeja") && !lowerName.includes("plumavit") && !lowerName.includes("plastico") && !lowerName.includes("rectangular")) || 
+    (lowerName.includes("bandeja rectangular n°") && !lowerName.includes("plumavit"))
   ) {
-    return 'Cajas y Porta Alimentos';
+    return "Papel: Cajas y Contenedores de Cartón";
   }
-
-  // 5. Higiene y Papel Tisú
+  // Bolsas y Vasos de Papel (Bolsas Kraft, Vasos Polipapel, Cubrevasos, Vasos Corrugados)
+  if (
+    (lowerName.includes("bolsa") && (lowerName.includes("kraft") || lowerName.includes("blanca") || lowerName.includes("rinon"))) ||
+    (lowerName.includes("vaso") && (lowerName.includes("polipapel") || lowerName.includes("corrugado") || lowerName.includes("kraft"))) ||
+    lowerName.includes("cubre vaso")
+  ) {
+    return "Papel: Bolsas y Vasos de Papel";
+  }
+  // Higiene y Papel Tisú
   if (
     lowerName.includes("toalla") || 
     lowerName.includes("servilleta") || 
     lowerName.includes("confort") || 
     lowerName.includes("sabanilla")
   ) {
-    return 'Higiene y Papel Tisú';
+    return "Papel: Higiene y Papel Tisú";
   }
-
-  // 6. Cubiertos, Bombillas y Utensilios (Bombilla polipapel entrará aquí tras saltarse la regla 3)
+  // Utensilios de Madera y Pulpa (Incluyendo bombillas de polipapel)
   if (
-    lowerName.includes("bombilla") || 
+    lowerName.includes("madera") || 
     lowerName.includes("chinos") || 
     lowerName.includes("revolvedor") || 
-    lowerName.includes("mondadientes") || 
-    lowerName.includes("cuchara") || 
-    lowerName.includes("cuchillo") || 
-    lowerName.includes("tenedor") ||
-    lowerName.includes("cubierto")
+    lowerName.includes("mondadientes") ||
+    lowerName.includes("porta vaso") || 
+    lowerName.includes("porta vasos") ||
+    (lowerName.includes("bombilla") && lowerName.includes("polipapel"))
   ) {
-    return 'Cubiertos, Bombillas y Utensilios';
+    return "Papel: Utensilios de Madera y Pulpa";
   }
 
-  // 7. Vasos, Tapas y Accesorios (Vaso polipapel entrará aquí tras saltarse la regla 3)
+  // ==================== 3. PLÁSTICOS ====================
+  // Envases de Plumavit (Poliestireno expandido - Contenedores térmicos, bandejas de plumavit, vasos de plumavit)
   if (
-    lowerName.includes("vaso") || 
-    lowerName.includes("tapa capuchino") || 
-    lowerName.includes("tapa plana") || 
-    lowerName.includes("tapa plastica domo") || 
-    lowerName.includes("inserto") ||
-    lowerName.includes("cubre vaso") ||
-    lowerName.includes("porta vaso")
+    lowerName.includes("plumavit") || 
+    lowerName.includes("termico") || 
+    lowerName.includes("wabe") || 
+    lowerName.includes("darnel")
   ) {
-    return 'Vasos, Tapas y Accesorios';
+    return "Plástico: Envases y Bandejas de Plumavit (PS)";
   }
-
-  // 8. Bolsas y Prepicados
+  // Bolsas Plásticas y Prepicados
   if (
-    lowerName.includes("bolsa") || 
+    (lowerName.includes("bolsa") && !lowerName.includes("kraft") && !lowerName.includes("blanca") && !lowerName.includes("rinon")) ||
     lowerName.includes("fullpack") || 
     lowerName.includes("prepicado")
   ) {
-    return 'Bolsas y Prepicados';
+    return "Plástico: Bolsas Plásticas y Prepicados";
+  }
+  // Vasos, Tapas y Domos Plásticos
+  if (
+    (lowerName.includes("vaso") && !lowerName.includes("polipapel") && !lowerName.includes("plumavit")) || 
+    lowerName.includes("tapa capuchino") || 
+    lowerName.includes("tapa plana") || 
+    lowerName.includes("tapa plastica domo") || 
+    lowerName.includes("inserto")
+  ) {
+    return "Plástico: Vasos, Tapas y Domos Plásticos";
+  }
+  // Películas y Films Plásticos
+  if (lowerName.includes("film")) {
+    return "Plástico: Películas y Films Plásticos";
+  }
+  // Utensilios y Bombillas Plásticas (Bombillas plásticas comunes)
+  if (
+    (lowerName.includes("bombilla") && !lowerName.includes("polipapel")) || 
+    (lowerName.includes("revolvedor") && lowerName.includes("plastico")) ||
+    (lowerName.includes("cubierto") && lowerName.includes("plastico")) ||
+    (lowerName.includes("cuchara") && !lowerName.includes("madera")) ||
+    (lowerName.includes("cuchillo") && !lowerName.includes("madera")) ||
+    (lowerName.includes("tenedor") && !lowerName.includes("madera"))
+  ) {
+    return "Plástico: Utensilios y Bombillas Plásticas";
+  }
+  // Insumos de Protección e Higiene
+  if (
+    lowerName.includes("guante") || 
+    lowerName.includes("gorro") || 
+    lowerName.includes("cofia") ||
+    lowerName.includes("cinta embalaje") ||
+    lowerName.includes("borrador")
+  ) {
+    return "Plástico: Insumos de Protección e Higiene";
   }
 
-  // 9. Bandejas (Cualquier bandeja que no sea de plumavit, la cual ya cayó en la regla 2)
-  if (lowerName.includes("bandeja")) {
-    return 'Bandejas';
-  }
-
-  // 10. Envases de Plástico (Fallback natural para potes, bowls, clamshells, sushis, films plásticos, guantes, cofias, cintas, etc.)
-  return 'Envases de Plástico';
+  // Fallback para Envases y Potes de Plástico (PET/PP) (gelatineros, potes degustación, clamshells, bowls kraft con tapas plásticas, potes facetados)
+  return "Plástico: Envases y Potes de Plástico (PET/PP)";
 }
 
 export function getMajorCategory(name: string): 'Plásticos' | 'Papel' | 'Aluminio' {
@@ -149,7 +182,7 @@ export function getMajorCategory(name: string): 'Plásticos' | 'Papel' | 'Alumin
     return "Aluminio";
   }
 
-  // 2. Papel y Cartón (Incluyendo rollos térmicos, resmas, canastos, canoas y portacomidas orgánicos)
+  // 2. Papel y Cartón (Incluyendo madera y pulpa de cartón)
   const isPaper = 
     text.includes("kraft") || 
     text.includes("mantequilla") || 
