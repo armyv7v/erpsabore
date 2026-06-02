@@ -41,5 +41,5 @@ export const mockSignerInfo = {
   nombreFirmante: "ENDER JAVIER GONZALEZ",
   emisor: "Acepta.com S.A. Entidad Certificadora",
   vencimiento: "2028-05-20",
-  rutEmpresa: "76.432.890-K",
+  rutEmpresa: "77.947.538-7",
 };

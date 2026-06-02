@@ -54,9 +54,9 @@ export default function TicketReceipt({ sale, customer, items, dteType, onClose 
   // Mock xml representation for the PDF417 stamp
   const tedXmlMock = `<TED version="1.0">
   <DD>
-    <RE>76.432.890-K</RE>
+    <RE>77.947.538-7</RE>
     <TD>${dteType}</TD>
-    <F>${sale.folio.replace(/\D/g, "") || "4501"}</F>
+    <F>1</F>
     <FE>${new Date().toISOString().slice(0, 10)}</FE>
     <RR>${customer.rut}</RR>
     <RSR>${customer.name.slice(0, 20)}</RSR>
@@ -90,9 +90,9 @@ export default function TicketReceipt({ sale, customer, items, dteType, onClose 
             
             {/* Cabecera de la empresa */}
             <div className="text-center space-y-1 pb-3 border-b border-dashed border-slate-400">
-              <h2 className="font-extrabold text-base tracking-wider uppercase">SABORE LIMITADA</h2>
-              <p className="text-xs">R.U.T.: 76.432.890-K</p>
-              <p className="text-[10px] leading-tight">Servicios de Alimentación y Catering</p>
+              <h2 className="font-extrabold text-base tracking-wider uppercase">SABORÉ SPA</h2>
+              <p className="text-xs">R.U.T.: 77.947.538-7</p>
+              <p className="text-[10px] leading-tight">Venta al por menor de alimentos y almacenes</p>
               <p className="text-[10px]">Av. Providencia 1234, Providencia</p>
               <p className="text-[10px]">Santiago - Chile</p>
             </div>

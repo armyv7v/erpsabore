@@ -2,6 +2,7 @@ import type { SupabaseClient } from "@supabase/supabase-js";
 import { isSupabaseConfigured } from "@/lib/supabase/config";
 import { getFallbackCustomers, getFallbackInvoices, getFallbackReceivables } from "@/lib/mock/fallback-data";
 import { listCustomers } from "@/lib/repositories/customer-repository";
+import { getActiveCertificate } from "@/lib/repositories/certificate-repository";
 import {
   createDraftInvoiceWithCustomerRpc,
   getGlobalInvoicesStats,
@@ -111,7 +112,28 @@ export async function getBillingWorkspace(
   supabaseClient?: SupabaseClient,
 ) {
   const workspace = await getSalesWorkspace(user, options, supabaseClient);
-  return workspace;
+  
+  let activeCertificate = null;
+  if (isSupabaseConfigured()) {
+    const supabase = supabaseClient ?? await createAuthenticatedSupabaseClient();
+    try {
+      const cert = await getActiveCertificate(supabase, user.tenantId);
+      if (cert) {
+        activeCertificate = {
+          rutFirmante: cert.rutFirmante,
+          subjectName: cert.subjectName,
+          validUntil: cert.validUntil,
+        };
+      }
+    } catch (e) {
+      console.error("[invoice-service] Falló la carga del certificado digital:", e);
+    }
+  }
+
+  return {
+    ...workspace,
+    activeCertificate,
+  };
 }
 
 export async function createDraftInvoice(

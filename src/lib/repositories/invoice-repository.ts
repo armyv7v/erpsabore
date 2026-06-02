@@ -635,6 +635,7 @@ export async function issueInvoiceRpc(
       .from("invoices")
       .select(`
         id,
+        tenant_id,
         number,
         issue_date,
         due_date,
@@ -701,10 +702,12 @@ export async function issueInvoiceRpc(
           subtotal: Number(typedInv.subtotal),
           tax: Number(typedInv.tax),
           total: Number(typedInv.total),
-          dte_type: typedInv.dte_type
+          dte_type: typedInv.dte_type,
+          tenantId: typedInv.tenant_id
         },
         dteItems,
-        dteCustomer
+        dteCustomer,
+        supabase
       );
 
       if (dteResult.success) {

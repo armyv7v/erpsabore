@@ -4,6 +4,7 @@ import { useEffect, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { CheckCircle2, Clock, FileText, PlusCircle, Wallet, X, FileCode, ShieldCheck, Key, UploadCloud } from "lucide-react";
 import { submitIssueInvoiceAction, submitRegisterPaymentAction } from "@/app/actions/invoices";
+import { uploadDigitalCertificateAction, deleteDigitalCertificateAction } from "@/app/actions/dte";
 import { formatInvoiceStatus } from "@/lib/formatters/status";
 import type { ActionState, InvoiceRecord } from "@/lib/types/erp";
 
@@ -20,6 +21,11 @@ interface BillingWorkspaceProps {
   pageSize: number;
   totalCount: number;
   pageCount: number;
+  activeCertificate?: {
+    rutFirmante: string;
+    subjectName: string;
+    validUntil: string;
+  } | null;
 }
 
 const initialState: ActionState = {
@@ -265,6 +271,7 @@ export default function BillingWorkspace({
   pageSize,
   totalCount,
   pageCount,
+  activeCertificate,
 }: BillingWorkspaceProps) {
   const router = useRouter();
   const [activeTab, setActiveTab] = useState<"invoices" | "dte">("invoices");
@@ -275,11 +282,14 @@ export default function BillingWorkspace({
   const [documentInvoice, setDocumentInvoice] = useState<InvoiceRecord | null>(null);
   const [isPending, startTransition] = useTransition();
 
-  // Estados locales simulados para la configuración DTE
-  const [certLoaded, setCertLoaded] = useState(true);
-  const [cafLoaded, setCafLoaded] = useState(true);
+  // Estados para la configuración DTE real
+  const [currentCert, setCurrentCert] = useState(activeCertificate);
   const [certFeedback, setCertFeedback] = useState("");
+  const [cafLoaded, setCafLoaded] = useState(true);
   const [cafFeedback, setCafFeedback] = useState("");
+  const [isUploadingCert, setIsUploadingCert] = useState(false);
+  const [isDeletingCert, setIsDeletingCert] = useState(false);
+  const [password, setPassword] = useState("");
 
   useEffect(() => {
     setInvoiceList(invoices);
@@ -614,18 +624,43 @@ export default function BillingWorkspace({
             </div>
 
             <div className="mt-6 space-y-4">
-              {certLoaded ? (
+              {currentCert ? (
                 <div className="rounded-xl border border-green-200 bg-green-50/50 p-4 dark:border-green-900/50 dark:bg-green-950/20">
                   <div className="flex items-center gap-2 text-green-700 dark:text-green-300">
                     <Key className="h-4 w-4" />
                     <span className="text-sm font-bold">Firma Digital Activa</span>
                   </div>
                   <div className="mt-3 space-y-1 text-xs text-slate-600 dark:text-slate-400">
-                    <p><span className="font-semibold text-slate-700 dark:text-slate-300">RUT Firmante:</span> 15.890.342-9</p>
-                    <p><span className="font-semibold text-slate-700 dark:text-slate-300">Nombre:</span> ENDER JAVIER GONZALEZ</p>
-                    <p><span className="font-semibold text-slate-700 dark:text-slate-300">Emisor:</span> Acepta.com S.A. Entidad Certificadora</p>
-                    <p><span className="font-semibold text-slate-700 dark:text-slate-300">Vence:</span> 2028-05-20 (Vigente)</p>
+                    <p><span className="font-semibold text-slate-700 dark:text-slate-300">RUT Firmante:</span> {currentCert.rutFirmante}</p>
+                    <p><span className="font-semibold text-slate-700 dark:text-slate-300">Nombre:</span> {currentCert.subjectName}</p>
+                    <p><span className="font-semibold text-slate-700 dark:text-slate-300">Vence:</span> {new Date(currentCert.validUntil).toLocaleDateString("es-CL")} (Vigente)</p>
                   </div>
+                  <button
+                    type="button"
+                    disabled={isDeletingCert}
+                    onClick={async () => {
+                      if (confirm("¿Estás seguro de que querés revocar y eliminar esta firma digital del sistema de forma permanente?")) {
+                        setIsDeletingCert(true);
+                        setCertFeedback("Eliminando firma digital...");
+                        try {
+                          const result = await deleteDigitalCertificateAction();
+                          if (result.status === "success") {
+                            setCurrentCert(null);
+                            setCertFeedback("¡Firma Digital revocada correctamente!");
+                          } else {
+                            setCertFeedback(`Error: ${result.message}`);
+                          }
+                        } catch (err: any) {
+                          setCertFeedback(`Error: ${err.message || err}`);
+                        } finally {
+                          setIsDeletingCert(false);
+                        }
+                      }
+                    }}
+                    className="mt-3 text-xs font-bold text-red-650 hover:text-red-750 dark:text-red-400 dark:hover:text-red-300 disabled:opacity-50 cursor-pointer"
+                  >
+                    {isDeletingCert ? "Eliminando..." : "Inhabilitar / Revocar Firma"}
+                  </button>
                 </div>
               ) : (
                 <div className="rounded-xl border border-dashed border-slate-300 p-8 text-center text-sm text-slate-500">
@@ -633,28 +668,75 @@ export default function BillingWorkspace({
                 </div>
               )}
 
-              <div className="space-y-2">
-                <label className="text-xs font-bold uppercase tracking-wider text-slate-500">Cargar nuevo certificado (.pfx / .p12)</label>
-                <div className="flex gap-2">
+              <form
+                onSubmit={async (e) => {
+                  e.preventDefault();
+                  const form = e.currentTarget;
+                  const fileInput = form.elements.namedItem("certificateFile") as HTMLInputElement;
+                  if (!fileInput.files?.[0]) {
+                    setCertFeedback("Por favor, selecciona un archivo.");
+                    return;
+                  }
+                  
+                  setIsUploadingCert(true);
+                  setCertFeedback("Subiendo y procesando firma digital oficial...");
+                  
+                  const formData = new FormData();
+                  formData.append("certificateFile", fileInput.files[0]);
+                  formData.append("password", password);
+                  
+                  try {
+                    const result = await uploadDigitalCertificateAction(formData);
+                    if (result.status === "success") {
+                      setCertFeedback("¡Firma Digital cargada y configurada correctamente!");
+                      window.location.reload();
+                    } else {
+                      setCertFeedback(`Error: ${result.message}`);
+                    }
+                  } catch (err: any) {
+                    setCertFeedback(`Error: ${err.message || "Fallo en la comunicación con el servidor."}`);
+                  } finally {
+                    setIsUploadingCert(false);
+                  }
+                }}
+                className="space-y-4 pt-2 border-t border-slate-100 dark:border-slate-800"
+              >
+                <div className="space-y-2">
+                  <label className="text-xs font-bold uppercase tracking-wider text-slate-500">Cargar firma digital (.pfx / .p12)</label>
                   <input
+                    name="certificateFile"
                     type="file"
                     accept=".pfx,.p12"
-                    onChange={(e) => {
-                      if (e.target.files?.[0]) {
-                        setCertFeedback("Subiendo firma digital simulada...");
-                        setTimeout(() => {
-                          setCertLoaded(true);
-                          setCertFeedback("¡Firma Digital cargada correctamente! Certificado firmado por Acepta.com en base de datos.");
-                        }, 1000);
-                      }
-                    }}
+                    required
                     className="w-full text-xs text-slate-500 file:mr-4 file:rounded-xl file:border-0 file:bg-slate-100 file:px-4 file:py-2 file:text-xs file:font-bold file:text-slate-700 hover:file:bg-slate-200 dark:file:bg-slate-800 dark:file:text-slate-300"
                   />
                 </div>
+                
+                <div className="space-y-2">
+                  <label className="text-xs font-bold uppercase tracking-wider text-slate-500">Contraseña del Certificado</label>
+                  <input
+                    type="password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    placeholder="Contraseña del certificado digital"
+                    required
+                    className="w-full rounded-lg border border-slate-205 bg-transparent px-3 py-2 outline-none focus:ring-2 focus:ring-primary/20 dark:border-slate-700 text-sm"
+                  />
+                </div>
+                
+                <button
+                  type="submit"
+                  disabled={isUploadingCert}
+                  className="w-full rounded-xl bg-primary py-2 text-xs font-bold text-white hover:bg-primary/90 disabled:opacity-70 transition-all flex items-center justify-center gap-2 cursor-pointer"
+                >
+                  <UploadCloud className="h-4 w-4" />
+                  {isUploadingCert ? "Procesando Certificado..." : "Cargar y Configurar Firma Real"}
+                </button>
+                
                 {certFeedback && (
-                  <p className="text-xs font-semibold text-primary">{certFeedback}</p>
+                  <p className="text-xs font-semibold text-primary mt-2">{certFeedback}</p>
                 )}
-              </div>
+              </form>
             </div>
           </div>
 

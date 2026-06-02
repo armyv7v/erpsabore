@@ -24,6 +24,7 @@ export default async function BillingPage({
       pageSize={workspace.pageSize}
       totalCount={workspace.totalCount}
       pageCount={workspace.pageCount}
+      activeCertificate={workspace.activeCertificate}
     />
   );
 }

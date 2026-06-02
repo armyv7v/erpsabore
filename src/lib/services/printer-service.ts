@@ -61,10 +61,10 @@ export class PrinterService {
     
     // Título Doble Alto/Ancho
     pushBytes(0x1b, 0x21, 0x30); // Texto gigante
-    pushText("SABORE LIMITADA\n");
+    pushText("SABORÉ SPA\n");
     pushBytes(0x1b, 0x21, 0x00); // Reset texto
     
-    pushText("R.U.T.: 76.432.890-K\n");
+    pushText("R.U.T.: 77.947.538-7\n");
     pushText("Av. Providencia 1234, Providencia\n");
     pushText("Santiago - Chile\n");
     pushBytes(0x1b, 0x45, 0x00); // Negrita off
