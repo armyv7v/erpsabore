@@ -167,6 +167,10 @@ export async function updateProductAction(
     const rawDescription = formData.get("description")
       ? String(formData.get("description")).trim()
       : null;
+    
+    // Capturar stockQuantity si se suministra en el formulario
+    const hasStockField = formData.has("stockQuantity");
+    const rawQty = hasStockField ? Number(formData.get("stockQuantity")) : null;
 
     const imageFile = formData.get("image") as File | null;
     const removeImage = formData.get("removeImage") === "true";
@@ -214,7 +218,17 @@ export async function updateProductAction(
       imageUrl: finalImageUrl,
     });
 
+    // 1. Actualizar datos base del producto
     await updateProduct(supabase, user.tenantId, productId, input);
+
+    // 2. Si se editó la cantidad de stock y es diferente de la actual, la actualizamos
+    if (rawQty !== null && rawQty !== currentProduct.stockQuantity) {
+      if (!Number.isInteger(rawQty) || rawQty < 0) {
+        return { status: "error", message: "La cantidad de stock debe ser un entero no negativo." };
+      }
+      const { updateProductStock } = await import("@/lib/repositories/product-repository");
+      await updateProductStock(supabase, user.tenantId, productId, rawQty);
+    }
 
     revalidatePath("/inventario");
 

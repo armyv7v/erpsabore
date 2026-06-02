@@ -56,6 +56,7 @@ export default function InventoryClient({ products, summary }: Props) {
   const [activeDropdownId, setActiveDropdownId] = useState<string | null>(null);
   const [dropdownPosition, setDropdownPosition] = useState<{ top: number; right: number } | null>(null);
   const [editingProduct, setEditingProduct] = useState<ProductRecord | null>(null);
+  const [editStockQty, setEditStockQty] = useState<number>(0);
   const [adjustingProduct, setAdjustingProduct] = useState<ProductRecord | null>(null);
   const [detailsProduct, setDetailsProduct] = useState<ProductRecord | null>(null);
 
@@ -116,6 +117,13 @@ export default function InventoryClient({ products, summary }: Props) {
       }
     }
   }, []);
+
+  // Sincronizar stockQuantity al editar un producto
+  useEffect(() => {
+    if (editingProduct) {
+      setEditStockQty(editingProduct.stockQuantity);
+    }
+  }, [editingProduct]);
 
   // Cerrar modal automáticamente al éxito
   useEffect(() => {
@@ -952,6 +960,40 @@ export default function InventoryClient({ products, summary }: Props) {
                     />
                   </div>
                 </div>
+                
+                {/* Control interactivo de Stock Actual */}
+                <div className="bg-slate-50 dark:bg-slate-850/40 p-4 rounded-xl border border-slate-200 dark:border-slate-800 space-y-2">
+                  <label className="block text-xs font-bold uppercase tracking-wider text-slate-500">
+                    Stock Actual en Inventario
+                  </label>
+                  <div className="flex items-center gap-3">
+                    <button
+                      type="button"
+                      onClick={() => setEditStockQty((q) => Math.max(0, q - 1))}
+                      className="flex size-10 items-center justify-center rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-350 transition-all font-bold text-lg select-none active:scale-95 cursor-pointer shadow-sm"
+                    >
+                      -
+                    </button>
+                    <input
+                      type="number"
+                      name="stockQuantity"
+                      value={editStockQty}
+                      onChange={(e) => setEditStockQty(Math.max(0, parseInt(e.target.value) || 0))}
+                      className="w-24 text-center px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 focus:ring-2 focus:ring-primary/20 outline-none text-slate-800 dark:text-slate-150 font-extrabold text-lg"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setEditStockQty((q) => q + 1))}
+                      className="flex size-10 items-center justify-center rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-350 transition-all font-bold text-lg select-none active:scale-95 cursor-pointer shadow-sm"
+                    >
+                      +
+                    </button>
+                    <div className="text-[11px] text-slate-500 leading-tight">
+                      Ajustá las unidades de stock sumando o restando de forma rápida.
+                    </div>
+                  </div>
+                </div>
+
                 <div>
                   <label className="block text-sm font-semibold mb-1 text-slate-700 dark:text-slate-350">
                     Código de Barras (Opcional)
