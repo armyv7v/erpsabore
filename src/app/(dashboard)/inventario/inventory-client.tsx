@@ -983,7 +983,7 @@ export default function InventoryClient({ products, summary }: Props) {
                     />
                     <button
                       type="button"
-                      onClick={() => setEditStockQty((q) => q + 1))}
+                      onClick={() => setEditStockQty((q) => q + 1)}
                       className="flex size-10 items-center justify-center rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-350 transition-all font-bold text-lg select-none active:scale-95 cursor-pointer shadow-sm"
                     >
                       +
