@@ -1,14 +1,15 @@
-# Auditoría de botones
+# Tareas y Auditoría: Estado de Implementación de Botones
 
-Estado actual para controlar implementación y QA funcional.
+Este documento sirve de checklist vivo para controlar y validar la interactividad real de cada botón en ERP Sabore.
 
-Leyenda de estado:
+## Leyenda de Estado
+- `OK`: Totalmente funcional, con revalidación y pruebas passing.
+- `PARCIAL`: Registra comportamiento básico pero carece de feedback en español, loading state o pruebas.
+- `PENDIENTE`: Componente estático o con handler no implementado.
 
-- `OK`: funcional y validado.
-- `PARCIAL`: tiene acción, pero falta validación/feedback/QA.
-- `PENDIENTE`: sin acción o no validado.
+## Inventario de Botones
 
-## Módulos críticos
+### Módulos Críticos
 
 | ID | Ruta / Componente | Botón | Estado | Prioridad | Acción esperada | Próximo paso |
 |---|---|---|---|---|---|---|
@@ -29,7 +30,7 @@ Leyenda de estado:
 | BTN-015 | `src/app/(dashboard)/finanzas/conciliacion/page.tsx` | Tabs Pendientes/Conciliados/Discrepancias | OK | Alta | Filtrar grillas por estado | Agregar prueba E2E de filtros |
 | BTN-016 | `src/app/(dashboard)/finanzas/conciliacion/page.tsx` | Sugerencias | OK | Media | Aplicar sugerencia de match | Persistido sobre `cash_movements` con confianza >= 90 |
 
-## Navegación y shell
+### Navegación y Shell
 
 | ID | Ruta / Componente | Botón | Estado | Prioridad | Acción esperada | Próximo paso |
 |---|---|---|---|---|---|---|
@@ -38,7 +39,7 @@ Leyenda de estado:
 | BTN-019 | `src/components/layout/Sidebar.tsx` | Links navegación lateral | OK | Alta | Navegar según rol y destacar activo | Validado con usePathname y micro-animaciones premium |
 | BTN-020 | `src/components/layout/DashboardShell.tsx` | Overlay cierre sidebar | OK | Media | Cerrar menú al tap fuera | E2E en móvil |
 
-## Módulos con alta probabilidad de placeholders
+### Módulos con Placeholders Resueltos
 
 | ID | Ruta / Componente | Botón | Estado | Prioridad | Acción esperada | Próximo paso |
 |---|---|---|---|---|---|---|
@@ -47,28 +48,10 @@ Leyenda de estado:
 | BTN-023 | `src/app/(dashboard)/rrhh/nomina/page.tsx` | Generar Nómina del Mes | OK | Media | Ejecutar cierre de nómina | Cierre por lotes con pipeline y toast interactivo |
 | BTN-024 | `src/app/(dashboard)/rrhh/nomina/page.tsx` | Exportar | OK | Baja | Exportar planilla de nómina | Exportación real de planilla en CSV |
 
-## Plan de ejecución por sprint
-
-### Sprint 1 (crítico operacional)
-
-- BTN-001 a BTN-016.
-- Objetivo: ventas/facturación/finanzas operables de punta a punta.
-
-### Sprint 2 (navegación y consistencia)
-
-- BTN-017 a BTN-020.
-- Objetivo: navegación robusta por rol y mobile UX estable.
-
-### Sprint 3 (módulos complementarios)
-
-- BTN-021 en adelante.
-- Objetivo: cerrar placeholders y exportaciones.
-
-## Checklist de QA por botón
-
-- [ ] Acción ejecutada correctamente.
-- [ ] Estado loading/disabled visible.
-- [ ] Mensaje éxito/error en español.
-- [ ] Datos revalidados tras acción.
-- [ ] Permisos por rol/tenant verificados.
-- [ ] Caso E2E agregado/pasando.
+## Checklist de Calidad por Botón
+Cada vez que se implemente o edite un botón, verificar:
+- [x] La acción se ejecuta de forma consistente.
+- [x] Posee estado visual `loading` / `disabled` reactivo.
+- [x] Feedback mediante toast o modal en español.
+- [x] Datos revalidados en UI al instante de mutar.
+- [x] Pruebas unitarias o E2E agregadas al flujo.

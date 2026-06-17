@@ -1,21 +1,21 @@
-# Manual de Procesos: Código de Barras en POS e Inventario
+# Especificación: Procesos de Código de Barras en POS e Inventario
 
-Este documento detalla los procedimientos operativos para cajeros y administradores al utilizar lectores ópticos (escáneres) en los módulos de Punto de Venta (POS) y Control de Inventarios del ERP Sabore.
+Este documento detalla los procedimientos operativos y requisitos técnicos para el uso de lectores ópticos (escáneres) en los módulos de Punto de Venta (POS) y Control de Inventarios de ERP Sabore.
 
 ---
 
 ## 1. Procedimiento de Venta en el POS (Flujo del Cajero)
 
-El Punto de Venta (POS) está optimizado para permitir un **flujo continuo de venta sin necesidad de usar el mouse o el teclado**. El lector de códigos de barra emula la entrada de un teclado físico a alta velocidad, lo cual es capturado en segundo plano por el sistema.
+El Punto de Venta (POS) está optimizado para permitir un **flujo continuo de venta sin necesidad de usar el mouse o el teclado**. El lector de códigos de barra emula la entrada de un teclado físico a alta velocidad (Keyboard Emulation), lo cual es capturado en segundo plano por el sistema.
 
 ### Paso a Paso Operativo:
-1. **Ingreso al POS**: El cajero debe entrar a la sección **POS** desde el panel lateral del ERP.
-2. **Preparación**: Asegurarse de que la pantalla del POS esté cargada y lista para recibir productos. **No es necesario hacer clic en el campo de búsqueda**. El sistema cuenta con un receptor de eventos global que escucha lecturas en cualquier parte de la pantalla.
+1. **Ingreso al POS**: El cajero entra a la sección **POS** desde el panel lateral del ERP.
+2. **Preparación**: Asegurarse de que la pantalla del POS esté cargada. **No es necesario hacer clic en ningún campo de búsqueda**. El sistema cuenta con un receptor de eventos global que escucha lecturas de alta velocidad en cualquier parte de la pantalla.
 3. **Escaneo del Producto**:
    - Tomar el artículo físico y apuntar el lector láser hacia el código de barras.
    - Presionar el gatillo. El lector emitirá un pitido de confirmación.
 4. **Adición y Sumatoria Automática**:
-   - El sistema detectará la velocidad del tipeo, validará que proviene del escáner y buscará el código en la base de datos (dando prioridad al **Código de Barras** exacto y usando el **SKU** como respaldo).
+   - El sistema detectará la velocidad del tipeo, validará que proviene de un escáner y buscará el código en la base de datos (dando prioridad al **Código de Barras** exacto y usando el **SKU** como respaldo).
    - El producto se agregará de inmediato al carrito de compras con cantidad `1`.
    - **Para vender varias unidades de un mismo artículo**: Volver a escanear el código de barras físico del producto. Cada escaneo incrementará automáticamente la cantidad en `+1` (ej. `2`, `3`, `4`...) sin necesidad de tocar la pantalla o el teclado.
 5. **Cierre de Venta**: 
