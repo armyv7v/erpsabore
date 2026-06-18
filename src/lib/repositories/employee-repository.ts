@@ -10,6 +10,10 @@ export interface EmployeeRecord {
   department: string;
   email: string | null;
   status: EmployeeStatus;
+  baseSalary: number;
+  contractType: "indefinite" | "fixed_term";
+  afpName: "Habitat" | "Modelo" | "Provida" | "Capital" | "Cuprum" | "Planvital" | "Uno";
+  healthSystem: "fonasa" | "isapre";
   createdAt: string;
   updatedAt: string;
 }
@@ -22,6 +26,10 @@ interface EmployeeRow {
   department: string;
   email: string | null;
   status: string;
+  base_salary: number;
+  contract_type: string;
+  afp_name: string;
+  health_system: string;
   created_at: string;
   updated_at: string;
 }
@@ -35,13 +43,17 @@ function mapEmployee(row: EmployeeRow): EmployeeRecord {
     department: row.department,
     email: row.email,
     status: (row.status ?? "active") as EmployeeStatus,
+    baseSalary: Number(row.base_salary ?? 500000),
+    contractType: (row.contract_type ?? "indefinite") as "indefinite" | "fixed_term",
+    afpName: (row.afp_name ?? "Modelo") as "Habitat" | "Modelo" | "Provida" | "Capital" | "Cuprum" | "Planvital" | "Uno",
+    healthSystem: (row.health_system ?? "fonasa") as "fonasa" | "isapre",
     createdAt: row.created_at,
     updatedAt: row.updated_at,
   };
 }
 
 const EMPLOYEE_SELECT =
-  "id, tenant_id, full_name, role_name, department, email, status, created_at, updated_at";
+  "id, tenant_id, full_name, role_name, department, email, status, base_salary, contract_type, afp_name, health_system, created_at, updated_at";
 
 export async function listEmployees(
   supabase: SupabaseClient,
@@ -70,6 +82,10 @@ export async function createEmployee(
     department: string;
     email?: string | null;
     status: EmployeeStatus;
+    baseSalary?: number;
+    contractType?: "indefinite" | "fixed_term";
+    afpName?: "Habitat" | "Modelo" | "Provida" | "Capital" | "Cuprum" | "Planvital" | "Uno";
+    healthSystem?: "fonasa" | "isapre";
   }
 ): Promise<EmployeeRecord> {
   const { data, error } = await supabase
@@ -81,6 +97,10 @@ export async function createEmployee(
       department: input.department,
       email: input.email || null,
       status: input.status,
+      base_salary: input.baseSalary ?? 500000,
+      contract_type: input.contractType ?? "indefinite",
+      afp_name: input.afpName ?? "Modelo",
+      health_system: input.healthSystem ?? "fonasa",
     })
     .select(EMPLOYEE_SELECT)
     .single();

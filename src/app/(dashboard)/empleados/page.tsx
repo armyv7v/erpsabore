@@ -15,6 +15,10 @@ async function getEmployees() {
       department: e.department,
       email: null,
       status: e.status as "active" | "vacation" | "license" | "inactive",
+      baseSalary: 500000,
+      contractType: "indefinite" as const,
+      afpName: "Modelo" as const,
+      healthSystem: "fonasa" as const,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
     }));

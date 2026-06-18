@@ -8,6 +8,7 @@ import {
   LineChart,
   Package,
   PackageOpen,
+  Percent,
   PieChart,
   Receipt,
   Store,
@@ -58,6 +59,7 @@ export const navigationSections: NavigationSection[] = [
       { href: "/finanzas/flujo-caja", label: "Flujo de Caja", icon: LineChart, roles: ["admin", "finanzas"] },
       { href: "/finanzas/conciliacion", label: "Conciliación", icon: ArrowRightLeft, roles: ["admin", "finanzas"] },
       { href: "/finanzas/estado-resultados", label: "Estado de Resultados", icon: PieChart, roles: ["admin", "finanzas"] },
+      { href: "/finanzas/impuestos", label: "Impuestos", icon: Percent, roles: ["admin", "finanzas"] },
     ],
   },
   {
