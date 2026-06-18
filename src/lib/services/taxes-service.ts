@@ -96,7 +96,7 @@ export async function calculateIvaForPeriod(
     .select("amount, tax_amount")
     .eq("tenant_id", tenantId)
     .eq("kind", "expense")
-    .neq("status", "cancelled")
+    .eq("status", "confirmed")
     .gte("movement_date", startDate)
     .lte("movement_date", endDate);
 
@@ -246,7 +246,7 @@ export async function projectRentaForYear(
     .select("amount")
     .eq("tenant_id", tenantId)
     .eq("kind", "income")
-    .neq("status", "cancelled")
+    .eq("status", "confirmed")
     .is("source_id", null) // Avoid double counting payments of invoices
     .gte("movement_date", startDate)
     .lte("movement_date", endDate);
@@ -265,7 +265,7 @@ export async function projectRentaForYear(
     .select("amount")
     .eq("tenant_id", tenantId)
     .eq("kind", "expense")
-    .neq("status", "cancelled")
+    .eq("status", "confirmed")
     .gte("movement_date", startDate)
     .lte("movement_date", endDate);
 
