@@ -157,7 +157,9 @@ export default function InventoryClient({ products, summary }: Props) {
             ? product.stockStatus === "low"
             : activeTab === "out"
               ? product.stockStatus === "out_of_stock"
-              : true;
+              : activeTab === "alerts"
+                ? product.stockStatus === "low" || product.stockStatus === "out_of_stock"
+                : true;
 
       const matchesCategory =
         selectedCategory === "all" || detectCategory(product.name) === selectedCategory;
@@ -247,7 +249,17 @@ export default function InventoryClient({ products, summary }: Props) {
 
       {/* Summary Stats */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <div className="bg-white dark:bg-slate-900 p-4 rounded-xl border border-slate-200 dark:border-slate-800">
+        <div 
+          onClick={() => {
+            setActiveTab("all");
+            setCurrentPage(1);
+          }}
+          className={`p-4 rounded-xl border transition-all duration-200 cursor-pointer select-none active:scale-[0.98] ${
+            activeTab === "all"
+              ? "bg-primary/5 border-primary shadow-sm"
+              : "bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 hover:border-primary/50 dark:hover:border-primary/50 hover:shadow-xs"
+          }`}
+        >
           <p className="text-slate-500 dark:text-slate-400 text-xs font-medium uppercase tracking-wider">
             Total SKU
           </p>
@@ -255,7 +267,17 @@ export default function InventoryClient({ products, summary }: Props) {
             {summary.skuCount.toLocaleString("es-CL")}
           </p>
         </div>
-        <div className="bg-white dark:bg-slate-900 p-4 rounded-xl border border-slate-200 dark:border-slate-800">
+        <div 
+          onClick={() => {
+            setActiveTab("low");
+            setCurrentPage(1);
+          }}
+          className={`p-4 rounded-xl border transition-all duration-200 cursor-pointer select-none active:scale-[0.98] ${
+            activeTab === "low"
+              ? "bg-orange-500/5 border-orange-500 shadow-sm"
+              : "bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 hover:border-orange-500/50 dark:hover:border-orange-950/50 hover:shadow-xs"
+          }`}
+        >
           <p className="text-slate-500 dark:text-slate-400 text-xs font-medium uppercase tracking-wider">
             Stock Bajo
           </p>
@@ -271,7 +293,17 @@ export default function InventoryClient({ products, summary }: Props) {
             {formatCLP(summary.totalInventoryValue)}
           </p>
         </div>
-        <div className="bg-white dark:bg-slate-900 p-4 rounded-xl border border-slate-200 dark:border-slate-800">
+        <div 
+          onClick={() => {
+            setActiveTab("alerts");
+            setCurrentPage(1);
+          }}
+          className={`p-4 rounded-xl border transition-all duration-200 cursor-pointer select-none active:scale-[0.98] ${
+            activeTab === "alerts"
+              ? "bg-red-500/5 border-red-500 shadow-sm"
+              : "bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 hover:border-red-500/50 dark:hover:border-red-950/50 hover:shadow-xs"
+          }`}
+        >
           <p className="text-slate-500 dark:text-slate-400 text-xs font-medium uppercase tracking-wider">
             Alertas
           </p>
@@ -301,6 +333,7 @@ export default function InventoryClient({ products, summary }: Props) {
               { key: "all", label: "Todos los Productos" },
               { key: "low", label: "Stock Crítico" },
               { key: "out", label: "Agotados" },
+              ...(activeTab === "alerts" ? [{ key: "alerts", label: "Alertas (Bajo/Agotado)" } as const] : []),
             ] as const
           ).map(({ key, label }) => (
             <button
