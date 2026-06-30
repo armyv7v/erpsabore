@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef, useTransition, useMemo } from "react";
+import Link from "next/link";
 import { 
   Search, ShoppingCart, CreditCard, Banknote, Landmark, Smartphone, 
   Trash2, User, FileText, ShoppingBag, Plus, Minus, Send, Copy, Clipboard, Check, X, RefreshCw,
@@ -771,6 +772,13 @@ export default function PosWorkspace({ products: initialProducts, branches }: Po
                 )}
                 <span>Habilitar Caja POS</span>
               </button>
+
+              <Link
+                href="/"
+                className="w-full py-3 rounded-2xl border border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-900 text-slate-500 hover:text-slate-850 dark:text-slate-400 dark:hover:text-slate-200 font-extrabold text-xs transition-colors flex items-center justify-center gap-1.5"
+              >
+                Volver al Inicio del ERP
+              </Link>
             </form>
             
           </div>
@@ -782,15 +790,24 @@ export default function PosWorkspace({ products: initialProducts, branches }: Po
         
         {/* Barra de búsqueda y Tab Control */}
         <div className="p-4 bg-white dark:bg-slate-950 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between gap-4">
-          <div className="relative flex-1">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 w-4.5 h-4.5" />
-            <input
-              type="text"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Buscar por SKU, Nombre o código de barra (F1)..."
-              className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 focus:ring-2 focus:ring-primary/20 outline-none text-sm font-medium transition-all"
-            />
+          <div className="flex items-center gap-2 flex-1">
+            <Link
+              href="/"
+              className="p-2.5 rounded-xl border border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-900 text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-slate-200 transition-all active:scale-95 flex items-center justify-center shrink-0"
+              title="Volver al Inicio del ERP"
+            >
+              <ChevronLeft className="w-4 h-4 text-slate-500 hover:text-slate-800 dark:text-slate-400" />
+            </Link>
+            <div className="relative flex-1">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 w-4.5 h-4.5" />
+              <input
+                type="text"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder="Buscar por SKU, Nombre o código de barra (F1)..."
+                className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 focus:ring-2 focus:ring-primary/20 outline-none text-sm font-medium transition-all"
+              />
+            </div>
           </div>
 
           <div className="flex bg-slate-100 dark:bg-slate-900 p-1 rounded-xl">
