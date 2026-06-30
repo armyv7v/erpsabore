@@ -25,7 +25,7 @@ const createProductSchema = z.object({
   stockQuantity: z.number({ error: "La cantidad debe ser un número." }).int().min(0, "La cantidad no puede ser negativa."),
   stockMinQuantity: z.number().int().min(0).optional().default(10),
   description: z.string().optional().nullable(),
-  imageUrl: z.string().url().optional().nullable(),
+  imageUrl: z.string().optional().nullable(),
 });
 
 function getErrorMessage(error: unknown, fallback: string): string {
@@ -140,7 +140,7 @@ const updateProductSchema = z.object({
   unitPrice: z.number({ error: "El precio debe ser un número." }).min(0, "El precio no puede ser negativo."),
   stockMinQuantity: z.number().int().min(0).optional().default(10),
   description: z.string().optional().nullable(),
-  imageUrl: z.string().url().optional().nullable(),
+  imageUrl: z.string().optional().nullable(),
 });
 
 export async function updateProductAction(
