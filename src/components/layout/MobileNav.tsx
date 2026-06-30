@@ -7,7 +7,7 @@ export default function MobileNav({ user }: { user: AuthUser }) {
   const items = mobileNavigation.filter((item) => item.roles.includes(user.role));
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 md:hidden flex justify-around p-2 z-50">
+    <nav className="fixed bottom-0 left-0 right-0 bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 md:hidden flex justify-around p-2 z-30">
       {items.map((item) => {
         const Icon = item.icon;
         return (
