@@ -10,10 +10,15 @@ import {
   MousePointerClick,
   TrendingDown,
   MoreHorizontal,
+  FileSpreadsheet,
+  FileText,
+  Loader2,
 } from "lucide-react";
 import { mockTopSalesReps } from "@/data/bi";
 import type { BIBaseMetrics } from "@/lib/services/bi-service";
 import Image from "next/image";
+import { getSalesReportData, getPosShiftReportData, getInventoryReportData } from "@/app/actions/reports";
+import { exportToExcel, exportToPdf } from "@/lib/utils/export-utils";
 
 const BanknotesIcon = () => (
   <svg
@@ -42,6 +47,145 @@ export default function BIClient({ biBase }: Props) {
   const [timeRange, setTimeRange] = useState("30d");
   const [department, setDepartment] = useState("all");
   const [salesRepPeriod, setSalesRepPeriod] = useState("mes");
+  const [exportLoading, setExportLoading] = useState<Record<string, boolean>>({});
+
+  const formatCurrency = (val: number) => `$${val.toLocaleString("es-CL")}`;
+  const formatDate = (val: string | null | undefined) => {
+    if (!val) return "-";
+    try {
+      const date = new Date(val);
+      if (isNaN(date.getTime())) return val;
+      return date.toLocaleDateString("es-CL", {
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+      });
+    } catch {
+      return val;
+    }
+  };
+
+  const handleReportExport = async (reportType: "inventory" | "sales" | "pos", format: "excel" | "pdf") => {
+    const key = `${reportType}_${format}`;
+    setExportLoading((prev) => ({ ...prev, [key]: true }));
+
+    try {
+      let result;
+      if (reportType === "inventory") {
+        result = await getInventoryReportData();
+      } else if (reportType === "sales") {
+        result = await getSalesReportData();
+      } else {
+        result = await getPosShiftReportData();
+      }
+
+      if (result.status === "error") {
+        alert(result.message || "Error al obtener los datos del reporte.");
+        return;
+      }
+
+      const data = result.data;
+
+      if (!data || data.length === 0) {
+        alert("No hay datos disponibles para este reporte.");
+        return;
+      }
+
+      if (reportType === "inventory") {
+        if (format === "excel") {
+          const headers = {
+            sku: "SKU",
+            name: "Producto",
+            stockQuantity: "Stock",
+            stockMinQuantity: "Mínimo",
+            costPrice: "Costo (CLP)",
+            unitPrice: "Precio Venta (CLP)",
+            totalCostValue: "Valorización Costo (CLP)",
+            totalRetailValue: "Valorización Venta (CLP)",
+            stockStatus: "Estado Stock"
+          };
+          await exportToExcel(data, headers, "reporte_inventario_central", "Inventario");
+        } else {
+          const cols = ["SKU", "Producto", "Stock", "Mínimo", "Costo", "Precio Venta", "Val. Costo", "Val. Venta", "Estado"];
+          const rows = data.map((item: any) => [
+            item.sku,
+            item.name,
+            item.stockQuantity.toString(),
+            item.stockMinQuantity.toString(),
+            formatCurrency(item.costPrice),
+            formatCurrency(item.unitPrice),
+            formatCurrency(item.totalCostValue),
+            formatCurrency(item.totalRetailValue),
+            item.stockStatus === "out_of_stock" ? "Sin Stock" : item.stockStatus === "low" ? "Bajo Stock" : "Normal"
+          ]);
+          await exportToPdf("Reporte de Inventario Central", cols, rows, "reporte_inventario_central", "Control de stock y valorización");
+        }
+      } else if (reportType === "sales") {
+        if (format === "excel") {
+          const headers = {
+            number: "N° Factura",
+            issueDate: "Fecha Emisión",
+            customerName: "Cliente",
+            customerRut: "RUT Cliente",
+            subtotal: "Subtotal (CLP)",
+            tax: "IVA (CLP)",
+            total: "Total (CLP)",
+            status: "Estado"
+          };
+          await exportToExcel(data, headers, "reporte_ventas_facturacion", "Ventas");
+        } else {
+          const cols = ["N° Factura", "Fecha Emisión", "Cliente", "RUT Cliente", "Subtotal", "IVA", "Total", "Estado"];
+          const rows = data.map((item: any) => [
+            item.number,
+            formatDate(item.issueDate),
+            item.customerName,
+            item.customerRut,
+            formatCurrency(item.subtotal),
+            formatCurrency(item.tax),
+            formatCurrency(item.total),
+            item.status === "paid" ? "Pagado" : item.status === "issued" ? "Emitido" : item.status === "draft" ? "Borrador" : item.status === "overdue" ? "Vencido" : item.status
+          ]);
+          await exportToPdf("Reporte de Ventas y Facturación", cols, rows, "reporte_ventas_facturacion", "Flujo comercial y facturas emitidas");
+        }
+      } else if (reportType === "pos") {
+        if (format === "excel") {
+          const headers = {
+            openedAt: "Apertura",
+            closedAt: "Cierre",
+            openedBy: "Cajero Apertura",
+            closedBy: "Cajero Cierre",
+            branchName: "Sucursal",
+            initialCash: "Caja Inicial (CLP)",
+            expectedCash: "Efectivo Esperado (CLP)",
+            actualCash: "Efectivo Real (CLP)",
+            difference: "Diferencia (CLP)",
+            expectedTotal: "Total Esperado (CLP)",
+            actualTotal: "Total Real (CLP)",
+            status: "Estado"
+          };
+          await exportToExcel(data, headers, "reporte_cierres_caja_pos", "Cierres POS");
+        } else {
+          const cols = ["Apertura", "Cierre", "Cajero", "Sucursal", "Ef. Esperado", "Ef. Real", "Diferencia", "Estado"];
+          const rows = data.map((item: any) => [
+            formatDate(item.openedAt),
+            formatDate(item.closedAt),
+            item.closedBy || item.openedBy,
+            item.branchName,
+            formatCurrency(item.expectedCash),
+            formatCurrency(item.actualCash),
+            formatCurrency(item.difference),
+            item.status === "closed" ? "Cerrado" : "Abierto"
+          ]);
+          await exportToPdf("Reporte de Cierres de Caja (POS)", cols, rows, "reporte_cierres_caja_pos", "Auditoría de jornadas y arqueos de caja");
+        }
+      }
+    } catch (error) {
+      console.error("Error al exportar:", error);
+      alert("Ocurrió un error inesperado al generar el archivo.");
+    } finally {
+      setExportLoading((prev) => ({ ...prev, [key]: false }));
+    }
+  };
 
   const filtersMultiplier = useMemo(() => {
     let timeFactor = 1.0;
@@ -380,6 +524,137 @@ export default function BIClient({ biBase }: Props) {
                 </div>
               </div>
             ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Internal Control and Audit Reports */}
+      <div className="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-6 shadow-sm space-y-6">
+        <div>
+          <h3 className="text-lg font-bold text-slate-900 dark:text-white">
+            Reportes Operativos y Auditoría
+          </h3>
+          <p className="text-sm text-slate-500 dark:text-slate-400">
+            Descarga de informes detallados con datos del sistema en formato Excel y PDF.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {/* Inventario */}
+          <div className="flex flex-col justify-between p-5 rounded-xl border border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-900/50 hover:shadow-xs transition-all">
+            <div className="space-y-2 mb-4">
+              <div className="inline-flex p-2 rounded-lg bg-primary/10 text-primary">
+                <FileText className="w-5 h-5" />
+              </div>
+              <h4 className="font-semibold text-slate-900 dark:text-white">Reporte de Inventario</h4>
+              <p className="text-xs text-slate-500 dark:text-slate-400">
+                Detalle de productos, stock actual, costo, precio de venta y valorización total.
+              </p>
+            </div>
+            <div className="flex gap-2">
+              <button
+                disabled={exportLoading["inventory_excel"]}
+                onClick={() => handleReportExport("inventory", "excel")}
+                className="flex-1 inline-flex items-center justify-center gap-1.5 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 px-3 py-2 text-xs font-bold text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors disabled:opacity-50"
+              >
+                {exportLoading["inventory_excel"] ? (
+                  <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                ) : (
+                  <FileSpreadsheet className="w-3.5 h-3.5 text-green-600" />
+                )}
+                <span>Excel</span>
+              </button>
+              <button
+                disabled={exportLoading["inventory_pdf"]}
+                onClick={() => handleReportExport("inventory", "pdf")}
+                className="flex-1 inline-flex items-center justify-center gap-1.5 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 px-3 py-2 text-xs font-bold text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors disabled:opacity-50"
+              >
+                {exportLoading["inventory_pdf"] ? (
+                  <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                ) : (
+                  <Download className="w-3.5 h-3.5 text-orange-600" />
+                )}
+                <span>PDF</span>
+              </button>
+            </div>
+          </div>
+
+          {/* Ventas */}
+          <div className="flex flex-col justify-between p-5 rounded-xl border border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-900/50 hover:shadow-xs transition-all">
+            <div className="space-y-2 mb-4">
+              <div className="inline-flex p-2 rounded-lg bg-primary/10 text-primary">
+                <FileText className="w-5 h-5" />
+              </div>
+              <h4 className="font-semibold text-slate-900 dark:text-white">Reporte de Ventas</h4>
+              <p className="text-xs text-slate-500 dark:text-slate-400">
+                Historial de facturas, montos netos, IVA, totales y estado de los cobros.
+              </p>
+            </div>
+            <div className="flex gap-2">
+              <button
+                disabled={exportLoading["sales_excel"]}
+                onClick={() => handleReportExport("sales", "excel")}
+                className="flex-1 inline-flex items-center justify-center gap-1.5 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 px-3 py-2 text-xs font-bold text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors disabled:opacity-50"
+              >
+                {exportLoading["sales_excel"] ? (
+                  <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                ) : (
+                  <FileSpreadsheet className="w-3.5 h-3.5 text-green-600" />
+                )}
+                <span>Excel</span>
+              </button>
+              <button
+                disabled={exportLoading["sales_pdf"]}
+                onClick={() => handleReportExport("sales", "pdf")}
+                className="flex-1 inline-flex items-center justify-center gap-1.5 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 px-3 py-2 text-xs font-bold text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors disabled:opacity-50"
+              >
+                {exportLoading["sales_pdf"] ? (
+                  <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                ) : (
+                  <Download className="w-3.5 h-3.5 text-orange-600" />
+                )}
+                <span>PDF</span>
+              </button>
+            </div>
+          </div>
+
+          {/* POS Closings */}
+          <div className="flex flex-col justify-between p-5 rounded-xl border border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-900/50 hover:shadow-xs transition-all">
+            <div className="space-y-2 mb-4">
+              <div className="inline-flex p-2 rounded-lg bg-primary/10 text-primary">
+                <FileText className="w-5 h-5" />
+              </div>
+              <h4 className="font-semibold text-slate-900 dark:text-white">Cierres de Caja POS</h4>
+              <p className="text-xs text-slate-500 dark:text-slate-400">
+                Resumen de jornadas, cajeros, dinero esperado versus real, diferencias y sucursal.
+              </p>
+            </div>
+            <div className="flex gap-2">
+              <button
+                disabled={exportLoading["pos_excel"]}
+                onClick={() => handleReportExport("pos", "excel")}
+                className="flex-1 inline-flex items-center justify-center gap-1.5 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 px-3 py-2 text-xs font-bold text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors disabled:opacity-50"
+              >
+                {exportLoading["pos_excel"] ? (
+                  <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                ) : (
+                  <FileSpreadsheet className="w-3.5 h-3.5 text-green-600" />
+                )}
+                <span>Excel</span>
+              </button>
+              <button
+                disabled={exportLoading["pos_pdf"]}
+                onClick={() => handleReportExport("pos", "pdf")}
+                className="flex-1 inline-flex items-center justify-center gap-1.5 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 px-3 py-2 text-xs font-bold text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors disabled:opacity-50"
+              >
+                {exportLoading["pos_pdf"] ? (
+                  <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                ) : (
+                  <Download className="w-3.5 h-3.5 text-orange-600" />
+                )}
+                <span>PDF</span>
+              </button>
+            </div>
           </div>
         </div>
       </div>
