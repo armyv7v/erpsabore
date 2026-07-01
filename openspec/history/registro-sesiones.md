@@ -80,3 +80,55 @@ Se transformaron los siguientes módulos de estáticos a **Client Components** c
   1. Validar en Supabase si la factura se está creando aunque falle el readback.
   2. Ajustar políticas `SELECT` y/o la consulta de `getInvoiceById`.
   3. Revalidar flujo completo: `crear borrador -> emitir -> registrar pago -> reflejo en dashboard/finanzas`.
+
+---
+
+## Sesión: 17 de Junio, 2026
+
+### 1. Vertical de Finanzas e Impuestos
+- **Impuestos Chilenos:** Se implementó la calculadora de impuestos nacionales y Previred con alertas de calendario de vencimientos (`d9c114c`).
+- **Corrección de Queries:** Se ajustaron las consultas PostgreSQL para filtrar estados financieros usando `confirmed` en lugar de `cancelled` (`503dfdc`).
+
+---
+
+## Sesión: 30 de Junio, 2026
+
+### 1. Optimización e Interactividad en Inventario
+- **UI/UX y Modales:** Reemplazo del cuadro de confirmación nativo del navegador por modales web personalizados para eliminar productos, aplicando actualizaciones optimistas de UI (`b8214bc`).
+- **Control y Variantes:** Auto-generación de SKU/código de barra, creación de productos y segmentación de guantes y envases por tamaños, solucionando problemas de superposición en el dropdown de stock (`f4d318b`).
+- **Filtros Dinámicos:** Las tarjetas resumen del inventario ahora actúan como botones interactivos para filtrar el listado en tiempo real (`b73b1e3`).
+- **Correcciones de RLS:** Uso del cliente admin de Supabase para evitar restricciones de la política `SELECT` durante el borrado lógico (`f40c67a`).
+- **Imágenes:** Permitido el uso de URLs relativas para imágenes de productos dentro de los esquemas del validador (`1c351e9`).
+
+### 2. Gestión de RRHH y Liquidaciones
+- **Liquidaciones de Sueldo:** Conexión a la base de datos real y reseteo de los mockups estáticos de remuneraciones (`dee8ac6`).
+- **Navegación:** Botones para volver al Dashboard principal desde el POS (`48f4485`).
+
+### 3. Administración de Usuarios y Seguridad
+- **Modales de Usuario:** Activación del menú de tres puntos con modal personalizado para eliminación optimista (`a32d56e`) y modal para edición de datos (`1958b7a`).
+
+### 4. Facturación Electrónica (DTE)
+- **Firma DTE:** Integración de un modal personalizado para confirmar la revocación de la firma digital (`86348ad`).
+
+### 5. UI/UX Global
+- **Mobile Navigation:** Corrección de la superposición del menú móvil en layouts adaptativos y reemplazo por alturas dinámicas (`dvh`) en modales (`ccef1f4`).
+
+---
+
+## Sesión: 1 de Julio, 2026 (Sesión de Hoy)
+
+### 1. Configuración de Tenant y Datos Regionales
+- **Datos Regionales Chilenos:** Integración de la base de datos completa de regiones y comunas de Chile en la vista de configuración de empresa (`aaceccd`).
+- **DTE y PDF:** Ajuste dinámico de los encabezados PDF del DTE obtenidos directamente desde la configuración corporativa en base de datos (`d1805d7`).
+
+### 2. Bypass de RLS en Producto
+- **Inserciones Seguras:** Uso del cliente administrador de Supabase en `src/app/actions/inventory.ts` para evitar la restricción RLS al insertar/actualizar productos en la base de datos (`6693657`).
+
+### 3. Portal de RRHH y Noticias
+- **Portal del Empleado:** Implementación del portal de RRHH interactivo para ver anuncios y solicitar vacaciones, enlazando las colecciones `announcements` y `vacations` (`8221d35`).
+
+### 4. Notificaciones
+- **Gestión de Alertas:** Incorporación de botones para borrar de forma masiva notificaciones leídas e individualmente cada alerta (`19d4789`).
+
+### 5. Estado Actual y Trabajo Pendiente (En Progreso)
+- **Reportes Analíticos:** Capa de servicios y exportación a PDF/Excel de informes de ventas, inventario y cierres de caja (`src/app/actions/reports.ts` y `src/lib/utils/export-utils.ts` están listos localmente, pendientes de confirmar).
