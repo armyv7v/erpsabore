@@ -118,20 +118,23 @@ export async function createProductAction(
   formData: FormData,
 ): Promise<ActionState> {
   try {
-    const { user, supabase } = await requireAuthenticatedContext();
+    const { user } = await requireAuthenticatedContext();
     assertUserHasRole(user, ["admin", "bodega"]);
+
+    const { createSupabaseAdminClient } = await import("@/lib/supabase/admin");
+    const adminSupabase = createSupabaseAdminClient();
 
     const rawName = String(formData.get("name") ?? "").trim();
     let rawSku = String(formData.get("sku") ?? "").trim();
     if (!rawSku) {
-      rawSku = await generateUniqueSku(supabase, user.tenantId, rawName);
+      rawSku = await generateUniqueSku(adminSupabase, user.tenantId, rawName);
     } else {
       rawSku = rawSku.toUpperCase();
     }
 
     let rawBarcode = formData.get("barcode") ? String(formData.get("barcode")).trim() : null;
     if (!rawBarcode || rawBarcode === "") {
-      rawBarcode = await generateUniqueBarcode(supabase, user.tenantId, rawName);
+      rawBarcode = await generateUniqueBarcode(adminSupabase, user.tenantId, rawName);
     }
 
     const rawPrice = Number(formData.get("unitPrice") ?? 0);
@@ -159,9 +162,9 @@ export async function createProductAction(
     });
 
     // 1. Crear producto base
-    const product = await insertProduct(supabase, user.tenantId, {
+    const product = await insertProduct(adminSupabase, user.tenantId, {
       ...input,
-      sku: rawSku, // Ensure non-empty string is passed since repository schema expects string
+      sku: rawSku,
       barcode: rawBarcode,
     });
 
@@ -169,7 +172,7 @@ export async function createProductAction(
     if (imageFile && imageFile.size > 0) {
       try {
         const imageUrl = await uploadProductImage(user.tenantId, product.id, imageFile);
-        await updateProduct(supabase, user.tenantId, product.id, {
+        await updateProduct(adminSupabase, user.tenantId, product.id, {
           ...input,
           sku: rawSku,
           imageUrl,
@@ -200,7 +203,7 @@ export async function updateProductStockAction(
   formData: FormData,
 ): Promise<ActionState> {
   try {
-    const { user, supabase } = await requireAuthenticatedContext();
+    const { user } = await requireAuthenticatedContext();
     assertUserHasRole(user, ["admin", "bodega"]);
 
     const productId = String(formData.get("productId") ?? "").trim();
@@ -211,7 +214,9 @@ export async function updateProductStockAction(
       return { status: "error", message: "La cantidad debe ser un entero no negativo." };
 
     const { updateProductStock } = await import("@/lib/repositories/product-repository");
-    await updateProductStock(supabase, user.tenantId, productId, quantity);
+    const { createSupabaseAdminClient } = await import("@/lib/supabase/admin");
+    const adminSupabase = createSupabaseAdminClient();
+    await updateProductStock(adminSupabase, user.tenantId, productId, quantity);
 
     revalidatePath("/inventario");
 
@@ -219,7 +224,7 @@ export async function updateProductStockAction(
   } catch (error) {
     return {
       status: "error",
-      message: error instanceof Error ? error.message : "No se pudo actualizar el stock.",
+      message: getErrorMessage(error, "No se pudo actualizar el stock."),
     };
   }
 }
@@ -239,13 +244,16 @@ export async function updateProductAction(
   formData: FormData,
 ): Promise<ActionState> {
   try {
-    const { user, supabase } = await requireAuthenticatedContext();
+    const { user } = await requireAuthenticatedContext();
     assertUserHasRole(user, ["admin", "bodega"]);
+
+    const { createSupabaseAdminClient } = await import("@/lib/supabase/admin");
+    const adminSupabase = createSupabaseAdminClient();
 
     const productId = String(formData.get("productId") ?? "").trim();
     if (!productId) return { status: "error", message: "ID de producto inválido." };
 
-    const currentProduct = await getProductById(supabase, user.tenantId, productId);
+    const currentProduct = await getProductById(adminSupabase, user.tenantId, productId);
     if (!currentProduct) {
       return { status: "error", message: "El producto no existe." };
     }
@@ -279,23 +287,20 @@ export async function updateProductAction(
       if (currentProduct.imageUrl) {
         try {
           await deleteProductImage(currentProduct.imageUrl);
-        } catch (deleteError) {
-          console.error("[updateProductAction] Error al borrar imagen anterior:", deleteError);
+          finalImageUrl = null;
+        } catch (storageError) {
+          console.error("[updateProductAction] Error al eliminar imagen anterior:", storageError);
         }
       }
-      finalImageUrl = null;
-    }
 
-    // Subir nueva imagen si se suministró
-    if (imageFile && imageFile.size > 0) {
-      try {
-        finalImageUrl = await uploadProductImage(user.tenantId, productId, imageFile);
-      } catch (uploadError) {
-        console.error("[updateProductAction] Error al subir nueva imagen:", uploadError);
-        return {
-          status: "error",
-          message: "Ocurrió un problema al subir la nueva imagen del producto.",
-        };
+      // Subir nueva imagen
+      if (imageFile && imageFile.size > 0 && !removeImage) {
+        try {
+          finalImageUrl = await uploadProductImage(user.tenantId, productId, imageFile);
+        } catch (uploadError) {
+          console.error("[updateProductAction] Error al subir nueva imagen:", uploadError);
+          return { status: "error", message: "Error al subir la imagen del producto." };
+        }
       }
     }
 
@@ -310,7 +315,7 @@ export async function updateProductAction(
     });
 
     // 1. Actualizar datos base del producto
-    await updateProduct(supabase, user.tenantId, productId, input);
+    await updateProduct(adminSupabase, user.tenantId, productId, input);
 
     // 2. Si se editó la cantidad de stock y es diferente de la actual, la actualizamos
     if (rawQty !== null && rawQty !== currentProduct.stockQuantity) {
@@ -318,7 +323,7 @@ export async function updateProductAction(
         return { status: "error", message: "La cantidad de stock debe ser un entero no negativo." };
       }
       const { updateProductStock } = await import("@/lib/repositories/product-repository");
-      await updateProductStock(supabase, user.tenantId, productId, rawQty);
+      await updateProductStock(adminSupabase, user.tenantId, productId, rawQty);
     }
 
     revalidatePath("/inventario");
