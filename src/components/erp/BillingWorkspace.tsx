@@ -2,7 +2,7 @@
 
 import { useEffect, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
-import { CheckCircle2, Clock, FileText, PlusCircle, Wallet, X, FileCode, ShieldCheck, Key, UploadCloud } from "lucide-react";
+import { CheckCircle2, Clock, FileText, PlusCircle, Wallet, X, FileCode, ShieldCheck, Key, UploadCloud, Trash2 } from "lucide-react";
 import { submitIssueInvoiceAction, submitRegisterPaymentAction } from "@/app/actions/invoices";
 import { uploadDigitalCertificateAction, deleteDigitalCertificateAction } from "@/app/actions/dte";
 import { formatInvoiceStatus } from "@/lib/formatters/status";
@@ -290,6 +290,7 @@ export default function BillingWorkspace({
   const [isUploadingCert, setIsUploadingCert] = useState(false);
   const [isDeletingCert, setIsDeletingCert] = useState(false);
   const [password, setPassword] = useState("");
+  const [showDeleteCertModal, setShowDeleteCertModal] = useState(false);
 
   useEffect(() => {
     setInvoiceList(invoices);
@@ -638,25 +639,7 @@ export default function BillingWorkspace({
                   <button
                     type="button"
                     disabled={isDeletingCert}
-                    onClick={async () => {
-                      if (confirm("¿Estás seguro de que querés revocar y eliminar esta firma digital del sistema de forma permanente?")) {
-                        setIsDeletingCert(true);
-                        setCertFeedback("Eliminando firma digital...");
-                        try {
-                          const result = await deleteDigitalCertificateAction();
-                          if (result.status === "success") {
-                            setCurrentCert(null);
-                            setCertFeedback("¡Firma Digital revocada correctamente!");
-                          } else {
-                            setCertFeedback(`Error: ${result.message}`);
-                          }
-                        } catch (err: any) {
-                          setCertFeedback(`Error: ${err.message || err}`);
-                        } finally {
-                          setIsDeletingCert(false);
-                        }
-                      }
-                    }}
+                    onClick={() => setShowDeleteCertModal(true)}
                     className="mt-3 text-xs font-bold text-red-650 hover:text-red-750 dark:text-red-400 dark:hover:text-red-300 disabled:opacity-50 cursor-pointer"
                   >
                     {isDeletingCert ? "Eliminando..." : "Inhabilitar / Revocar Firma"}
@@ -835,6 +818,63 @@ export default function BillingWorkspace({
           }}
         />
       ) : null}
+
+      {/* Modal — Confirmación de Eliminación de Certificado */}
+      {showDeleteCertModal && (
+        <div className="fixed inset-0 bg-slate-900/60 dark:bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4 z-[99999] animate-in fade-in duration-200">
+          <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-xl w-full max-w-md p-6 overflow-hidden animate-in zoom-in-95 duration-200">
+            <div className="flex items-start gap-4">
+              <div className="p-3 bg-red-50 dark:bg-red-950/30 text-red-600 dark:text-red-400 rounded-full flex-shrink-0">
+                <Trash2 className="w-6 h-6" />
+              </div>
+              <div className="space-y-1.5 flex-1 min-w-0">
+                <h3 className="text-base font-bold text-slate-900 dark:text-white">
+                  ¿Revocar Firma Digital?
+                </h3>
+                <p className="text-sm text-slate-500 dark:text-slate-400">
+                  ¿Estás seguro de que querés revocar y eliminar esta firma digital del sistema de forma permanente? Esta acción no se puede deshacer.
+                </p>
+              </div>
+            </div>
+
+            <div className="mt-6 flex justify-end gap-3">
+              <button
+                type="button"
+                onClick={() => setShowDeleteCertModal(false)}
+                className="px-4 py-2 border border-slate-200 dark:border-slate-850 hover:bg-slate-50 dark:hover:bg-slate-850 rounded-xl text-xs font-bold text-slate-700 dark:text-slate-200 transition-colors"
+                disabled={isDeletingCert}
+              >
+                Cancelar
+              </button>
+              <button
+                type="button"
+                onClick={async () => {
+                  setShowDeleteCertModal(false);
+                  setIsDeletingCert(true);
+                  setCertFeedback("Eliminando firma digital...");
+                  try {
+                    const result = await deleteDigitalCertificateAction();
+                    if (result.status === "success") {
+                      setCurrentCert(null);
+                      setCertFeedback("¡Firma Digital revocada correctamente!");
+                    } else {
+                      setCertFeedback(`Error: ${result.message}`);
+                    }
+                  } catch (err: any) {
+                    setCertFeedback(`Error: ${err.message || err}`);
+                  } finally {
+                    setIsDeletingCert(false);
+                  }
+                }}
+                className="px-4 py-2 bg-red-600 hover:bg-red-700 active:scale-98 rounded-xl text-xs font-bold text-white transition-all shadow-md shadow-red-600/10 flex items-center gap-1.5"
+                disabled={isDeletingCert}
+              >
+                {isDeletingCert ? "Revocando..." : "Sí, Revocar"}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
