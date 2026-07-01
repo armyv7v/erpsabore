@@ -18,6 +18,7 @@ import {
   Users,
   Wallet,
   Settings,
+  TrendingUp,
 } from "lucide-react";
 import type { AppRole } from "@/lib/types/erp";
 
@@ -44,6 +45,7 @@ export const navigationSections: NavigationSection[] = [
       { href: "/inventario", label: "Inventario", icon: Package, roles: ["admin", "bodega"] },
       { href: "/catalogo", label: "Catálogo", icon: Grid2X2, roles: ["admin", "ventas", "bodega"] },
       { href: "/crm", label: "CRM", icon: Users, roles: ["admin", "ventas"] },
+      { href: "/reportes", label: "Reportes", icon: TrendingUp, roles: ["admin", "ventas", "finanzas", "bodega", "rrhh"] },
     ],
   },
   {
