@@ -514,6 +514,9 @@ export default function InventoryClient({ products, summary }: Props) {
           ) : (
             paginatedProducts.map((product) => {
               const levelPercent = stockLevelPercent(product);
+              const isOutOfStock = product.stockStatus === "out_of_stock";
+              const outOfStockClass = isOutOfStock ? "grayscale opacity-75" : "";
+              
               return (
                 <div
                   key={product.id}
@@ -521,12 +524,12 @@ export default function InventoryClient({ products, summary }: Props) {
                   className={`p-4 flex flex-col md:grid md:grid-cols-6 md:items-center gap-4 cursor-pointer select-none transition-all hover:bg-slate-50/50 dark:hover:bg-slate-850/20 ${
                     product.stockStatus === "low"
                       ? "bg-orange-50/30 dark:bg-primary/5"
-                      : product.stockStatus === "out_of_stock"
-                        ? "bg-slate-50 dark:bg-slate-900/50 grayscale opacity-80"
+                      : isOutOfStock
+                        ? "bg-slate-50 dark:bg-slate-900/50"
                         : ""
                   }`}
                 >
-                  <div className="col-span-2 flex items-center gap-4">
+                  <div className={`col-span-2 flex items-center gap-4 ${outOfStockClass}`}>
                     {product.imageUrl ? (
                       <div
                         className="size-12 rounded-lg bg-slate-100 dark:bg-slate-800 flex-shrink-0 bg-cover bg-center"
@@ -553,17 +556,17 @@ export default function InventoryClient({ products, summary }: Props) {
                     </div>
                   </div>
 
-                  <div className="flex justify-between md:block">
+                  <div className={`flex justify-between md:block ${outOfStockClass}`}>
                     <span className="md:hidden text-xs text-slate-500 uppercase font-bold">Precio:</span>
                     <span className="text-sm font-medium">{formatCLP(product.unitPrice)}</span>
                   </div>
 
-                  <div className="space-y-2">
+                  <div className={`space-y-2 ${outOfStockClass}`}>
                     <div
                       className={`flex justify-between text-[10px] font-bold uppercase ${
                         product.stockStatus === "low"
                           ? "text-orange-600"
-                          : product.stockStatus === "out_of_stock"
+                          : isOutOfStock
                             ? "text-red-600"
                             : "text-slate-500"
                       }`}
@@ -571,7 +574,7 @@ export default function InventoryClient({ products, summary }: Props) {
                       <span>
                         {product.stockStatus === "low"
                           ? "Bajo Stock"
-                          : product.stockStatus === "out_of_stock"
+                          : isOutOfStock
                             ? "Agotado"
                             : "Nivel de Stock"}
                       </span>
@@ -582,7 +585,7 @@ export default function InventoryClient({ products, summary }: Props) {
                         className={`h-full ${
                           product.stockStatus === "low"
                             ? "bg-orange-500"
-                            : product.stockStatus === "out_of_stock"
+                            : isOutOfStock
                               ? "bg-red-500"
                               : "bg-green-500"
                         }`}
@@ -591,7 +594,7 @@ export default function InventoryClient({ products, summary }: Props) {
                     </div>
                   </div>
 
-                  <div className="flex justify-between md:block">
+                  <div className={`flex justify-between md:block ${outOfStockClass}`}>
                     <span className="md:hidden text-xs text-slate-500 uppercase font-bold">Cant:</span>
                     <span
                       className={`text-sm ${
@@ -830,13 +833,14 @@ export default function InventoryClient({ products, summary }: Props) {
                 </div>
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-sm font-semibold mb-1">SKU</label>
+                    <label className="block text-sm font-semibold mb-1">
+                      SKU <span className="text-xs text-slate-500 font-normal">(Opcional)</span>
+                    </label>
                     <input
                       type="text"
                       name="sku"
-                      required
                       className="w-full px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-transparent focus:ring-2 focus:ring-primary/20 outline-none uppercase"
-                      placeholder="INS-0001"
+                      placeholder="vacío para autogenerar"
                     />
                   </div>
                   <div>
@@ -862,7 +866,7 @@ export default function InventoryClient({ products, summary }: Props) {
                     type="text"
                     name="barcode"
                     className="w-full px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-transparent focus:ring-2 focus:ring-primary/20 outline-none"
-                    placeholder="Ej. 7801234567890"
+                    placeholder="Ej. 7801234567890 (vacío para autogenerar)"
                   />
                 </div>
                 <div className="grid grid-cols-2 gap-4">

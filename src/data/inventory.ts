@@ -334,7 +334,8 @@ const productSeed: ProductSeed[] = [
   { name: "Envase 247", price: 175 },
   { name: "Envase triangular 7187 B 100 und", price: 120 },
   { name: "Envase triangular 7187 A 100 und", price: 150 },
-  { name: "Envase triangular 11x5 y 11x7 Darnel", price: 151 },
+  { name: "Envase triangular 11x5 Darnel", price: 151 },
+  { name: "Envase triangular 11x7 Darnel", price: 151 },
   { name: "Envase rectangular 7189 100 und", price: 110 },
   { name: "Clamshell kilo falso 440 UxC con hoyo", price: 195 },
   { name: "Clamshell medio falso 400 UxC con hoyo", price: 180 },
@@ -351,10 +352,15 @@ const productSeed: ProductSeed[] = [
   { name: "Pote degustacion 2 oz con tapa", price: 28 },
   { name: "Pote degustacion 5,5 oz con tapa 100 und", price: 49 },
   { name: "Gelatinero con tapa 4 oz 50 und", price: 70 },
-  { name: "Guantes nitrilo negro talla S/M/L/XL", price: 4800 },
-  { name: "Guantes nitrilo azul talla S/M/L", price: 4700 },
-  { name: "Guante latex talla M", price: 4600 },
-  { name: "Guante vinilo talla L", price: 2800 },
+  { name: "Guante nitrilo negro S x 100 und", price: 4800 },
+  { name: "Guante nitrilo negro M x 100 und", price: 4800 },
+  { name: "Guante nitrilo negro L x 100 und", price: 4800 },
+  { name: "Guante nitrilo negro XL x 100 und", price: 4800 },
+  { name: "Guante nitrilo azul S x 100 und", price: 4700 },
+  { name: "Guante nitrilo azul M x 100 und", price: 4700 },
+  { name: "Guante nitrilo azul L x 100 und", price: 4700 },
+  { name: "Guante látex M x 100 und", price: 4600 },
+  { name: "Guante vinilo blanco L x 100 und", price: 2800 },
   { name: "Gorro clip blanco (cofia) x 100 und", price: 2500 },
   { name: "Gorro clip negro (cofia) x 100 und", price: 2500 },
   { name: "Cinta embalaje 100 mts Fixo pack 6 und", price: 6300 },
@@ -376,6 +382,9 @@ const productSeed: ProductSeed[] = [
   { name: "Bandeja plumavit S8", price: 135 },
   { name: "Vaso plumavit dart 8 oz 240 cc (25 und)", price: 52 },
   { name: "Vaso plumavit dart 10 oz 300 cc (25 und)", price: 56 },
+  { name: "Cucharas 100 und", price: 1200 },
+  { name: "Tenedores 100 und", price: 1200 },
+  { name: "Cuchillos 100 und", price: 1200 },
 ];
 
 function buildSku(name: string, index: number) {
@@ -570,7 +579,8 @@ function resolveImageUrlByCatalogOrder(productIndex: number) {
     "/catalogo_webp/page-10-img-06-0071.webp", // Envase 247
     "/catalogo_webp/page-10-img-07-0072.webp", // Envase triangular 7187 B 100 und
     "/catalogo_webp/page-10-img-07-0072.webp", // Envase triangular 7187 A 100 und
-    "/catalogo_webp/page-10-img-07-0072.webp", // Envase triangular 11x5 y 11x7 Darnel
+    "/catalogo_webp/page-10-img-07-0072.webp", // Envase triangular 11x5 Darnel
+    "/catalogo_webp/page-10-img-07-0072.webp", // Envase triangular 11x7 Darnel
 
     // Page 11 (10 products)
     "/catalogo_webp/page-11-img-01-0073.webp", // Envase rectangular 7189 100 und
@@ -591,10 +601,15 @@ function resolveImageUrlByCatalogOrder(productIndex: number) {
     "/catalogo_webp/page-12-img-02-0082.webp", // Pote degustacion 2 oz con tapa
     "/catalogo_webp/page-12-img-03-0083.webp", // Pote degustacion 5,5 oz con tapa 100 und
     "/catalogo_webp/page-12-img-04-0084.webp", // Gelatinero con tapa 4 oz 50 und
-    "/catalogo_webp/page-12-img-05-0085.webp", // Guantes nitrilo negro talla S/M/L/XL
-    "/catalogo_webp/page-12-img-06-0086.webp", // Guantes nitrilo azul talla S/M/L
-    "/catalogo_webp/page-12-img-07-0087.webp", // Guante latex talla M
-    "/catalogo_webp/page-12-img-08-0088.webp", // Guante vinilo talla L
+    "/catalogo_webp/page-12-img-05-0085.webp", // Guante nitrilo negro S x 100 und
+    "/catalogo_webp/page-12-img-05-0085.webp", // Guante nitrilo negro M x 100 und
+    "/catalogo_webp/page-12-img-05-0085.webp", // Guante nitrilo negro L x 100 und
+    "/catalogo_webp/page-12-img-05-0085.webp", // Guante nitrilo negro XL x 100 und
+    "/catalogo_webp/page-12-img-06-0086.webp", // Guante nitrilo azul S x 100 und
+    "/catalogo_webp/page-12-img-06-0086.webp", // Guante nitrilo azul M x 100 und
+    "/catalogo_webp/page-12-img-06-0086.webp", // Guante nitrilo azul L x 100 und
+    "/catalogo_webp/page-12-img-07-0087.webp", // Guante látex M x 100 und
+    "/catalogo_webp/page-12-img-08-0088.webp", // Guante vinilo blanco L x 100 und
 
     // Page 13 (12 products)
     "/catalogo_webp/page-13-img-01-0089.webp", // Gorro clip blanco (cofia) x 100 und
@@ -619,7 +634,10 @@ function resolveImageUrlByCatalogOrder(productIndex: number) {
     "/catalogo_webp/page-14-img-04-0099.webp", // Bandeja plumavit S4
     "/catalogo_webp/page-14-img-04-0099.webp", // Bandeja plumavit S8
     "/catalogo_webp/page-14-img-05-0100.webp", // Vaso plumavit dart 8 oz 240 cc (25 und)
-    "/catalogo_webp/page-14-img-05-0100.webp"  // Vaso plumavit dart 10 oz 300 cc (25 und)
+    "/catalogo_webp/page-14-img-05-0100.webp", // Vaso plumavit dart 10 oz 300 cc (25 und)
+    "/catalogo_webp/cucharas.webp",            // Cucharas 100 und
+    "/catalogo_webp/tenedores.webp",           // Tenedores 100 und
+    "/catalogo_webp/cuchillos.webp"            // Cuchillos 100 und
   ];
 
   if (productIndex >= 0 && productIndex < exactImages.length) {

@@ -6,6 +6,8 @@ import type { ActionState } from "@/lib/types/erp";
 import { requireAuthenticatedContext, assertUserHasRole } from "@/lib/services/auth-service";
 import { insertProduct, getProductById, updateProduct } from "@/lib/repositories/product-repository";
 import { uploadProductImage, deleteProductImage } from "@/lib/services/storage-service";
+import { getProductCategory, PRODUCT_CATEGORIES } from "@/lib/utils/barcode-generator";
+import type { SupabaseClient } from "@supabase/supabase-js";
 
 const MAX_FILE_SIZE = 2 * 1024 * 1024; // 2MB
 const ALLOWED_MIME_TYPES = ["image/jpeg", "image/png", "image/webp", "image/gif"];
@@ -17,9 +19,83 @@ function validateImageFile(file: File | null): string | null {
   return null;
 }
 
+function calculateEan13(base12: string): string {
+  let sum = 0;
+  for (let i = 0; i < 12; i++) {
+    const digit = parseInt(base12[i], 10);
+    sum += (i % 2 === 0) ? digit * 1 : digit * 3;
+  }
+  const checkDigit = (10 - (sum % 10)) % 10;
+  return `${base12}${checkDigit}`;
+}
+
+async function generateUniqueSku(supabase: SupabaseClient, tenantId: string, name: string): Promise<string> {
+  const normalized = name
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[^a-zA-Z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "")
+    .toUpperCase()
+    .slice(0, 18);
+
+  const { count } = await supabase
+    .from("products")
+    .select("id", { count: "exact", head: true })
+    .eq("tenant_id", tenantId);
+
+  const nextSeq = (count ?? 0) + 1;
+  let finalSku = `INS-${String(nextSeq).padStart(4, "0")}-${normalized}`;
+  
+  let attempts = 0;
+  while (attempts < 10) {
+    const { data } = await supabase
+      .from("products")
+      .select("id")
+      .eq("tenant_id", tenantId)
+      .eq("sku", finalSku)
+      .maybeSingle();
+
+    if (!data) break;
+    attempts++;
+    finalSku = `INS-${String(nextSeq + attempts).padStart(4, "0")}-${normalized}`;
+  }
+  return finalSku;
+}
+
+async function generateUniqueBarcode(supabase: SupabaseClient, tenantId: string, name: string): Promise<string> {
+  const categoryName = getProductCategory(name);
+  const category = PRODUCT_CATEGORIES.find(c => c.name === categoryName);
+  const catId = category ? category.id : "12";
+  const prefix = `780123${catId}`;
+
+  const { data } = await supabase
+    .from("products")
+    .select("barcode")
+    .eq("tenant_id", tenantId)
+    .like("barcode", `${prefix}%`);
+
+  let maxSeq = 0;
+  if (data && data.length > 0) {
+    for (const item of data) {
+      if (item.barcode && item.barcode.length === 13) {
+        const seqStr = item.barcode.slice(8, 12);
+        const seq = parseInt(seqStr, 10);
+        if (!isNaN(seq) && seq > maxSeq) {
+          maxSeq = seq;
+        }
+      }
+    }
+  }
+
+  const nextSeq = maxSeq + 1;
+  const sequenceStr = String(nextSeq).padStart(4, "0");
+  const base12 = `${prefix}${sequenceStr}`;
+  return calculateEan13(base12);
+}
+
 const createProductSchema = z.object({
   name: z.string().min(2, "El nombre debe tener al menos 2 caracteres."),
-  sku: z.string().min(1, "El SKU es obligatorio.").toUpperCase(),
+  sku: z.string().optional().nullable().or(z.literal("")).nullable(),
   barcode: z.string().optional().nullable().or(z.literal("")).nullable(),
   unitPrice: z.number({ error: "El precio debe ser un número." }).min(0, "El precio no puede ser negativo."),
   stockQuantity: z.number({ error: "La cantidad debe ser un número." }).int().min(0, "La cantidad no puede ser negativa."),
@@ -46,8 +122,18 @@ export async function createProductAction(
     assertUserHasRole(user, ["admin", "bodega"]);
 
     const rawName = String(formData.get("name") ?? "").trim();
-    const rawSku = String(formData.get("sku") ?? "").trim();
-    const rawBarcode = formData.get("barcode") ? String(formData.get("barcode")).trim() : null;
+    let rawSku = String(formData.get("sku") ?? "").trim();
+    if (!rawSku) {
+      rawSku = await generateUniqueSku(supabase, user.tenantId, rawName);
+    } else {
+      rawSku = rawSku.toUpperCase();
+    }
+
+    let rawBarcode = formData.get("barcode") ? String(formData.get("barcode")).trim() : null;
+    if (!rawBarcode || rawBarcode === "") {
+      rawBarcode = await generateUniqueBarcode(supabase, user.tenantId, rawName);
+    }
+
     const rawPrice = Number(formData.get("unitPrice") ?? 0);
     const rawQty = Number(formData.get("stockQuantity") ?? 0);
     const rawMinQty = Number(formData.get("stockMinQuantity") ?? 10);
@@ -73,7 +159,11 @@ export async function createProductAction(
     });
 
     // 1. Crear producto base
-    const product = await insertProduct(supabase, user.tenantId, input);
+    const product = await insertProduct(supabase, user.tenantId, {
+      ...input,
+      sku: rawSku, // Ensure non-empty string is passed since repository schema expects string
+      barcode: rawBarcode,
+    });
 
     // 2. Si se seleccionó una imagen, subirla y actualizar la URL
     if (imageFile && imageFile.size > 0) {
@@ -81,6 +171,7 @@ export async function createProductAction(
         const imageUrl = await uploadProductImage(user.tenantId, product.id, imageFile);
         await updateProduct(supabase, user.tenantId, product.id, {
           ...input,
+          sku: rawSku,
           imageUrl,
         });
       } catch (uploadError) {
