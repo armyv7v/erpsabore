@@ -97,7 +97,8 @@ const createProductSchema = z.object({
   name: z.string().min(2, "El nombre debe tener al menos 2 caracteres."),
   sku: z.string().optional().nullable().or(z.literal("")).nullable(),
   barcode: z.string().optional().nullable().or(z.literal("")).nullable(),
-  unitPrice: z.number({ error: "El precio debe ser un número." }).min(0, "El precio no puede ser negativo."),
+  unitPrice: z.number({ error: "El precio de venta debe ser un número." }).min(0, "El precio de venta no puede ser negativo."),
+  costPrice: z.number({ error: "El precio de costo debe ser un número." }).min(0, "El precio de costo no puede ser negativo.").optional().default(0),
   stockQuantity: z.number({ error: "La cantidad debe ser un número." }).int().min(0, "La cantidad no puede ser negativa."),
   stockMinQuantity: z.number().int().min(0).optional().default(10),
   description: z.string().optional().nullable(),
@@ -138,6 +139,7 @@ export async function createProductAction(
     }
 
     const rawPrice = Number(formData.get("unitPrice") ?? 0);
+    const rawCostPrice = Number(formData.get("costPrice") ?? 0);
     const rawQty = Number(formData.get("stockQuantity") ?? 0);
     const rawMinQty = Number(formData.get("stockMinQuantity") ?? 10);
     const rawDescription = formData.get("description")
@@ -155,6 +157,7 @@ export async function createProductAction(
       sku: rawSku,
       barcode: rawBarcode,
       unitPrice: rawPrice,
+      costPrice: rawCostPrice,
       stockQuantity: rawQty,
       stockMinQuantity: rawMinQty,
       description: rawDescription,
@@ -233,7 +236,8 @@ const updateProductSchema = z.object({
   name: z.string().min(2, "El nombre debe tener al menos 2 caracteres."),
   sku: z.string().min(1, "El SKU es obligatorio.").toUpperCase(),
   barcode: z.string().optional().nullable().or(z.literal("")).nullable(),
-  unitPrice: z.number({ error: "El precio debe ser un número." }).min(0, "El precio no puede ser negativo."),
+  unitPrice: z.number({ error: "El precio de venta debe ser un número." }).min(0, "El precio de venta no puede ser negativo."),
+  costPrice: z.number({ error: "El precio de costo debe ser un número." }).min(0, "El precio de costo no puede ser negativo.").optional().default(0),
   stockMinQuantity: z.number().int().min(0).optional().default(10),
   description: z.string().optional().nullable(),
   imageUrl: z.string().optional().nullable(),
@@ -262,6 +266,7 @@ export async function updateProductAction(
     const rawSku = String(formData.get("sku") ?? "").trim();
     const rawBarcode = formData.get("barcode") ? String(formData.get("barcode")).trim() : null;
     const rawPrice = Number(formData.get("unitPrice") ?? 0);
+    const rawCostPrice = Number(formData.get("costPrice") ?? 0);
     const rawMinQty = Number(formData.get("stockMinQuantity") ?? 10);
     const rawDescription = formData.get("description")
       ? String(formData.get("description")).trim()
@@ -309,6 +314,7 @@ export async function updateProductAction(
       sku: rawSku,
       barcode: rawBarcode,
       unitPrice: rawPrice,
+      costPrice: rawCostPrice,
       stockMinQuantity: rawMinQty,
       description: rawDescription,
       imageUrl: finalImageUrl,

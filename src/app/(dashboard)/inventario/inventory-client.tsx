@@ -874,22 +874,35 @@ export default function InventoryClient({ products, summary }: Props) {
                     placeholder="Ej. 7801234567890 (vacío para autogenerar)"
                   />
                 </div>
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-3 gap-4">
                   <div>
-                    <label className="block text-sm font-semibold mb-1">
-                      Precio Unitario (CLP)
+                    <label className="block text-xs font-semibold mb-1">
+                      Precio Venta (CLP)
                     </label>
                     <input
                       type="number"
                       name="unitPrice"
                       required
                       min="0"
-                      className="w-full px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-transparent focus:ring-2 focus:ring-primary/20 outline-none"
+                      className="w-full px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-transparent focus:ring-2 focus:ring-primary/20 outline-none text-sm"
                       placeholder="25000"
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-semibold mb-1">
+                    <label className="block text-xs font-semibold mb-1 text-slate-500">
+                      Precio Costo (CLP)
+                    </label>
+                    <input
+                      type="number"
+                      name="costPrice"
+                      min="0"
+                      defaultValue="0"
+                      className="w-full px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-transparent focus:ring-2 focus:ring-primary/20 outline-none text-sm"
+                      placeholder="0"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-semibold mb-1">
                       Mín. Stock
                     </label>
                     <input
@@ -897,7 +910,7 @@ export default function InventoryClient({ products, summary }: Props) {
                       name="stockMinQuantity"
                       min="0"
                       defaultValue="10"
-                      className="w-full px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-transparent focus:ring-2 focus:ring-primary/20 outline-none"
+                      className="w-full px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-transparent focus:ring-2 focus:ring-primary/20 outline-none text-sm"
                     />
                   </div>
                 </div>
@@ -1002,6 +1015,36 @@ export default function InventoryClient({ products, summary }: Props) {
                     />
                   </div>
                 </div>
+
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-semibold mb-1 text-slate-700 dark:text-slate-350">
+                      Precio de Venta (CLP)
+                    </label>
+                    <input
+                      type="number"
+                      name="unitPrice"
+                      required
+                      min="0"
+                      defaultValue={editingProduct.unitPrice}
+                      className="w-full px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-transparent focus:ring-2 focus:ring-primary/20 outline-none text-slate-800 dark:text-slate-150"
+                      placeholder="25000"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-semibold mb-1 text-slate-700 dark:text-slate-350">
+                      Precio de Costo (CLP)
+                    </label>
+                    <input
+                      type="number"
+                      name="costPrice"
+                      min="0"
+                      defaultValue={editingProduct.costPrice ?? 0}
+                      className="w-full px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-transparent focus:ring-2 focus:ring-primary/20 outline-none text-slate-800 dark:text-slate-150"
+                      placeholder="0"
+                    />
+                  </div>
+                </div>
                 
                 {/* Control interactivo de Stock Actual */}
                 <div className="bg-slate-50 dark:bg-slate-850/40 p-4 rounded-xl border border-slate-200 dark:border-slate-800 space-y-2">
@@ -1046,20 +1089,6 @@ export default function InventoryClient({ products, summary }: Props) {
                     defaultValue={editingProduct.barcode || ""}
                     className="w-full px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-transparent focus:ring-2 focus:ring-primary/20 outline-none text-slate-800 dark:text-slate-150"
                     placeholder="Ej. 7801234567890"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-semibold mb-1 text-slate-700 dark:text-slate-350">
-                    Precio Unitario (CLP)
-                  </label>
-                  <input
-                    type="number"
-                    name="unitPrice"
-                    required
-                    min="0"
-                    defaultValue={editingProduct.unitPrice}
-                    className="w-full px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-transparent focus:ring-2 focus:ring-primary/20 outline-none text-slate-800 dark:text-slate-150"
-                    placeholder="25000"
                   />
                 </div>
               </div>
@@ -1189,6 +1218,7 @@ export default function InventoryClient({ products, summary }: Props) {
             sku: detailsProduct.sku,
             barcode: detailsProduct.barcode,
             unitPrice: detailsProduct.unitPrice,
+            costPrice: detailsProduct.costPrice,
             stockQuantity: detailsProduct.stockQuantity,
             stockMinQuantity: detailsProduct.stockMinQuantity,
             stockStatus: detailsProduct.stockStatus,

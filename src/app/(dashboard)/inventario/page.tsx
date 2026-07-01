@@ -22,6 +22,7 @@ async function getInventoryData() {
         barcode: null,
         description: null,
         unitPrice: p.price,
+        costPrice: 0,
         stockQuantity: p.quantity,
         stockMinQuantity: 10,
         stockStatus: p.status as "normal" | "low" | "out_of_stock",

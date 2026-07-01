@@ -10,6 +10,7 @@ interface GeneralProduct {
   sku: string;
   barcode?: string | null;
   unitPrice: number;
+  costPrice?: number | null;
   stockQuantity: number;
   stockMinQuantity?: number;
   stockStatus?: "normal" | "low" | "out_of_stock";
@@ -130,13 +131,22 @@ export default function ProductDetailsModal({ product, onClose, onAddToCart, onE
                 {product.name}
               </h2>
 
-              {/* Precio */}
-              <div className="py-2.5 border-y border-slate-100 dark:border-slate-800/80">
-                <p className="text-xs text-slate-450 uppercase font-bold tracking-wider">Precio Unitario</p>
-                <p className="text-2xl font-black text-primary mt-1">
-                  {formatCLP(product.unitPrice)}
-                  <span className="text-xs text-slate-400 font-bold uppercase"> CLP</span>
-                </p>
+              {/* Precios */}
+              <div className="py-2.5 border-y border-slate-100 dark:border-slate-800/80 grid grid-cols-2 gap-4">
+                <div>
+                  <p className="text-[10px] text-slate-405 dark:text-slate-400 uppercase font-extrabold tracking-wider">Precio de Venta</p>
+                  <p className="text-xl font-black text-primary mt-0.5">
+                    {formatCLP(product.unitPrice)}
+                    <span className="text-[10px] text-slate-400 font-bold uppercase"> CLP</span>
+                  </p>
+                </div>
+                <div>
+                  <p className="text-[10px] text-slate-405 dark:text-slate-400 uppercase font-extrabold tracking-wider">Precio de Costo</p>
+                  <p className="text-xl font-black text-slate-700 dark:text-slate-200 mt-0.5">
+                    {product.costPrice !== undefined && product.costPrice !== null ? formatCLP(product.costPrice) : "$0"}
+                    <span className="text-[10px] text-slate-400 font-bold uppercase"> CLP</span>
+                  </p>
+                </div>
               </div>
 
               {/* Stock info */}

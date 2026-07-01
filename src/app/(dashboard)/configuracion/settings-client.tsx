@@ -12,20 +12,11 @@ import {
 } from "lucide-react";
 import type { TenantDetails } from "@/lib/types/erp";
 import { updateTenantDetailsAction } from "@/app/actions/tenant";
+import { CHILE_REGIONS } from "@/data/chile-regions";
 
 interface Props {
   initialDetails: TenantDetails;
 }
-
-const CHILE_REGIONS_COMMUNES: Record<string, string[]> = {
-  Santiago: [
-    "Santiago", "Providencia", "Las Condes", "Vitacura", "Lo Barnechea",
-    "Ñuñoa", "La Reina", "Macul", "Peñalolén", "Florida", "San Miguel",
-    "Maipú", "Pudahuel", "Estación Central", "Quilicura", "Conchalí"
-  ],
-  Valparaíso: ["Valparaíso", "Viña del Mar", "Concón", "Quilpué", "Villa Alemana"],
-  Concepción: ["Concepción", "Talcahuano", "San Pedro de la Paz", "Chiguayante"]
-};
 
 export default function SettingsClient({ initialDetails }: Props) {
   const [details, setDetails] = useState<TenantDetails>(initialDetails);
@@ -35,10 +26,20 @@ export default function SettingsClient({ initialDetails }: Props) {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
-    setDetails((prev) => ({
-      ...prev,
-      [name]: value
-    }));
+    if (name === "ciudad") {
+      const selectedRegionObj = CHILE_REGIONS.find((r) => r.name === value);
+      const defaultCommune = selectedRegionObj?.communes[0] || "";
+      setDetails((prev) => ({
+        ...prev,
+        ciudad: value,
+        comuna: defaultCommune
+      }));
+    } else {
+      setDetails((prev) => ({
+        ...prev,
+        [name]: value
+      }));
+    }
   };
 
   const handleResetToDefault = () => {
@@ -53,12 +54,17 @@ export default function SettingsClient({ initialDetails }: Props) {
         acteco: "472101",
         direccion: "Av. Providencia 1234, Oficina 501",
         comuna: "Providencia",
-        ciudad: "Santiago",
+        ciudad: "Región Metropolitana de Santiago",
         telefono: "+56 2 2345 6789",
         email: "contacto@sabore.cl"
       });
     }
   };
+
+  const selectedRegionObj = CHILE_REGIONS.find(
+    (r) => r.name === details.ciudad || r.name.toLowerCase().includes(details.ciudad.toLowerCase())
+  );
+  const communes = selectedRegionObj ? selectedRegionObj.communes : [];
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -87,7 +93,7 @@ export default function SettingsClient({ initialDetails }: Props) {
     });
   };
 
-  const communes = CHILE_REGIONS_COMMUNES[details.ciudad] || [];
+
 
   return (
     <div className="max-w-4xl mx-auto space-y-6">
@@ -231,13 +237,17 @@ export default function SettingsClient({ initialDetails }: Props) {
                   </label>
                   <select
                     name="ciudad"
-                    value={details.ciudad}
+                    value={CHILE_REGIONS.some(r => r.name === details.ciudad) 
+                      ? details.ciudad 
+                      : CHILE_REGIONS.find(r => r.name.toLowerCase().includes(details.ciudad.toLowerCase()))?.name || CHILE_REGIONS[6].name}
                     onChange={handleChange}
                     className="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl py-2.5 px-3 focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none text-sm"
                   >
-                    <option value="Santiago">Santiago</option>
-                    <option value="Valparaíso">Valparaíso</option>
-                    <option value="Concepción">Concepción</option>
+                    {CHILE_REGIONS.map((region) => (
+                      <option key={region.name} value={region.name}>
+                        {region.name}
+                      </option>
+                    ))}
                   </select>
                 </div>
                 <div>

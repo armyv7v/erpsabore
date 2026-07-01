@@ -10,6 +10,7 @@ export interface ProductRecord {
   barcode: string | null;
   description: string | null;
   unitPrice: number;
+  costPrice: number;
   stockQuantity: number;
   stockMinQuantity: number;
   stockStatus: ProductStockStatus;
@@ -26,6 +27,7 @@ interface ProductRow {
   barcode: string | null;
   description: string | null;
   unit_price: number | string;
+  cost_price: number | string;
   stock_quantity: number;
   stock_min_quantity: number;
   stock_status: ProductStockStatus;
@@ -47,6 +49,7 @@ function mapProduct(row: ProductRow): ProductRecord {
     barcode: row.barcode || null,
     description: row.description,
     unitPrice: numeric(row.unit_price),
+    costPrice: numeric(row.cost_price ?? 0),
     stockQuantity: row.stock_quantity,
     stockMinQuantity: row.stock_min_quantity,
     stockStatus: row.stock_status,
@@ -57,7 +60,7 @@ function mapProduct(row: ProductRow): ProductRecord {
 }
 
 const PRODUCT_SELECT =
-  "id, tenant_id, name, sku, barcode, description, unit_price, stock_quantity, stock_min_quantity, stock_status, image_url, created_at, updated_at";
+  "id, tenant_id, name, sku, barcode, description, unit_price, cost_price, stock_quantity, stock_min_quantity, stock_status, image_url, created_at, updated_at";
 
 export async function listProducts(
   supabase: SupabaseClient,
@@ -171,6 +174,7 @@ export interface InsertProductInput {
   sku: string;
   barcode?: string | null;
   unitPrice: number;
+  costPrice?: number;
   stockQuantity: number;
   stockMinQuantity?: number;
   description?: string | null;
@@ -190,6 +194,7 @@ export async function insertProduct(
       sku: input.sku,
       barcode: input.barcode ?? null,
       unit_price: input.unitPrice,
+      cost_price: input.costPrice ?? 0,
       stock_quantity: input.stockQuantity,
       stock_min_quantity: input.stockMinQuantity ?? 10,
       description: input.description ?? null,
@@ -212,6 +217,7 @@ export interface UpdateProductInput {
   sku: string;
   barcode?: string | null;
   unitPrice: number;
+  costPrice?: number;
   stockMinQuantity?: number;
   description?: string | null;
   imageUrl?: string | null;
@@ -230,6 +236,7 @@ export async function updateProduct(
       sku: input.sku,
       barcode: input.barcode ?? null,
       unit_price: input.unitPrice,
+      cost_price: input.costPrice ?? 0,
       stock_min_quantity: input.stockMinQuantity ?? 10,
       description: input.description ?? null,
       image_url: input.imageUrl ?? null,
