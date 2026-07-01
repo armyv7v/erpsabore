@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useMemo, useEffect, useActionState, useTransition } from "react";
+import { useRouter } from "next/navigation";
 import {
   Filter,
   MapPin,
@@ -44,6 +45,14 @@ function stockLevelPercent(product: ProductRecord) {
 const INITIAL_STATE: ActionState = { status: "idle", message: "" };
 
 export default function InventoryClient({ products, summary }: Props) {
+  const router = useRouter();
+  const [localProducts, setLocalProducts] = useState<ProductRecord[]>(products);
+  const [productToDelete, setProductToDelete] = useState<ProductRecord | null>(null);
+
+  useEffect(() => {
+    setLocalProducts(products);
+  }, [products]);
+
   const [searchQuery, setSearchQuery] = useState("");
   const [activeTab, setActiveTab] = useState("all");
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -101,11 +110,11 @@ export default function InventoryClient({ products, summary }: Props) {
   // Obtener categorías únicas dinámicamente
   const categories = useMemo(() => {
     const list = new Set<string>();
-    products.forEach((p) => {
+    localProducts.forEach((p) => {
       list.add(detectCategory(p.name));
     });
     return ["all", ...Array.from(list).sort()];
-  }, [products]);
+  }, [localProducts]);
 
   // Cargar pestaña inicial desde los parámetros de búsqueda de la URL
   useEffect(() => {
@@ -145,7 +154,7 @@ export default function InventoryClient({ products, summary }: Props) {
   }, [stockState]);
 
   const filteredProducts = useMemo(() => {
-    let result = products.filter((product) => {
+    let result = localProducts.filter((product) => {
       const matchesSearch =
         product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
         product.sku.toLowerCase().includes(searchQuery.toLowerCase());
@@ -191,7 +200,7 @@ export default function InventoryClient({ products, summary }: Props) {
       }
       return 0;
     });
-  }, [products, searchQuery, activeTab, selectedCategory, selectedWarehouse, selectedSort]);
+  }, [localProducts, searchQuery, activeTab, selectedCategory, selectedWarehouse, selectedSort]);
 
   const paginatedProducts = useMemo(() => {
     const startIndex = (currentPage - 1) * itemsPerPage;
@@ -507,7 +516,7 @@ export default function InventoryClient({ products, summary }: Props) {
         <div className="divide-y divide-slate-100 dark:divide-slate-800">
           {filteredProducts.length === 0 ? (
             <div className="p-8 text-center text-slate-500">
-              {products.length === 0
+              {localProducts.length === 0
                 ? "No hay productos cargados. Agregue el primer producto."
                 : "No se encontraron productos con esos filtros."}
             </div>
@@ -672,11 +681,7 @@ export default function InventoryClient({ products, summary }: Props) {
 
                           <button
                             onClick={() => {
-                              if (confirm(`¿Está seguro de que desea eliminar el producto "${product.name}"?`)) {
-                                startDeleteTransition(async () => {
-                                  await deleteProductAction(product.id);
-                                });
-                              }
+                              setProductToDelete(product);
                               setActiveDropdownId(null);
                             }}
                             className="w-full flex items-center gap-2 px-4 py-2 text-xs font-semibold text-red-600 hover:bg-red-55 dark:hover:bg-red-950/30 transition-colors text-left"
@@ -1194,6 +1199,64 @@ export default function InventoryClient({ products, summary }: Props) {
           onClose={() => setDetailsProduct(null)}
           onEdit={() => setEditingProduct(detailsProduct)}
         />
+      )}
+
+      {/* Modal — Confirmación de Eliminación */}
+      {productToDelete && (
+        <div className="fixed inset-0 bg-slate-900/60 dark:bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4 z-[99999] animate-in fade-in duration-200">
+          <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-xl w-full max-w-md p-6 overflow-hidden animate-in zoom-in-95 duration-200">
+            <div className="flex items-start gap-4">
+              <div className="p-3 bg-red-50 dark:bg-red-950/30 text-red-600 dark:text-red-400 rounded-full flex-shrink-0">
+                <Trash2 className="w-6 h-6" />
+              </div>
+              <div className="space-y-1.5 flex-1 min-w-0">
+                <h3 className="text-base font-bold text-slate-900 dark:text-white">
+                  ¿Eliminar Producto?
+                </h3>
+                <p className="text-sm text-slate-500 dark:text-slate-400">
+                  ¿Estás seguro de que deseas eliminar{" "}
+                  <strong className="text-slate-700 dark:text-slate-200 font-semibold truncate block max-w-full">
+                    {productToDelete.name}
+                  </strong>
+                  ? Esta acción no se puede deshacer y el producto desaparecerá de tu listado.
+                </p>
+              </div>
+            </div>
+
+            <div className="mt-6 flex justify-end gap-3">
+              <button
+                type="button"
+                onClick={() => setProductToDelete(null)}
+                className="px-4 py-2 border border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800 rounded-xl text-xs font-bold text-slate-700 dark:text-slate-200 transition-colors"
+                disabled={isDeletePending}
+              >
+                Cancelar
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  const targetId = productToDelete.id;
+                  // Optimistic UI update: remove item immediately from local state
+                  setLocalProducts((prev) => prev.filter((p) => p.id !== targetId));
+                  setProductToDelete(null);
+                  startDeleteTransition(async () => {
+                    const res = await deleteProductAction(targetId);
+                    if (res.status === "error") {
+                      alert(`Error al eliminar: ${res.message}`);
+                      setLocalProducts(products); // Rollback if error
+                    } else {
+                      router.refresh();
+                    }
+                  });
+                }}
+                className="px-4 py-2 bg-red-600 hover:bg-red-700 active:scale-98 rounded-xl text-xs font-bold text-white transition-all shadow-md shadow-red-600/10 flex items-center gap-1.5"
+                disabled={isDeletePending}
+              >
+                {isDeletePending ? "Eliminando..." : "Sí, Eliminar"}
+              </button>
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );
