@@ -19,6 +19,7 @@ async function getEmployees() {
       contractType: "indefinite" as const,
       afpName: "Modelo" as const,
       healthSystem: "fonasa" as const,
+      vacationDaysLeft: 15,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
     }));

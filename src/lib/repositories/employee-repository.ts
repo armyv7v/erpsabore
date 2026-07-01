@@ -14,6 +14,7 @@ export interface EmployeeRecord {
   contractType: "indefinite" | "fixed_term";
   afpName: "Habitat" | "Modelo" | "Provida" | "Capital" | "Cuprum" | "Planvital" | "Uno";
   healthSystem: "fonasa" | "isapre";
+  vacationDaysLeft: number;
   createdAt: string;
   updatedAt: string;
 }
@@ -30,6 +31,7 @@ interface EmployeeRow {
   contract_type: string;
   afp_name: string;
   health_system: string;
+  vacation_days_left?: number;
   created_at: string;
   updated_at: string;
 }
@@ -47,13 +49,14 @@ function mapEmployee(row: EmployeeRow): EmployeeRecord {
     contractType: (row.contract_type ?? "indefinite") as "indefinite" | "fixed_term",
     afpName: (row.afp_name ?? "Modelo") as "Habitat" | "Modelo" | "Provida" | "Capital" | "Cuprum" | "Planvital" | "Uno",
     healthSystem: (row.health_system ?? "fonasa") as "fonasa" | "isapre",
+    vacationDaysLeft: Number(row.vacation_days_left ?? 15),
     createdAt: row.created_at,
     updatedAt: row.updated_at,
   };
 }
 
 const EMPLOYEE_SELECT =
-  "id, tenant_id, full_name, role_name, department, email, status, base_salary, contract_type, afp_name, health_system, created_at, updated_at";
+  "id, tenant_id, full_name, role_name, department, email, status, base_salary, contract_type, afp_name, health_system, vacation_days_left, created_at, updated_at";
 
 export async function listEmployees(
   supabase: SupabaseClient,

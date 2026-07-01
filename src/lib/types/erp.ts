@@ -227,3 +227,33 @@ export interface ActionState {
   status: "idle" | "success" | "error";
   message: string;
 }
+
+export interface HRAnnouncement {
+  id: string;
+  tenantId: string;
+  title: string;
+  category: string;
+  categoryColor: string;
+  imageUrl?: string | null;
+  content?: string | null;
+  createdBy?: string | null;
+  createdAt: string;
+}
+
+export type VacationRequestStatus = "pending" | "approved" | "rejected";
+
+export interface HRVacationRequest {
+  id: string;
+  tenantId: string;
+  employeeId: string;
+  employeeName?: string;
+  startDate: string;
+  endDate: string;
+  daysRequested: number;
+  status: VacationRequestStatus;
+  notes?: string | null;
+  approvedBy?: string | null;
+  approvedAt?: string | null;
+  createdBy?: string | null;
+  createdAt: string;
+}
