@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useState, useTransition, useEffect } from "react";
-import { MoreVertical, Search, UserPlus, X, Trash2 } from "lucide-react";
+import { MoreVertical, Search, UserPlus, X, Trash2, Pencil } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { submitCreateManagedUserAction, submitUpdateManagedUserAction, deleteManagedUserAction } from "@/app/actions/users";
 import type { ActionState, AppRole, ManagedUserRecord, ProfileStatus } from "@/lib/types/erp";
@@ -43,6 +43,7 @@ export default function UsersManagementWorkspace({ users }: { users: ManagedUser
   const router = useRouter();
   const [localUsers, setLocalUsers] = useState<ManagedUserRecord[]>(users);
   const [userToDelete, setUserToDelete] = useState<ManagedUserRecord | null>(null);
+  const [editingUser, setEditingUser] = useState<ManagedUserRecord | null>(null);
   const [activeDropdownId, setActiveDropdownId] = useState<string | null>(null);
   const [dropdownPosition, setDropdownPosition] = useState<{ top: number; right: number } | null>(null);
   const [isDeletePending, startDeleteTransition] = useTransition();
@@ -239,13 +240,24 @@ export default function UsersManagementWorkspace({ users }: { users: ManagedUser
                 >
                   <button
                     onClick={() => {
+                      setUpdateState(initialState);
+                      setEditingUser(user);
+                      setActiveDropdownId(null);
+                    }}
+                    className="w-full flex items-center gap-2 px-4 py-2 text-xs font-semibold text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors text-left"
+                  >
+                    <Pencil className="w-4 h-4 text-slate-400" />
+                    Editar datos
+                  </button>
+                  <button
+                    onClick={() => {
                       setUserToDelete(user);
                       setActiveDropdownId(null);
                     }}
-                    className="w-full flex items-center gap-2 px-4 py-2 text-xs font-semibold text-red-650 hover:bg-red-55 dark:hover:bg-red-950/30 transition-colors text-left"
+                    className="w-full flex items-center gap-2 px-4 py-2 text-xs font-semibold text-red-600 hover:bg-red-50 dark:hover:bg-red-950/30 transition-colors text-left border-t border-slate-100 dark:border-slate-800"
                   >
                     <Trash2 className="w-4 h-4 text-red-400" />
-                    Eliminar Usuario
+                    Eliminar
                   </button>
                 </div>
               )}
@@ -323,6 +335,105 @@ export default function UsersManagementWorkspace({ users }: { users: ManagedUser
           </div>
         </div>
       ) : null}
+
+      {/* Modal — Editar usuario */}
+      {editingUser && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 p-4 backdrop-blur-sm">
+          <div className="w-full max-w-lg overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-xl dark:border-slate-800 dark:bg-slate-900">
+            <div className="flex items-center justify-between border-b border-slate-200 p-4 dark:border-slate-800">
+              <div>
+                <h3 className="text-lg font-bold">Editar usuario</h3>
+                <p className="text-xs text-slate-500">Actualiza los datos del perfil de {editingUser.fullName}.</p>
+              </div>
+              <button
+                type="button"
+                onClick={() => setEditingUser(null)}
+                className="rounded-full p-2 text-slate-500 transition-colors hover:bg-slate-100 dark:hover:bg-slate-800"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            <form
+              className="space-y-4 p-4"
+              onSubmit={(event) => {
+                event.preventDefault();
+                const formData = new FormData(event.currentTarget);
+                formData.set("userId", editingUser.id);
+                startUpdateTransition(async () => {
+                  const result = await submitUpdateManagedUserAction(formData);
+                  setUpdateState(result);
+
+                  if (result.status === "success") {
+                    setEditingUser(null);
+                    router.refresh();
+                  }
+                });
+              }}
+            >
+              {updateState.status !== "idle" && updateState.status === "error" ? (
+                <div className="rounded-xl px-4 py-3 text-sm border border-red-200 bg-red-50 text-red-700">
+                  {updateState.message}
+                </div>
+              ) : null}
+
+              <div>
+                <label className="mb-1 block text-sm font-semibold">Nombre completo</label>
+                <input
+                  name="fullName"
+                  required
+                  defaultValue={editingUser.fullName}
+                  className="w-full rounded-lg border border-slate-200 bg-transparent px-3 py-2 outline-none focus:ring-2 focus:ring-primary/20 dark:border-slate-700"
+                />
+              </div>
+
+              <div>
+                <label className="mb-1 block text-sm font-semibold">Rol</label>
+                <select
+                  name="role"
+                  defaultValue={editingUser.role}
+                  className="w-full rounded-lg border border-slate-200 bg-transparent px-3 py-2 outline-none focus:ring-2 focus:ring-primary/20 dark:border-slate-700 dark:bg-slate-800"
+                >
+                  <option value="admin">Admin</option>
+                  <option value="ventas">Vendedor</option>
+                  <option value="finanzas">Finanzas</option>
+                  <option value="bodega">Bodega</option>
+                  <option value="rrhh">RRHH</option>
+                </select>
+              </div>
+
+              <div>
+                <label className="mb-1 block text-sm font-semibold">Estado</label>
+                <select
+                  name="status"
+                  defaultValue={editingUser.status}
+                  className="w-full rounded-lg border border-slate-200 bg-transparent px-3 py-2 outline-none focus:ring-2 focus:ring-primary/20 dark:border-slate-700 dark:bg-slate-800"
+                >
+                  <option value="active">Activo</option>
+                  <option value="inactive">Inactivo</option>
+                </select>
+              </div>
+
+              <div className="flex gap-3 pt-2">
+                <button
+                  type="button"
+                  onClick={() => setEditingUser(null)}
+                  className="flex-1 rounded-xl border border-slate-200 px-4 py-2.5 font-bold transition-colors hover:bg-slate-50 dark:border-slate-700 dark:hover:bg-slate-800"
+                >
+                  Cancelar
+                </button>
+                <button
+                  type="submit"
+                  disabled={isUpdating}
+                  className="flex-1 rounded-xl bg-primary px-4 py-2.5 font-bold text-white transition-colors shadow-sm hover:bg-primary/90 disabled:opacity-70"
+                >
+                  {isUpdating ? "Guardando..." : "Guardar cambios"}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
 
       {/* Modal — Confirmación de Eliminación de Usuario */}
       {userToDelete && (

@@ -20,6 +20,7 @@ const createUserSchema = z.object({
 
 const updateUserSchema = z.object({
   userId: z.string().uuid("Usuario inválido."),
+  fullName: z.string().trim().min(3, "El nombre completo debe tener al menos 3 caracteres.").optional(),
   role: userRoleSchema.optional(),
   status: userStatusSchema.optional(),
 });
@@ -106,6 +107,7 @@ export async function submitUpdateManagedUserAction(formData: FormData): Promise
 
     const parsed = updateUserSchema.parse({
       userId: formData.get("userId"),
+      fullName: formData.get("fullName") ? String(formData.get("fullName")).trim() : undefined,
       role: formData.get("role") || undefined,
       status: formData.get("status") || undefined,
     });
@@ -117,6 +119,7 @@ export async function submitUpdateManagedUserAction(formData: FormData): Promise
     await updateTenantUser(supabase, {
       tenantId: user.tenantId,
       userId: parsed.userId,
+      fullName: parsed.fullName,
       role: parsed.role,
       status: parsed.status,
     });
