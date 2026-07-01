@@ -336,13 +336,15 @@ export async function deleteProductAction(
   productId: string,
 ): Promise<ActionState> {
   try {
-    const { user, supabase } = await requireAuthenticatedContext();
+    const { user } = await requireAuthenticatedContext();
     assertUserHasRole(user, ["admin", "bodega"]);
 
     if (!productId) return { status: "error", message: "ID de producto inválido." };
 
     const { deleteProduct } = await import("@/lib/repositories/product-repository");
-    await deleteProduct(supabase, user.tenantId, productId);
+    const { createSupabaseAdminClient } = await import("@/lib/supabase/admin");
+    const adminSupabase = createSupabaseAdminClient();
+    await deleteProduct(adminSupabase, user.tenantId, productId);
 
     revalidatePath("/inventario");
 
