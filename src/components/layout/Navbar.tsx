@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useRef, useEffect } from "react";
-import { Bell, LogOut, Menu, Search, FileText, CheckCircle2, Wallet, Check } from "lucide-react";
+import { Bell, LogOut, Menu, Search, FileText, CheckCircle2, Wallet, Check, Trash2 } from "lucide-react";
 import { logoutAction } from "@/app/actions/auth";
 import type { AuthUser } from "@/lib/types/erp";
 
@@ -63,6 +63,14 @@ export default function Navbar({ user, onMenuClick }: NavbarProps) {
 
   const markAllAsRead = () => {
     setNotifications(notifications.map((n) => ({ ...n, unread: false })));
+  };
+
+  const clearReadNotifications = () => {
+    setNotifications(notifications.filter((n) => n.unread));
+  };
+
+  const deleteNotification = (id: number) => {
+    setNotifications(notifications.filter((n) => n.id !== id));
   };
 
   const toggleRead = (id: number) => {
@@ -134,14 +142,24 @@ export default function Navbar({ user, onMenuClick }: NavbarProps) {
             <div className="absolute right-0 mt-2 w-80 md:w-96 rounded-2xl border border-slate-100 bg-white shadow-2xl dark:border-slate-800 dark:bg-slate-900 overflow-hidden transform origin-top-right transition-all z-50">
               <div className="flex items-center justify-between px-4 py-3 bg-slate-50 dark:bg-slate-950 border-b border-slate-100 dark:border-slate-800">
                 <span className="text-sm font-bold text-slate-800 dark:text-slate-200">Notificaciones</span>
-                {unreadCount > 0 && (
-                  <button
-                    onClick={markAllAsRead}
-                    className="text-xs font-semibold text-primary hover:text-primary-dark transition-colors flex items-center gap-1"
-                  >
-                    <Check className="w-3.5 h-3.5" /> Marcar todas
-                  </button>
-                )}
+                <div className="flex items-center gap-3">
+                  {unreadCount > 0 && (
+                    <button
+                      onClick={markAllAsRead}
+                      className="text-xs font-semibold text-primary hover:text-primary-dark transition-colors flex items-center gap-1"
+                    >
+                      <Check className="w-3.5 h-3.5" /> Marcar todas
+                    </button>
+                  )}
+                  {notifications.some((n) => !n.unread) && (
+                    <button
+                      onClick={clearReadNotifications}
+                      className="text-xs font-semibold text-rose-600 hover:text-rose-700 transition-colors flex items-center gap-1"
+                    >
+                      <Trash2 className="w-3.5 h-3.5" /> Eliminar leídas
+                    </button>
+                  )}
+                </div>
               </div>
               <div className="max-h-[300px] overflow-y-auto divide-y divide-slate-100 dark:divide-slate-800">
                 {notifications.length === 0 ? (
@@ -153,7 +171,7 @@ export default function Navbar({ user, onMenuClick }: NavbarProps) {
                     <div
                       key={notification.id}
                       onClick={() => toggleRead(notification.id)}
-                      className={`flex gap-3 p-4 hover:bg-slate-50 dark:hover:bg-slate-800/50 cursor-pointer transition-colors ${
+                      className={`group flex gap-3 p-4 hover:bg-slate-50 dark:hover:bg-slate-800/50 cursor-pointer transition-colors relative ${
                         notification.unread ? "bg-slate-50/50 dark:bg-slate-800/20" : ""
                       }`}
                     >
@@ -169,15 +187,30 @@ export default function Navbar({ user, onMenuClick }: NavbarProps) {
                           </p>
                           <span className="text-[10px] text-slate-400 shrink-0 font-medium">{notification.time}</span>
                         </div>
-                        <p className={`text-xs mt-0.5 line-clamp-2 ${
-                          notification.unread ? "text-slate-700 dark:text-slate-300" : "text-slate-500 dark:text-slate-400"
-                        }`}>
-                          {notification.description}
-                        </p>
+                        <div className="flex items-start justify-between gap-2 mt-0.5">
+                          <p className={`text-xs line-clamp-2 flex-1 ${
+                            notification.unread ? "text-slate-700 dark:text-slate-300" : "text-slate-500 dark:text-slate-400"
+                          }`}>
+                            {notification.description}
+                          </p>
+                          <div className="flex items-center gap-1.5 shrink-0 self-end">
+                            {notification.unread && (
+                              <div className="w-1.5 h-1.5 bg-rose-500 rounded-full group-hover:hidden transition-all"></div>
+                            )}
+                            <button
+                              type="button"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                deleteNotification(notification.id);
+                              }}
+                              className="opacity-0 group-hover:opacity-100 text-slate-400 hover:text-rose-500 transition-all p-0.5 rounded hover:bg-slate-100 dark:hover:bg-slate-800"
+                              title="Eliminar notificación"
+                            >
+                              <Trash2 className="w-3.5 h-3.5" />
+                            </button>
+                          </div>
+                        </div>
                       </div>
-                      {notification.unread && (
-                        <div className="mt-1.5 w-1.5 h-1.5 bg-rose-500 rounded-full shrink-0"></div>
-                      )}
                     </div>
                   ))
                 )}
