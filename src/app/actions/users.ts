@@ -134,3 +134,39 @@ export async function submitUpdateManagedUserAction(formData: FormData): Promise
     };
   }
 }
+
+export async function deleteManagedUserAction(userId: string): Promise<ActionState> {
+  try {
+    const { user } = await requireAuthenticatedContext();
+    assertUserHasRole(user, ["admin"]);
+
+    if (!userId) {
+      throw new Error("ID de usuario inválido.");
+    }
+
+    if (userId === user.id) {
+      throw new Error("No puedes eliminar a tu propio usuario.");
+    }
+
+    const { createSupabaseAdminClient } = await import("@/lib/supabase/admin");
+    const adminSupabase = createSupabaseAdminClient();
+
+    // Deleting from auth.users will cascade-delete the profile
+    const { error: authErr } = await adminSupabase.auth.admin.deleteUser(userId);
+    if (authErr) {
+      throw new Error(`Error de autenticación: ${authErr.message}`);
+    }
+
+    revalidateUsersPaths();
+
+    return {
+      status: "success",
+      message: "Usuario eliminado correctamente.",
+    };
+  } catch (error) {
+    return {
+      status: "error",
+      message: error instanceof Error ? error.message : "No se pudo eliminar el usuario.",
+    };
+  }
+}

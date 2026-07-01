@@ -1,9 +1,9 @@
 "use client";
 
-import { useMemo, useState, useTransition } from "react";
-import { MoreVertical, Search, UserPlus, X } from "lucide-react";
+import { useMemo, useState, useTransition, useEffect } from "react";
+import { MoreVertical, Search, UserPlus, X, Trash2 } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { submitCreateManagedUserAction, submitUpdateManagedUserAction } from "@/app/actions/users";
+import { submitCreateManagedUserAction, submitUpdateManagedUserAction, deleteManagedUserAction } from "@/app/actions/users";
 import type { ActionState, AppRole, ManagedUserRecord, ProfileStatus } from "@/lib/types/erp";
 
 const initialState: ActionState = {
@@ -41,6 +41,16 @@ function getRoleStyles(role: AppRole) {
 
 export default function UsersManagementWorkspace({ users }: { users: ManagedUserRecord[] }) {
   const router = useRouter();
+  const [localUsers, setLocalUsers] = useState<ManagedUserRecord[]>(users);
+  const [userToDelete, setUserToDelete] = useState<ManagedUserRecord | null>(null);
+  const [activeDropdownId, setActiveDropdownId] = useState<string | null>(null);
+  const [dropdownPosition, setDropdownPosition] = useState<{ top: number; right: number } | null>(null);
+  const [isDeletePending, startDeleteTransition] = useTransition();
+
+  useEffect(() => {
+    setLocalUsers(users);
+  }, [users]);
+
   const [searchQuery, setSearchQuery] = useState("");
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [createState, setCreateState] = useState<ActionState>(initialState);
@@ -51,18 +61,18 @@ export default function UsersManagementWorkspace({ users }: { users: ManagedUser
   const filteredUsers = useMemo(() => {
     const query = searchQuery.trim().toLowerCase();
 
-    return users.filter((user) => {
+    return localUsers.filter((user) => {
       if (!query) {
         return true;
       }
 
       return user.fullName.toLowerCase().includes(query) || user.email.toLowerCase().includes(query);
     });
-  }, [searchQuery, users]);
+  }, [searchQuery, localUsers]);
 
-  const totalUsers = users.length;
-  const activeUsers = users.filter((user) => user.status === "active").length;
-  const inactiveUsers = users.filter((user) => user.status === "inactive").length;
+  const totalUsers = localUsers.length;
+  const activeUsers = localUsers.filter((user) => user.status === "active").length;
+  const inactiveUsers = localUsers.filter((user) => user.status === "inactive").length;
 
   function handleCreate(formData: FormData) {
     startCreateTransition(async () => {
@@ -92,7 +102,10 @@ export default function UsersManagementWorkspace({ users }: { users: ManagedUser
   }
 
   return (
-    <div className="p-4 md:p-8 space-y-6">
+    <div className="p-4 md:p-8 space-y-6 relative">
+      {activeDropdownId && (
+        <div className="fixed inset-0 z-[9998]" onClick={() => setActiveDropdownId(null)} />
+      )}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
         <div>
           <h1 className="text-2xl font-bold tracking-tight">Gestión de Usuarios</h1>
@@ -197,10 +210,45 @@ export default function UsersManagementWorkspace({ users }: { users: ManagedUser
               </select>
             </div>
 
-            <div className="shrink-0 flex items-center">
-              <button className="p-2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors">
+            <div className="shrink-0 flex items-center relative">
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  const btn = e.currentTarget as HTMLElement;
+                  const rect = btn.getBoundingClientRect();
+                  const newId = activeDropdownId === user.id ? null : user.id;
+                  if (newId) {
+                    setDropdownPosition({ top: rect.bottom + 4, right: window.innerWidth - rect.right });
+                  }
+                  setActiveDropdownId(newId);
+                }}
+                className="p-2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors"
+              >
                 <MoreVertical className="w-5 h-5" />
               </button>
+
+              {activeDropdownId === user.id && dropdownPosition && (
+                <div
+                  data-dropdown-menu="true"
+                  style={{
+                    position: "fixed",
+                    top: `${dropdownPosition.top}px`,
+                    right: `${dropdownPosition.right}px`,
+                  }}
+                  className="w-44 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-lg py-1.5 z-[9999] animate-in fade-in slide-in-from-top-1 duration-100"
+                >
+                  <button
+                    onClick={() => {
+                      setUserToDelete(user);
+                      setActiveDropdownId(null);
+                    }}
+                    className="w-full flex items-center gap-2 px-4 py-2 text-xs font-semibold text-red-650 hover:bg-red-55 dark:hover:bg-red-950/30 transition-colors text-left"
+                  >
+                    <Trash2 className="w-4 h-4 text-red-400" />
+                    Eliminar Usuario
+                  </button>
+                </div>
+              )}
             </div>
           </div>
         ))}
@@ -275,6 +323,64 @@ export default function UsersManagementWorkspace({ users }: { users: ManagedUser
           </div>
         </div>
       ) : null}
+
+      {/* Modal — Confirmación de Eliminación de Usuario */}
+      {userToDelete && (
+        <div className="fixed inset-0 bg-slate-900/60 dark:bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4 z-[99999] animate-in fade-in duration-200">
+          <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-xl w-full max-w-md p-6 overflow-hidden animate-in zoom-in-95 duration-200">
+            <div className="flex items-start gap-4">
+              <div className="p-3 bg-red-50 dark:bg-red-950/30 text-red-600 dark:text-red-400 rounded-full flex-shrink-0">
+                <Trash2 className="w-6 h-6" />
+              </div>
+              <div className="space-y-1.5 flex-1 min-w-0">
+                <h3 className="text-base font-bold text-slate-900 dark:text-white">
+                  ¿Eliminar Usuario?
+                </h3>
+                <p className="text-sm text-slate-500 dark:text-slate-400">
+                  ¿Estás seguro de que deseas eliminar a{" "}
+                  <strong className="text-slate-700 dark:text-slate-200 font-semibold truncate block max-w-full">
+                    {userToDelete.fullName}
+                  </strong>
+                  ? Esta acción es irreversible, revocará todos sus accesos y se eliminará su cuenta de forma permanente.
+                </p>
+              </div>
+            </div>
+
+            <div className="mt-6 flex justify-end gap-3">
+              <button
+                type="button"
+                onClick={() => setUserToDelete(null)}
+                className="px-4 py-2 border border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800 rounded-xl text-xs font-bold text-slate-700 dark:text-slate-200 transition-colors"
+                disabled={isDeletePending}
+              >
+                Cancelar
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  const targetId = userToDelete.id;
+                  // Optimistic UI update: remove user from list instantly
+                  setLocalUsers((prev) => prev.filter((u) => u.id !== targetId));
+                  setUserToDelete(null);
+                  startDeleteTransition(async () => {
+                    const res = await deleteManagedUserAction(targetId);
+                    if (res.status === "error") {
+                      alert(`Error al eliminar usuario: ${res.message}`);
+                      setLocalUsers(users); // Rollback if fails
+                    } else {
+                      router.refresh();
+                    }
+                  });
+                }}
+                className="px-4 py-2 bg-red-600 hover:bg-red-700 active:scale-98 rounded-xl text-xs font-bold text-white transition-all shadow-md shadow-red-600/10 flex items-center gap-1.5"
+                disabled={isDeletePending}
+              >
+                {isDeletePending ? "Eliminando..." : "Sí, Eliminar"}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
