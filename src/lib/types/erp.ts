@@ -257,3 +257,18 @@ export interface HRVacationRequest {
   createdBy?: string | null;
   createdAt: string;
 }
+
+export interface TenantDetails {
+  id: string;
+  name: string;
+  slug: string;
+  rut: string;
+  razonSocial: string;
+  giro: string;
+  acteco: string;
+  direccion: string;
+  comuna: string;
+  ciudad: string;
+  telefono: string | null;
+  email: string | null;
+}

@@ -3,6 +3,7 @@ import * as crypto from "crypto";
 import { notFound } from "next/navigation";
 import { requireAuthenticatedContext } from "@/lib/services/auth-service";
 import { getInvoiceById } from "@/lib/repositories/invoice-repository";
+import { getTenantDetails } from "@/lib/repositories/tenant-repository";
 import { parseCaf } from "@/lib/dte/caf-parser";
 import { buildTed } from "@/lib/dte/ted-generator";
 import BarcodePdf417 from "@/components/erp/BarcodePdf417";
@@ -31,7 +32,13 @@ export default async function DtePdfPage({ params }: PageProps) {
     return notFound();
   }
 
-  // 3. Simulación criptográfica nativa del certificado del SII y CAF de folios
+  // 3. Obtener los detalles tributarios del tenant de forma dinámica
+  const tenantDetails = await getTenantDetails(authContext.supabase, authContext.user.tenantId);
+
+  // Auxiliar para limpiar puntos del RUT en XML del SII
+  const cleanRutForXml = (rut: string) => rut.replace(/\./g, "").trim();
+
+  // 4. Simulación criptográfica nativa del certificado del SII y CAF de folios
   // Generamos llaves RSA temporales en el servidor para el timbrado simulado real del PDF417
   const { privateKey } = crypto.generateKeyPairSync("rsa", {
     modulusLength: 1024,
@@ -48,12 +55,12 @@ export default async function DtePdfPage({ params }: PageProps) {
     return b64;
   };
 
-  // XML del CAF simulado para la empresa Sabore
+  // XML del CAF simulado para la empresa emisora
   const mockCafXml = `
 <CAF version="1.0">
   <DA>
-    <RE>76123456-K</RE>
-    <RS>SABORE LIMITADA</RS>
+    <RE>${cleanRutForXml(tenantDetails.rut)}</RE>
+    <RS>${tenantDetails.razonSocial}</RS>
     <TD>${invoice.dteType || 33}</TD>
     <RNG>
       <D>1</D>
@@ -75,18 +82,18 @@ export default async function DtePdfPage({ params }: PageProps) {
   <FRMA algoritmo="SHA1withRSA">FIRMA_OFICIAL_MOCK_DEL_SII_SABORE_LIMITADA</FRMA>
 </CAF>`.trim();
 
-  // 4. Parseamos el CAF y generamos el bloque <TED> criptográfico al vuelo
+  // 5. Parseamos el CAF y generamos el bloque <TED> criptográfico al vuelo
   const cafData = parseCaf(mockCafXml);
   
   const tedXml = buildTed({
-    rutEmisor: "76123456-K",
+    rutEmisor: cleanRutForXml(tenantDetails.rut),
     tipoDte: invoice.dteType || 33,
     folio: parseInt(invoice.number.replace(/\D/g, ""), 10) || 4501,
     fechaEmision: invoice.issueDate,
     rutReceptor: invoice.customerRut,
     razonSocialReceptor: invoice.customerName,
     montoTotal: invoice.total,
-    primerItem: invoice.items[0]?.description || "Servicio General Sabore",
+    primerItem: invoice.items[0]?.description || "Servicio General",
   }, cafData, new Date(invoice.issueDate + "T12:00:00"));
 
   const folioText = invoice.number.replace(/\D/g, "") || "4501";
@@ -108,29 +115,35 @@ export default async function DtePdfPage({ params }: PageProps) {
           {/* Columna Emisor */}
           <div className="md:col-span-7 flex flex-col gap-2">
             <h1 className="text-2xl font-black tracking-tight text-slate-900 dark:text-white print:text-black">
-              SABORE LIMITADA
+              {tenantDetails.razonSocial}
             </h1>
             <p className="text-xs font-bold text-emerald-600 dark:text-emerald-400 print:text-slate-700">
-              Giro: ELABORACIÓN DE PRODUCTOS DE PANADERÍA Y PASTELERÍA
+              Giro: {tenantDetails.giro}
             </p>
             <div className="text-xs text-slate-500 dark:text-slate-400 print:text-slate-600 flex flex-col gap-0.5">
-              <span>Av. Providencia 1240, Providencia</span>
-              <span>Santiago, Región Metropolitana</span>
-              <span>Fono: +56 2 2345 6789 | email: contacto@sabore.cl</span>
-              <span>Acteco: 107100 - Elaboración de Pan y Pastelería</span>
+              <span>{tenantDetails.direccion}, {tenantDetails.comuna}</span>
+              <span>{tenantDetails.ciudad}, Región Metropolitana</span>
+              {(tenantDetails.telefono || tenantDetails.email) && (
+                <span>
+                  {tenantDetails.telefono ? `Fono: ${tenantDetails.telefono}` : ""}
+                  {tenantDetails.telefono && tenantDetails.email ? " | " : ""}
+                  {tenantDetails.email ? `email: ${tenantDetails.email}` : ""}
+                </span>
+              )}
+              <span>Acteco: {tenantDetails.acteco}</span>
             </div>
           </div>
 
           {/* Columna Recuadro Rojo SII Oficial de Chile */}
           <div className="md:col-span-5">
             <div className="border-4 border-rose-600 dark:border-rose-500 print:border-rose-600 p-4 text-center text-rose-600 dark:text-rose-400 print:text-rose-600 font-bold uppercase rounded-2xl flex flex-col justify-center gap-1.5 min-h-[140px]">
-              <span className="text-sm tracking-widest font-black">R.U.T.: 76.123.456-K</span>
+              <span className="text-sm tracking-widest font-black">R.U.T.: {tenantDetails.rut}</span>
               <span className="text-lg font-black tracking-wide border-t border-b border-rose-600/30 py-1.5 dark:border-rose-500/30">
                 {dteName}
               </span>
               <span className="text-xl font-black tracking-widest">Nº {folioText}</span>
               <span className="text-[10px] font-black text-rose-600/80 dark:text-rose-400/80 print:text-rose-600">
-                S.I.I. - SANTIAGO ORIENTE
+                S.I.I. - {tenantDetails.comuna.toUpperCase()}
               </span>
             </div>
           </div>
@@ -258,7 +271,7 @@ export default async function DtePdfPage({ params }: PageProps) {
 
         {/* PIE DE PÁGINA COMERCIAL */}
         <footer className="mt-12 pt-6 border-t border-slate-100 dark:border-slate-800/80 text-center text-[10px] text-slate-400 dark:text-slate-500 print:text-slate-500">
-          <p>SABORE LIMITADA — Gracias por su preferencia.</p>
+          <p>{tenantDetails.razonSocial} — Gracias por su preferencia.</p>
           <p className="mt-1">Documento tributario emitido de forma automatizada mediante ERP Sabore.</p>
         </footer>
 

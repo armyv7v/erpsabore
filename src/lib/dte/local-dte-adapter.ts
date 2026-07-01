@@ -5,6 +5,7 @@ import { mockPrivateKeyPem, mockCertificateX509Base64 } from "./mock-cert";
 import type { InvoiceRecord } from "@/lib/types/erp";
 import { getActiveCertificate } from "@/lib/repositories/certificate-repository";
 import { decryptPrivateKey } from "@/lib/services/crypto-service";
+import { getTenantDetails } from "@/lib/repositories/tenant-repository";
 
 export class LocalDteAdapter implements DteAdapter {
   async processInvoice(
@@ -71,15 +72,17 @@ export class LocalDteAdapter implements DteAdapter {
         })),
       };
 
-      // 2. Datos reales de SABORÉ SPA según SII
+      // 2. Obtener datos de la empresa de forma dinámica
+      const tenantId = invoice.tenantId || "tenant-mock";
+      const tenantDetails = await getTenantDetails(supabase, tenantId);
       const company = {
-        rut: "77.947.538-7",
-        razonSocial: "SABORÉ SPA",
-        giro: "Venta al por menor de alimentos y almacenes",
-        acteco: "472101",
-        direccion: "Av. Providencia 1234, Oficina 501",
-        comuna: "Providencia",
-        ciudad: "Santiago",
+        rut: tenantDetails.rut,
+        razonSocial: tenantDetails.razonSocial,
+        giro: tenantDetails.giro,
+        acteco: tenantDetails.acteco,
+        direccion: tenantDetails.direccion,
+        comuna: tenantDetails.comuna,
+        ciudad: tenantDetails.ciudad,
       };
 
       // 3. Generar XML base de la factura

@@ -17,6 +17,7 @@ import {
   UserCog,
   Users,
   Wallet,
+  Settings,
 } from "lucide-react";
 import type { AppRole } from "@/lib/types/erp";
 
@@ -75,6 +76,7 @@ export const navigationSections: NavigationSection[] = [
     items: [
       { href: "/sucursales", label: "Sucursales", icon: Store, roles: ["admin"] },
       { href: "/usuarios", label: "Usuarios", icon: UserCog, roles: ["admin"] },
+      { href: "/configuracion", label: "Configuración Empresa", icon: Settings, roles: ["admin"] },
     ],
   },
 ];
