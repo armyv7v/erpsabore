@@ -505,17 +505,14 @@ export default function CatalogClient({ products, customers = [] }: Props) {
 
       <main className="no-print flex-1 pb-24 md:p-8">
         {/* Banner de Bienvenida Corporativo */}
-        <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-[#221610] to-[#BC7A3A] px-6 py-8 text-white shadow-lg mb-6 mx-4 md:mx-0 border border-[#BC7A3A]/20">
+        <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-[#E8C19D] to-[#BC7A3A] px-6 py-8 text-[#221610] shadow-sm mb-6 mx-4 md:mx-0 border border-[#BC7A3A]/30">
           {/* Fondo decorativo con marcas de agua */}
-          <div className="absolute right-0 top-0 bottom-0 w-1/3 opacity-15 pointer-events-none bg-contain bg-right bg-no-repeat" style={{ backgroundImage: 'url("/brand/logo_blanco_sin_fondo.png")' }}></div>
+          <div className="absolute right-0 top-0 bottom-0 w-1/3 opacity-15 pointer-events-none bg-contain bg-right bg-no-repeat" style={{ backgroundImage: 'url("/brand/logo_negro_sin_fondo.png")' }}></div>
           <div className="relative z-10 max-w-2xl text-left">
-            <span className="bg-[#BC7A3A]/20 text-[#f8f6f6] px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider border border-[#BC7A3A]/30">
+            <span className="bg-[#221610]/10 text-[#221610] px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider border border-[#221610]/20">
               Saboré Insumos y Suministros
             </span>
-            <h2 className="text-2xl md:text-3xl font-black mt-2 tracking-tight">Catálogo Digital Oficial</h2>
-            <p className="text-slate-200 text-xs md:text-sm mt-1 max-w-lg leading-relaxed font-medium">
-              Explorá nuestra variedad de envases de aluminio, bolsas, plásticos, y suministros descartables. Generá pedidos, revisá stocks físicos en tiempo real o exportá el catálogo oficial en formato PDF.
-            </p>
+            <h2 className="text-2xl md:text-3xl font-black mt-2 tracking-tight text-[#221610]">Catálogo Digital Oficial</h2>
           </div>
         </div>
 
