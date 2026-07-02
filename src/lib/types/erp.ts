@@ -1,4 +1,4 @@
-export type AppRole = "admin" | "ventas" | "finanzas" | "bodega" | "rrhh";
+export type AppRole = "admin" | "ventas" | "finanzas" | "bodega" | "rrhh" | "cliente";
 export type ProfileStatus = "active" | "inactive";
 
 export type InvoiceStatus =
@@ -20,6 +20,7 @@ export interface AuthUser {
   role: AppRole;
   tenantId: string;
   tenantName: string;
+  customerId?: string | null;
 }
 
 export interface ManagedUserRecord {
@@ -29,6 +30,7 @@ export interface ManagedUserRecord {
   role: AppRole;
   status: ProfileStatus;
   tenantId: string;
+  customerId?: string | null;
   createdAt?: string;
   updatedAt?: string;
 }

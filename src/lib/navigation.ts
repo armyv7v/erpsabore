@@ -38,12 +38,12 @@ export const navigationSections: NavigationSection[] = [
   {
     label: "Principal",
     items: [
-      { href: "/", label: "Inicio", icon: LayoutDashboard, roles: ["admin", "ventas", "finanzas", "bodega", "rrhh"] },
+      { href: "/", label: "Inicio", icon: LayoutDashboard, roles: ["admin", "ventas", "finanzas", "bodega", "rrhh", "cliente"] },
       { href: "/pos", label: "Punto de Venta (POS)", icon: Store, roles: ["admin", "ventas"] },
-      { href: "/ventas", label: "Ventas", icon: Wallet, roles: ["admin", "ventas", "finanzas"] },
+      { href: "/ventas", label: "Ventas", icon: Wallet, roles: ["admin", "ventas", "finanzas", "cliente"] },
       { href: "/cotizaciones", label: "Cotizaciones", icon: FileText, roles: ["admin", "ventas"] },
       { href: "/inventario", label: "Inventario", icon: Package, roles: ["admin", "bodega"] },
-      { href: "/catalogo", label: "Catálogo", icon: Grid2X2, roles: ["admin", "ventas", "bodega"] },
+      { href: "/catalogo", label: "Catálogo", icon: Grid2X2, roles: ["admin", "ventas", "bodega", "cliente"] },
       { href: "/crm", label: "CRM", icon: Users, roles: ["admin", "ventas"] },
       { href: "/reportes", label: "Reportes", icon: TrendingUp, roles: ["admin", "ventas", "finanzas", "bodega", "rrhh"] },
     ],
@@ -52,7 +52,7 @@ export const navigationSections: NavigationSection[] = [
     label: "Operaciones",
     items: [
       { href: "/proveedores", label: "Proveedores", icon: Truck, roles: ["admin", "finanzas", "bodega"] },
-      { href: "/despachos", label: "Despachos", icon: PackageOpen, roles: ["admin", "ventas", "bodega"] },
+      { href: "/despachos", label: "Despachos", icon: PackageOpen, roles: ["admin", "ventas", "bodega", "cliente"] },
     ],
   },
   {
@@ -84,9 +84,9 @@ export const navigationSections: NavigationSection[] = [
 ];
 
 export const mobileNavigation = [
-  { href: "/", label: "Inicio", icon: LayoutDashboard, roles: ["admin", "ventas", "finanzas", "bodega", "rrhh"] },
+  { href: "/", label: "Inicio", icon: LayoutDashboard, roles: ["admin", "ventas", "finanzas", "bodega", "rrhh", "cliente"] },
   { href: "/pos", label: "POS", icon: Store, roles: ["admin", "ventas"] },
-  { href: "/ventas", label: "Ventas", icon: Wallet, roles: ["admin", "ventas", "finanzas"] },
+  { href: "/ventas", label: "Ventas", icon: Wallet, roles: ["admin", "ventas", "finanzas", "cliente"] },
   { href: "/facturacion", label: "Facturas", icon: FileText, roles: ["admin", "ventas", "finanzas"] },
   { href: "/inventario", label: "Inventario", icon: Package, roles: ["admin", "bodega"] },
 ];

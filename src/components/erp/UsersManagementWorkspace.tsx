@@ -17,6 +17,7 @@ const roleLabels: Record<AppRole, string> = {
   finanzas: "Finanzas",
   bodega: "Bodega",
   rrhh: "RRHH",
+  cliente: "Cliente",
 };
 
 const statusLabels: Record<ProfileStatus, string> = {
@@ -36,6 +37,8 @@ function getRoleStyles(role: AppRole) {
       return "bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400";
     case "rrhh":
       return "bg-violet-100 text-violet-700 dark:bg-violet-900/30 dark:text-violet-400";
+    case "cliente":
+      return "bg-pink-100 text-pink-700 dark:bg-pink-900/30 dark:text-pink-400";
   }
 }
 
@@ -200,6 +203,7 @@ export default function UsersManagementWorkspace({ users }: { users: ManagedUser
                 <option value="finanzas">Finanzas</option>
                 <option value="bodega">Bodega</option>
                 <option value="rrhh">RRHH</option>
+                <option value="cliente">Cliente</option>
               </select>
               <select
                 defaultValue={user.status}
@@ -316,6 +320,7 @@ export default function UsersManagementWorkspace({ users }: { users: ManagedUser
                   <option value="finanzas">Finanzas</option>
                   <option value="bodega">Bodega</option>
                   <option value="rrhh">RRHH</option>
+                  <option value="cliente">Cliente</option>
                 </select>
               </div>
               <div>
@@ -399,6 +404,7 @@ export default function UsersManagementWorkspace({ users }: { users: ManagedUser
                   <option value="finanzas">Finanzas</option>
                   <option value="bodega">Bodega</option>
                   <option value="rrhh">RRHH</option>
+                  <option value="cliente">Cliente</option>
                 </select>
               </div>
 

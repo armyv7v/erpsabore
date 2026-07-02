@@ -83,6 +83,7 @@ export default function PosWorkspace({ products: initialProducts, branches }: Po
   const [closeShiftNotes, setCloseShiftNotes] = useState("");
   const [closeShiftError, setCloseShiftError] = useState("");
   const [isClosingShiftPending, startClosingShiftTransition] = useTransition();
+  const [isLoadingExpectedTotals, setIsLoadingExpectedTotals] = useState(false);
 
   // Estados de Filtros Avanzados
   const [stockFilter, setStockFilter] = useState<"all" | "critical" | "out_of_stock">("all");
@@ -260,6 +261,7 @@ export default function PosWorkspace({ products: initialProducts, branches }: Po
   // Escáner de código de barras físico (Simulado por teclado a nivel global)
   const barcodeBuffer = useRef<string>("");
   const lastKeyTime = useRef<number>(0);
+  const modalBodyRef = useRef<HTMLDivElement>(null);
 
   // Totales
   const subtotal = useMemo(() => cart.reduce((sum, item) => sum + item.qty * item.product.unitPrice, 0), [cart]);
@@ -333,6 +335,23 @@ export default function PosWorkspace({ products: initialProducts, branches }: Po
     // Convertir a array ordenado y limitar a un máximo de 5 sugerencias para el dropdown
     return Array.from(amounts).sort((a, b) => a - b).slice(0, 5);
   }, [subtotal]);
+
+  // Filtrar sugerencias por el prefijo que va ingresando el usuario
+  const filteredAmounts = useMemo(() => {
+    if (!amountPaid) return smartCashAmounts;
+    return smartCashAmounts.filter((amt) => String(amt).startsWith(amountPaid));
+  }, [smartCashAmounts, amountPaid]);
+
+  // Auto-seleccionar la primera sugerencia disponible cuando cambia el filtro
+  useEffect(() => {
+    if (showCashDropdown) {
+      if (filteredAmounts.length > 0) {
+        setFocusedDropdownIndex(0);
+      } else {
+        setFocusedDropdownIndex(-1);
+      }
+    }
+  }, [filteredAmounts, showCashDropdown]);
 
   // Agregar al carrito
   const addToCart = (product: Product) => {
@@ -442,6 +461,7 @@ export default function PosWorkspace({ products: initialProducts, branches }: Po
     if (!activeShift) return;
     setCloseShiftError("");
     setCloseShiftNotes("");
+    setIsLoadingExpectedTotals(true);
     
     try {
       const res = await getShiftExpectedTotalsAction(activeShift.openedAt, activeShift.initialCash);
@@ -457,6 +477,8 @@ export default function PosWorkspace({ products: initialProducts, branches }: Po
       }
     } catch (err) {
       setCloseShiftError("Error de red al recuperar totales calculados.");
+    } finally {
+      setIsLoadingExpectedTotals(false);
     }
   };
 
@@ -588,6 +610,18 @@ export default function PosWorkspace({ products: initialProducts, branches }: Po
       setWhatsAppText("");
     } else {
       setParsedItemsMessage("No pudimos reconocer ningún producto del texto. Intenta copiarlo nuevamente.");
+    }
+  };
+
+  // Desplazar el modal hacia abajo al interactuar con el cobro en efectivo
+  const scrollToPaymentBottom = () => {
+    if (modalBodyRef.current) {
+      setTimeout(() => {
+        modalBodyRef.current?.scrollTo({
+          top: modalBodyRef.current.scrollHeight,
+          behavior: "smooth",
+        });
+      }, 50);
     }
   };
 
@@ -1535,7 +1569,7 @@ export default function PosWorkspace({ products: initialProducts, branches }: Po
             )}
 
             {/* Cuerpo del Modal */}
-            <div className="flex-1 overflow-y-auto p-6 grid grid-cols-1 md:grid-cols-5 gap-6">
+            <div ref={modalBodyRef} className="flex-1 overflow-y-auto p-6 grid grid-cols-1 md:grid-cols-5 gap-6">
               
               {/* Columna Izquierda: Documento, Cliente y Resumen Carrito (3/5) */}
               <div className="md:col-span-3 space-y-4">
@@ -1695,133 +1729,113 @@ export default function PosWorkspace({ products: initialProducts, branches }: Po
                 {/* Detalle inline de Efectivo */}
                 {paymentMethod === "cash" && (
                   <div className="bg-slate-50 dark:bg-slate-900/40 p-4 rounded-2xl border border-slate-200 dark:border-slate-800 space-y-3 animate-fade-in">
-                    <div className="grid grid-cols-[1fr_120px] gap-3">
-                      <div className="space-y-1 text-xs relative">
-                        <span className="block font-semibold text-slate-500">Monto Entregado</span>
-                        <input
-                          type="number"
-                          value={amountPaid}
-                          onChange={(e) => {
-                            setAmountPaid(e.target.value);
-                            setFocusedDropdownIndex(-1);
-                          }}
-                          onFocus={() => {
-                            setShowCashDropdown(true);
-                            setFocusedDropdownIndex(-1);
-                          }}
-                          onBlur={() => {
-                            // Retraso seguro para permitir capturar el evento de click en las opciones
-                            setTimeout(() => setShowCashDropdown(false), 200);
-                          }}
-                          onKeyDown={(e) => {
-                            if (!showCashDropdown || smartCashAmounts.length === 0) return;
-                            
-                            if (e.key === "ArrowDown") {
-                              e.preventDefault();
-                              setFocusedDropdownIndex((prev) => 
-                                prev < smartCashAmounts.length - 1 ? prev + 1 : 0
-                              );
-                            } else if (e.key === "ArrowUp") {
-                              e.preventDefault();
-                              setFocusedDropdownIndex((prev) => 
-                                prev > 0 ? prev - 1 : smartCashAmounts.length - 1
-                              );
-                            } else if (e.key === "Enter") {
-                              if (focusedDropdownIndex >= 0 && focusedDropdownIndex < smartCashAmounts.length) {
+                    <div className="relative">
+                      <div className="grid grid-cols-[1fr_120px] gap-3">
+                        <div className="space-y-1 text-xs">
+                          <span className="block font-semibold text-slate-500">Monto Entregado</span>
+                          <input
+                            type="number"
+                            value={amountPaid}
+                            onChange={(e) => {
+                              setAmountPaid(e.target.value);
+                              scrollToPaymentBottom();
+                            }}
+                            onFocus={() => {
+                              setShowCashDropdown(true);
+                              scrollToPaymentBottom();
+                            }}
+                            onBlur={() => {
+                              // Retraso seguro para permitir capturar el evento de click en las opciones
+                              setTimeout(() => setShowCashDropdown(false), 200);
+                            }}
+                            onKeyDown={(e) => {
+                              if (!showCashDropdown || filteredAmounts.length === 0) return;
+                              
+                              if (e.key === "ArrowRight" || e.key === "ArrowDown") {
                                 e.preventDefault();
-                                setAmountPaid(String(smartCashAmounts[focusedDropdownIndex]));
+                                setFocusedDropdownIndex((prev) => 
+                                  prev < filteredAmounts.length - 1 ? prev + 1 : 0
+                                );
+                              } else if (e.key === "ArrowLeft" || e.key === "ArrowUp") {
+                                e.preventDefault();
+                                setFocusedDropdownIndex((prev) => 
+                                  prev > 0 ? prev - 1 : filteredAmounts.length - 1
+                                );
+                              } else if (e.key === "Enter") {
+                                if (focusedDropdownIndex >= 0 && focusedDropdownIndex < filteredAmounts.length) {
+                                  e.preventDefault();
+                                  setAmountPaid(String(filteredAmounts[focusedDropdownIndex]));
+                                  setShowCashDropdown(false);
+                                }
+                              } else if (e.key === "Escape") {
                                 setShowCashDropdown(false);
                               }
-                            } else if (e.key === "Escape") {
-                              setShowCashDropdown(false);
-                            }
-                          }}
-                          placeholder={`$${subtotal}`}
-                          className="w-full rounded-xl border border-slate-250 dark:border-slate-700 px-3 py-2 bg-white dark:bg-slate-950 text-sm font-extrabold outline-none focus:ring-2 focus:ring-primary/20"
-                        />
+                            }}
+                            placeholder={`$${subtotal}`}
+                            className="w-full rounded-xl border border-slate-250 dark:border-slate-700 px-3 py-2 bg-white dark:bg-slate-955 text-sm font-extrabold outline-none focus:ring-2 focus:ring-primary/20"
+                          />
+                        </div>
+                        <div className="text-right flex flex-col justify-center">
+                          <span className="block text-[9px] font-bold text-slate-450 uppercase tracking-wider">Su Vuelto</span>
+                          <span className="text-base font-extrabold text-green-600 dark:text-green-400">
+                            ${changeDue.toLocaleString("es-CL")}
+                          </span>
+                        </div>
+                      </div>
 
-                        {/* Dropdown de Sugerencias Inteligentes */}
-                        {showCashDropdown && smartCashAmounts.length > 0 && (
-                          <div className="absolute left-0 right-0 top-full mt-1.5 z-30 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl shadow-xl p-1 animate-fade-in overflow-hidden">
-                            <span className="block text-[8px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider px-2 py-1 border-b border-slate-100 dark:border-slate-800/80">Sugerencias (Cono Chileno)</span>
-                            <div className="max-h-[190px] overflow-y-auto">
-                              {smartCashAmounts.map((amt, idx) => {
-                                const roundToChileanDecena = (val: number): number => {
-                                  const lastDigit = val % 10;
-                                  if (lastDigit >= 1 && lastDigit <= 5) {
-                                    return val - lastDigit;
-                                  } else if (lastDigit >= 6 && lastDigit <= 9) {
-                                    return val + (10 - lastDigit);
-                                  }
-                                  return val;
-                                };
-                                const exactCash = roundToChileanDecena(subtotal);
-                                const isExact = amt === exactCash;
-                                const change = Math.max(0, amt - subtotal);
-                                
-                                // Determinar etiqueta descriptiva del billete/combinación
-                                let label = "";
-                                if (isExact) {
-                                  label = "Monto Exacto";
-                                } else {
-                                  if (amt === 1000) label = "Billete de $1.000";
-                                  else if (amt === 2000) label = "Billete de $2.000";
-                                  else if (amt === 5000) label = "Billete de $5.000";
-                                  else if (amt === 10000) label = "Billete de $10.000";
-                                  else if (amt === 15000) label = "Paga con $10k + $5k";
-                                  else if (amt === 20000) label = "Billete de $20.000";
-                                  else {
-                                    label = `Pago con $${amt.toLocaleString("es-CL")}`;
-                                  }
+                      {/* Dropdown de Sugerencias Inteligentes en Burbujas Horizontales - Ancho Completo */}
+                      {showCashDropdown && filteredAmounts.length > 0 && (
+                        <div className="absolute left-0 right-0 top-full mt-2 z-35 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-xl p-2.5 animate-fade-in">
+                          <span className="block text-[8px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider px-1 pb-1 mb-1.5 border-b border-slate-100 dark:border-slate-850">Sugerencias Rápidas (Cono CL)</span>
+                          <div className="flex flex-row gap-2 overflow-x-auto pb-1 scrollbar-none">
+                            {filteredAmounts.map((amt, idx) => {
+                              const roundToChileanDecena = (val: number): number => {
+                                const lastDigit = val % 10;
+                                if (lastDigit >= 1 && lastDigit <= 5) {
+                                  return val - lastDigit;
+                                } else if (lastDigit >= 6 && lastDigit <= 9) {
+                                  return val + (10 - lastDigit);
                                 }
+                                return val;
+                              };
+                              const exactCash = roundToChileanDecena(subtotal);
+                              const isExact = amt === exactCash;
+                              const change = Math.max(0, amt - subtotal);
 
-                                return (
-                                  <button
-                                    key={amt}
-                                    type="button"
-                                    onMouseDown={(e) => {
-                                      // Evita que el input pierda el foco antes de que la selección sea procesada
-                                      e.preventDefault();
-                                      setAmountPaid(String(amt));
-                                      setShowCashDropdown(false);
-                                    }}
-                                    className={`w-full text-left px-2.5 py-1.5 rounded-lg flex items-center justify-between text-[11px] font-bold transition-colors ${
-                                      focusedDropdownIndex === idx
-                                        ? "bg-primary/10 text-primary dark:bg-primary/20"
-                                        : "hover:bg-slate-55 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-350"
-                                    }`}
-                                  >
-                                    <div className="flex flex-col">
-                                      <span className="text-xs font-extrabold text-slate-900 dark:text-slate-100">
-                                        ${amt.toLocaleString("es-CL")}
-                                      </span>
-                                      <span className="text-[9px] font-normal text-slate-450 dark:text-slate-500">
-                                        {label}
-                                      </span>
-                                    </div>
-                                    {!isExact && change > 0 && (
-                                      <span className="text-[10px] font-extrabold text-green-600 dark:text-green-400">
-                                        Vuelto: +${change.toLocaleString("es-CL")}
-                                      </span>
-                                    )}
-                                    {isExact && (
-                                      <span className="text-[9px] font-semibold text-slate-400">
-                                        Sin Vuelto
-                                      </span>
-                                    )}
-                                  </button>
-                                );
-                              })}
-                            </div>
+                              return (
+                                <button
+                                  key={amt}
+                                  type="button"
+                                  onMouseDown={(e) => {
+                                    // Evita que el input pierda el foco antes de que la selección sea procesada
+                                    e.preventDefault();
+                                    setAmountPaid(String(amt));
+                                    setShowCashDropdown(false);
+                                  }}
+                                  className={`flex flex-col items-center justify-center min-w-[80px] px-3 py-1.5 rounded-xl border text-center transition-all shrink-0 select-none cursor-pointer ${
+                                    focusedDropdownIndex === idx
+                                      ? "bg-primary border-primary text-white shadow-md scale-[1.03]"
+                                      : "bg-slate-50 dark:bg-slate-955 border-slate-200 dark:border-slate-850 text-slate-750 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800"
+                                  }`}
+                                >
+                                  <span className={`text-[11px] font-extrabold ${focusedDropdownIndex === idx ? "text-white" : "text-slate-900 dark:text-slate-100"}`}>
+                                    ${amt.toLocaleString("es-CL")}
+                                  </span>
+                                  <span className={`text-[8px] font-bold ${
+                                    focusedDropdownIndex === idx 
+                                      ? "text-white/80" 
+                                      : isExact 
+                                        ? "text-slate-400" 
+                                        : "text-green-600 dark:text-green-400"
+                                  }`}>
+                                    {isExact ? "Exacto" : `+$${change.toLocaleString("es-CL")}`}
+                                  </span>
+                                </button>
+                              );
+                            })}
                           </div>
-                        )}
-                      </div>
-                      <div className="text-right flex flex-col justify-center">
-                        <span className="block text-[9px] font-bold text-slate-450 uppercase tracking-wider">Su Vuelto</span>
-                        <span className="text-base font-extrabold text-green-600 dark:text-green-400">
-                          ${changeDue.toLocaleString("es-CL")}
-                        </span>
-                      </div>
+                        </div>
+                      )}
                     </div>
                   </div>
                 )}
@@ -2147,10 +2161,23 @@ export default function PosWorkspace({ products: initialProducts, branches }: Po
         </div>
       )}
 
+      {/* LOADING OVERLAY MIENTRAS SE CALCULAN TOTALES DEL TURNO */}
+      {isLoadingExpectedTotals && (
+        <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-55 flex flex-col items-center justify-center text-white space-y-4 animate-fade-in">
+          <div className="bg-slate-950/85 p-8 rounded-3xl border border-slate-850 shadow-2xl flex flex-col items-center space-y-4 max-w-sm text-center">
+            <div className="w-12 h-12 border-4 border-primary border-t-transparent rounded-full animate-spin" />
+            <p className="font-extrabold text-base text-slate-100">Calculando Totales de Caja...</p>
+            <p className="text-xs text-slate-400 leading-relaxed">
+              Recuperando transacciones de boletas, facturas y medios de pago del turno activo...
+            </p>
+          </div>
+        </div>
+      )}
+
       {/* POPUP DE ARQUEO Y CIERRE DE CAJA (MODAL) */}
       {showCloseShiftModal && activeShift && (
-        <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 overflow-y-auto animate-fade-in">
-          <div className="bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-3xl w-full max-w-lg overflow-hidden shadow-2xl animate-scale-up flex flex-col relative">
+        <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 animate-fade-in">
+          <div className="bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-3xl w-full max-w-lg max-h-[90vh] overflow-hidden shadow-2xl animate-scale-up flex flex-col relative">
             
             {/* Loading Overlay */}
             {isClosingShiftPending && (

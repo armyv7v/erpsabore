@@ -8,7 +8,8 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --color-primary: #ec5b13;
+  --color-primary: #BC7A3A;
+  --color-brand-green: #42431C;
   --color-background-light: #f8f6f6;
   --color-background-dark: #221610;
   --font-sans: var(--font-public-sans), Arial, Helvetica, sans-serif;
@@ -31,3 +32,22 @@ body {
   color: var(--foreground);
   font-family: var(--font-public-sans), Arial, Helvetica, sans-serif;
 }
+
+/* Marca de agua sutil para paneles y fondos del ERP */
+.bg-watermark {
+  position: relative;
+}
+
+.bg-watermark::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: url("/brand/logo_camel_sin_fondo.png");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 35%;
+  opacity: 0.02;
+  pointer-events: none;
+  z-index: 0;
+}
+

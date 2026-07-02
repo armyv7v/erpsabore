@@ -6,6 +6,7 @@ const roleAllowedPrefixes: Record<AppRole, string[]> = {
   finanzas: ["/", "/facturacion", "/finanzas", "/proveedores", "/rrhh/nomina", "/reportes"],
   bodega: ["/", "/inventario", "/catalogo", "/despachos", "/proveedores"],
   rrhh: ["/", "/empleados", "/rrhh", "/reportes"],
+  cliente: ["/", "/catalogo", "/ventas", "/despachos"],
 };
 
 function normalizePath(pathname: string) {

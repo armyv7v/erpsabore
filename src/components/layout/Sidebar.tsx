@@ -3,7 +3,7 @@
 import React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Store, X } from "lucide-react";
+import { X } from "lucide-react";
 import { navigationSections } from "@/lib/navigation";
 import type { AuthUser } from "@/lib/types/erp";
 
@@ -27,10 +27,14 @@ export default function Sidebar({ user, mode = "desktop", onNavigate }: SidebarP
     >
       <div className="flex items-center justify-between p-6">
         <div className="flex items-center gap-3">
-          <div className="bg-primary p-2 rounded-lg">
-            <Store className="text-white w-6 h-6" />
-          </div>
-          <span className="text-xl font-bold tracking-tight">ERP Sabore</span>
+          <picture className="block h-10 w-auto">
+            <source srcSet="/brand/logo_blanco_sin_fondo.png" media="(prefers-color-scheme: dark)" />
+            <img
+              src="/brand/logo_camel_sin_fondo.png"
+              alt="Saboré Insumos"
+              className="h-10 w-auto object-contain"
+            />
+          </picture>
         </div>
         {isMobile ? (
           <button
@@ -64,6 +68,15 @@ export default function Sidebar({ user, mode = "desktop", onNavigate }: SidebarP
                   pathname === item.href ||
                   (item.href !== "/" && pathname.startsWith(item.href));
 
+                let label = item.label;
+                if (user.role === "cliente") {
+                  if (item.href === "/ventas") {
+                    label = "Mis Pedidos";
+                  } else if (item.href === "/despachos") {
+                    label = "Mis Despachos";
+                  }
+                }
+
                 return (
                   <Link
                     key={item.href}
@@ -80,7 +93,7 @@ export default function Sidebar({ user, mode = "desktop", onNavigate }: SidebarP
                         isActive ? "text-primary" : "text-slate-400 group-hover:text-slate-600 dark:group-hover:text-slate-300"
                       }`}
                     />
-                    {item.label}
+                    {label}
                   </Link>
                 );
               })}

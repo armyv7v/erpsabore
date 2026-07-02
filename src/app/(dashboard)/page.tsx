@@ -2,13 +2,108 @@ import React from "react";
 import Link from "next/link";
 import { AlertTriangle, ArrowDown, ArrowUp, FileText, Grid2X2, MoreHorizontal, Package, Percent, Receipt, ShoppingCart, TrendingUp, Users, Wallet } from "lucide-react";
 import { formatInvoiceStatus } from "@/lib/formatters/status";
-import { requireAuthenticatedUser } from "@/lib/services/auth-service";
+import { requireAuthenticatedUser, createAuthenticatedSupabaseClient } from "@/lib/services/auth-service";
 import { getDashboardMetrics } from "@/lib/services/metrics-service";
 
 export const dynamic = "force-dynamic";
 
 export default async function DashboardPage() {
   const user = await requireAuthenticatedUser();
+
+  if (user.role === "cliente") {
+    let customerInvoices: any[] = [];
+    if (user.customerId) {
+      const supabase = await createAuthenticatedSupabaseClient();
+      const { data } = await supabase
+        .from("invoices")
+        .select("id, number, issue_date, due_date, total, status")
+        .eq("customer_id", user.customerId)
+        .order("created_at", { ascending: false })
+        .limit(5);
+      customerInvoices = data ?? [];
+    }
+
+    return (
+      <div className="p-4 md:p-8 space-y-8 animate-fade-in">
+        <div className="flex flex-col gap-2">
+          <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-100">Portal de Clientes</h2>
+          <p className="text-slate-500 dark:text-slate-400">
+            Bienvenido, {user.fullName}. Aquí puede realizar el seguimiento de sus compras, consultar el catálogo y gestionar sus despachos.
+          </p>
+        </div>
+
+        {/* Accesos directos */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <Link href="/catalogo" className="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-md hover:border-primary/40 transition-all block group">
+            <div className="flex items-center justify-between mb-4">
+              <span className="bg-primary/10 p-2 rounded-lg group-hover:bg-primary/20 transition-colors">
+                <Grid2X2 className="text-primary w-5 h-5" />
+              </span>
+            </div>
+            <p className="text-sm font-semibold text-slate-700 dark:text-slate-300 uppercase tracking-wider group-hover:text-primary transition-colors">Consultar Catálogo</p>
+            <p className="text-xs text-slate-400 mt-2">Explore los productos, stock y precios vigentes en tiempo real.</p>
+          </Link>
+
+          <Link href="/ventas" className="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-md hover:border-primary/40 transition-all block group">
+            <div className="flex items-center justify-between mb-4">
+              <span className="bg-emerald-150 dark:bg-emerald-950 p-2 rounded-lg group-hover:bg-emerald-250 transition-colors">
+                <ShoppingCart className="text-emerald-600 dark:text-emerald-450 w-5 h-5" />
+              </span>
+            </div>
+            <p className="text-sm font-semibold text-slate-700 dark:text-slate-300 uppercase tracking-wider group-hover:text-emerald-600 dark:group-hover:text-emerald-455 transition-colors">Mis Pedidos / Compras</p>
+            <p className="text-xs text-slate-400 mt-2">Revise el estado de facturación, borradores y sus compras previas.</p>
+          </Link>
+
+          <Link href="/despachos" className="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-md hover:border-primary/40 transition-all block group">
+            <div className="flex items-center justify-between mb-4">
+              <span className="bg-purple-100 dark:bg-purple-950 p-2 rounded-lg group-hover:bg-purple-200 transition-colors">
+                <Package className="text-purple-600 dark:text-purple-400 w-5 h-5" />
+              </span>
+            </div>
+            <p className="text-sm font-semibold text-slate-700 dark:text-slate-300 uppercase tracking-wider group-hover:text-purple-600 dark:group-hover:text-purple-455 transition-colors">Direcciones de Envío</p>
+            <p className="text-xs text-slate-400 mt-2">Gestione sus datos de entrega y realice el seguimiento de los despachos activos.</p>
+          </Link>
+        </div>
+
+        {/* Últimas compras */}
+        <div className="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden">
+          <div className="p-6 border-b border-slate-200 dark:border-slate-800 flex justify-between items-center">
+            <h3 className="text-lg font-bold">Sus compras recientes</h3>
+            <Link href="/ventas" className="text-sm font-semibold text-primary hover:underline">Ver todas</Link>
+          </div>
+          <div className="overflow-x-auto">
+            {customerInvoices.length > 0 ? (
+              <table className="w-full text-left">
+                <thead className="bg-slate-50 dark:bg-slate-800/50 text-slate-500 uppercase text-xs font-bold tracking-wider">
+                  <tr>
+                    <th className="px-6 py-4">Documento</th>
+                    <th className="px-6 py-4">Fecha Emisión</th>
+                    <th className="px-6 py-4">Monto Total</th>
+                    <th className="px-6 py-4">Estado Pago</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
+                  {customerInvoices.map((inv) => (
+                    <tr key={inv.id} className="hover:bg-slate-50/50 dark:hover:bg-slate-800/20 text-sm font-medium">
+                      <td className="px-6 py-4 font-bold text-slate-900 dark:text-white">#{inv.number}</td>
+                      <td className="px-6 py-4 text-slate-500 dark:text-slate-400">{new Date(inv.issue_date).toLocaleDateString("es-CL")}</td>
+                      <td className="px-6 py-4 text-slate-900 dark:text-white">${inv.total.toLocaleString("es-CL")}</td>
+                      <td className="px-6 py-4">{formatInvoiceStatus(inv.status)}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            ) : (
+              <div className="p-12 text-center text-slate-400">
+                <p className="font-semibold text-slate-600 dark:text-slate-350">Aún no registra compras en nuestro sistema.</p>
+                <p className="text-xs text-slate-400 mt-1">Le invitamos a revisar nuestro catálogo de productos.</p>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   let metrics: Awaited<ReturnType<typeof getDashboardMetrics>>;
   try {

@@ -13,6 +13,7 @@ interface ProfileRow {
   email: string;
   full_name: string;
   role: AppRole;
+  customer_id?: string | null;
   status?: ProfileStatus;
   created_at?: string;
   updated_at?: string;
@@ -25,6 +26,7 @@ interface BootstrapProfileRow {
   email: string;
   full_name: string;
   role: AppRole;
+  customer_id?: string | null;
   tenant_name: string;
 }
 
@@ -36,6 +38,7 @@ function toAuthUser(profile: ProfileRow, fallbackTenantName?: string): AuthUser 
     role: profile.role,
     tenantId: profile.tenant_id,
     tenantName: profile.tenant?.name ?? fallbackTenantName ?? "ERP Sabore",
+    customerId: profile.customer_id,
   };
 }
 
@@ -45,7 +48,7 @@ export async function getProfileByUserId(
 ): Promise<AuthUser | null> {
   const { data, error } = await supabase
     .from("profiles")
-    .select("id, tenant_id, email, full_name, role, tenant:tenants(id, name, slug)")
+    .select("id, tenant_id, email, full_name, role, customer_id, tenant:tenants(id, name, slug)")
     .eq("id", userId)
     .maybeSingle();
 
@@ -70,6 +73,7 @@ function toManagedUser(profile: ProfileRow): ManagedUserRecord {
     role: profile.role,
     status: profile.status ?? "active",
     tenantId: profile.tenant_id,
+    customerId: profile.customer_id,
     createdAt: profile.created_at,
     updatedAt: profile.updated_at,
   };
@@ -78,7 +82,7 @@ function toManagedUser(profile: ProfileRow): ManagedUserRecord {
 export async function listTenantUsers(supabase: SupabaseClient, tenantId: string): Promise<ManagedUserRecord[]> {
   const { data, error } = await supabase
     .from("profiles")
-    .select("id, tenant_id, email, full_name, role, status, created_at, updated_at")
+    .select("id, tenant_id, email, full_name, role, customer_id, status, created_at, updated_at")
     .eq("tenant_id", tenantId)
     .order("created_at", { ascending: false });
 
@@ -92,7 +96,7 @@ export async function listTenantUsers(supabase: SupabaseClient, tenantId: string
 export async function listTenantUsersWithAdminClient(supabase: SupabaseClient, tenantId: string): Promise<ManagedUserRecord[]> {
   const { data, error } = await supabase
     .from("profiles")
-    .select("id, tenant_id, email, full_name, role, status, created_at, updated_at")
+    .select("id, tenant_id, email, full_name, role, customer_id, status, created_at, updated_at")
     .eq("tenant_id", tenantId)
     .order("created_at", { ascending: false });
 
@@ -168,5 +172,6 @@ export async function ensureDefaultProfile(
     role: row.role,
     tenantId: row.tenant_id,
     tenantName: row.tenant_name,
+    customerId: row.customer_id,
   };
 }
