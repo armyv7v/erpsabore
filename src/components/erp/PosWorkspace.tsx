@@ -172,6 +172,8 @@ export default function PosWorkspace({ products: initialProducts, branches }: Po
   const [completedSale, setCompletedSale] = useState<any | null>(null);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [showCashPopup, setShowCashPopup] = useState(false);
+  const [showCashDropdown, setShowCashDropdown] = useState(false);
+  const [focusedDropdownIndex, setFocusedDropdownIndex] = useState(-1);
   const [showTransferPopup, setShowTransferPopup] = useState(false);
   const [transferTxId, setTransferTxId] = useState("");
   const [transferTimestamp, setTransferTimestamp] = useState("");
@@ -273,39 +275,63 @@ export default function PosWorkspace({ products: initialProducts, branches }: Po
     
     const amounts = new Set<number>();
     
-    // 1. Monto Exacto
-    amounts.add(subtotal);
+    // Ley de Redondeo de Chile (N° 20.956) para pagos en efectivo
+    const roundToChileanDecena = (val: number): number => {
+      const lastDigit = val % 10;
+      if (lastDigit >= 1 && lastDigit <= 5) {
+        return val - lastDigit;
+      } else if (lastDigit >= 6 && lastDigit <= 9) {
+        return val + (10 - lastDigit);
+      }
+      return val;
+    };
+
+    // 1. Monto Exacto Redondeado
+    const exactCash = roundToChileanDecena(subtotal);
+    amounts.add(exactCash);
     
-    // 2. Redondeo al billete más cercano mayor que el total (Pesos Chilenos)
+    // Billetes estándar chilenos
     const bills = [1000, 2000, 5000, 10000, 20000];
     
-    // Agregar el primer billete que cubre el subtotal
-    const nextBill = bills.find((b) => b > subtotal);
+    // 2. Buscar el billete único inmediato superior
+    const nextBill = bills.find((b) => b >= exactCash);
     if (nextBill) {
       amounts.add(nextBill);
     }
     
-    // Agregar el siguiente billete mayor
+    // Agregar el siguiente billete superior
     if (nextBill) {
       const idx = bills.indexOf(nextBill);
       if (idx !== -1 && idx + 1 < bills.length) {
         amounts.add(bills[idx + 1]);
       }
     }
+
+    // 3. Combinaciones comunes chilenas
+    // Si la compra es entre $10.000 y $15.000, pagar con $15.000 (10k + 5k) es sumamente común
+    if (exactCash > 10000 && exactCash < 15000) {
+      amounts.add(15000);
+    }
     
-    // Redondeos prácticos a múltiplos de $500 o $1.000
-    const rounded500 = Math.ceil(subtotal / 500) * 500;
-    if (rounded500 > subtotal) {
+    // Redondeos prácticos a múltiplos de $500 y $1.000
+    const rounded500 = Math.ceil(exactCash / 500) * 500;
+    if (rounded500 > exactCash) {
       amounts.add(rounded500);
     }
 
-    const rounded1000 = Math.ceil(subtotal / 1000) * 1000;
-    if (rounded1000 > subtotal) {
+    const rounded1000 = Math.ceil(exactCash / 1000) * 1000;
+    if (rounded1000 > exactCash) {
       amounts.add(rounded1000);
     }
 
-    // Convertir a array ordenado y limitar a un máximo de 4 botones rápidos
-    return Array.from(amounts).sort((a, b) => a - b).slice(0, 4);
+    // Redondeo a múltiplos de $5.000
+    const rounded5000 = Math.ceil(exactCash / 5000) * 5000;
+    if (rounded5000 > exactCash) {
+      amounts.add(rounded5000);
+    }
+
+    // Convertir a array ordenado y limitar a un máximo de 5 sugerencias para el dropdown
+    return Array.from(amounts).sort((a, b) => a - b).slice(0, 5);
   }, [subtotal]);
 
   // Agregar al carrito
@@ -1670,15 +1696,125 @@ export default function PosWorkspace({ products: initialProducts, branches }: Po
                 {paymentMethod === "cash" && (
                   <div className="bg-slate-50 dark:bg-slate-900/40 p-4 rounded-2xl border border-slate-200 dark:border-slate-800 space-y-3 animate-fade-in">
                     <div className="grid grid-cols-[1fr_120px] gap-3">
-                      <div className="space-y-1 text-xs">
+                      <div className="space-y-1 text-xs relative">
                         <span className="block font-semibold text-slate-500">Monto Entregado</span>
                         <input
                           type="number"
                           value={amountPaid}
-                          onChange={(e) => setAmountPaid(e.target.value)}
+                          onChange={(e) => {
+                            setAmountPaid(e.target.value);
+                            setFocusedDropdownIndex(-1);
+                          }}
+                          onFocus={() => {
+                            setShowCashDropdown(true);
+                            setFocusedDropdownIndex(-1);
+                          }}
+                          onBlur={() => {
+                            // Retraso seguro para permitir capturar el evento de click en las opciones
+                            setTimeout(() => setShowCashDropdown(false), 200);
+                          }}
+                          onKeyDown={(e) => {
+                            if (!showCashDropdown || smartCashAmounts.length === 0) return;
+                            
+                            if (e.key === "ArrowDown") {
+                              e.preventDefault();
+                              setFocusedDropdownIndex((prev) => 
+                                prev < smartCashAmounts.length - 1 ? prev + 1 : 0
+                              );
+                            } else if (e.key === "ArrowUp") {
+                              e.preventDefault();
+                              setFocusedDropdownIndex((prev) => 
+                                prev > 0 ? prev - 1 : smartCashAmounts.length - 1
+                              );
+                            } else if (e.key === "Enter") {
+                              if (focusedDropdownIndex >= 0 && focusedDropdownIndex < smartCashAmounts.length) {
+                                e.preventDefault();
+                                setAmountPaid(String(smartCashAmounts[focusedDropdownIndex]));
+                                setShowCashDropdown(false);
+                              }
+                            } else if (e.key === "Escape") {
+                              setShowCashDropdown(false);
+                            }
+                          }}
                           placeholder={`$${subtotal}`}
                           className="w-full rounded-xl border border-slate-250 dark:border-slate-700 px-3 py-2 bg-white dark:bg-slate-950 text-sm font-extrabold outline-none focus:ring-2 focus:ring-primary/20"
                         />
+
+                        {/* Dropdown de Sugerencias Inteligentes */}
+                        {showCashDropdown && smartCashAmounts.length > 0 && (
+                          <div className="absolute left-0 right-0 top-full mt-1.5 z-30 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl shadow-xl p-1 animate-fade-in overflow-hidden">
+                            <span className="block text-[8px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider px-2 py-1 border-b border-slate-100 dark:border-slate-800/80">Sugerencias (Cono Chileno)</span>
+                            <div className="max-h-[190px] overflow-y-auto">
+                              {smartCashAmounts.map((amt, idx) => {
+                                const roundToChileanDecena = (val: number): number => {
+                                  const lastDigit = val % 10;
+                                  if (lastDigit >= 1 && lastDigit <= 5) {
+                                    return val - lastDigit;
+                                  } else if (lastDigit >= 6 && lastDigit <= 9) {
+                                    return val + (10 - lastDigit);
+                                  }
+                                  return val;
+                                };
+                                const exactCash = roundToChileanDecena(subtotal);
+                                const isExact = amt === exactCash;
+                                const change = Math.max(0, amt - subtotal);
+                                
+                                // Determinar etiqueta descriptiva del billete/combinación
+                                let label = "";
+                                if (isExact) {
+                                  label = "Monto Exacto";
+                                } else {
+                                  if (amt === 1000) label = "Billete de $1.000";
+                                  else if (amt === 2000) label = "Billete de $2.000";
+                                  else if (amt === 5000) label = "Billete de $5.000";
+                                  else if (amt === 10000) label = "Billete de $10.000";
+                                  else if (amt === 15000) label = "Paga con $10k + $5k";
+                                  else if (amt === 20000) label = "Billete de $20.000";
+                                  else {
+                                    label = `Pago con $${amt.toLocaleString("es-CL")}`;
+                                  }
+                                }
+
+                                return (
+                                  <button
+                                    key={amt}
+                                    type="button"
+                                    onMouseDown={(e) => {
+                                      // Evita que el input pierda el foco antes de que la selección sea procesada
+                                      e.preventDefault();
+                                      setAmountPaid(String(amt));
+                                      setShowCashDropdown(false);
+                                    }}
+                                    className={`w-full text-left px-2.5 py-1.5 rounded-lg flex items-center justify-between text-[11px] font-bold transition-colors ${
+                                      focusedDropdownIndex === idx
+                                        ? "bg-primary/10 text-primary dark:bg-primary/20"
+                                        : "hover:bg-slate-55 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-350"
+                                    }`}
+                                  >
+                                    <div className="flex flex-col">
+                                      <span className="text-xs font-extrabold text-slate-900 dark:text-slate-100">
+                                        ${amt.toLocaleString("es-CL")}
+                                      </span>
+                                      <span className="text-[9px] font-normal text-slate-450 dark:text-slate-500">
+                                        {label}
+                                      </span>
+                                    </div>
+                                    {!isExact && change > 0 && (
+                                      <span className="text-[10px] font-extrabold text-green-600 dark:text-green-400">
+                                        Vuelto: +${change.toLocaleString("es-CL")}
+                                      </span>
+                                    )}
+                                    {isExact && (
+                                      <span className="text-[9px] font-semibold text-slate-400">
+                                        Sin Vuelto
+                                      </span>
+                                    )}
+                                  </button>
+                                );
+                              })}
+                            </div>
+                          </div>
+                        )}
                       </div>
                       <div className="text-right flex flex-col justify-center">
                         <span className="block text-[9px] font-bold text-slate-450 uppercase tracking-wider">Su Vuelto</span>
@@ -1687,29 +1823,6 @@ export default function PosWorkspace({ products: initialProducts, branches }: Po
                         </span>
                       </div>
                     </div>
-
-                    {/* Billetes rápidos */}
-                    {smartCashAmounts.length > 0 && (
-                      <div className="space-y-1 border-t border-slate-200 dark:border-slate-800/80 pt-2.5">
-                        <span className="block text-[9px] font-bold text-slate-400 uppercase tracking-wider">Montos Rápidos (Billetes)</span>
-                        <div className="flex flex-wrap gap-1.5 pt-0.5">
-                          {smartCashAmounts.map((amt) => (
-                            <button
-                              key={amt}
-                              type="button"
-                              onClick={() => setAmountPaid(String(amt))}
-                              className={`flex-1 min-w-[55px] py-1.5 rounded-lg border text-[10px] font-extrabold text-center transition-all ${
-                                Number(amountPaid) === amt
-                                  ? "bg-primary border-primary text-white shadow-sm scale-[1.02]"
-                                  : "bg-white dark:bg-slate-955 border-slate-200 dark:border-slate-800 text-slate-750 dark:text-slate-350 hover:bg-slate-100 dark:hover:bg-slate-800"
-                              }`}
-                            >
-                              {amt === subtotal ? "Exacto" : `$${amt.toLocaleString("es-CL")}`}
-                            </button>
-                          ))}
-                        </div>
-                      </div>
-                    )}
                   </div>
                 )}
 

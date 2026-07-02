@@ -14,9 +14,7 @@ import {
   FileText,
   Loader2,
 } from "lucide-react";
-import { mockTopSalesReps } from "@/data/bi";
 import type { BIBaseMetrics } from "@/lib/services/bi-service";
-import Image from "next/image";
 import { getSalesReportData, getPosShiftReportData, getInventoryReportData } from "@/app/actions/reports";
 import { exportToExcel, exportToPdf } from "@/lib/utils/export-utils";
 
@@ -46,7 +44,6 @@ interface Props {
 export default function BIClient({ biBase }: Props) {
   const [timeRange, setTimeRange] = useState("30d");
   const [department, setDepartment] = useState("all");
-  const [salesRepPeriod, setSalesRepPeriod] = useState("mes");
   const [exportLoading, setExportLoading] = useState<Record<string, boolean>>({});
 
   const formatCurrency = (val: number) => `$${val.toLocaleString("es-CL")}`;
@@ -212,31 +209,12 @@ export default function BIClient({ biBase }: Props) {
     cacImprovement: biBase.cacImprovement + (timeRange === "anio" ? 8.5 : 0),
   }), [biBase, filtersMultiplier, timeRange, department]);
 
-  const salesReps = useMemo(() => {
-    const isHistorical = salesRepPeriod === "historico";
-    const repMultiplier = isHistorical ? 5.4 : 1.0;
-    return mockTopSalesReps
-      .map((rep) => ({
-        ...rep,
-        sales: Math.round(
-          rep.sales *
-            repMultiplier *
-            (department === "ventas" ? 1.1 : department === "operaciones" ? 0.4 : 1.0),
-        ),
-        percentage: Math.min(rep.percentage * (isHistorical ? 1.05 : 1.0), 100),
-      }))
-      .sort((a, b) => b.sales - a.sales);
-  }, [salesRepPeriod, department]);
-
   const handleExport = () => {
     const headers = ["Metrica", "Valor", "Detalle"];
     const rows = [
       ["Ingresos Totales (CLP)", biMetrics.totalRevenue, `Filtro: ${timeRange} - ${department}`],
       ["Margen Bruto (%)", `${biMetrics.grossMargin.toFixed(1)}%`, `Crecimiento: ${biMetrics.marginGrowth.toFixed(1)}%`],
       ["CAC (CLP)", biMetrics.cac, `Cierre efectivo: ${biMetrics.cacImprovement.toFixed(1)}%`],
-      [],
-      ["Mejores Vendedores", "Ventas Acumuladas", "Rendimiento"],
-      ...salesReps.map((rep) => [rep.name, rep.sales, `${rep.percentage}%`]),
     ];
     const csvContent =
       "data:text/csv;charset=utf-8," +
@@ -481,49 +459,6 @@ export default function BIClient({ biBase }: Props) {
                 </div>
               ))}
             </div>
-          </div>
-        </div>
-
-        {/* Top Sales Reps */}
-        <div className="lg:col-span-2 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-6 shadow-sm">
-          <div className="mb-6 flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between">
-            <h4 className="font-bold">Mejores Vendedores</h4>
-            <div className="flex gap-2">
-              {(["mes", "historico"] as const).map((period) => (
-                <button
-                  key={period}
-                  onClick={() => setSalesRepPeriod(period)}
-                  className={`rounded-lg px-3 py-1 text-xs font-bold transition-all ${
-                    salesRepPeriod === period
-                      ? "bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-white"
-                      : "text-slate-500 hover:text-slate-700 dark:hover:text-slate-300"
-                  }`}
-                >
-                  {period === "mes" ? "Este Mes" : "Histórico"}
-                </button>
-              ))}
-            </div>
-          </div>
-          <div className="space-y-6">
-            {salesReps.map((rep) => (
-              <div key={rep.id} className="space-y-2 animate-in fade-in slide-in-from-bottom-1 duration-300">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-3">
-                    <div className="h-8 w-8 rounded-full overflow-hidden relative shrink-0">
-                      <Image src={rep.avatarUrl} alt={rep.name} fill className="object-cover" unoptimized />
-                    </div>
-                    <span className="text-sm font-semibold">{rep.name}</span>
-                  </div>
-                  <span className="text-sm font-bold">${rep.sales.toLocaleString("es-CL")}</span>
-                </div>
-                <div className="h-2 w-full rounded-full bg-slate-100 dark:bg-slate-800 overflow-hidden">
-                  <div
-                    className="h-full rounded-full bg-primary transition-all duration-700 ease-out"
-                    style={{ width: `${rep.percentage}%` }}
-                  />
-                </div>
-              </div>
-            ))}
           </div>
         </div>
       </div>
