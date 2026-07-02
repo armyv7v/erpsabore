@@ -466,7 +466,7 @@ export default function CatalogClient({ products, customers = [] }: Props) {
       : "bg-red-500/90";
 
   return (
-    <div className="flex min-h-screen flex-col bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100">
+    <div className="flex min-h-screen flex-col bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 bg-watermark">
       {/* Interfaz Web Interactiva — Se oculta por completo durante la impresión */}
       <div className="no-print flex flex-col w-full min-h-screen">
         {/* Header */}
@@ -504,6 +504,21 @@ export default function CatalogClient({ products, customers = [] }: Props) {
       </div>
 
       <main className="no-print flex-1 pb-24 md:p-8">
+        {/* Banner de Bienvenida Corporativo */}
+        <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-[#221610] to-[#BC7A3A] px-6 py-8 text-white shadow-lg mb-6 mx-4 md:mx-0 border border-[#BC7A3A]/20">
+          {/* Fondo decorativo con marcas de agua */}
+          <div className="absolute right-0 top-0 bottom-0 w-1/3 opacity-15 pointer-events-none bg-contain bg-right bg-no-repeat" style={{ backgroundImage: 'url("/brand/logo_blanco_sin_fondo.png")' }}></div>
+          <div className="relative z-10 max-w-2xl text-left">
+            <span className="bg-[#BC7A3A]/20 text-[#f8f6f6] px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider border border-[#BC7A3A]/30">
+              Saboré Insumos y Suministros
+            </span>
+            <h2 className="text-2xl md:text-3xl font-black mt-2 tracking-tight">Catálogo Digital Oficial</h2>
+            <p className="text-slate-200 text-xs md:text-sm mt-1 max-w-lg leading-relaxed font-medium">
+              Explorá nuestra variedad de envases de aluminio, bolsas, plásticos, y suministros descartables. Generá pedidos, revisá stocks físicos en tiempo real o exportá el catálogo oficial en formato PDF.
+            </p>
+          </div>
+        </div>
+
         {/* Search */}
         <div className="px-4 py-4 md:px-0">
           <label className="group flex w-full flex-col">
@@ -717,8 +732,18 @@ export default function CatalogClient({ products, customers = [] }: Props) {
                       unoptimized
                     />
                   ) : (
-                    <div className="flex h-full items-center justify-center text-4xl text-slate-300 dark:text-slate-600 font-bold">
-                      {product.name.charAt(0)}
+                    <div className="flex h-full w-full items-center justify-center relative bg-slate-50 dark:bg-slate-900/50 p-6">
+                      <picture className="block w-16 h-16 opacity-15 dark:opacity-25 select-none pointer-events-none transition-transform hover:scale-105">
+                        <source srcSet="/brand/logo_blanco_sin_fondo.png" media="(prefers-color-scheme: dark)" />
+                        <img 
+                          src="/brand/logo_camel_sin_fondo.png" 
+                          alt="Saboré Insumos Placeholder" 
+                          className="w-16 h-16 object-contain"
+                        />
+                      </picture>
+                      <span className="absolute bottom-2 text-[9px] font-black text-slate-300 dark:text-slate-700 tracking-widest uppercase">
+                        Sin Imagen
+                      </span>
                     </div>
                   )}
                   <div
@@ -1392,21 +1417,18 @@ export default function CatalogClient({ products, customers = [] }: Props) {
         `}} />
         
         {/* Página 1: Portada del Libro de Catálogo (Premium Editorial) */}
-        <div className="print-cover-page bg-[#0f172a] text-[#f8fafc] flex flex-col justify-between items-center h-[297mm] box-border p-[25mm_20mm] text-center" style={{ backgroundColor: '#0f172a', color: '#f8fafc' }}>
+        <div className="print-cover-page bg-[#221610] text-[#f8fafc] flex flex-col justify-between items-center h-[297mm] box-border p-[25mm_20mm] text-center" style={{ backgroundColor: '#221610', color: '#f8fafc' }}>
           {/* Marco decorativo editorial */}
-          <div className="absolute inset-[15mm] border border-[#ec5b13]/25 pointer-events-none rounded-sm" style={{ border: '1px solid rgba(236, 91, 19, 0.25)' }}></div>
+          <div className="absolute inset-[15mm] border border-[#BC7A3A]/25 pointer-events-none rounded-sm" style={{ border: '1px solid rgba(188, 122, 58, 0.25)' }}></div>
           
           <div className="flex flex-col items-center mt-16 z-10">
-            <div className="w-20 h-20 rounded-2xl bg-[#ec5b13] flex items-center justify-center text-white text-5xl font-black shadow-xl mb-6" style={{ backgroundColor: '#ec5b13' }}>
-              S
-            </div>
-            <h1 className="text-5xl font-black tracking-tight text-white mb-2">SABORE</h1>
-            <p className="text-[#ec5b13] text-xs font-bold tracking-[6px] uppercase" style={{ color: '#ec5b13' }}>DISTRIBUCIÓN & LOGÍSTICA</p>
+            <img src="/brand/logo_blanco_sin_fondo.png" alt="Saboré Insumos" className="h-16 w-auto mb-6 object-contain" />
+            <p className="text-[#BC7A3A] text-xs font-bold tracking-[6px] uppercase" style={{ color: '#BC7A3A' }}>INSUMOS Y SUMINISTROS</p>
           </div>
           
           <div className="my-auto flex flex-col items-center z-10 px-6">
             <h2 className="text-2xl font-extrabold tracking-tight text-white mb-3 uppercase">CATÁLOGO DE PRODUCTOS</h2>
-            <div className="h-0.5 w-12 bg-[#ec5b13] rounded mb-5" style={{ backgroundColor: '#ec5b13' }}></div>
+            <div className="h-0.5 w-12 bg-[#BC7A3A] rounded mb-5" style={{ backgroundColor: '#BC7A3A' }}></div>
             <p className="text-slate-400 text-[11px] max-w-sm leading-relaxed" style={{ color: '#94a3b8' }}>
               Catálogo corporativo optimizado de productos con códigos de barra EAN-13 secuenciales por subcategoría para conexión de lectores físicos y control de inventarios.
             </p>
@@ -1426,7 +1448,7 @@ export default function CatalogClient({ products, customers = [] }: Props) {
             {/* Cabecera del Índice */}
             <div className="flex justify-between items-end border-b border-slate-200 pb-3 mb-8" style={{ borderBottom: '2px solid #e2e8f0' }}>
               <div className="text-left">
-                <span className="text-[9px] font-black tracking-wider text-[#ec5b13] uppercase" style={{ color: '#ec5b13' }}>SABORE</span>
+                <span className="text-[9px] font-black tracking-wider text-[#BC7A3A] uppercase" style={{ color: '#BC7A3A' }}>SABORÉ INSUMOS</span>
                 <h2 className="text-lg font-bold text-slate-800 tracking-tight">Índice de Contenidos</h2>
               </div>
               <div className="text-right">
@@ -1443,7 +1465,7 @@ export default function CatalogClient({ products, customers = [] }: Props) {
 
                 return (
                   <div key={majorCat} className="space-y-3">
-                    <h3 className="text-[10px] font-black uppercase tracking-wider text-[#ec5b13] border-b border-slate-100 pb-1" style={{ color: '#ec5b13', borderBottom: '1px solid #f1f5f9' }}>
+                    <h3 className="text-[10px] font-black uppercase tracking-wider text-[#BC7A3A] border-b border-slate-100 pb-1" style={{ color: '#BC7A3A', borderBottom: '1px solid #f1f5f9' }}>
                       {majorCat}
                     </h3>
                     <div className="space-y-2.5 pl-2">
@@ -1453,7 +1475,7 @@ export default function CatalogClient({ products, customers = [] }: Props) {
                             {item.subcategory}
                           </span>
                           <div className="flex-1 border-b border-dotted border-slate-350 mx-2 mb-1"></div>
-                          <span className="font-mono font-bold text-[#ec5b13] pl-2 bg-white z-10 shrink-0" style={{ color: '#ec5b13' }}>
+                          <span className="font-mono font-bold text-[#BC7A3A] pl-2 bg-white z-10 shrink-0" style={{ color: '#BC7A3A' }}>
                             Pág. {item.pageNumber}
                           </span>
                         </div>
@@ -1483,7 +1505,7 @@ export default function CatalogClient({ products, customers = [] }: Props) {
                 {/* Encabezado de Página */}
                 <div className="flex justify-between items-end border-b border-slate-200 pb-1.5 mb-6" style={{ borderBottom: '1px solid #e2e8f0' }}>
                   <div className="text-left">
-                    <span className="text-[9px] font-black tracking-wider text-[#ec5b13] uppercase" style={{ color: '#ec5b13' }}>SABORE</span>
+                    <span className="text-[9px] font-black tracking-wider text-[#BC7A3A] uppercase" style={{ color: '#BC7A3A' }}>SABORÉ INSUMOS</span>
                     <h3 className="text-[10px] font-extrabold text-slate-700">Catálogo Oficial de Productos</h3>
                   </div>
                   <div className="text-right flex flex-col items-end">
@@ -1507,10 +1529,10 @@ export default function CatalogClient({ products, customers = [] }: Props) {
                       <React.Fragment key={prod.id}>
                         {showHeader && (
                           <div 
-                            className="col-span-4 text-left border-b border-[#ec5b13]/20 pb-1 mt-2 mb-1"
-                            style={{ gridColumn: 'span 4', borderBottom: '1px solid rgba(236, 91, 19, 0.2)', paddingBottom: '0.2rem', marginTop: '0.4rem', marginBottom: '0.3rem' }}
+                            className="col-span-4 text-left border-b border-[#BC7A3A]/20 pb-1 mt-2 mb-1"
+                            style={{ gridColumn: 'span 4', borderBottom: '1px solid rgba(188, 122, 58, 0.2)', paddingBottom: '0.2rem', marginTop: '0.4rem', marginBottom: '0.3rem' }}
                           >
-                            <h4 className="text-[9px] font-black uppercase tracking-wider text-[#ec5b13]" style={{ color: '#ec5b13', margin: 0 }}>
+                            <h4 className="text-[9px] font-black uppercase tracking-wider text-[#BC7A3A]" style={{ color: '#BC7A3A', margin: 0 }}>
                               {subcat}
                             </h4>
                           </div>
@@ -1548,10 +1570,17 @@ export default function CatalogClient({ products, customers = [] }: Props) {
                               <span className="font-mono text-slate-400 uppercase tracking-tighter">
                                 {prod.sku.replace("INS-", "")}
                               </span>
-                              <span className="text-[#ec5b13]" style={{ color: '#ec5b13' }}>
-                                ${prod.unitPrice.toLocaleString("es-CL")}
+                              <span className="text-slate-400 dark:text-slate-500 text-[8px] font-bold uppercase tracking-wider">
+                                • {getShortSubcategory(prod.name)}
                               </span>
                             </div>
+                            <p
+                              className="mt-auto text-[10px] font-black text-[#BC7A3A]"
+                              style={{ color: '#BC7A3A', margin: 0, fontSize: '10px', fontWeight: '900' }}
+                            >
+                              ${prod.unitPrice.toLocaleString("es-CL")}
+                              <span className="text-slate-400 text-[6px] font-normal"> CLP</span>
+                            </p>
 
                             {/* Código de barras dinámico */}
                             {prod.barcode ? (
