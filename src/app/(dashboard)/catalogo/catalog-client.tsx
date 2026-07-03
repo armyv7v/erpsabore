@@ -61,6 +61,10 @@ function getShortSubcategory(name: string): string {
   return sub;
 }
 
+function getSubcatId(subcat: string): string {
+  return `subcat-${subcat.toLowerCase().replace(/[^a-z0-9]/g, "-")}`;
+}
+
 export interface CatalogProduct {
   id: string;
   name: string;
@@ -90,69 +94,77 @@ interface Props {
 export default function CatalogClient({ products, customers = [] }: Props) {
   const router = useRouter();
   const [searchQuery, setSearchQuery] = useState("");
+  const [printMode, setPrintMode] = useState<"book" | "simple">("book");
+
+  const handlePrint = (mode: "book" | "simple") => {
+    setPrintMode(mode);
+    setTimeout(() => {
+      window.print();
+    }, 150);
+  };
   
-  // Agrupar y paginar productos para el PDF Libro imprimible (20 productos por página A4: 4 columnas x 5 filas)
-  // Agrupados rígidamente por las 3 categorías principales: Plásticos, Papel, Aluminio
+  // Agrupar y paginar productos para el PDF Libro imprimible
+  // Agrupados rígidamente por las 3 categorías principales y divididos por subcategoría/tipo de producto
   const printPages = useMemo(() => {
-    const groups: Record<string, CatalogProduct[]> = {
-      "Plásticos": [],
-      "Papel": [],
-      "Aluminio": []
+    // groups: Record<MajorCategory, Record<Subcategory, CatalogProduct[]>>
+    const groups: Record<string, Record<string, CatalogProduct[]>> = {
+      "Plásticos": {},
+      "Papel": {},
+      "Aluminio": {}
     };
 
     products.forEach(p => {
       const majorCat = getMajorCategory(p.name);
-      groups[majorCat].push(p);
+      const subcat = getProductCategory(p.name);
+      
+      if (!groups[majorCat][subcat]) {
+        groups[majorCat][subcat] = [];
+      }
+      groups[majorCat][subcat].push(p);
     });
 
-    // Ordenar por subcategoría primero, y luego alfabéticamente dentro de cada subcategoría
-    // Esto asegura que productos que solo varían en tamaño o cantidad queden perfectamente agrupados de forma consecutiva.
-    Object.keys(groups).forEach(cat => {
-      groups[cat].sort((a, b) => {
-        const subA = getProductCategory(a.name);
-        const subB = getProductCategory(b.name);
-        if (subA !== subB) {
-          return subA.localeCompare(subB);
-        }
-        return a.name.localeCompare(b.name);
-      });
-    });
-
-    const itemsPerPage = 16;
-    const pages: { category: string; products: CatalogProduct[] }[] = [];
+    const itemsPerPage = printMode === "book" ? 16 : 8;
+    const pages: { category: string; subcategory: string; products: CatalogProduct[] }[] = [];
     const categoriesOrder = ["Plásticos", "Papel", "Aluminio"];
     
     categoriesOrder.forEach(cat => {
-      const groupProducts = groups[cat];
-      if (groupProducts.length === 0) return;
-
-      for (let i = 0; i < groupProducts.length; i += itemsPerPage) {
-        pages.push({
-          category: cat,
-          products: groupProducts.slice(i, i + itemsPerPage)
-        });
-      }
+      const subcatsMap = groups[cat];
+      
+      // Ordenar las subcategorías de esta categoría alfabéticamente
+      const sortedSubcats = Object.keys(subcatsMap).sort((a, b) => a.localeCompare(b));
+      
+      sortedSubcats.forEach(subcat => {
+        const subcatProducts = subcatsMap[subcat];
+        // Ordenar productos alfabéticamente por nombre
+        subcatProducts.sort((a, b) => a.name.localeCompare(b.name));
+        
+        // Paginar los productos de esta subcategoría de forma exclusiva
+        for (let i = 0; i < subcatProducts.length; i += itemsPerPage) {
+          pages.push({
+            category: cat,
+            subcategory: subcat,
+            products: subcatProducts.slice(i, i + itemsPerPage)
+          });
+        }
+      });
     });
 
     return pages;
-  }, [products]);
+  }, [products, printMode]);
 
   const tableOfContents = useMemo(() => {
     const toc: { category: string; subcategory: string; pageNumber: number }[] = [];
     const seenSubcategories = new Set<string>();
 
     printPages.forEach((page, pageIdx) => {
-      page.products.forEach(prod => {
-        const subcat = getProductCategory(prod.name);
-        if (!seenSubcategories.has(subcat)) {
-          seenSubcategories.add(subcat);
-          toc.push({
-            category: page.category,
-            subcategory: subcat,
-            pageNumber: pageIdx + 3, // Pág 1: Portada, Pág 2: Índice, Grillas inician en 3
-          });
-        }
-      });
+      if (!seenSubcategories.has(page.subcategory)) {
+        seenSubcategories.add(page.subcategory);
+        toc.push({
+          category: page.category,
+          subcategory: page.subcategory,
+          pageNumber: pageIdx + 3, // Pág 1: Portada, Pág 2: Índice, Grillas inician en 3
+        });
+      }
     });
 
     return toc;
@@ -479,15 +491,25 @@ export default function CatalogClient({ products, customers = [] }: Props) {
             Catálogo Digital
           </h1>
         </div>
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2">
           <button
             type="button"
-            onClick={() => window.print()}
-            className="flex items-center gap-2 px-4 h-12 rounded-xl bg-primary/10 hover:bg-primary/15 text-primary text-xs font-extrabold transition-all hover:scale-[1.02] active:scale-95 cursor-pointer shadow-sm shadow-primary/5"
-            title="Exportar catálogo completo a formato PDF Libro (A4) con códigos de barra"
+            onClick={() => handlePrint("simple")}
+            className="flex items-center gap-2 px-3 h-12 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-750 text-slate-800 dark:text-slate-200 text-xs font-extrabold transition-all hover:scale-[1.02] active:scale-95 cursor-pointer shadow-sm"
+            title="Exportar catálogo simple para clientes (sin códigos de barra, fotos más grandes)"
           >
             <Printer className="w-4 h-4" />
-            <span className="hidden md:inline">Exportar PDF Libro (A4)</span>
+            <span className="hidden sm:inline">PDF Cliente (Simple)</span>
+          </button>
+
+          <button
+            type="button"
+            onClick={() => handlePrint("book")}
+            className="flex items-center gap-2 px-3 h-12 rounded-xl bg-primary/10 hover:bg-primary/15 text-primary text-xs font-extrabold transition-all hover:scale-[1.02] active:scale-95 cursor-pointer shadow-sm shadow-primary/5"
+            title="Exportar catálogo completo a formato PDF Libro (A4) con portada, índice y códigos de barra"
+          >
+            <BookOpen className="w-4 h-4" />
+            <span className="hidden sm:inline">PDF Catálogo (Completo)</span>
           </button>
           
           <button
@@ -1318,38 +1340,41 @@ export default function CatalogClient({ products, customers = [] }: Props) {
       {/* Área Imprimible - Oculta en pantalla, visible al imprimir */}
       <div id="catalog-print-area" className="hidden print:block bg-white text-black font-sans">
         <style dangerouslySetInnerHTML={{ __html: `
+          @page {
+            size: A4 portrait;
+            margin: 0;
+          }
+
           @media print {
-            /* Ocultar barra de navegación, barra lateral, barra móvil y cualquier elemento no imprimible de raíz */
+            /* ====== PASO 1: Matar TODO lo que no es el área de impresión ====== */
             .no-print,
             aside,
             nav,
-            .mobile-nav,
-            div.h-16.md:hidden,
-            button,
-            form,
             header,
             footer,
+            button,
+            form,
             .sidebar,
             .navbar,
-            div.flex.h-screen.overflow-hidden > *:not(main),
-            main > *:not(div.flex-1.overflow-y-auto),
-            div.flex-1.overflow-y-auto > div.no-print {
+            .mobile-nav,
+            div.h-16.md\\:hidden {
               display: none !important;
-              height: 0 !important;
-              width: 0 !important;
-              margin: 0 !important;
-              padding: 0 !important;
-              overflow: hidden !important;
               visibility: hidden !important;
-              opacity: 0 !important;
             }
 
-            /* Forzar a que todos los contenedores ancestros liberen su altura fija y scrolls */
-            html, 
-            body, 
-            div.flex.h-screen.overflow-hidden,
-            main.flex.min-w-0.flex-1.flex-col.overflow-hidden,
-            div.flex-1.overflow-y-auto {
+            /* Matar la marca de agua del fondo web */
+            .bg-watermark::before {
+              display: none !important;
+              content: none !important;
+            }
+
+            /* ====== PASO 2: Liberar ancestros de altura fija y scroll ====== */
+            html,
+            body,
+            html > body > div,
+            div.flex.h-screen,
+            main,
+            div.flex-1 {
               height: auto !important;
               min-height: 0 !important;
               max-height: none !important;
@@ -1358,37 +1383,37 @@ export default function CatalogClient({ products, customers = [] }: Props) {
               position: static !important;
               background: white !important;
               color: black !important;
-              box-shadow: none !important;
               margin: 0 !important;
               padding: 0 !important;
+              box-shadow: none !important;
             }
 
+            /* ====== PASO 3: Área de impresión ocupa todo ====== */
             #catalog-print-area {
               display: block !important;
               position: absolute !important;
               left: 0 !important;
               top: 0 !important;
               width: 210mm !important;
-              background-color: white !important;
+              background: white !important;
               color: black !important;
               z-index: 999999 !important;
               margin: 0 !important;
               padding: 0 !important;
             }
 
+            /* ====== PASO 4: Páginas individuales ====== */
             .print-page {
               width: 210mm;
               height: 297mm;
               page-break-after: always;
               break-after: page;
               box-sizing: border-box;
-              padding: 15mm 15mm;
-              display: flex;
-              flex-direction: column;
-              justify-content: space-between;
-              background-color: white !important;
+              background: white !important;
               color: black !important;
               overflow: hidden;
+              -webkit-print-color-adjust: exact;
+              print-color-adjust: exact;
             }
 
             .print-cover-page {
@@ -1397,212 +1422,224 @@ export default function CatalogClient({ products, customers = [] }: Props) {
               page-break-after: always;
               break-after: page;
               box-sizing: border-box;
-              padding: 25mm 20mm;
-              display: flex;
-              flex-direction: column;
-              justify-content: space-between;
-              align-items: center;
-              text-align: center;
-              background-color: #0f172a !important; /* Gris grafito oscuro premium */
-              color: #f8fafc !important;
               overflow: hidden;
               -webkit-print-color-adjust: exact;
               print-color-adjust: exact;
-              border: 8mm solid #0f172a;
             }
           }
         `}} />
         
-        {/* Página 1: Portada del Libro de Catálogo (Premium Editorial) */}
-        <div className="print-cover-page bg-[#221610] text-[#f8fafc] flex flex-col justify-between items-center h-[297mm] box-border p-[25mm_20mm] text-center" style={{ backgroundColor: '#221610', color: '#f8fafc' }}>
-          {/* Marco decorativo editorial */}
-          <div className="absolute inset-[15mm] border border-[#BC7A3A]/25 pointer-events-none rounded-sm" style={{ border: '1px solid rgba(188, 122, 58, 0.25)' }}></div>
+        {/* ========== PORTADA ========== */}
+        <div
+          className="print-cover-page flex flex-col justify-between items-center text-center relative"
+          style={{ backgroundColor: '#221610', color: '#f8fafc', padding: '25mm 20mm' }}
+        >
+          {/* Marco decorativo */}
+          <div style={{ position: 'absolute', inset: '15mm', border: '1px solid rgba(188, 122, 58, 0.3)', pointerEvents: 'none' }}></div>
           
-          <div className="flex flex-col items-center mt-16 z-10">
-            <img src="/brand/logo_blanco_sin_fondo.png" alt="Saboré Insumos" className="h-16 w-auto mb-6 object-contain" />
-            <p className="text-[#BC7A3A] text-xs font-bold tracking-[6px] uppercase" style={{ color: '#BC7A3A' }}>INSUMOS Y SUMINISTROS</p>
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '60px', zIndex: 10 }}>
+            <img src="/brand/logo_blanco_sin_fondo.png" alt="Saboré Insumos" style={{ height: '64px', width: 'auto', marginBottom: '24px', objectFit: 'contain' }} />
+            <p style={{ color: '#BC7A3A', fontSize: '11px', fontWeight: 700, letterSpacing: '6px', textTransform: 'uppercase' }}>INSUMOS Y SUMINISTROS</p>
           </div>
           
-          <div className="my-auto flex flex-col items-center z-10 px-6">
-            <h2 className="text-2xl font-extrabold tracking-tight text-white mb-3 uppercase">CATÁLOGO DE PRODUCTOS</h2>
-            <div className="h-0.5 w-12 bg-[#BC7A3A] rounded mb-5" style={{ backgroundColor: '#BC7A3A' }}></div>
-            <p className="text-slate-400 text-[11px] max-w-sm leading-relaxed" style={{ color: '#94a3b8' }}>
-              Catálogo corporativo optimizado de productos con códigos de barra EAN-13 secuenciales por subcategoría para conexión de lectores físicos y control de inventarios.
+          <div style={{ margin: 'auto 0', display: 'flex', flexDirection: 'column', alignItems: 'center', zIndex: 10, padding: '0 24px' }}>
+            <h2 style={{ fontSize: '22px', fontWeight: 800, color: 'white', marginBottom: '12px', textTransform: 'uppercase', letterSpacing: '-0.5px' }}>CATÁLOGO DE PRODUCTOS</h2>
+            <div style={{ height: '2px', width: '48px', backgroundColor: '#BC7A3A', borderRadius: '2px', marginBottom: '20px' }}></div>
+            <p style={{ color: '#94a3b8', fontSize: '10px', maxWidth: '320px', lineHeight: '1.6' }}>
+              {printMode === "book" 
+                ? "Catálogo oficial de productos con códigos de barra EAN-13 para control de inventarios."
+                : "Catálogo de productos e insumos seleccionados para nuestros clientes."}
             </p>
           </div>
 
-          <div className="text-[10px] text-slate-500 font-semibold space-y-1.5 z-10" style={{ color: '#64748b' }}>
-            <p className="text-slate-400 font-bold" style={{ color: '#94a3b8' }}>erpsabore.vercel.app</p>
-            <p>Generado: {new Date().toLocaleDateString("es-CL", { day: 'numeric', month: 'long', year: 'numeric' })}</p>
-            <p>Total de Productos: {products.length} Ítems</p>
-            <p className="text-[8px] text-slate-500 font-bold uppercase tracking-wider mt-1">Santiago, Chile</p>
+          <div style={{ fontSize: '9px', color: '#64748b', fontWeight: 600, zIndex: 10, textAlign: 'center' }}>
+            <p style={{ color: '#94a3b8', fontWeight: 700, marginBottom: '4px' }}>erpsabore.vercel.app</p>
+            <p style={{ marginBottom: '2px' }}>Generado: {new Date().toLocaleDateString("es-CL", { day: 'numeric', month: 'long', year: 'numeric' })}</p>
+            <p style={{ marginBottom: '4px' }}>Total de Productos: {products.length}</p>
+            <p style={{ fontSize: '7px', textTransform: 'uppercase', letterSpacing: '2px', fontWeight: 700 }}>La Serena, Chile</p>
           </div>
         </div>
 
-        {/* Página 2: Índice de Lectura (Tabla de Contenidos Premium) */}
-        <div className="print-page bg-white text-black flex flex-col justify-between h-[297mm] box-border p-[20mm_20mm] overflow-hidden">
-          <div>
-            {/* Cabecera del Índice */}
-            <div className="flex justify-between items-end border-b border-slate-200 pb-3 mb-8" style={{ borderBottom: '2px solid #e2e8f0' }}>
-              <div className="text-left">
-                <span className="text-[9px] font-black tracking-wider text-[#BC7A3A] uppercase" style={{ color: '#BC7A3A' }}>SABORÉ INSUMOS</span>
-                <h2 className="text-lg font-bold text-slate-800 tracking-tight">Índice de Contenidos</h2>
-              </div>
-              <div className="text-right">
-                <span className="text-[8px] font-bold text-slate-400 uppercase tracking-widest">GUÍA DE REFERENCIA</span>
-              </div>
-            </div>
-
-            {/* Listado elegante con líneas punteadas (leaders) */}
-            <div className="space-y-6 mt-8">
-              {/* Agrupamos por Categoría Principal para dar orden visual premium */}
-              {["Plásticos", "Papel", "Aluminio"].map((majorCat) => {
-                const items = tableOfContents.filter(item => item.category === majorCat);
-                if (items.length === 0) return null;
-
-                return (
-                  <div key={majorCat} className="space-y-3">
-                    <h3 className="text-[10px] font-black uppercase tracking-wider text-[#BC7A3A] border-b border-slate-100 pb-1" style={{ color: '#BC7A3A', borderBottom: '1px solid #f1f5f9' }}>
-                      {majorCat}
-                    </h3>
-                    <div className="space-y-2.5 pl-2">
-                      {items.map((item) => (
-                        <div key={item.subcategory} className="flex items-end justify-between text-[10px] text-slate-700">
-                          <span className="font-semibold text-slate-800 pr-2 bg-white z-10 shrink-0">
-                            {item.subcategory}
-                          </span>
-                          <div className="flex-1 border-b border-dotted border-slate-350 mx-2 mb-1"></div>
-                          <span className="font-mono font-bold text-[#BC7A3A] pl-2 bg-white z-10 shrink-0" style={{ color: '#BC7A3A' }}>
-                            Pág. {item.pageNumber}
-                          </span>
-                        </div>
-                      ))}
-                    </div>
+        {/* ========== ÍNDICE (Solo modo libro) ========== */}
+        {printMode === "book" && (
+          <div className="print-page" style={{ padding: '20mm', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', height: '100%', justifyContent: 'space-between' }}>
+              <div>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', borderBottom: '2px solid #e2e8f0', paddingBottom: '12px', marginBottom: '32px' }}>
+                  <div>
+                    <span style={{ fontSize: '9px', fontWeight: 900, letterSpacing: '1px', color: '#BC7A3A', textTransform: 'uppercase' }}>SABORÉ INSUMOS</span>
+                    <h2 style={{ fontSize: '18px', fontWeight: 700, color: '#1e293b', letterSpacing: '-0.5px', margin: '4px 0 0 0' }}>Índice de Contenidos</h2>
                   </div>
-                );
-              })}
+                  <span style={{ fontSize: '7px', fontWeight: 700, color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '2px' }}>GUÍA DE REFERENCIA</span>
+                </div>
+
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '24px', marginTop: '16px' }}>
+                  {["Plásticos", "Papel", "Aluminio"].map((majorCat) => {
+                    const items = tableOfContents.filter(item => item.category === majorCat);
+                    if (items.length === 0) return null;
+                    return (
+                      <div key={majorCat}>
+                        <h3 style={{ fontSize: '10px', fontWeight: 900, textTransform: 'uppercase', letterSpacing: '1px', color: '#BC7A3A', borderBottom: '1px solid #f1f5f9', paddingBottom: '4px', margin: '0 0 10px 0' }}>
+                          {majorCat}
+                        </h3>
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', paddingLeft: '8px' }}>
+                          {items.map((item) => (
+                            <a 
+                              key={item.subcategory}
+                              href={"#" + getSubcatId(item.subcategory)}
+                              style={{ 
+                                display: 'flex', 
+                                alignItems: 'flex-end', 
+                                justifyContent: 'space-between', 
+                                fontSize: '10px', 
+                                color: '#334155',
+                                textDecoration: 'none',
+                                cursor: 'pointer'
+                              }}
+                            >
+                              <span style={{ fontWeight: 600, flexShrink: 0, paddingRight: '8px' }}>{item.subcategory}</span>
+                              <div style={{ flex: 1, borderBottom: '1px dotted #cbd5e1', margin: '0 8px 3px 8px' }}></div>
+                              <span style={{ fontFamily: 'monospace', fontWeight: 700, color: '#BC7A3A', flexShrink: 0, paddingLeft: '8px' }}>Pág. {item.pageNumber}</span>
+                            </a>
+                          ))}
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderTop: '1px solid #e2e8f0', paddingTop: '8px', fontSize: '7px', fontWeight: 700, color: '#94a3b8' }}>
+                <span>Generado por erpsabore.vercel.app</span>
+                <span>Página 2 de {printPages.length + 2}</span>
+              </div>
             </div>
           </div>
+        )}
 
-          {/* Pie de Página */}
-          <div className="flex justify-between items-center border-t border-slate-150 pt-2 text-[8px] font-bold text-slate-400" style={{ borderTop: '1px solid #e2e8f0', color: '#94a3b8' }}>
-            <span>Generado automáticamente por erpsabore.vercel.app</span>
-            <span>Página 2 de {printPages.length + 2}</span>
-          </div>
-        </div>
-
-        {/* Páginas de Grilla en 4 Columnas (Inician en la Página 3) */}
+        {/* ========== PÁGINAS DE PRODUCTOS (4 columnas x filas) ========== */}
         {printPages.map((page, pageIdx) => {
           const pageCategory = page.category;
           const pageProducts = page.products;
 
           return (
-            <div key={pageIdx} className="print-page bg-white text-black flex flex-col justify-between h-[297mm] box-border p-[15mm_15mm] overflow-hidden">
+            <div 
+              key={pageIdx} 
+              className="print-page" 
+              id={tableOfContents.find(t => t.subcategory === page.subcategory)?.pageNumber === (pageIdx + (printMode === "book" ? 3 : 2)) ? getSubcatId(page.subcategory) : undefined}
+              style={{ 
+                padding: printMode === "book" ? "12mm 12mm" : "10mm 6mm", 
+                display: 'flex', 
+                flexDirection: 'column', 
+                justifyContent: 'space-between' 
+              }}
+            >
               <div>
-                {/* Encabezado de Página */}
-                <div className="flex justify-between items-end border-b border-slate-200 pb-1.5 mb-6" style={{ borderBottom: '1px solid #e2e8f0' }}>
-                  <div className="text-left">
-                    <span className="text-[9px] font-black tracking-wider text-[#BC7A3A] uppercase" style={{ color: '#BC7A3A' }}>SABORÉ INSUMOS</span>
-                    <h3 className="text-[10px] font-extrabold text-slate-700">Catálogo Oficial de Productos</h3>
+                {/* Encabezado */}
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', borderBottom: '1px solid #e2e8f0', paddingBottom: '6px', marginBottom: '10px' }}>
+                  <div>
+                    <span style={{ fontSize: '8px', fontWeight: 900, letterSpacing: '1px', color: '#BC7A3A', textTransform: 'uppercase' }}>SABORÉ INSUMOS</span>
+                    <h3 style={{ fontSize: '10px', fontWeight: 800, color: '#334155', margin: '2px 0 0 0' }}>{page.subcategory}</h3>
                   </div>
-                  <div className="text-right flex flex-col items-end">
-                    <span className="text-[9px] font-bold text-slate-500 uppercase tracking-wider bg-slate-100 px-2 py-0.5 rounded mb-1" style={{ backgroundColor: '#f1f5f9', color: '#64748b' }}>
-                      Categoría: {pageCategory}
-                    </span>
-                    <span className="text-[7px] text-slate-400 font-semibold italic">
-                      Sub-Categorías: {pageProducts.length > 0 ? Array.from(new Set(pageProducts.map(p => getShortSubcategory(p.name)))).join(", ") : ""}
+                  <div style={{ textAlign: 'right' }}>
+                    <span style={{ fontSize: '8px', fontWeight: 700, color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.5px', backgroundColor: '#f1f5f9', padding: '2px 8px', borderRadius: '4px' }}>
+                      {pageCategory}
                     </span>
                   </div>
                 </div>
 
-                {/* Grilla de 4 Columnas */}
-                <div className="grid grid-cols-4 gap-x-4 gap-y-4" style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', columnGap: '1rem', rowGap: '1rem' }}>
+                {/* Grilla de Productos - 4 columnas */}
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: printMode === "book" ? '8px' : '6px' }}>
                   {pageProducts.map((prod, idx) => {
-                    const subcat = getProductCategory(prod.name);
-                    const prevSubcat = idx > 0 ? getProductCategory(pageProducts[idx - 1].name) : null;
-                    const showHeader = idx === 0 || subcat !== prevSubcat;
-
                     return (
-                      <React.Fragment key={prod.id}>
-                        {showHeader && (
-                          <div 
-                            className="col-span-4 text-left border-b border-[#BC7A3A]/20 pb-1 mt-2 mb-1"
-                            style={{ gridColumn: 'span 4', borderBottom: '1px solid rgba(188, 122, 58, 0.2)', paddingBottom: '0.2rem', marginTop: '0.4rem', marginBottom: '0.3rem' }}
-                          >
-                            <h4 className="text-[9px] font-black uppercase tracking-wider text-[#BC7A3A]" style={{ color: '#BC7A3A', margin: 0 }}>
-                              {subcat}
-                            </h4>
-                          </div>
-                        )}
-                        <div 
-                          className="flex flex-col border border-slate-150 rounded-xl p-2 bg-white box-border justify-between h-[45mm] max-h-[46mm] overflow-hidden items-center text-center"
-                          style={{ border: '1px solid #e2e8f0', borderRadius: '0.75rem', padding: '0.5rem' }}
-                        >
-                          <div className="flex flex-col items-center w-full">
-                            {/* Miniatura del Producto */}
-                            <div 
-                              className="relative w-12 h-12 rounded-lg bg-slate-50 border border-slate-100 flex items-center justify-center overflow-hidden mb-1.5 shrink-0"
-                              style={{ backgroundColor: '#f8fafc', border: '1px solid #f1f5f9', borderRadius: '0.5rem' }}
-                            >
+                      <div key={prod.id} style={{ display: 'contents' }}>
+                        {printMode === "book" ? (
+                          /* DISEÑO COMPLETO/ADMIN CON BARCODE (44mm de alto) */
+                          <div style={{ border: '1px solid #e2e8f0', borderRadius: '8px', padding: '6px', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'space-between', textAlign: 'center', height: '44mm', overflow: 'hidden', backgroundColor: 'white', breakInside: 'avoid', pageBreakInside: 'avoid' }}>
+                            {/* Imagen */}
+                            <div style={{ width: '44px', height: '44px', borderRadius: '6px', backgroundColor: '#f8fafc', border: '1px solid #f1f5f9', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden', flexShrink: 0, marginBottom: '4px' }}>
                               {prod.imageUrl ? (
-                                <img
-                                  src={prod.imageUrl}
-                                  alt={prod.name}
-                                  className="w-full h-full object-cover"
-                                />
+                                <img src={prod.imageUrl} alt={prod.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                               ) : (
-                                <span className="text-slate-300 text-base font-black">{prod.name.charAt(0)}</span>
+                                <span style={{ color: '#cbd5e1', fontSize: '14px', fontWeight: 900 }}>{prod.name.charAt(0)}</span>
                               )}
                             </div>
 
-                            {/* Nombre del Producto */}
-                            <h4 className="text-[8px] font-extrabold text-slate-900 leading-tight text-center line-clamp-2 h-5 tracking-tight w-full mb-0.5 overflow-hidden">
+                            {/* Nombre */}
+                            <h4 style={{ fontSize: '7px', fontWeight: 800, color: '#0f172a', lineHeight: '1.2', textAlign: 'center', maxHeight: '18px', overflow: 'hidden', width: '100%', margin: '0 0 2px 0', letterSpacing: '-0.2px' }}>
                               {prod.name}
                             </h4>
-                          </div>
 
-                          <div className="flex flex-col items-center w-full shrink-0">
-                            {/* SKU y Precio */}
-                            <div className="flex justify-between items-center w-full px-0.5 mb-1 text-[7px] font-bold text-slate-500">
-                              <span className="font-mono text-slate-400 uppercase tracking-tighter">
-                                {prod.sku.replace("INS-", "")}
-                              </span>
-                              <span className="text-slate-400 dark:text-slate-500 text-[8px] font-bold uppercase tracking-wider">
-                                • {getShortSubcategory(prod.name)}
-                              </span>
-                            </div>
-                            <p
-                              className="mt-auto text-[10px] font-black text-[#BC7A3A]"
-                              style={{ color: '#BC7A3A', margin: 0, fontSize: '10px', fontWeight: '900' }}
-                            >
+                            {/* SKU */}
+                            <span style={{ fontFamily: 'monospace', fontSize: '6px', color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.5px', fontWeight: 700, marginBottom: '2px' }}>
+                              {prod.sku}
+                            </span>
+
+                            {/* Precio */}
+                            <p style={{ fontSize: '10px', fontWeight: 900, color: '#BC7A3A', margin: '0 0 3px 0' }}>
                               ${prod.unitPrice.toLocaleString("es-CL")}
-                              <span className="text-slate-400 text-[6px] font-normal"> CLP</span>
+                              <span style={{ color: '#94a3b8', fontSize: '6px', fontWeight: 400 }}> CLP</span>
                             </p>
 
-                            {/* Código de barras dinámico */}
+                            {/* Código de barras */}
                             {prod.barcode ? (
                               <BarcodeSvg
                                 barcode={prod.barcode}
-                                width={90}
-                                height={20}
+                                width={85}
+                                height={18}
                                 showText={true}
                                 className="scale-95 origin-bottom"
                               />
                             ) : (
-                              <span className="text-[7.5px] text-red-500 font-bold">Sin Código</span>
+                              <span style={{ fontSize: '6px', color: '#ef4444', fontWeight: 700 }}>Sin Código</span>
                             )}
                           </div>
-                        </div>
-                      </React.Fragment>
+                        ) : (
+                          /* DISEÑO SIMPLE/CLIENTE MÁS ESPACIOSO Y SIN BARCODE (74mm de alto) */
+                          <div style={{ border: '1px solid #e2e8f0', borderRadius: '8px', padding: '0', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-start', textAlign: 'center', height: '74mm', overflow: 'hidden', backgroundColor: 'white', breakInside: 'avoid', pageBreakInside: 'avoid' }}>
+                            {/* Imagen de lado a lado (edge-to-edge) ocupando 45mm de alto */}
+                            <div style={{ width: '100%', height: '45mm', backgroundColor: '#f8fafc', borderBottom: '1px solid #f1f5f9', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden', flexShrink: 0 }}>
+                              {prod.imageUrl ? (
+                                <img src={prod.imageUrl} alt={prod.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                              ) : (
+                                <span style={{ color: '#cbd5e1', fontSize: '28px', fontWeight: 900 }}>{prod.name.charAt(0)}</span>
+                              )}
+                            </div>
+
+                            {/* Contenedor del texto con padding y alineación centrada para eliminar vacíos */}
+                            <div style={{ padding: '6px 8px', display: 'flex', flexDirection: 'column', justifyContent: 'center', flex: 1, width: '100%', boxSizing: 'border-box' }}>
+                              {/* Nombre con mejor legibilidad */}
+                              <h4 style={{ fontSize: '9.5px', fontWeight: 800, color: '#0f172a', lineHeight: '1.25', textAlign: 'center', maxHeight: '24px', overflow: 'hidden', width: '100%', margin: '0 0 3px 0', letterSpacing: '-0.1px' }}>
+                                {prod.name}
+                              </h4>
+
+                              {/* SKU con distancia de 3mm */}
+                              <span style={{ fontFamily: 'monospace', fontSize: '7.5px', color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.5px', fontWeight: 700, display: 'block', margin: '0 0 3px 0' }}>
+                                {prod.sku}
+                              </span>
+
+                              {/* Precio destacado y bien pegado */}
+                              <p style={{ fontSize: '13.5px', fontWeight: 900, color: '#BC7A3A', margin: '0' }}>
+                                ${prod.unitPrice.toLocaleString("es-CL")}
+                                <span style={{ color: '#94a3b8', fontSize: '7.5px', fontWeight: 400 }}> CLP</span>
+                              </p>
+                            </div>
+                          </div>
+                        )}
+                      </div>
                     );
                   })}
                 </div>
               </div>
 
               {/* Pie de Página */}
-              <div className="flex justify-between items-center border-t border-slate-150 pt-2 text-[8px] font-bold text-slate-400" style={{ borderTop: '1px solid #e2e8f0', color: '#94a3b8' }}>
-                <span>Generado automáticamente por erpsabore.vercel.app</span>
-                <span>Página {pageIdx + 3} de {printPages.length + 2}</span>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderTop: '1px solid #e2e8f0', paddingTop: '6px', fontSize: '7px', fontWeight: 700, color: '#94a3b8', marginTop: '6px' }}>
+                <span>erpsabore.vercel.app</span>
+                <span>
+                  {printMode === "book" 
+                    ? "Página " + (pageIdx + 3) + " de " + (printPages.length + 2) 
+                    : "Página " + (pageIdx + 2) + " de " + (printPages.length + 1)}
+                </span>
               </div>
             </div>
           );

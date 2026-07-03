@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef, useTransition, useMemo } from "react";
+import { useState, useEffect, useRef, useTransition, useMemo, useDeferredValue } from "react";
 import Link from "next/link";
 import { 
   Search, ShoppingCart, CreditCard, Banknote, Landmark, Smartphone, 
@@ -62,6 +62,7 @@ export default function PosWorkspace({ products: initialProducts, branches }: Po
   const [products, setProducts] = useState<Product[]>(initialProducts);
   const [cart, setCart] = useState<CartItem[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
+  const deferredSearchQuery = useDeferredValue(searchQuery);
 
   // Estados de Jornada y Cierre de Caja (Arqueo)
   const [activeShift, setActiveShift] = useState<any | null>(null);
@@ -93,6 +94,31 @@ export default function PosWorkspace({ products: initialProducts, branches }: Po
   const [isCategoryDropdownOpen, setIsCategoryDropdownOpen] = useState(false);
   const [isBranchDropdownOpen, setIsBranchDropdownOpen] = useState(false);
   const [isSortDropdownOpen, setIsSortDropdownOpen] = useState(false);
+
+  // Infinite Scroll State
+  const [visibleCount, setVisibleCount] = useState(50);
+  const observerTarget = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    setVisibleCount(50);
+  }, [deferredSearchQuery, activeCategory, stockFilter, sortBy]);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          setVisibleCount((prev) => prev + 50);
+        }
+      },
+      { threshold: 0.1 }
+    );
+
+    if (observerTarget.current) {
+      observer.observe(observerTarget.current);
+    }
+
+    return () => observer.disconnect();
+  }, []);
 
   // Mapear productos con categorías
   const productsWithCategories = useMemo(() => {
@@ -715,7 +741,7 @@ export default function PosWorkspace({ products: initialProducts, branches }: Po
   const filteredProducts = useMemo(() => {
     const filtered = productsWithCategories.filter((p) => {
       // 1. Search Query Filter
-      const query = searchQuery.toLowerCase().trim();
+      const query = deferredSearchQuery.toLowerCase().trim();
       const matchesSearch =
         query.length === 0 ||
         p.name.toLowerCase().includes(query) ||
@@ -751,7 +777,7 @@ export default function PosWorkspace({ products: initialProducts, branches }: Po
     }
     
     return filtered;
-  }, [productsWithCategories, searchQuery, activeCategory, stockFilter, sortBy]);
+  }, [productsWithCategories, deferredSearchQuery, activeCategory, stockFilter, sortBy]);
 
   if (isLoadingShift) {
     return (
@@ -1117,7 +1143,7 @@ export default function PosWorkspace({ products: initialProducts, branches }: Po
                 </div>
               ) : (
                 <div className="grid grid-cols-2 xs:grid-cols-3 sm:grid-cols-4 md:grid-cols-5 xl:grid-cols-6 gap-2.5 max-h-[calc(100vh-230px)] overflow-y-auto pr-1 pb-4">
-                  {filteredProducts.map((p) => {
+                  {filteredProducts.slice(0, visibleCount).map((p) => {
                     const cartQty = cart.find((item) => item.product.id === p.id)?.qty || 0;
                     return (
                       <div
@@ -1133,13 +1159,23 @@ export default function PosWorkspace({ products: initialProducts, branches }: Po
                         >
                           {/* Imagen de Catálogo */}
                           <div className="aspect-square w-full rounded-lg bg-slate-100 dark:bg-slate-900 mb-1.5 overflow-hidden relative">
-                            {p.imageUrl ? (
-                              <img src={p.imageUrl} alt={p.name} className="w-full h-full object-cover" />
-                            ) : (
-                              <div className="w-full h-full flex items-center justify-center text-slate-400">
-                                <ShoppingBag className="w-6 h-6" />
-                              </div>
+                            {p.imageUrl && (
+                              <img 
+                                src={p.imageUrl} 
+                                alt={p.name} 
+                                loading="lazy" 
+                                decoding="async" 
+                                onError={(e) => {
+                                  e.currentTarget.style.display = 'none';
+                                  const fallback = e.currentTarget.parentElement?.querySelector('.img-fallback');
+                                  if (fallback) fallback.classList.remove('hidden');
+                                }}
+                                className="w-full h-full object-cover" 
+                              />
                             )}
+                            <div className={`img-fallback w-full h-full flex items-center justify-center text-slate-400 ${p.imageUrl ? 'hidden' : ''}`}>
+                              <ShoppingBag className="w-6 h-6" />
+                            </div>
                             
                             {/* Cantidad en Carrito (Badge) */}
                             {cartQty > 0 && (
@@ -1220,6 +1256,11 @@ export default function PosWorkspace({ products: initialProducts, branches }: Po
                       </div>
                     );
                   })}
+                  {visibleCount < filteredProducts.length && (
+                    <div ref={observerTarget} className="col-span-full h-10 w-full flex items-center justify-center text-slate-400 text-xs py-2">
+                      <div className="w-4 h-4 border-2 border-slate-400 border-t-transparent rounded-full animate-spin" />
+                    </div>
+                  )}
                 </div>
               )}
             </div>
