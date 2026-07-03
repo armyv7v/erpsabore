@@ -162,29 +162,7 @@ export default function PosWorkspace({ products: initialProducts, branches }: Po
   const [whatsAppText, setWhatsAppText] = useState("");
   const [activeTab, setActiveTab] = useState<"catalog" | "orders" | "history">("catalog");
   const [parsedItemsMessage, setParsedItemsMessage] = useState("");
-  const [orderQueue, setOrderQueue] = useState([
-    {
-      id: "WEB-9901",
-      customer: "Juan Carlos Pérez",
-      rut: "18.345.981-4",
-      items: [
-        { sku: "INS-0001-ROLLO-KRAFT-20-CMS", qty: 2 },
-        { sku: "INS-0203-VASO-POLIPAPEL-BLAN", qty: 1 }
-      ],
-      total: 10037,
-      source: "Web Online"
-    },
-    {
-      id: "WSP-3829",
-      customer: "Marta Gómez SpA",
-      rut: "76.891.221-5",
-      items: [
-        { sku: "INS-0002-ROLLO-KRAFT-40-CMS", qty: 1 }
-      ],
-      total: 9900,
-      source: "WhatsApp"
-    }
-  ]);
+  const [orderQueue, setOrderQueue] = useState<any[]>([]);
 
   // Historial de Ventas (Turno Actual)
   const [shiftSales, setShiftSales] = useState<any[]>([]);
