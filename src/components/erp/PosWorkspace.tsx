@@ -559,9 +559,9 @@ export default function PosWorkspace({ products: initialProducts, branches }: Po
   }, [products]);
 
   // Cargar pedido externo (Web o WhatsApp) en el POS
-  const loadOrder = (order: typeof orderQueue[0]) => {
+  const loadOrder = (order: any) => {
     const loadedCart: CartItem[] = [];
-    order.items.forEach((item) => {
+    order.items?.forEach((item: any) => {
       const product = products.find((p) => p.sku === item.sku);
       if (product) {
         loadedCart.push({ product, qty: item.qty });
