@@ -21,7 +21,7 @@ interface NotificationItem {
 
 export default function Navbar({ user, onMenuClick }: NavbarProps) {
   const [showNotifications, setShowNotifications] = useState(false);
-  const [notifications, setNotifications] = useState<NotificationItem[]>([
+  const DEFAULT_NOTIFICATIONS: NotificationItem[] = [
     {
       id: 1,
       title: "Nueva factura borrador",
@@ -46,9 +46,30 @@ export default function Navbar({ user, onMenuClick }: NavbarProps) {
       unread: false,
       type: "cash",
     },
-  ]);
+  ];
 
+  const [notifications, setNotifications] = useState<NotificationItem[]>(DEFAULT_NOTIFICATIONS);
+  const [isLoaded, setIsLoaded] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  
+  useEffect(() => {
+    const saved = localStorage.getItem("erp_notifications_state");
+    if (saved) {
+      try {
+        setNotifications(JSON.parse(saved));
+      } catch (e) {
+        // ignore
+      }
+    }
+    setIsLoaded(true);
+  }, []);
+
+  useEffect(() => {
+    if (isLoaded) {
+      localStorage.setItem("erp_notifications_state", JSON.stringify(notifications));
+    }
+  }, [notifications, isLoaded]);
+
   const unreadCount = notifications.filter((n) => n.unread).length;
 
   useEffect(() => {
