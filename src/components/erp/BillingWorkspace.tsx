@@ -2,11 +2,12 @@
 
 import { useEffect, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
-import { CheckCircle2, Clock, FileText, PlusCircle, Wallet, X, FileCode, ShieldCheck, Key, UploadCloud, Trash2 } from "lucide-react";
-import { submitIssueInvoiceAction, submitRegisterPaymentAction } from "@/app/actions/invoices";
+import { CheckCircle2, Clock, FileText, PlusCircle, Wallet, X, FileCode, ShieldCheck, Key, UploadCloud, Trash2, AlertTriangle } from "lucide-react";
+import { submitIssueInvoiceAction, submitRegisterPaymentAction, submitCreateCorrectionAction } from "@/app/actions/invoices";
 import { uploadDigitalCertificateAction, deleteDigitalCertificateAction } from "@/app/actions/dte";
 import { formatInvoiceStatus } from "@/lib/formatters/status";
 import type { ActionState, InvoiceRecord } from "@/lib/types/erp";
+import CorrectionModal from "@/components/erp/CorrectionModal";
 
 interface BillingWorkspaceProps {
   invoices: InvoiceRecord[];
@@ -280,6 +281,7 @@ export default function BillingWorkspace({
   const [localTotals, setLocalTotals] = useState(totals);
   const [selectedInvoice, setSelectedInvoice] = useState<InvoiceRecord | null>(null);
   const [documentInvoice, setDocumentInvoice] = useState<InvoiceRecord | null>(null);
+  const [correctingInvoice, setCorrectingInvoice] = useState<InvoiceRecord | null>(null);
   const [isPending, startTransition] = useTransition();
 
   // Estados para la configuración DTE real
@@ -538,6 +540,17 @@ export default function BillingWorkspace({
                         >
                           <FileText className="h-4 w-4" />
                           Documento
+                        </button>
+                      ) : null}
+
+                      {invoice.status !== "draft" && invoice.dteType !== 61 && invoice.dteType !== 56 ? (
+                        <button
+                          type="button"
+                          onClick={() => setCorrectingInvoice(invoice)}
+                          className="inline-flex items-center gap-2 rounded-xl border border-amber-200 bg-amber-50/50 px-4 py-2 text-sm font-bold text-amber-700 transition-colors hover:bg-amber-100 dark:border-amber-900/50 dark:text-amber-300 dark:hover:bg-amber-950/30"
+                        >
+                          <AlertTriangle className="h-4 w-4 text-amber-650" />
+                          Corregir (NC)
                         </button>
                       ) : null}
                     </div>
@@ -874,6 +887,22 @@ export default function BillingWorkspace({
             </div>
           </div>
         </div>
+      )}
+
+      {/* Modal — Corrección de Documento (Nota de Crédito/Débito) */}
+      {correctingInvoice && (
+        <CorrectionModal
+          invoice={correctingInvoice}
+          onClose={() => setCorrectingInvoice(null)}
+          onSuccess={() => {
+            setFeedback({
+              status: "success",
+              message: "Documento de corrección emitido correctamente ante el SII.",
+            });
+            setCorrectingInvoice(null);
+            router.refresh();
+          }}
+        />
       )}
     </div>
   );

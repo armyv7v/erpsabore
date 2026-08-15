@@ -19,6 +19,14 @@ export class LocalDteAdapter implements DteAdapter {
       total: number;
       dte_type?: number;
       tenantId?: string;
+      referencedInvoiceId?: string | null;
+      referenceCode?: number | null;
+      referenceReason?: string | null;
+      referencedInvoiceDetails?: {
+        dteType: number;
+        folio: string;
+        issueDate: string;
+      } | null;
     },
     items: Array<{
       product_id?: string | null;
@@ -60,6 +68,12 @@ export class LocalDteAdapter implements DteAdapter {
         createdBy: null,
         outstandingBalance: 0,
         dteType: dteType,
+        referencedInvoiceId: invoice.referencedInvoiceId,
+        referenceCode: invoice.referenceCode,
+        referenceReason: invoice.referenceReason,
+        referencedDteType: invoice.referencedInvoiceDetails?.dteType,
+        referencedFolio: invoice.referencedInvoiceDetails?.folio,
+        referencedIssueDate: invoice.referencedInvoiceDetails?.issueDate,
         items: items.map((item) => ({
           id: `item-${Math.random()}`,
           invoiceId: invoice.id,

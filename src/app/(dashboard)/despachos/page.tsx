@@ -28,20 +28,29 @@ function mockToRecord(s: typeof mockShipments[number]) {
     estimatedAt: null,
     status: (statusMap[s.status] ?? "pending") as "pending" | "in_transit" | "delivered" | "failed" | "cancelled",
     notes: s.issue ?? null,
+    items: null,
     createdAt: new Date().toISOString(),
   };
 }
 
-async function getShipments() {
+async function getShipments(user: any) {
   if (!isSupabaseConfigured()) {
     return mockShipments.map(mockToRecord);
   }
-  const user = await requireAuthenticatedUser();
   const supabase = await createAuthenticatedSupabaseClient();
-  return listShipments(supabase, user.tenantId);
+  const filterOptions = user.role === "cliente" ? { customerId: user.customerId ?? undefined } : undefined;
+  return listShipments(supabase, user.tenantId, filterOptions);
 }
 
 export default async function ShippingPage() {
-  const shipments = await getShipments();
-  return <ShipmentsClient shipments={shipments} />;
+  let shipments: any[] = [];
+  let userRole = "cliente";
+  if (isSupabaseConfigured()) {
+    const user = await requireAuthenticatedUser();
+    userRole = user.role;
+    shipments = await getShipments(user);
+  } else {
+    shipments = mockShipments.map(mockToRecord);
+  }
+  return <ShipmentsClient shipments={shipments} userRole={userRole} />;
 }

@@ -816,7 +816,7 @@ export default function ReconciliationWorkspace({
                     <div className="w-12 h-12 rounded-full bg-primary/5 flex items-center justify-center mb-3">
                       <UploadCloud className="w-6 h-6 text-primary" />
                     </div>
-                    <p className="text-sm font-bold mb-1">Arrastrá tu archivo CSV aquí</p>
+                    <p className="text-sm font-bold mb-1">Arrastre su archivo CSV aquí</p>
                     <p className="text-xs text-slate-400 mb-4">Solo se admiten formatos de valores delimitados (.csv)</p>
                     
                     <label className="px-5 py-2.5 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-xs font-bold shadow-sm hover:shadow-md cursor-pointer transition-shadow">

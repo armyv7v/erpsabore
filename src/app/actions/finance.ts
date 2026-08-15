@@ -13,6 +13,7 @@ const cashMovementSchema = z.object({
   reference: z.string().trim().optional(),
   paymentMethod: z.string().trim().optional(),
   status: z.enum(["pending", "confirmed", "reversed"]),
+  taxAmount: z.coerce.number().nonnegative().optional(),
 });
 
 const reconciliationIdsSchema = z.object({
@@ -46,6 +47,7 @@ export async function submitCreateCashMovementAction(formData: FormData): Promis
       reference: formData.get("reference"),
       paymentMethod: formData.get("paymentMethod"),
       status: formData.get("status"),
+      taxAmount: formData.get("taxAmount"),
     });
 
     await createCashMovement(supabase, {
@@ -59,6 +61,7 @@ export async function submitCreateCashMovementAction(formData: FormData): Promis
       paymentMethod: parsed.paymentMethod || null,
       status: parsed.status,
       createdBy: user.id,
+      taxAmount: parsed.taxAmount ?? 0,
     });
 
     revalidateFinancePaths();

@@ -32,6 +32,10 @@ export default function CashFlowActions({ movements, today }: CashFlowActionsPro
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [formState, setFormState] = useState<ActionState>(initialState);
 
+  const [kind, setKind] = useState<"income" | "expense">("income");
+  const [amount, setAmount] = useState<number>(0);
+  const [isIvaCredit, setIsIvaCredit] = useState(false);
+
   const csvContent = useMemo(() => {
     const header = toCsvRow(["Fecha", "Tipo", "Referencia", "Metodo", "Estado", "Monto"]);
     const rows = movements.map((movement) =>
@@ -74,6 +78,9 @@ export default function CashFlowActions({ movements, today }: CashFlowActionsPro
           type="button"
           onClick={() => {
             setFormState(initialState);
+            setKind("income");
+            setAmount(0);
+            setIsIvaCredit(false);
             setIsModalOpen(true);
           }}
           className="flex-1 sm:flex-none bg-primary hover:bg-primary/90 text-white px-4 py-2 rounded-lg font-semibold text-sm flex items-center justify-center gap-2 transition-colors"
@@ -132,7 +139,12 @@ export default function CashFlowActions({ movements, today }: CashFlowActionsPro
                   <select
                     id="cash-kind"
                     name="kind"
-                    defaultValue="income"
+                    value={kind}
+                    onChange={(e) => {
+                      const val = e.target.value as "income" | "expense";
+                      setKind(val);
+                      if (val === "income") setIsIvaCredit(false);
+                    }}
                     className="w-full rounded-lg border border-slate-200 bg-transparent px-3 py-2 outline-none focus:ring-2 focus:ring-primary/20 dark:border-slate-700"
                   >
                     <option value="income">Entrada</option>
@@ -164,6 +176,8 @@ export default function CashFlowActions({ movements, today }: CashFlowActionsPro
                     type="number"
                     min="1"
                     step="1"
+                    value={amount || ""}
+                    onChange={(e) => setAmount(Number(e.target.value))}
                     required
                     className="w-full rounded-lg border border-slate-200 bg-transparent px-3 py-2 outline-none focus:ring-2 focus:ring-primary/20 dark:border-slate-700"
                     placeholder="50000"
@@ -181,6 +195,45 @@ export default function CashFlowActions({ movements, today }: CashFlowActionsPro
                   />
                 </div>
               </div>
+
+              {/* Bloque de Impuestos / IVA Crédito Fiscal */}
+              {kind === "expense" && (
+                <div className="space-y-2 p-3 bg-slate-50 dark:bg-slate-800/40 rounded-xl border border-slate-200 dark:border-slate-800/80">
+                  <div className="flex items-center gap-2">
+                    <input
+                      type="checkbox"
+                      id="is-iva-credit"
+                      checked={isIvaCredit}
+                      onChange={(e) => setIsIvaCredit(e.target.checked)}
+                      className="rounded border-slate-350 dark:border-slate-700 text-primary focus:ring-primary h-4 w-4 bg-transparent cursor-pointer"
+                    />
+                    <label htmlFor="is-iva-credit" className="text-sm font-semibold text-slate-700 dark:text-slate-300 cursor-pointer select-none">
+                      Afecto a IVA Crédito (19% Recup.)
+                    </label>
+                  </div>
+                  {isIvaCredit && amount > 0 && (
+                    <div className="mt-2 pt-2 border-t border-slate-200 dark:border-slate-700 grid grid-cols-2 gap-2 text-xs">
+                      <div>
+                        <span className="text-slate-500">Monto Neto:</span>
+                        <p className="font-bold text-slate-800 dark:text-slate-200">
+                          ${Math.round(amount / 1.19).toLocaleString("es-CL")}
+                        </p>
+                      </div>
+                      <div>
+                        <span className="text-slate-500">IVA Crédito (19%):</span>
+                        <p className="font-bold text-emerald-600 dark:text-emerald-400">
+                          ${Math.round(amount - amount / 1.19).toLocaleString("es-CL")}
+                        </p>
+                      </div>
+                      <input
+                        type="hidden"
+                        name="taxAmount"
+                        value={Math.round(amount - amount / 1.19)}
+                      />
+                    </div>
+                  )}
+                </div>
+              )}
 
               <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                 <div>

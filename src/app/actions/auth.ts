@@ -62,8 +62,22 @@ export async function registerClientAction(
 
     const userId = authData.user.id;
 
-    // 2. Buscar el primer tenant
-    const { data: tenant } = await supabase
+    // 2. Usar admin client para operaciones post-signup (el usuario recién
+    //    creado no tiene perfil aún, así que RLS bloquea lectura de tenants)
+    const { createSupabaseAdminClient } = await import("@/lib/supabase/admin");
+    const { hasSupabaseAdminConfigured } = await import("@/lib/supabase/config");
+
+    if (!hasSupabaseAdminConfigured()) {
+      return {
+        status: "error",
+        message: "El sistema no está configurado para registrar clientes. Contacte al administrador.",
+      };
+    }
+
+    const adminSupabase = createSupabaseAdminClient();
+
+    // 3. Buscar el primer tenant
+    const { data: tenant } = await adminSupabase
       .from("tenants")
       .select("id")
       .order("created_at", { ascending: true })
@@ -77,9 +91,9 @@ export async function registerClientAction(
       };
     }
 
-    // 3. Buscar o crear la entidad customer por RUT
+    // 4. Buscar o crear la entidad customer por RUT
     let customerId: string | null = null;
-    const { data: existingCustomer } = await supabase
+    const { data: existingCustomer } = await adminSupabase
       .from("customers")
       .select("id")
       .eq("tenant_id", tenant.id)
@@ -89,7 +103,7 @@ export async function registerClientAction(
     if (existingCustomer) {
       customerId = existingCustomer.id;
     } else {
-      const { data: newCustomer, error: customerError } = await supabase
+      const { data: newCustomer, error: customerError } = await adminSupabase
         .from("customers")
         .insert({
           tenant_id: tenant.id,
@@ -105,8 +119,8 @@ export async function registerClientAction(
       }
     }
 
-    // 4. Crear el perfil del usuario de tipo cliente vinculado al customer
-    const { error: profileError } = await supabase
+    // 5. Crear el perfil del usuario de tipo cliente vinculado al customer
+    const { error: profileError } = await adminSupabase
       .from("profiles")
       .insert({
         id: userId,
@@ -120,8 +134,7 @@ export async function registerClientAction(
 
     if (profileError) {
       console.error("Error creating profile:", profileError);
-      // Si el perfil ya existe o hay conflicto, intentamos forzar la actualización
-      await supabase
+      await adminSupabase
         .from("profiles")
         .update({
           role: "cliente",

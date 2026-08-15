@@ -37,10 +37,11 @@ const SORT_OPTIONS = [
 
 import { useRouter } from "next/navigation";
 import Image from "next/image";
+import Link from "next/link";
 import type { CustomerRecord } from "@/lib/types/erp";
 import { submitCreateCustomerAction } from "@/app/actions/crm";
 import ProductDetailsModal from "@/components/erp/ProductDetailsModal";
-import { createDraftInvoiceAction } from "@/app/actions/invoices";
+import { createDraftInvoiceAction, submitGuestOrderAction } from "@/app/actions/invoices";
 import BarcodeSvg from "@/components/erp/BarcodeSvg";
 import { getMajorCategory, getProductCategory } from "@/lib/utils/barcode-generator";
 
@@ -89,9 +90,10 @@ const CART_STORAGE_KEY = "erpSabore:catalogCart";
 interface Props {
   products: CatalogProduct[];
   customers: CustomerRecord[];
+  user?: any | null;
 }
 
-export default function CatalogClient({ products, customers = [] }: Props) {
+export default function CatalogClient({ products, customers = [], user = null }: Props) {
   const router = useRouter();
   const [searchQuery, setSearchQuery] = useState("");
   const [printMode, setPrintMode] = useState<"book" | "simple">("book");
@@ -199,10 +201,36 @@ export default function CatalogClient({ products, customers = [] }: Props) {
   const [isPendingCustomer, startTransitionCustomer] = useTransition();
   const [orderState, setOrderState] = useState<{ status: string; message: string }>({ status: "idle", message: "" });
   const [customerError, setCustomerError] = useState("");
+  const [guestDetails, setGuestDetails] = useState({
+    fullName: "",
+    rut: "",
+    email: "",
+    phone: "",
+    address: "",
+    docType: "boleta",
+  });
+  const [completedOrder, setCompletedOrder] = useState<{
+    id: string;
+    number: string;
+    customerName: string;
+    docType: string;
+    address?: string;
+    items: Array<{ name: string; quantity: number; price: number }>;
+    total: number;
+  } | null>(null);
 
   useEffect(() => {
     setLocalCustomers(customers);
   }, [customers]);
+
+  useEffect(() => {
+    if (user && user.role === "cliente" && user.customerId && localCustomers.length > 0) {
+      const match = localCustomers.find((c) => c.id === user.customerId);
+      if (match) {
+        setSelectedCustomer(match);
+      }
+    }
+  }, [user, localCustomers]);
 
   useEffect(() => {
     const raw = window.localStorage.getItem(CART_STORAGE_KEY);
@@ -369,10 +397,74 @@ export default function CatalogClient({ products, customers = [] }: Props) {
 
   // Confirmación Directa a Base de Datos como Borrador (Draft)
   function handleConfirmOrder() {
-    if (!selectedCustomer) return;
     if (cartItems.length === 0) return;
 
     setOrderState({ status: "idle", message: "" });
+
+    // Si es un invitado (no logueado)
+    if (!user) {
+      if (!guestDetails.fullName || !guestDetails.rut || !guestDetails.email || !guestDetails.address) {
+        setOrderState({ status: "error", message: "Nombre, RUT, correo y dirección son obligatorios para realizar la compra." });
+        return;
+      }
+
+      startTransitionOrder(async () => {
+        try {
+          const formData = new FormData();
+          formData.append("fullName", guestDetails.fullName);
+          formData.append("rut", guestDetails.rut);
+          formData.append("email", guestDetails.email);
+          formData.append("phone", guestDetails.phone);
+          formData.append("address", guestDetails.address);
+          formData.append("docType", guestDetails.docType);
+          formData.append("lineItemsJson", JSON.stringify(cartItems.map(item => ({
+            productId: item.id,
+            description: item.name,
+            qty: item.quantity,
+            unitPrice: item.price,
+          }))));
+
+          const res = await submitGuestOrderAction({ status: "idle", message: "" }, formData);
+
+          if (res.status === "success") {
+            setOrderState({ status: "success", message: res.message });
+            setCompletedOrder({
+              id: res.data.id,
+              number: res.data.number,
+              customerName: res.data.customerName,
+              docType: res.data.docType,
+              address: res.data.address,
+              items: cartItems.map(item => ({
+                name: item.name,
+                quantity: item.quantity,
+                price: item.price,
+              })),
+              total: res.data.total,
+            });
+            clearCart();
+            setGuestDetails({
+              fullName: "",
+              rut: "",
+              email: "",
+              phone: "",
+              address: "",
+              docType: "boleta",
+            });
+            setIsCartOpen(false);
+            setOrderState({ status: "idle", message: "" });
+          } else {
+            setOrderState({ status: "error", message: res.message });
+          }
+        } catch (err) {
+          console.error("Error al registrar pedido de invitado:", err);
+          setOrderState({ status: "error", message: "No se pudo comunicar con el servidor." });
+        }
+      });
+      return;
+    }
+
+    // Si es un cliente/usuario logueado
+    if (!selectedCustomer) return;
 
     startTransitionOrder(async () => {
       try {
@@ -404,14 +496,25 @@ export default function CatalogClient({ products, customers = [] }: Props) {
 
         if (res.status === "success") {
           setOrderState({ status: "success", message: "¡Pedido registrado como borrador con éxito en administración!" });
+          setCompletedOrder({
+            id: res.data.id,
+            number: res.data.number,
+            customerName: selectedCustomer.name,
+            docType: "Pedido ERP",
+            items: cartItems.map(item => ({
+              name: item.name,
+              quantity: item.quantity,
+              price: item.price,
+            })),
+            total: cartTotal,
+          });
           clearCart();
-          setSelectedCustomer(null);
-          setCustomerSearch("");
-          // Cerrar modal automáticamente después de 2.5 segundos
-          setTimeout(() => {
-            setOrderState({ status: "idle", message: "" });
-            setIsCartOpen(false);
-          }, 2500);
+          if (user.role !== "cliente") {
+            setSelectedCustomer(null);
+            setCustomerSearch("");
+          }
+          setIsCartOpen(false);
+          setOrderState({ status: "idle", message: "" });
         } else {
           setOrderState({ status: "error", message: res.message });
         }
@@ -425,6 +528,7 @@ export default function CatalogClient({ products, customers = [] }: Props) {
   // Registro Express de Cliente desde Carrito
   async function handleCreateCustomerExpress(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
+    e.stopPropagation();
     setCustomerError("");
 
     const form = e.currentTarget;
@@ -1057,7 +1161,7 @@ export default function CatalogClient({ products, customers = [] }: Props) {
               )}
 
               {/* Client Selection Section */}
-              {cartItems.length > 0 && (
+              {cartItems.length > 0 && user && user.role !== "cliente" && (
                 <div className="mt-5 border-t border-slate-200 pt-4 dark:border-slate-800">
                   <div className="flex items-center gap-1.5 text-slate-900 dark:text-slate-100 mb-2">
                     <Users className="w-4 h-4 text-primary" />
@@ -1162,6 +1266,118 @@ export default function CatalogClient({ products, customers = [] }: Props) {
                   )}
                 </div>
               )}
+
+              {/* Guest Checkout Form */}
+              {cartItems.length > 0 && !user && (
+                <div className="mt-5 border-t border-slate-200 pt-4 dark:border-slate-800 space-y-4">
+                  <div className="flex items-center gap-1.5 text-slate-900 dark:text-slate-100 mb-1">
+                    <Users className="w-4 h-4 text-primary" />
+                    <h3 className="text-xs font-bold uppercase tracking-wider">Datos de Envío y Despacho</h3>
+                  </div>
+
+                  <div className="space-y-3">
+                    <div>
+                      <label className="block text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-1">
+                        Nombre Completo / Razón Social *
+                      </label>
+                      <input
+                        type="text"
+                        required
+                        placeholder="Ej: Juan Pérez"
+                        className="w-full px-3 py-2 text-xs rounded-xl border border-slate-200 dark:border-slate-700 bg-transparent outline-none focus:ring-2 focus:ring-primary/25 placeholder:text-slate-400 dark:text-white"
+                        value={guestDetails.fullName}
+                        onChange={(e) => setGuestDetails({ ...guestDetails, fullName: e.target.value })}
+                      />
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-3">
+                      <div>
+                        <label className="block text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-1">
+                          RUT / DNI *
+                        </label>
+                        <input
+                          type="text"
+                          required
+                          placeholder="Ej: 12.345.678-9"
+                          className="w-full px-3 py-2 text-xs rounded-xl border border-slate-200 dark:border-slate-700 bg-transparent outline-none focus:ring-2 focus:ring-primary/25 placeholder:text-slate-400 dark:text-white"
+                          value={guestDetails.rut}
+                          onChange={(e) => setGuestDetails({ ...guestDetails, rut: e.target.value })}
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-1">
+                          Teléfono
+                        </label>
+                        <input
+                          type="text"
+                          placeholder="Ej: +56 9 1234 5678"
+                          className="w-full px-3 py-2 text-xs rounded-xl border border-slate-200 dark:border-slate-700 bg-transparent outline-none focus:ring-2 focus:ring-primary/25 placeholder:text-slate-400 dark:text-white"
+                          value={guestDetails.phone}
+                          onChange={(e) => setGuestDetails({ ...guestDetails, phone: e.target.value })}
+                        />
+                      </div>
+                    </div>
+
+                    <div>
+                      <label className="block text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-1">
+                        Correo Electrónico *
+                      </label>
+                      <input
+                        type="email"
+                        required
+                        placeholder="correo@ejemplo.com"
+                        className="w-full px-3 py-2 text-xs rounded-xl border border-slate-200 dark:border-slate-700 bg-transparent outline-none focus:ring-2 focus:ring-primary/25 placeholder:text-slate-400 dark:text-white"
+                        value={guestDetails.email}
+                        onChange={(e) => setGuestDetails({ ...guestDetails, email: e.target.value })}
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-1">
+                        Dirección de Despacho *
+                      </label>
+                      <input
+                        type="text"
+                        required
+                        placeholder="Calle, Número, Comuna"
+                        className="w-full px-3 py-2 text-xs rounded-xl border border-slate-200 dark:border-slate-700 bg-transparent outline-none focus:ring-2 focus:ring-primary/25 placeholder:text-slate-400 dark:text-white"
+                        value={guestDetails.address}
+                        onChange={(e) => setGuestDetails({ ...guestDetails, address: e.target.value })}
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-2">
+                        Tipo de Documento
+                      </label>
+                      <div className="flex gap-4">
+                        <label className="flex items-center gap-1.5 text-xs font-semibold text-slate-700 dark:text-slate-300 cursor-pointer">
+                          <input
+                            type="radio"
+                            name="guestDocType"
+                            value="boleta"
+                            checked={guestDetails.docType === "boleta"}
+                            onChange={() => setGuestDetails({ ...guestDetails, docType: "boleta" })}
+                            className="text-primary focus:ring-primary h-3.5 w-3.5 border-slate-300 dark:border-slate-700 bg-transparent"
+                          />
+                          Boleta
+                        </label>
+                        <label className="flex items-center gap-1.5 text-xs font-semibold text-slate-700 dark:text-slate-300 cursor-pointer">
+                          <input
+                            type="radio"
+                            name="guestDocType"
+                            value="factura"
+                            checked={guestDetails.docType === "factura"}
+                            onChange={() => setGuestDetails({ ...guestDetails, docType: "factura" })}
+                            className="text-primary focus:ring-primary h-3.5 w-3.5 border-slate-300 dark:border-slate-700 bg-transparent"
+                          />
+                          Factura
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
 
             {/* Bottom summary and action buttons */}
@@ -1190,16 +1406,16 @@ export default function CatalogClient({ products, customers = [] }: Props) {
                 <button
                   type="button"
                   onClick={handleConfirmOrder}
-                  disabled={cartItems.length === 0 || !selectedCustomer || isPendingOrder}
+                  disabled={cartItems.length === 0 || (user && !selectedCustomer) || isPendingOrder}
                   className="flex-[2] rounded-xl bg-primary hover:bg-primary/95 py-2.5 font-bold text-xs text-white disabled:opacity-50 transition-all hover:scale-[1.01] active:scale-95 flex items-center justify-center gap-1.5 cursor-pointer shadow-md shadow-primary/20"
                 >
                   {isPendingOrder ? (
                     <>
                       <Loader2 className="w-3.5 h-3.5 animate-spin" />
-                      <span>Guardando pedido...</span>
+                      <span>Procesando...</span>
                     </>
                   ) : (
-                    "Confirmar Pedido"
+                    user ? "Confirmar Pedido" : "Confirmar Compra"
                   )}
                 </button>
               </div>
@@ -1332,7 +1548,113 @@ export default function CatalogClient({ products, customers = [] }: Props) {
           }}
           onClose={() => setDetailsProduct(null)}
           onAddToCart={() => addToCart(detailsProduct)}
+          showCostPrice={user && ["admin", "finanzas", "bodega"].includes(user.role)}
         />
+      )}
+
+      {/* Modal de Confirmación de Pedido */}
+      {completedOrder && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-in fade-in duration-300">
+          <div className="w-full max-w-lg bg-white dark:bg-[#221610] rounded-2xl border border-slate-200 dark:border-slate-800 shadow-2xl p-6 overflow-hidden max-h-[90vh] flex flex-col animate-in zoom-in-95 duration-200">
+            {/* Header */}
+            <div className="text-center pb-4 border-b border-slate-100 dark:border-slate-800/80">
+              <div className="w-12 h-12 bg-green-100 dark:bg-green-950/50 text-green-600 dark:text-green-400 rounded-full flex items-center justify-center mx-auto mb-3 shadow-inner">
+                <Check className="w-7 h-7" />
+              </div>
+              <h3 className="text-lg font-black text-slate-900 dark:text-slate-100">
+                ¡Pedido Confirmado!
+              </h3>
+              <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
+                Su orden ha sido recibida y se encuentra en proceso de despacho
+              </p>
+            </div>
+
+            {/* Content */}
+            <div className="flex-1 overflow-y-auto py-4 space-y-4 pr-1">
+              {/* ID / Tracking */}
+              <div className="bg-slate-50 dark:bg-slate-900/50 rounded-xl p-3.5 border border-slate-100 dark:border-slate-800/50">
+                <div className="flex justify-between items-center text-xs">
+                  <span className="font-semibold text-slate-500">ID del Pedido:</span>
+                  <span className="font-black text-slate-900 dark:text-slate-100 select-all font-mono text-[11px]">
+                    {completedOrder.id}
+                  </span>
+                </div>
+                <div className="flex justify-between items-center text-xs mt-2">
+                  <span className="font-semibold text-slate-500">Folio / Número:</span>
+                  <span className="font-bold text-slate-800 dark:text-slate-200">
+                    {completedOrder.number}
+                  </span>
+                </div>
+                <div className="flex justify-between items-center text-xs mt-2">
+                  <span className="font-semibold text-slate-500">Cliente:</span>
+                  <span className="font-bold text-slate-800 dark:text-slate-200">
+                    {completedOrder.customerName}
+                  </span>
+                </div>
+                {completedOrder.address && (
+                  <div className="flex justify-between items-start text-xs mt-2 gap-4">
+                    <span className="font-semibold text-slate-500 shrink-0">Despacho:</span>
+                    <span className="font-bold text-slate-800 dark:text-slate-200 text-right">
+                      {completedOrder.address}
+                    </span>
+                  </div>
+                )}
+              </div>
+
+              {/* Detalle Items */}
+              <div>
+                <h4 className="text-[10px] font-extrabold uppercase tracking-wider text-slate-500 dark:text-slate-405 mb-2">
+                  Detalle de la Compra
+                </h4>
+                <div className="divide-y divide-slate-100 dark:divide-slate-800/60 border border-slate-100 dark:border-slate-800/65 rounded-xl overflow-hidden bg-white dark:bg-transparent">
+                  {completedOrder.items.map((item, idx) => (
+                    <div key={idx} className="flex justify-between items-center p-3 text-xs">
+                      <div className="max-w-[70%]">
+                        <p className="font-bold text-slate-800 dark:text-slate-200 line-clamp-1">
+                          {item.name}
+                        </p>
+                        <p className="text-[10px] text-slate-400 font-semibold mt-0.5">
+                          {item.quantity} x {item.price.toLocaleString("es-CL", { style: "currency", currency: "CLP", maximumFractionDigits: 0 })}
+                        </p>
+                      </div>
+                      <span className="font-extrabold text-slate-800 dark:text-slate-100 font-mono">
+                        {(item.quantity * item.price).toLocaleString("es-CL", { style: "currency", currency: "CLP", maximumFractionDigits: 0 })}
+                      </span>
+                    </div>
+                  ))}
+                  
+                  {/* Total */}
+                  <div className="flex justify-between items-center p-3.5 bg-slate-50 dark:bg-slate-900/30">
+                    <span className="font-black text-slate-900 dark:text-slate-100 uppercase tracking-wide">
+                      Total
+                    </span>
+                    <span className="text-base font-black text-primary font-mono">
+                      {completedOrder.total.toLocaleString("es-CL", { style: "currency", currency: "CLP", maximumFractionDigits: 0 })}
+                    </span>
+                  </div>
+                </div>
+              </div>
+              
+              <div className="rounded-lg bg-blue-50 dark:bg-blue-950/20 border border-blue-100 dark:border-blue-900/30 p-3 flex gap-2">
+                <AlertCircle className="w-4 h-4 text-blue-500 shrink-0 mt-0.5" />
+                <p className="text-[10px] text-blue-750 dark:text-blue-300 font-semibold leading-relaxed">
+                  Conserve el <strong>ID del Pedido</strong>. Le servirá próximamente para realizar el seguimiento en línea del despacho de su paquete.
+                </p>
+              </div>
+            </div>
+
+            {/* Footer */}
+            <div className="pt-4 border-t border-slate-100 dark:border-slate-800/80">
+              <button
+                type="button"
+                onClick={() => setCompletedOrder(null)}
+                className="w-full py-2.5 rounded-xl bg-slate-900 hover:bg-slate-850 dark:bg-primary dark:hover:bg-primary/95 text-white font-bold text-xs shadow-lg transition-all hover:scale-[1.01] active:scale-95 cursor-pointer text-center"
+              >
+                Entendido
+              </button>
+            </div>
+          </div>
+        </div>
       )}
 
       </div>

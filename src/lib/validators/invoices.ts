@@ -19,6 +19,10 @@ export const createInvoiceSchema = z.object({
   notes: z.string().optional().nullable(),
   taxRate: z.number().min(0).max(1).default(0.19),
   items: z.array(invoiceLineSchema).min(1, "Debes agregar al menos una linea."),
+  dteType: z.number().optional(),
+  referencedInvoiceId: z.string().uuid().optional().nullable(),
+  referenceCode: z.number().optional().nullable(),
+  referenceReason: z.string().optional().nullable(),
 });
 
 export const registerPaymentSchema = z.object({

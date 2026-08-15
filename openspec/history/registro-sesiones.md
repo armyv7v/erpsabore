@@ -132,3 +132,14 @@ Se transformaron los siguientes módulos de estáticos a **Client Components** c
 
 ### 5. Estado Actual y Trabajo Pendiente (En Progreso)
 - **Reportes Analíticos:** Capa de servicios y exportación a PDF/Excel de informes de ventas, inventario y cierres de caja (`src/app/actions/reports.ts` y `src/lib/utils/export-utils.ts` están listos localmente, pendientes de confirmar).
+
+---
+
+## Sesión: 8 de Julio, 2026
+
+### 1. Corrección de Documentos (Notas de Crédito DTE 61 / Notas de Débito DTE 56)
+- **Base de Datos:** Creadas nuevas columnas (`referenced_invoice_id`, `reference_code`, `reference_reason`) en `public.invoices`. Actualizado el RPC `create_draft_invoice_with_customer` para setear las referencias y generar prefijos de folios adecuados (`NC-`, `ND-`, `BL-`). Modificado el RPC `issue_invoice_secure` para deducir/incrementar automáticamente los saldos pendientes en `accounts_receivable` e inhabilitar balances para Notas de Crédito.
+- **Backend & DTE Engine:** Mapeo de referencias en `InvoiceRecord` y en el generador XML (`xml-builder.ts`), inyectando el bloque `<Referencia>` oficial exigido por el SII.
+- **Interfaz de Usuario (UI):** Añadido el botón "Corregir (NC)" en `BillingWorkspace.tsx`, implementado el modal premium `CorrectionModal.tsx` con soporte para anulación completa, corrección de texto y ajuste manual de montos/ítems (Código 3).
+- **PDF DTE:** Actualizado el visualizador del PDF oficial (`src/app/dte/pdf/[id]/page.tsx`) para soportar cabeceras de Notas de Crédito/Débito y renderizar un recuadro detallando el documento original referenciado y el motivo legal del reparo.
+- **Pruebas:** Cobertura de tests unitarios completa (Vitest, 31 passed).

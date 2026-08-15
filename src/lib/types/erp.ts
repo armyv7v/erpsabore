@@ -119,6 +119,12 @@ export interface InvoiceRecord {
   dtePdfUrl?: string | null;
   dteSiiMessage?: string | null;
   siiTrackId?: string | null;
+  referencedInvoiceId?: string | null;
+  referenceCode?: number | null;
+  referenceReason?: string | null;
+  referencedDteType?: number | null;
+  referencedFolio?: string | null;
+  referencedIssueDate?: string | null;
 }
 
 export interface AccountsReceivableRecord {
@@ -157,6 +163,10 @@ export interface CreateInvoiceInput {
   notes?: string | null;
   taxRate?: number;
   items: InvoiceLineInput[];
+  dteType?: number;
+  referencedInvoiceId?: string | null;
+  referenceCode?: number | null;
+  referenceReason?: string | null;
 }
 
 export interface IssueInvoiceResult {
@@ -228,6 +238,7 @@ export interface FinanceMetrics {
 export interface ActionState {
   status: "idle" | "success" | "error";
   message: string;
+  data?: any;
 }
 
 export interface HRAnnouncement {

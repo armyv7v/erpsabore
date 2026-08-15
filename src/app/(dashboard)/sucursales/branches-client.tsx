@@ -611,7 +611,7 @@ export default function BranchesClient({ branches }: Props) {
                   Configurar Sucursal: {editingBranch.name}
                 </h3>
                 <p className="text-xs text-slate-500 dark:text-slate-400">
-                  Modificá los detalles de la sucursal.
+                  Modifique los detalles de la sucursal.
                 </p>
               </div>
               <button

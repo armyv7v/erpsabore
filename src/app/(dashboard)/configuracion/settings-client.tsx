@@ -102,7 +102,7 @@ export default function SettingsClient({ initialDetails }: Props) {
         <div>
           <h1 className="text-2xl font-bold tracking-tight">Configuración de la Empresa</h1>
           <p className="text-sm text-slate-500 dark:text-slate-400">
-            Editá los datos comerciales y tributarios que aparecerán en la firma de tus DTEs y en las cabeceras de boletas y facturas.
+            Edite los datos comerciales y tributarios que aparecerán en la firma de sus DTEs y en las cabeceras de boletas y facturas.
           </p>
         </div>
         <button

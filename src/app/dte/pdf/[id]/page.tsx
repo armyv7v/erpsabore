@@ -32,6 +32,20 @@ export default async function DtePdfPage({ params }: PageProps) {
     return notFound();
   }
 
+  // Cargar documento referenciado si existe
+  let referencedInvoice = null;
+  if (invoice.referencedInvoiceId) {
+    try {
+      referencedInvoice = await getInvoiceById(
+        authContext.supabase,
+        authContext.user.tenantId,
+        invoice.referencedInvoiceId
+      );
+    } catch (e) {
+      console.error("[DTE PDF Page] Error al cargar factura referenciada:", e);
+    }
+  }
+
   // 3. Obtener los detalles tributarios del tenant de forma dinámica
   const tenantDetails = await getTenantDetails(authContext.supabase, authContext.user.tenantId);
 
@@ -99,7 +113,11 @@ export default async function DtePdfPage({ params }: PageProps) {
   const folioText = invoice.number.replace(/\D/g, "") || "4501";
   
   // Mapeamos el tipo de DTE a un texto comercial
-  const dteName = invoice.dteType === 33 ? "FACTURA ELECTRÓNICA" : "BOLETA ELECTRÓNICA";
+  const dteName = 
+    invoice.dteType === 61 ? "NOTA DE CRÉDITO ELECTRÓNICA" :
+    invoice.dteType === 56 ? "NOTA DE DÉBITO ELECTRÓNICA" :
+    invoice.dteType === 33 ? "FACTURA ELECTRÓNICA" :
+    "BOLETA ELECTRÓNICA";
 
   return (
     <main className="min-h-screen bg-slate-100 dark:bg-slate-950 py-8 px-4 print:py-0 print:px-0 print:bg-white print:dark:bg-white">
@@ -189,6 +207,37 @@ export default async function DtePdfPage({ params }: PageProps) {
           </div>
 
         </section>
+
+        {referencedInvoice && (
+          <section className="mt-4 bg-amber-50/40 dark:bg-amber-950/10 border border-amber-100 dark:border-amber-900/30 rounded-2xl p-6 text-xs flex flex-col gap-2">
+            <h2 className="font-bold uppercase tracking-wider text-amber-850 dark:text-amber-400">
+              Información de Referencia (Normativa SII):
+            </h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-slate-750 dark:text-slate-300">
+              <div>
+                <span className="font-semibold text-slate-900 dark:text-white">Documento Referenciado:</span>{" "}
+                {referencedInvoice.dteType === 33 ? "Factura Electrónica" : 
+                 referencedInvoice.dteType === 39 ? "Boleta Electrónica" : "Documento"} Nº {referencedInvoice.number.replace(/\D/g, "")}
+              </div>
+              <div>
+                <span className="font-semibold text-slate-900 dark:text-white">Fecha Documento:</span>{" "}
+                {referencedInvoice.issueDate}
+              </div>
+              <div>
+                <span className="font-semibold text-slate-900 dark:text-white">Tipo de Corrección:</span>{" "}
+                {invoice.referenceCode === 1 ? "Anula Documento de Referencia" :
+                 invoice.referenceCode === 2 ? "Corrige Texto Documento de Referencia" :
+                 invoice.referenceCode === 3 ? "Corrige Montos" : "Otro"} (Código {invoice.referenceCode})
+              </div>
+              {invoice.referenceReason && (
+                <div className="sm:col-span-2">
+                  <span className="font-semibold text-slate-900 dark:text-white">Motivo / Razón:</span>{" "}
+                  {invoice.referenceReason}
+                </div>
+              )}
+            </div>
+          </section>
+        )}
 
         {/* TABLA DE DETALLES (ÍTEMS) */}
         <section className="mt-8">

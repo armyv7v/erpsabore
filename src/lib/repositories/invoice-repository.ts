@@ -49,6 +49,9 @@ interface InvoiceTableRow {
   dte_pdf_url?: string | null;
   dte_sii_message?: string | null;
   sii_track_id?: string | null;
+  referenced_invoice_id?: string | null;
+  reference_code?: number | null;
+  reference_reason?: string | null;
 }
 
 interface InvoiceRow extends InvoiceTableRow {
@@ -124,11 +127,14 @@ function mapInvoice(row: InvoiceRow, outstandingBalance: number): InvoiceRecord 
     dtePdfUrl: row.dte_pdf_url,
     dteSiiMessage: row.dte_sii_message,
     siiTrackId: row.sii_track_id,
+    referencedInvoiceId: row.referenced_invoice_id,
+    referenceCode: row.reference_code,
+    referenceReason: row.reference_reason,
   };
 }
 
 const invoiceTableSelect =
-  "id, tenant_id, customer_id, number, issue_date, due_date, currency, notes, subtotal, tax, total, status, created_by, created_at, updated_at, dte_type, dte_status, dte_xml_url, dte_pdf_url, dte_sii_message, sii_track_id";
+  "id, tenant_id, customer_id, number, issue_date, due_date, currency, notes, subtotal, tax, total, status, created_by, created_at, updated_at, dte_type, dte_status, dte_xml_url, dte_pdf_url, dte_sii_message, sii_track_id, referenced_invoice_id, reference_code, reference_reason";
 
 async function loadInvoiceRow(
   supabase: SupabaseClient,
@@ -228,6 +234,7 @@ export interface ListInvoicesOptions {
   page?: number;
   /** Facturas por página. Default: 50. Máximo recomendado: 200. */
   pageSize?: number;
+  customerId?: string;
 }
 
 export interface PaginatedInvoices {
@@ -248,10 +255,16 @@ export async function listInvoices(
   const from = page * pageSize;
   const to = from + pageSize - 1;
 
-  const { data, error, count } = await supabase
+  let query = supabase
     .from("invoices")
     .select(invoiceTableSelect, { count: "exact" })
-    .eq("tenant_id", tenantId)
+    .eq("tenant_id", tenantId);
+
+  if (options.customerId) {
+    query = query.eq("customer_id", options.customerId);
+  }
+
+  const { data, error, count } = await query
     .order("created_at", { ascending: false })
     .range(from, to);
 
@@ -519,6 +532,7 @@ export async function createCashMovement(
     paymentMethod?: string | null;
     status: CashMovementStatus;
     createdBy: string;
+    taxAmount?: number;
   },
 ) {
   const { data, error } = await supabase
@@ -534,8 +548,9 @@ export async function createCashMovement(
       payment_method: input.paymentMethod ?? null,
       status: input.status,
       created_by: input.createdBy,
+      tax_amount: input.taxAmount ?? 0,
     })
-    .select("id, tenant_id, source_type, source_id, kind, amount, movement_date, reference, payment_method, status, created_at")
+    .select("id, tenant_id, source_type, source_id, kind, amount, movement_date, reference, payment_method, status, created_at, tax_amount")
     .single();
 
   if (error) {
@@ -594,6 +609,10 @@ export async function createDraftInvoiceWithCustomerRpc(
       qty: number;
       unitPrice: number;
     }>;
+    dteType?: number;
+    referencedInvoiceId?: string | null;
+    referenceCode?: number | null;
+    referenceReason?: string | null;
   },
 ) {
   const { data, error } = await supabase.rpc("create_draft_invoice_with_customer", {
@@ -606,6 +625,10 @@ export async function createDraftInvoiceWithCustomerRpc(
     invoice_notes: input.notes ?? null,
     invoice_tax_rate: input.taxRate,
     invoice_items: input.items,
+    invoice_dte_type: input.dteType ?? 33,
+    ref_invoice_id: input.referencedInvoiceId ?? null,
+    ref_code: input.referenceCode ?? null,
+    ref_reason: input.referenceReason ?? null,
   });
 
   if (error || !data) {
@@ -643,6 +666,9 @@ export async function issueInvoiceRpc(
         tax,
         total,
         dte_type,
+        referenced_invoice_id,
+        reference_code,
+        reference_reason,
         customers (
           name,
           rut,
@@ -684,6 +710,23 @@ export async function issueInvoiceRpc(
         email: typedInv.customers?.email || null
       };
 
+      // Resolución de referencia si existe
+      let referencedInvoiceDetails = null;
+      if (typedInv.referenced_invoice_id) {
+        const { data: refInv } = await supabase
+          .from("invoices")
+          .select("dte_type, number, issue_date")
+          .eq("id", typedInv.referenced_invoice_id)
+          .maybeSingle();
+        if (refInv) {
+          referencedInvoiceDetails = {
+            dteType: refInv.dte_type,
+            folio: refInv.number.replace(/\D/g, ""),
+            issueDate: refInv.issue_date
+          };
+        }
+      }
+
       // Instanciar adaptador e iniciar flujo
       const dteAdapter = new LocalDteAdapter();
       
@@ -703,7 +746,11 @@ export async function issueInvoiceRpc(
           tax: Number(typedInv.tax),
           total: Number(typedInv.total),
           dte_type: typedInv.dte_type,
-          tenantId: typedInv.tenant_id
+          tenantId: typedInv.tenant_id,
+          referencedInvoiceId: typedInv.referenced_invoice_id,
+          referenceCode: typedInv.reference_code,
+          referenceReason: typedInv.reference_reason,
+          referencedInvoiceDetails: referencedInvoiceDetails
         },
         dteItems,
         dteCustomer,
@@ -786,12 +833,19 @@ export interface BillingTotals {
 export async function getGlobalInvoicesStats(
   supabase: SupabaseClient,
   tenantId: string,
+  customerId?: string,
 ) {
+  let invoicesQuery = supabase
+    .from("invoices")
+    .select("id, total, status")
+    .eq("tenant_id", tenantId);
+
+  if (customerId) {
+    invoicesQuery = invoicesQuery.eq("customer_id", customerId);
+  }
+
   const [invoicesRes, receivablesRes] = await Promise.all([
-    supabase
-      .from("invoices")
-      .select("id, total, status")
-      .eq("tenant_id", tenantId),
+    invoicesQuery,
     supabase
       .from("accounts_receivable")
       .select("invoice_id, balance")

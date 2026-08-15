@@ -24,6 +24,7 @@ interface Props {
   onClose: () => void;
   onAddToCart?: () => void; // Si se provee, muestra botón de añadir (Catálogo)
   onEdit?: () => void; // Si se provee, muestra botón de editar (Inventario)
+  showCostPrice?: boolean;
 }
 
 function formatCLP(value: number) {
@@ -43,7 +44,7 @@ function getStockStatusDetails(product: GeneralProduct) {
   return { label: "Normal", colorClass: "text-green-500 bg-green-500/10 border-green-500/20", levelPercent: Math.min(100, Math.round((stock / (min * 5)) * 100)) };
 }
 
-export default function ProductDetailsModal({ product, onClose, onAddToCart, onEdit }: Props) {
+export default function ProductDetailsModal({ product, onClose, onAddToCart, onEdit, showCostPrice = false }: Props) {
   const [isLightboxOpen, setIsLightboxOpen] = useState(false);
 
   const { label: stockLabel, colorClass: stockBadgeClass, levelPercent } = getStockStatusDetails(product);
@@ -132,7 +133,7 @@ export default function ProductDetailsModal({ product, onClose, onAddToCart, onE
               </h2>
 
               {/* Precios */}
-              <div className="py-2.5 border-y border-slate-100 dark:border-slate-800/80 grid grid-cols-2 gap-4">
+              <div className={`py-2.5 border-y border-slate-100 dark:border-slate-800/80 grid gap-4 ${showCostPrice ? "grid-cols-2" : "grid-cols-1"}`}>
                 <div>
                   <p className="text-[10px] text-slate-405 dark:text-slate-400 uppercase font-extrabold tracking-wider">Precio de Venta</p>
                   <p className="text-xl font-black text-primary mt-0.5">
@@ -140,13 +141,15 @@ export default function ProductDetailsModal({ product, onClose, onAddToCart, onE
                     <span className="text-[10px] text-slate-400 font-bold uppercase"> CLP</span>
                   </p>
                 </div>
-                <div>
-                  <p className="text-[10px] text-slate-405 dark:text-slate-400 uppercase font-extrabold tracking-wider">Precio de Costo</p>
-                  <p className="text-xl font-black text-slate-700 dark:text-slate-200 mt-0.5">
-                    {product.costPrice !== undefined && product.costPrice !== null ? formatCLP(product.costPrice) : "$0"}
-                    <span className="text-[10px] text-slate-400 font-bold uppercase"> CLP</span>
-                  </p>
-                </div>
+                {showCostPrice && (
+                  <div>
+                    <p className="text-[10px] text-slate-405 dark:text-slate-400 uppercase font-extrabold tracking-wider">Precio de Costo</p>
+                    <p className="text-xl font-black text-slate-700 dark:text-slate-200 mt-0.5">
+                      {product.costPrice !== undefined && product.costPrice !== null ? formatCLP(product.costPrice) : "$0"}
+                      <span className="text-[10px] text-slate-400 font-bold uppercase"> CLP</span>
+                    </p>
+                  </div>
+                )}
               </div>
 
               {/* Stock info */}

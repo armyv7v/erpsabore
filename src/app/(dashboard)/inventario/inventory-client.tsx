@@ -1074,7 +1074,7 @@ export default function InventoryClient({ products, summary }: Props) {
                       +
                     </button>
                     <div className="text-[11px] text-slate-500 leading-tight">
-                      Ajustá las unidades de stock sumando o restando de forma rápida.
+                      Ajuste las unidades de stock sumando o restando de forma rápida.
                     </div>
                   </div>
                 </div>
@@ -1228,6 +1228,7 @@ export default function InventoryClient({ products, summary }: Props) {
           }}
           onClose={() => setDetailsProduct(null)}
           onEdit={() => setEditingProduct(detailsProduct)}
+          showCostPrice={true}
         />
       )}
 

@@ -48,7 +48,7 @@ export default function Navbar({ user, onMenuClick }: NavbarProps) {
     },
   ];
 
-  const [notifications, setNotifications] = useState<NotificationItem[]>(DEFAULT_NOTIFICATIONS);
+  const [notifications, setNotifications] = useState<NotificationItem[]>([]);
   const [isLoaded, setIsLoaded] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   
@@ -58,8 +58,10 @@ export default function Navbar({ user, onMenuClick }: NavbarProps) {
       try {
         setNotifications(JSON.parse(saved));
       } catch (e) {
-        // ignore
+        setNotifications(DEFAULT_NOTIFICATIONS);
       }
+    } else {
+      setNotifications(DEFAULT_NOTIFICATIONS);
     }
     setIsLoaded(true);
   }, []);
@@ -224,7 +226,7 @@ export default function Navbar({ user, onMenuClick }: NavbarProps) {
                                 e.stopPropagation();
                                 deleteNotification(notification.id);
                               }}
-                              className="opacity-0 group-hover:opacity-100 text-slate-400 hover:text-rose-500 transition-all p-0.5 rounded hover:bg-slate-100 dark:hover:bg-slate-800"
+                              className="opacity-60 md:opacity-0 group-hover:opacity-100 text-slate-400 hover:text-rose-500 transition-all p-0.5 rounded hover:bg-slate-100 dark:hover:bg-slate-800"
                               title="Eliminar notificación"
                             >
                               <Trash2 className="w-3.5 h-3.5" />

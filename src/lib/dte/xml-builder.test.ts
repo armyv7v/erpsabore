@@ -82,4 +82,25 @@ describe("XML Builder (DTE)", () => {
     expect(xml).toContain('<RznSocRecep>Cliente &quot;Final&quot; S.A.</RznSocRecep>');
     expect(xml).toContain('<NmbItem>Servicio de Consultoría &lt;Especial&gt; &amp; Soporte</NmbItem>');
   });
+
+  it("debería inyectar la sección de Referencia para Notas de Crédito", () => {
+    const correctionInvoice: InvoiceRecord = {
+      ...mockInvoice,
+      dteType: 61,
+      referencedInvoiceId: "inv-orig-id",
+      referenceCode: 1,
+      referenceReason: "Anulación de factura por error",
+      referencedDteType: 33,
+      referencedFolio: "1025",
+      referencedIssueDate: "2026-05-20"
+    };
+
+    const xml = buildDteXml(correctionInvoice, mockCompany);
+
+    expect(xml).toContain('<Referencia>');
+    expect(xml).toContain('<TpoDocRef>33</TpoDocRef>');
+    expect(xml).toContain('<FolioRef>1025</FolioRef>');
+    expect(xml).toContain('<CodRef>1</CodRef>');
+    expect(xml).toContain('<RazonRef>Anulación de factura por error</RazonRef>');
+  });
 });

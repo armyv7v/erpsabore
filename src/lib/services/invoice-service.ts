@@ -88,10 +88,12 @@ export async function getSalesWorkspace(
   const supabase = supabaseClient ?? await createAuthenticatedSupabaseClient();
   const repoPage = page - 1;
 
+  const customerIdFilter = user.role === "cliente" ? (user.customerId ?? undefined) : undefined;
+
   const [{ invoices, totalCount, pageCount }, customers, stats] = await Promise.all([
-    listInvoices(supabase, user.tenantId, { page: repoPage, pageSize }),
+    listInvoices(supabase, user.tenantId, { page: repoPage, pageSize, customerId: customerIdFilter }),
     listCustomers(supabase, user.tenantId),
-    getGlobalInvoicesStats(supabase, user.tenantId),
+    getGlobalInvoicesStats(supabase, user.tenantId, customerIdFilter),
   ]);
 
   return {
@@ -168,9 +170,11 @@ export async function createDraftInvoice(
       qty: item.qty,
       unitPrice: item.unitPrice,
     })),
+    dteType: parsedInput.dteType,
+    referencedInvoiceId: parsedInput.referencedInvoiceId,
+    referenceCode: parsedInput.referenceCode,
+    referenceReason: parsedInput.referenceReason,
   });
-
-
 
   return invoiceId;
 }

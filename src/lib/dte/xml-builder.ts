@@ -98,10 +98,24 @@ export function buildDteXml(
     .map((item, index) => buildDetalleXml(item, index + 1))
     .join("");
 
+  let referenciaXml = "";
+  if (invoice.referencedDteType && invoice.referencedFolio && invoice.referenceCode) {
+    const razon = invoice.referenceReason 
+      ? `\n      <RazonRef>${escapeXml(truncate(invoice.referenceReason, 90))}</RazonRef>` 
+      : "";
+    referenciaXml = `\n    <Referencia>
+      <NroLinRef>1</NroLinRef>
+      <TpoDocRef>${invoice.referencedDteType}</TpoDocRef>
+      <FolioRef>${invoice.referencedFolio.replace(/\D/g, "")}</FolioRef>
+      <FchRef>${invoice.referencedIssueDate || invoice.issueDate}</FchRef>
+      <CodRef>${invoice.referenceCode}</CodRef>${razon}
+    </Referencia>`;
+  }
+
   const documento = `
   <Documento ID="${documentId}">
     <Encabezado>${idDoc}${emisor}${receptor}${totales}
-    </Encabezado>${detalles}
+    </Encabezado>${detalles}${referenciaXml}
   </Documento>`;
 
   const xmlBody = `

@@ -443,7 +443,7 @@ export default function NominaClient({ initialEmployees }: { initialEmployees: E
           <div className="px-6 py-4 border-b border-slate-100 dark:border-slate-800 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 bg-slate-50/50 dark:bg-slate-900/50">
             <div>
               <h3 className="font-bold text-lg text-slate-900 dark:text-white">Detalle de Empleados</h3>
-              <p className="text-xs text-slate-500 dark:text-slate-400">Modificá salarios imponibles, pagá o visualizá comprobantes de sueldo</p>
+              <p className="text-xs text-slate-500 dark:text-slate-400">Modifique salarios imponibles, pague o visualice comprobantes de sueldo</p>
             </div>
             
             <button 
@@ -465,7 +465,7 @@ export default function NominaClient({ initialEmployees }: { initialEmployees: E
               <div className="text-center py-16 space-y-3">
                 <Receipt className="w-12 h-12 text-slate-350 dark:text-slate-600 mx-auto animate-pulse" />
                 <p className="text-sm font-bold text-slate-850 dark:text-slate-200">No hay empleados registrados en el sistema.</p>
-                <p className="text-xs text-slate-500">Agregá nuevos empleados en la sección correspondiente para verlos en la nómina.</p>
+                <p className="text-xs text-slate-500">Agregue nuevos empleados en la sección correspondiente para verlos en la nómina.</p>
               </div>
             ) : (
               <table className="w-full text-left border-collapse">
