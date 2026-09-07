@@ -103,9 +103,9 @@ export default function QuotesWorkspace({ quotes }: { quotes: QuoteRecord[] }) {
                   <td className="px-4 py-3 text-sm">{statusLabel(quote.status)}</td>
                   <td className="px-4 py-3">
                     <div className="flex items-center gap-3">
-                      <button type="button" onClick={() => updateStatus(quote.id, "approved")} className="text-sm font-bold text-emerald-600 hover:underline" disabled={isPending}>Aprobar</button>
-                      <button type="button" onClick={() => updateStatus(quote.id, "rejected")} className="text-sm font-bold text-rose-600 hover:underline" disabled={isPending}>Rechazar</button>
-                      <button type="button" onClick={() => sendToSales(quote)} className="text-sm font-bold text-primary hover:underline" disabled={isPending || quote.status === "rejected"}>
+                      <button type="button" onClick={() => updateStatus(quote.id, "approved")} className="inline-flex min-h-[44px] items-center rounded-lg px-3 py-2 text-sm font-bold text-emerald-700 hover:bg-emerald-50 disabled:cursor-not-allowed disabled:opacity-50 dark:text-emerald-400 dark:hover:bg-emerald-950/30" disabled={isPending}>Aprobar</button>
+                      <button type="button" onClick={() => updateStatus(quote.id, "rejected")} className="inline-flex min-h-[44px] items-center rounded-lg border border-red-200 px-3 py-2 text-sm font-bold text-red-600 hover:bg-red-50 disabled:cursor-not-allowed disabled:opacity-50 dark:border-red-900/40 dark:text-red-400 dark:hover:bg-red-950/20" disabled={isPending}>Rechazar</button>
+                      <button type="button" onClick={() => sendToSales(quote)} className="inline-flex min-h-[44px] items-center rounded-lg bg-primary px-3 py-2 text-sm font-bold text-white hover:bg-primary/90 disabled:cursor-not-allowed disabled:opacity-50" disabled={isPending || quote.status === "rejected"}>
                         <Send className="mr-1 inline h-4 w-4" />Pasar a ventas
                       </button>
                     </div>

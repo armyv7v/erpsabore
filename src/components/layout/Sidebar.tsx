@@ -41,7 +41,7 @@ export default function Sidebar({ user, mode = "desktop", onNavigate }: SidebarP
             type="button"
             aria-label="Cerrar menu lateral"
             onClick={onNavigate}
-            className="rounded-xl p-2 text-slate-500 transition-colors hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800"
+            className="flex min-h-[44px] min-w-[44px] items-center justify-center rounded-xl text-slate-500 transition-colors hover:bg-slate-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary dark:text-slate-300 dark:hover:bg-slate-800"
           >
             <X className="h-5 w-5" />
           </button>
