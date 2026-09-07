@@ -1,8 +1,13 @@
 "use server";
 
 import { redirect } from "next/navigation";
-import { loginSchema, registerSchema } from "@/lib/validators/auth";
-import { signInWithPassword, signOutCurrentUser } from "@/lib/services/auth-service";
+import { forgotPasswordSchema, loginSchema, registerSchema, updatePasswordSchema } from "@/lib/validators/auth";
+import {
+  requestPasswordReset,
+  signInWithPassword,
+  signOutCurrentUser,
+  updateRecoveryPassword,
+} from "@/lib/services/auth-service";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import type { ActionState } from "@/lib/types/erp";
 
@@ -155,4 +160,52 @@ export async function registerClientAction(
 export async function logoutAction() {
   await signOutCurrentUser();
   redirect("/login");
+}
+
+export async function requestPasswordResetAction(
+  _previousState: ActionState,
+  formData: FormData,
+): Promise<ActionState> {
+  try {
+    const data = forgotPasswordSchema.parse({
+      email: formData.get("email"),
+    });
+
+    await requestPasswordReset(data.email);
+  } catch (error) {
+    return {
+      status: "error",
+      message: error instanceof Error ? error.message : "No se pudo enviar el enlace de recuperación.",
+    };
+  }
+
+  return {
+    status: "success",
+    message:
+      "Si existe una cuenta con ese correo, enviamos un enlace para restablecer tu contraseña. Revisá tu bandeja de entrada y spam.",
+  };
+}
+
+export async function updatePasswordAction(
+  _previousState: ActionState,
+  formData: FormData,
+): Promise<ActionState> {
+  try {
+    const data = updatePasswordSchema.parse({
+      password: formData.get("password"),
+      confirm: formData.get("confirm"),
+    });
+
+    await updateRecoveryPassword(data.password);
+  } catch (error) {
+    return {
+      status: "error",
+      message: error instanceof Error ? error.message : "No se pudo actualizar la contraseña.",
+    };
+  }
+
+  return {
+    status: "success",
+    message: "Contraseña actualizada. Ya podés iniciar sesión con tu nueva clave.",
+  };
 }

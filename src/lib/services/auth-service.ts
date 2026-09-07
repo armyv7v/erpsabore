@@ -108,3 +108,54 @@ export async function signOutCurrentUser() {
   const supabase = await createSupabaseServerClient();
   await supabase.auth.signOut();
 }
+
+function resolveRecoveryRedirectTo(): string {
+  const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? process.env.APP_URL;
+
+  if (!appUrl) {
+    throw new Error(
+      "Recuperación no disponible: falta DEP-01 — registra `{APP_URL}/auth/callback` en la allowlist de redirects de Supabase Auth y define NEXT_PUBLIC_APP_URL.",
+    );
+  }
+
+  return `${appUrl.replace(/\/$/, "")}/auth/callback?next=/update-password`;
+}
+
+export async function requestPasswordReset(email: string) {
+  if (!isSupabaseConfigured()) {
+    throw new Error(
+      "Recuperación no disponible: falta DEP-02 — Supabase/SMTP no está configurado en este entorno y el enlace no se puede enviar.",
+    );
+  }
+
+  const redirectTo = resolveRecoveryRedirectTo();
+  const supabase = await createSupabaseServerClient();
+  const { error } = await supabase.auth.resetPasswordForEmail(email, { redirectTo });
+
+  if (error) {
+    throw new Error(error.message);
+  }
+}
+
+export async function updateRecoveryPassword(password: string) {
+  if (!isSupabaseConfigured()) {
+    throw new Error(
+      "Cambio de contraseña no disponible: Supabase no está configurado en este entorno.",
+    );
+  }
+
+  const supabase = await createSupabaseServerClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) {
+    throw new Error("El enlace expiró o es inválido. Solicitá un nuevo enlace de recuperación.");
+  }
+
+  const { error } = await supabase.auth.updateUser({ password });
+
+  if (error) {
+    throw new Error(error.message);
+  }
+}

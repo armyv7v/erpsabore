@@ -80,6 +80,14 @@ export async function GET(request: Request) {
 
       return NextResponse.redirect(`${origin}${next}`);
     }
+
+    if (next.startsWith("/update-password")) {
+      return NextResponse.redirect(`${origin}/update-password?error=expired`);
+    }
+  }
+
+  if (next.startsWith("/update-password")) {
+    return NextResponse.redirect(`${origin}/update-password?error=expired`);
   }
 
   return NextResponse.redirect(`${origin}/login?error=auth-callback-failed`);
