@@ -97,6 +97,9 @@ export default async function DashboardPage() {
               <div className="p-12 text-center text-slate-400">
                 <p className="font-semibold text-slate-600 dark:text-slate-350">Aún no registra compras en nuestro sistema.</p>
                 <p className="text-xs text-slate-400 mt-1">Le invitamos a revisar nuestro catálogo de productos.</p>
+                <Link href="/catalogo" className="mt-6 inline-flex min-h-[44px] items-center justify-center rounded-xl bg-primary px-6 py-2.5 text-sm font-bold text-white transition-colors hover:bg-primary/90">
+                  Explorar catálogo
+                </Link>
               </div>
             )}
           </div>

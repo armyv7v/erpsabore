@@ -1,7 +1,9 @@
 import type { LucideIcon } from "lucide-react";
 import {
   ArrowRightLeft,
+  Banknote,
   Briefcase,
+  Building2,
   FileText,
   Grid2X2,
   LayoutDashboard,
@@ -44,7 +46,6 @@ export const navigationSections: NavigationSection[] = [
       { href: "/cotizaciones", label: "Cotizaciones", icon: FileText, roles: ["admin", "ventas"] },
       { href: "/inventario", label: "Inventario", icon: Package, roles: ["admin", "bodega"] },
       { href: "/catalogo", label: "Catálogo", icon: Grid2X2, roles: ["admin", "ventas", "bodega", "cliente"] },
-      { href: "/crm", label: "CRM", icon: Users, roles: ["admin", "ventas"] },
       { href: "/reportes", label: "Reportes", icon: TrendingUp, roles: ["admin", "ventas", "finanzas", "bodega", "rrhh"] },
     ],
   },
@@ -53,12 +54,13 @@ export const navigationSections: NavigationSection[] = [
     items: [
       { href: "/proveedores", label: "Proveedores", icon: Truck, roles: ["admin", "finanzas", "bodega"] },
       { href: "/despachos", label: "Despachos", icon: PackageOpen, roles: ["admin", "ventas", "bodega", "cliente"] },
+      { href: "/crm", label: "CRM", icon: Users, roles: ["admin", "ventas"] },
     ],
   },
   {
     label: "Finanzas",
     items: [
-      { href: "/facturacion", label: "Facturación", icon: FileText, roles: ["admin", "ventas", "finanzas"] },
+      { href: "/facturacion", label: "Facturación", icon: Receipt, roles: ["admin", "ventas", "finanzas"] },
       { href: "/finanzas/flujo-caja", label: "Flujo de Caja", icon: LineChart, roles: ["admin", "finanzas"] },
       { href: "/finanzas/conciliacion", label: "Conciliación", icon: ArrowRightLeft, roles: ["admin", "finanzas"] },
       { href: "/finanzas/estado-resultados", label: "Estado de Resultados", icon: PieChart, roles: ["admin", "finanzas"] },
@@ -69,14 +71,14 @@ export const navigationSections: NavigationSection[] = [
     label: "Recursos Humanos",
     items: [
       { href: "/empleados", label: "Empleados", icon: Briefcase, roles: ["admin", "rrhh"] },
-      { href: "/rrhh/nomina", label: "Nómina", icon: Receipt, roles: ["admin", "rrhh", "finanzas"] },
+      { href: "/rrhh/nomina", label: "Nómina", icon: Banknote, roles: ["admin", "rrhh", "finanzas"] },
       { href: "/rrhh/portal", label: "Portal Empleado", icon: UserCircle, roles: ["admin", "rrhh"] },
     ],
   },
   {
     label: "Administración",
     items: [
-      { href: "/sucursales", label: "Sucursales", icon: Store, roles: ["admin"] },
+      { href: "/sucursales", label: "Sucursales", icon: Building2, roles: ["admin"] },
       { href: "/usuarios", label: "Usuarios", icon: UserCog, roles: ["admin"] },
       { href: "/configuracion", label: "Configuración Empresa", icon: Settings, roles: ["admin"] },
     ],
@@ -87,6 +89,6 @@ export const mobileNavigation = [
   { href: "/", label: "Inicio", icon: LayoutDashboard, roles: ["admin", "ventas", "finanzas", "bodega", "rrhh", "cliente"] },
   { href: "/pos", label: "POS", icon: Store, roles: ["admin", "ventas"] },
   { href: "/ventas", label: "Ventas", icon: Wallet, roles: ["admin", "ventas", "finanzas", "cliente"] },
-  { href: "/facturacion", label: "Facturas", icon: FileText, roles: ["admin", "ventas", "finanzas"] },
+  { href: "/facturacion", label: "Facturas", icon: Receipt, roles: ["admin", "ventas", "finanzas"] },
   { href: "/inventario", label: "Inventario", icon: Package, roles: ["admin", "bodega"] },
 ];
