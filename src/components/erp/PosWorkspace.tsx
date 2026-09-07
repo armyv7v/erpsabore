@@ -1394,9 +1394,9 @@ export default function PosWorkspace({ products: initialProducts, branches }: Po
                       <span>por página</span>
                     </div>
                     <div className="flex items-center gap-2">
-                      <button onClick={() => setHistoryPage(p => Math.max(1, p - 1))} disabled={historyPage === 1} className="p-1 border border-slate-200 dark:border-slate-700 rounded hover:bg-slate-100 disabled:opacity-50"><ChevronLeft className="w-4 h-4"/></button>
+                      <button type="button" onClick={() => setHistoryPage(p => Math.max(1, p - 1))} disabled={historyPage === 1} aria-label="Página anterior del historial" className="flex min-h-[44px] min-w-[44px] items-center justify-center border border-slate-200 dark:border-slate-700 rounded hover:bg-slate-100 disabled:opacity-50 disabled:cursor-not-allowed"><ChevronLeft className="w-4 h-4"/></button>
                       <span className="font-bold text-slate-600 dark:text-slate-300">Pág {historyPage}</span>
-                      <button onClick={() => setHistoryPage(p => p + 1)} disabled={shiftSales.length <= historyPage * historyPageSize} className="p-1 border border-slate-200 dark:border-slate-700 rounded hover:bg-slate-100 disabled:opacity-50"><ChevronRight className="w-4 h-4"/></button>
+                      <button type="button" onClick={() => setHistoryPage(p => p + 1)} disabled={shiftSales.length <= historyPage * historyPageSize} aria-label="Página siguiente del historial" className="flex min-h-[44px] min-w-[44px] items-center justify-center border border-slate-200 dark:border-slate-700 rounded hover:bg-slate-100 disabled:opacity-50 disabled:cursor-not-allowed"><ChevronRight className="w-4 h-4"/></button>
                     </div>
                   </div>
                 </div>
