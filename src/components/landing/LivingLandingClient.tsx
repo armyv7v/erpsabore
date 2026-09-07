@@ -322,7 +322,7 @@ export default function LivingLandingClient() {
               {/* Forgot password */}
               <div className="mt-4 text-center">
                 <Link
-                  href="#"
+                  href="/forgot-password"
                   onClick={() => sound.playClick(400)}
                   className="text-[rgba(248,246,246,0.35)] hover:text-primary text-xs transition-colors"
                 >
