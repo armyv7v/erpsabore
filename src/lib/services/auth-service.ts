@@ -121,6 +121,10 @@ function resolveRecoveryRedirectTo(): string {
   return `${appUrl.replace(/\/$/, "")}/auth/callback?next=/update-password`;
 }
 
+// REQ-AR-03 (PR4): envío real vía Supabase Auth `resetPasswordForEmail` con
+// `redirectTo` a `…/auth/callback?next=/update-password` (ver `route.ts`).
+// DEP-02 (SMTP) sigue PENDIENTE por decisión explícita del usuario: sin
+// DEP-01/DEP-02 el flujo responde error nombrando la dependencia, no envía nada.
 export async function requestPasswordReset(email: string) {
   if (!isSupabaseConfigured()) {
     throw new Error(
@@ -140,7 +144,7 @@ export async function requestPasswordReset(email: string) {
 export async function updateRecoveryPassword(password: string) {
   if (!isSupabaseConfigured()) {
     throw new Error(
-      "Cambio de contraseña no disponible: Supabase no está configurado en este entorno.",
+      "Cambio de contraseña no disponible: falta DEP-02 — Supabase/SMTP no está configurado en este entorno.",
     );
   }
 
