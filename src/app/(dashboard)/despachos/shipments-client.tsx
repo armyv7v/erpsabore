@@ -4,8 +4,6 @@ import React, { useState, useMemo, useTransition } from "react";
 import {
   Truck,
   Search,
-  Filter,
-  CalendarDays,
   PackageOpen,
   Package,
   CheckCircle2,
@@ -15,7 +13,6 @@ import {
   Flag,
   Map,
   MoreVertical,
-  Receipt,
   Clock,
   X,
   Loader2,
@@ -184,16 +181,6 @@ export default function ShipmentsClient({ shipments, userRole }: Props) {
               />
             </div>
           </div>
-          <div className="flex gap-2">
-            <button className="flex h-12 items-center justify-center gap-2 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 px-4 hover:border-primary transition-all">
-              <Filter className="w-5 h-5 text-primary" />
-              <span className="font-medium hidden sm:inline">Filtros</span>
-            </button>
-            <button className="flex h-12 items-center justify-center gap-2 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 px-4 hover:border-primary transition-all">
-              <CalendarDays className="w-5 h-5 text-primary" />
-              <span className="font-medium hidden sm:inline">Fecha</span>
-            </button>
-          </div>
         </div>
 
         {/* Status chips */}
@@ -341,10 +328,7 @@ export default function ShipmentsClient({ shipments, userRole }: Props) {
 
                       <div className="flex gap-1.5 shrink-0">
                         {shipment.status === "delivered" ? (
-                          <button className="flex items-center gap-1 text-primary text-[11px] font-bold hover:underline py-1">
-                            <Receipt className="w-3.5 h-3.5" />
-                            <span>POD</span>
-                          </button>
+                          null
                         ) : shipment.status === "failed" ? (
                           userRole !== "cliente" ? (
                             <button

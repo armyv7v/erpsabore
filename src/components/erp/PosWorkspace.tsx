@@ -5,7 +5,7 @@ import Link from "next/link";
 import { 
   Search, ShoppingCart, CreditCard, Banknote, Landmark, Smartphone, 
   Trash2, User, FileText, ShoppingBag, Plus, Minus, Send, Copy, Clipboard, Check, X, RefreshCw,
-  MapPin, ArrowUpDown, Filter, ChevronLeft, ChevronRight, FileSpreadsheet, Printer, History
+  ArrowUpDown, Filter, ChevronLeft, ChevronRight, FileSpreadsheet, Printer, History
 } from "lucide-react";
 import { submitPosSaleAction, syncDatabaseProductImagesAction } from "@/app/actions/pos";
 import { getActiveShiftAction, openShiftAction, getShiftExpectedTotalsAction, closeShiftAction } from "@/app/actions/shifts";
@@ -89,10 +89,8 @@ export default function PosWorkspace({ products: initialProducts, branches }: Po
   // Estados de Filtros Avanzados
   const [stockFilter, setStockFilter] = useState<"all" | "critical" | "out_of_stock">("all");
   const [activeCategory, setActiveCategory] = useState("Todos");
-  const [activeBranch, setActiveBranch] = useState("Todos");
   const [sortBy, setSortBy] = useState("name-asc");
   const [isCategoryDropdownOpen, setIsCategoryDropdownOpen] = useState(false);
-  const [isBranchDropdownOpen, setIsBranchDropdownOpen] = useState(false);
   const [isSortDropdownOpen, setIsSortDropdownOpen] = useState(false);
 
   // Infinite Scroll State
@@ -135,11 +133,6 @@ export default function PosWorkspace({ products: initialProducts, branches }: Po
     ].sort();
     return ["Todos", ...unique];
   }, [productsWithCategories]);
-
-  // Obtener sucursales/almacenes dinámicamente
-  const branchOptions = useMemo(() => {
-    return ["Todos", ...branches.map((b) => b.name)];
-  }, [branches]);
 
   const sortOptions = [
     { value: "name-asc", label: "A-Z" },
@@ -999,7 +992,6 @@ export default function PosWorkspace({ products: initialProducts, branches }: Po
                     type="button"
                     onClick={() => {
                       setIsCategoryDropdownOpen(!isCategoryDropdownOpen);
-                      setIsBranchDropdownOpen(false);
                       setIsSortDropdownOpen(false);
                     }}
                     className="flex items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-2.5 py-1.5 text-[11px] font-bold text-slate-700 dark:border-slate-850 dark:bg-slate-950 dark:text-slate-200 hover:border-primary transition-all active:scale-95 cursor-pointer shadow-sm"
@@ -1033,46 +1025,6 @@ export default function PosWorkspace({ products: initialProducts, branches }: Po
                   )}
                 </div>
 
-                {/* Dropdown Almacén */}
-                <div className="relative">
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setIsBranchDropdownOpen(!isBranchDropdownOpen);
-                      setIsCategoryDropdownOpen(false);
-                      setIsSortDropdownOpen(false);
-                    }}
-                    className="flex items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-2.5 py-1.5 text-[11px] font-bold text-slate-700 dark:border-slate-850 dark:bg-slate-950 dark:text-slate-200 hover:border-primary transition-all active:scale-95 cursor-pointer shadow-sm"
-                  >
-                    <MapPin className="w-3 h-3 text-slate-400" />
-                    <span>Almacén: <strong>{activeBranch}</strong></span>
-                  </button>
-                  {isBranchDropdownOpen && (
-                    <>
-                      <div className="fixed inset-0 z-10" onClick={() => setIsBranchDropdownOpen(false)} />
-                      <div className="absolute left-0 mt-1 w-52 rounded-xl border border-slate-200 bg-white p-1 shadow-xl dark:border-slate-800 dark:bg-slate-950 z-20 animate-in slide-in-from-top-1 duration-150">
-                        {branchOptions.map((branchName) => (
-                          <button
-                            key={branchName}
-                            type="button"
-                            onClick={() => {
-                              setActiveBranch(branchName);
-                              setIsBranchDropdownOpen(false);
-                            }}
-                            className={`w-full text-left rounded-lg px-2 py-1.5 text-[11px] font-semibold transition-colors cursor-pointer ${
-                              activeBranch === branchName
-                                ? "bg-primary text-white"
-                                : "text-slate-600 hover:bg-slate-50 dark:text-slate-350 dark:hover:bg-slate-900"
-                            }`}
-                          >
-                            {branchName}
-                          </button>
-                        ))}
-                      </div>
-                    </>
-                  )}
-                </div>
-
                 {/* Dropdown Ordenar por */}
                 <div className="relative">
                   <button
@@ -1080,7 +1032,6 @@ export default function PosWorkspace({ products: initialProducts, branches }: Po
                     onClick={() => {
                       setIsSortDropdownOpen(!isSortDropdownOpen);
                       setIsCategoryDropdownOpen(false);
-                      setIsBranchDropdownOpen(false);
                     }}
                     className="flex items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-2.5 py-1.5 text-[11px] font-bold text-slate-700 dark:border-slate-850 dark:bg-slate-950 dark:text-slate-200 hover:border-primary transition-all active:scale-95 cursor-pointer shadow-sm"
                   >
@@ -1933,10 +1884,11 @@ export default function PosWorkspace({ products: initialProducts, branches }: Po
               <button
                 type="button"
                 onClick={executeProcessSale}
-                className="px-6 py-2.5 rounded-xl bg-orange-600 hover:bg-orange-700 text-white font-extrabold text-xs flex items-center gap-1.5 transition-colors shadow-md shadow-orange-600/10 active:scale-[0.98]"
+                disabled={isPending}
+                className="px-6 py-2.5 rounded-xl bg-orange-600 hover:bg-orange-700 disabled:opacity-60 disabled:hover:bg-orange-600 text-white font-extrabold text-xs flex items-center gap-1.5 transition-colors shadow-md shadow-orange-600/10 active:scale-[0.98]"
               >
                 <Check className="w-4 h-4" />
-                <span>Confirmar Pago y Emitir DTE</span>
+                <span>{isPending ? "Emitiendo..." : "Confirmar Pago y Emitir DTE"}</span>
               </button>
             </div>
 
