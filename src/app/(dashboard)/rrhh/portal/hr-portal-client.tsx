@@ -1,6 +1,9 @@
 "use client";
 
 import React, { useState, useTransition } from "react";
+import ConfirmDialog from "@/components/ui/ConfirmDialog";
+import { useEscapeClose } from "@/hooks/useEscapeClose";
+import { showToast } from "@/components/ui/toast";
 import {
   ArrowRight,
   FileBadge,
@@ -91,6 +94,7 @@ export default function HRPortalClient({
 
   // States for Modals
   const [isVacationModalOpen, setIsVacationModalOpen] = useState(false);
+  useEscapeClose(isVacationModalOpen, () => setIsVacationModalOpen(false));
   const [isAnnModalOpen, setIsAnnModalOpen] = useState(false);
   const [selectedAnnouncement, setSelectedAnnouncement] = useState<HRAnnouncement | null>(null);
 
@@ -210,29 +214,43 @@ export default function HRPortalClient({
     });
   };
 
-  // Handle delete announcement
-  const handleDeleteAnnouncement = async (id: string) => {
-    if (confirm("¿Estás seguro de que quieres eliminar este comunicado?")) {
-      startTransition(async () => {
-        const res = await deleteAnnouncementAction(id);
-        if (res.status === "error") {
-          alert(res.message);
-        }
-      });
-    }
+  // Confirmaciones en modal propio (E5): sin confirm() nativo
+  const [pendingConfirm, setPendingConfirm] = useState<null | {
+    title: string;
+    message: string;
+    action: () => void;
+  }>(null);
+
+  const handleDeleteAnnouncement = (id: string) => {
+    setPendingConfirm({
+      title: "Eliminar comunicado",
+      message: "¿Estás seguro de que quieres eliminar este comunicado?",
+      action: () => {
+        startTransition(async () => {
+          const res = await deleteAnnouncementAction(id);
+          if (res.status === "error") {
+            showToast(res.message, "error");
+          }
+        });
+      },
+    });
   };
 
   // Handle approve/reject vacation
-  const handleVacationDecision = async (id: string, decision: "approved" | "rejected") => {
+  const handleVacationDecision = (id: string, decision: "approved" | "rejected") => {
     const actionText = decision === "approved" ? "aprobar" : "rechazar";
-    if (confirm(`¿Estás seguro de que quieres ${actionText} esta solicitud de vacaciones?`)) {
-      startTransition(async () => {
-        const res = await updateVacationStatusAction(id, decision);
-        if (res.status === "error") {
-          alert(res.message);
-        }
-      });
-    }
+    setPendingConfirm({
+      title: decision === "approved" ? "Aprobar vacaciones" : "Rechazar vacaciones",
+      message: `¿Estás seguro de que quieres ${actionText} esta solicitud de vacaciones?`,
+      action: () => {
+        startTransition(async () => {
+          const res = await updateVacationStatusAction(id, decision);
+          if (res.status === "error") {
+            showToast(res.message, "error");
+          }
+        });
+      },
+    });
   };
 
   // Find employee name by ID
@@ -507,7 +525,7 @@ export default function HRPortalClient({
                   <button
                     onClick={() => {
                       if (!employee) {
-                        alert("No tienes un perfil de empleado asignado. No puedes pedir vacaciones.");
+                        showToast("No tienes un perfil de empleado asignado. No puedes pedir vacaciones.", "info");
                         return;
                       }
                       setIsVacationModalOpen(true);
@@ -890,6 +908,19 @@ export default function HRPortalClient({
           </div>
         </div>
       )}
+
+      <ConfirmDialog
+        open={pendingConfirm !== null}
+        title={pendingConfirm?.title ?? ""}
+        message={pendingConfirm?.message ?? ""}
+        confirmLabel="Sí, continuar"
+        destructive
+        onConfirm={() => {
+          pendingConfirm?.action();
+          setPendingConfirm(null);
+        }}
+        onCancel={() => setPendingConfirm(null)}
+      />
     </div>
   );
 }

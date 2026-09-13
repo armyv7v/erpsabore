@@ -5,6 +5,7 @@ import { usePathname, useRouter } from "next/navigation";
 import Navbar from "@/components/layout/Navbar";
 import Sidebar from "@/components/layout/Sidebar";
 import MobileNav from "@/components/layout/MobileNav";
+import ToastHost from "@/components/ui/toast";
 import { canAccessPath } from "@/lib/access-control";
 import type { AuthUser } from "@/lib/types/erp";
 
@@ -71,6 +72,7 @@ export default function DashboardShell({ user, children }: DashboardShellProps) 
         <main className="h-full w-full overflow-hidden">
           {children}
         </main>
+        <ToastHost />
       </div>
     );
   }
@@ -99,6 +101,7 @@ export default function DashboardShell({ user, children }: DashboardShellProps) 
       </main>
 
       <MobileNav user={user} />
+      <ToastHost />
     </div>
   );
 }

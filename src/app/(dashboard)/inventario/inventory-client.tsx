@@ -2,6 +2,8 @@
 
 import React, { useState, useMemo, useEffect, useActionState, useTransition } from "react";
 import { useRouter } from "next/navigation";
+import { showToast } from "@/components/ui/toast";
+import { useEscapeClose } from "@/hooks/useEscapeClose";
 import {
   Filter,
   MapPin,
@@ -65,6 +67,9 @@ export default function InventoryClient({ products, summary }: Props) {
   const [activeDropdownId, setActiveDropdownId] = useState<string | null>(null);
   const [dropdownPosition, setDropdownPosition] = useState<{ top: number; right: number } | null>(null);
   const [editingProduct, setEditingProduct] = useState<ProductRecord | null>(null);
+  useEscapeClose(isModalOpen, () => setIsModalOpen(false));
+  useEscapeClose(Boolean(editingProduct), () => setEditingProduct(null));
+  useEscapeClose(Boolean(productToDelete), () => setProductToDelete(null));
   const [editStockQty, setEditStockQty] = useState<number>(0);
   const [adjustingProduct, setAdjustingProduct] = useState<ProductRecord | null>(null);
   const [detailsProduct, setDetailsProduct] = useState<ProductRecord | null>(null);
@@ -134,9 +139,10 @@ export default function InventoryClient({ products, summary }: Props) {
     }
   }, [editingProduct]);
 
-  // Cerrar modal automáticamente al éxito
+  // Cerrar modal automáticamente al éxito, con feedback visible (E3)
   useEffect(() => {
     if (state.status === "success") {
+      showToast(state.message || "Producto creado correctamente.");
       setIsModalOpen(false);
     }
   }, [state]);
@@ -1273,7 +1279,7 @@ export default function InventoryClient({ products, summary }: Props) {
                   startDeleteTransition(async () => {
                     const res = await deleteProductAction(targetId);
                     if (res.status === "error") {
-                      alert(`Error al eliminar: ${res.message}`);
+                      showToast(`Error al eliminar: ${res.message}`, "error");
                       setLocalProducts(products); // Rollback if error
                     } else {
                       router.refresh();

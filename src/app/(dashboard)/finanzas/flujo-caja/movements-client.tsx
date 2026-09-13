@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useMemo } from "react";
+import { escapeHtml } from "@/lib/utils/escape-html";
 import { 
   Search, 
   Filter, 
@@ -202,12 +203,12 @@ export default function MovementsClient({ movements }: Props) {
 
     const tableRows = filteredMovements.map(m => `
       <tr>
-        <td>${m.movementDate}</td>
+        <td>${escapeHtml(m.movementDate)}</td>
         <td class="${m.kind === "income" ? "income-text" : "expense-text"}">
           ${m.kind === "income" ? "Entrada" : "Salida"}
         </td>
-        <td>${m.reference ?? "-"}</td>
-        <td>${m.paymentMethod ?? "-"}</td>
+        <td>${escapeHtml(m.reference ?? "-")}</td>
+        <td>${escapeHtml(m.paymentMethod ?? "-")}</td>
         <td>${formatCashMovementStatus(m.status)}</td>
         <td class="amount-cell ${m.kind === "income" ? "income-text" : "expense-text"}">
           ${m.kind === "income" ? "+" : "-"}$${m.amount.toLocaleString("es-CL")}

@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState, useTransition } from "react";
+import { useEscapeClose } from "@/hooks/useEscapeClose";
 import { ChevronRight, FilePenLine, LineChart, TrendingDown, TrendingUp, UserPlus, X } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { submitConvertOpportunityToCustomerAction, submitCreateCustomerAction, submitCreateOpportunityAction, submitCreateQuoteAction, submitUpdateOpportunityAction } from "@/app/actions/crm";
@@ -39,6 +40,9 @@ export default function CRMWorkspace({ customers, opportunities }: { customers: 
   const [isCustomerModalOpen, setIsCustomerModalOpen] = useState(false);
   const [isOpportunityModalOpen, setIsOpportunityModalOpen] = useState(false);
   const [editingOpportunity, setEditingOpportunity] = useState<OpportunityRecord | null>(null);
+  useEscapeClose(isCustomerModalOpen, () => setIsCustomerModalOpen(false));
+  useEscapeClose(isOpportunityModalOpen, () => setIsOpportunityModalOpen(false));
+  useEscapeClose(Boolean(editingOpportunity), () => setEditingOpportunity(null));
   const [convertingOpportunity, setConvertingOpportunity] = useState<OpportunityRecord | null>(null);
   const [customerState, setCustomerState] = useState<ActionState>(initialState);
   const [opportunityState, setOpportunityState] = useState<ActionState>(initialState);

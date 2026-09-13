@@ -1,6 +1,8 @@
 "use client";
 
 import React, { useState, useTransition } from "react";
+import ConfirmDialog from "@/components/ui/ConfirmDialog";
+import { showToast } from "@/components/ui/toast";
 import {
   Building2,
   Save,
@@ -42,9 +44,13 @@ export default function SettingsClient({ initialDetails }: Props) {
     }
   };
 
-  const handleResetToDefault = () => {
-    if (confirm("¿Estás seguro de que quieres restablecer los datos oficiales de SABORÉ SPA?")) {
-      setDetails({
+  const [showResetConfirm, setShowResetConfirm] = useState(false);
+
+  const handleResetToDefault = () => setShowResetConfirm(true);
+
+  const applyResetToDefault = () => {
+    setShowResetConfirm(false);
+    setDetails({
         id: details.id,
         name: "SABORÉ SPA",
         slug: details.slug,
@@ -58,7 +64,7 @@ export default function SettingsClient({ initialDetails }: Props) {
         telefono: "+56 2 2345 6789",
         email: "contacto@sabore.cl"
       });
-    }
+      showToast("Datos oficiales de SABORÉ SPA restablecidos.");
   };
 
   const selectedRegionObj = CHILE_REGIONS.find(
@@ -327,6 +333,16 @@ export default function SettingsClient({ initialDetails }: Props) {
           </button>
         </div>
       </form>
+
+      <ConfirmDialog
+        open={showResetConfirm}
+        title="Restablecer datos oficiales"
+        message="¿Estás seguro de que quieres restablecer los datos oficiales de SABORÉ SPA? Se perderán los cambios no guardados del formulario."
+        confirmLabel="Restablecer"
+        destructive
+        onConfirm={applyResetToDefault}
+        onCancel={() => setShowResetConfirm(false)}
+      />
     </div>
   );
 }

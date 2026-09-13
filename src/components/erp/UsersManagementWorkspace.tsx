@@ -4,6 +4,7 @@ import { useMemo, useState, useTransition, useEffect } from "react";
 import { MoreVertical, Search, UserPlus, X, Trash2, Pencil } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { submitCreateManagedUserAction, submitUpdateManagedUserAction, deleteManagedUserAction } from "@/app/actions/users";
+import { showToast } from "@/components/ui/toast";
 import type { ActionState, AppRole, ManagedUserRecord, ProfileStatus } from "@/lib/types/erp";
 
 const initialState: ActionState = {
@@ -482,7 +483,7 @@ export default function UsersManagementWorkspace({ users }: { users: ManagedUser
                   startDeleteTransition(async () => {
                     const res = await deleteManagedUserAction(targetId);
                     if (res.status === "error") {
-                      alert(`Error al eliminar usuario: ${res.message}`);
+                      showToast(`Error al eliminar usuario: ${res.message}`, "error");
                       setLocalUsers(users); // Rollback if fails
                     } else {
                       router.refresh();

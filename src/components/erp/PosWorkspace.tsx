@@ -1,6 +1,8 @@
 "use client";
 
 import { useState, useEffect, useRef, useTransition, useMemo, useDeferredValue } from "react";
+import { escapeHtml } from "@/lib/utils/escape-html";
+import { useEscapeClose } from "@/hooks/useEscapeClose";
 import Link from "next/link";
 import { 
   Search, ShoppingCart, CreditCard, Banknote, Landmark, Smartphone, 
@@ -178,6 +180,11 @@ export default function PosWorkspace({ products: initialProducts, branches }: Po
   const [transferReceiptName, setTransferReceiptName] = useState("");
   const [transferReceiptUrl, setTransferReceiptUrl] = useState<string | null>(null);
   const [showPaymentModal, setShowPaymentModal] = useState(false);
+  // Escape cierra el modal abierto (J1, patron ImageZoomLightbox)
+  useEscapeClose(showPaymentModal, () => setShowPaymentModal(false));
+  useEscapeClose(showCashPopup, () => setShowCashPopup(false));
+  useEscapeClose(showTransferPopup, () => setShowTransferPopup(false));
+  useEscapeClose(showCloseShiftModal, () => setShowCloseShiftModal(false));
   const [isSyncing, setIsSyncing] = useState(false);
   const [syncMessage, setSyncMessage] = useState("");
 
@@ -209,10 +216,10 @@ export default function PosWorkspace({ products: initialProducts, branches }: Po
     
     const tableRows = shiftSales.map(s => `
       <tr>
-        <td>${s.folio}</td>
+        <td>${escapeHtml(s.folio)}</td>
         <td>${new Date(s.createdAt).toLocaleTimeString("es-CL")}</td>
-        <td>${s.customerName}</td>
-        <td>${s.paymentMethod}</td>
+        <td>${escapeHtml(s.customerName)}</td>
+        <td>${escapeHtml(s.paymentMethod)}</td>
         <td style="text-align: right; font-weight: bold;">$${s.total.toLocaleString("es-CL")}</td>
       </tr>
     `).join("");
