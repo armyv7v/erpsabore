@@ -16,7 +16,7 @@ import {
 } from "lucide-react";
 import type { BIBaseMetrics } from "@/lib/services/bi-service";
 import { getSalesReportData, getPosShiftReportData, getInventoryReportData } from "@/app/actions/reports";
-import { exportToExcel, exportToPdf } from "@/lib/utils/export-utils";
+import { exportToCsv, exportToPdf } from "@/lib/utils/export-utils";
 
 const BanknotesIcon = () => (
   <svg
@@ -101,7 +101,7 @@ export default function BIClient({ biBase }: Props) {
             totalRetailValue: "Valorización Venta (CLP)",
             stockStatus: "Estado Stock"
           };
-          await exportToExcel(data, headers, "reporte_inventario_central", "Inventario");
+          await exportToCsv(data, headers, "reporte_inventario_central");
         } else {
           const cols = ["SKU", "Producto", "Stock", "Mínimo", "Costo", "Precio Venta", "Val. Costo", "Val. Venta", "Estado"];
           const rows = data.map((item: any) => [
@@ -129,7 +129,7 @@ export default function BIClient({ biBase }: Props) {
             total: "Total (CLP)",
             status: "Estado"
           };
-          await exportToExcel(data, headers, "reporte_ventas_facturacion", "Ventas");
+          await exportToCsv(data, headers, "reporte_ventas_facturacion");
         } else {
           const cols = ["N° Factura", "Fecha Emisión", "Cliente", "RUT Cliente", "Subtotal", "IVA", "Total", "Estado"];
           const rows = data.map((item: any) => [
@@ -160,7 +160,7 @@ export default function BIClient({ biBase }: Props) {
             actualTotal: "Total Real (CLP)",
             status: "Estado"
           };
-          await exportToExcel(data, headers, "reporte_cierres_caja_pos", "Cierres POS");
+          await exportToCsv(data, headers, "reporte_cierres_caja_pos");
         } else {
           const cols = ["Apertura", "Cierre", "Cajero", "Sucursal", "Ef. Esperado", "Ef. Real", "Diferencia", "Estado"];
           const rows = data.map((item: any) => [
