@@ -6,6 +6,8 @@ import { CheckCircle2, Clock, FileText, PlusCircle, Wallet, X, FileCode, ShieldC
 import { submitIssueInvoiceAction, submitRegisterPaymentAction, submitCreateCorrectionAction } from "@/app/actions/invoices";
 import { uploadDigitalCertificateAction, deleteDigitalCertificateAction } from "@/app/actions/dte";
 import { formatInvoiceStatus } from "@/lib/formatters/status";
+import { useEscapeClose } from "@/hooks/useEscapeClose";
+import { showToast } from "@/components/ui/toast";
 import type { ActionState, InvoiceRecord } from "@/lib/types/erp";
 import CorrectionModal from "@/components/erp/CorrectionModal";
 
@@ -47,6 +49,94 @@ function buildTotals(invoices: InvoiceRecord[]) {
       ["issued", "partially_paid", "paid"].includes(invoice.status),
     ).length,
   };
+}
+
+/**
+ * Vista previa del XML del DTE (E1): reemplaza al alert() nativo.
+ * Se etiqueta explícitamente como vista previa interna (S8: la firma va mock
+ * mientras no haya certificado cargado, y el usuario no debe confundirla).
+ */
+function buildDteXmlPreview(invoice: InvoiceRecord): string {
+  return `<?xml version="1.0" encoding="ISO-8859-1"?>
+<DTE version="1.0" xmlns="http://www.sii.cl/SiiDte">
+  <Documento ID="F${invoice.number}T33">
+    <Encabezado>
+      <IdDoc>
+        <TipoDTE>33</TipoDTE>
+        <Folio>${invoice.number.replace(/\D/g, "") || "4501"}</Folio>
+        <FchEmis>${invoice.issueDate}</FchEmis>
+      </IdDoc>
+      <Emisor>
+        <RUTEmisor>76.123.456-K</RUTEmisor>
+        <RznSoc>SABORE LIMITADA</RznSoc>
+      </Emisor>
+      <Receptor>
+        <RUTRecep>${invoice.customerRut}</RUTRecep>
+        <RznSocRecep>${invoice.customerName}</RznSocRecep>
+      </Receptor>
+      <Totales>
+        <MntNeto>${Math.round(invoice.subtotal)}</MntNeto>
+        <IVA>${Math.round(invoice.tax)}</IVA>
+        <MntTotal>${Math.round(invoice.total)}</MntTotal>
+      </Totales>
+    </Encabezado>
+  </Documento>
+  <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
+    <!-- Firma pendiente de certificado digital -->
+    <SignatureValue>MOCK_SIGNATURE_VALUE_RSA_SHA1_ACTIVO...</SignatureValue>
+  </Signature>
+</DTE>`;
+}
+
+function DteXmlViewer({ invoice, onClose }: { invoice: InvoiceRecord; onClose: () => void }) {
+  useEscapeClose(Boolean(invoice), onClose);
+  const xml = buildDteXmlPreview(invoice);
+
+  return (
+    <div className="fixed inset-0 z-[99999] bg-slate-900/60 dark:bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4 animate-in fade-in duration-200">
+      <div className="w-full max-w-2xl max-h-[85vh] flex flex-col bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-2xl overflow-hidden">
+        <div className="flex items-center justify-between px-5 py-4 border-b border-slate-200 dark:border-slate-800">
+          <div>
+            <h3 className="text-base font-extrabold text-slate-900 dark:text-slate-100">XML DTE — Folio {invoice.number}</h3>
+            <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+              Vista previa interna · sin firma electrónica vigente
+            </p>
+          </div>
+          <button
+            type="button"
+            onClick={onClose}
+            className="w-11 h-11 flex items-center justify-center rounded-full text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+          >
+            <X className="h-5 w-5" />
+          </button>
+        </div>
+        <pre className="flex-1 overflow-auto m-0 p-5 bg-slate-50 dark:bg-slate-950 text-[11px] leading-relaxed font-mono text-slate-800 dark:text-slate-200 whitespace-pre-wrap break-all">
+          {xml}
+        </pre>
+        <div className="flex items-center justify-end gap-2 px-5 py-4 border-t border-slate-200 dark:border-slate-800">
+          <button
+            type="button"
+            onClick={() => {
+              navigator.clipboard?.writeText(xml).then(
+                () => showToast("XML copiado al portapapeles."),
+                () => showToast("No se pudo copiar el XML.", "error"),
+              );
+            }}
+            className="min-h-11 px-4 rounded-xl border border-slate-200 dark:border-slate-700 text-sm font-bold text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors"
+          >
+            Copiar XML
+          </button>
+          <button
+            type="button"
+            onClick={onClose}
+            className="min-h-11 px-4 rounded-xl bg-primary hover:bg-primary/90 text-white text-sm font-bold transition-colors"
+          >
+            Cerrar
+          </button>
+        </div>
+      </div>
+    </div>
+  );
 }
 
 function InvoiceDocumentCard({
@@ -281,6 +371,7 @@ export default function BillingWorkspace({
   const [localTotals, setLocalTotals] = useState(totals);
   const [selectedInvoice, setSelectedInvoice] = useState<InvoiceRecord | null>(null);
   const [documentInvoice, setDocumentInvoice] = useState<InvoiceRecord | null>(null);
+  const [xmlInvoice, setXmlInvoice] = useState<InvoiceRecord | null>(null);
   const [correctingInvoice, setCorrectingInvoice] = useState<InvoiceRecord | null>(null);
   const [isPending, startTransition] = useTransition();
 
@@ -293,6 +384,7 @@ export default function BillingWorkspace({
   const [isDeletingCert, setIsDeletingCert] = useState(false);
   const [password, setPassword] = useState("");
   const [showDeleteCertModal, setShowDeleteCertModal] = useState(false);
+  useEscapeClose(showDeleteCertModal, () => setShowDeleteCertModal(false));
 
   useEffect(() => {
     setInvoiceList(invoices);
@@ -359,6 +451,10 @@ export default function BillingWorkspace({
 
       {documentInvoice ? (
         <InvoiceDocumentCard invoice={documentInvoice} onClose={() => setDocumentInvoice(null)} />
+      ) : null}
+
+      {xmlInvoice ? (
+        <DteXmlViewer invoice={xmlInvoice} onClose={() => setXmlInvoice(null)} />
       ) : null}
 
       {activeTab === "invoices" ? (
@@ -501,9 +597,7 @@ export default function BillingWorkspace({
                       {invoice.dteXmlUrl ? (
                         <button
                           type="button"
-                          onClick={() => {
-                            alert(`[XML DTE Oficial - Folio ${invoice.number}]\n\n<?xml version="1.0" encoding="ISO-8859-1"?>\n<DTE version="1.0" xmlns="http://www.sii.cl/SiiDte">\n  <Documento ID="F${invoice.number}T33">\n    <Encabezado>\n      <IdDoc>\n        <TipoDTE>33</TipoDTE>\n        <Folio>${invoice.number.replace(/\D/g, "") || "4501"}</Folio>\n        <FchEmis>${invoice.issueDate}</FchEmis>\n      </IdDoc>\n      <Emisor>\n        <RUTEmisor>76.123.456-K</RUTEmisor>\n        <RznSoc>SABORE LIMITADA</RznSoc>\n      </Emisor>\n      <Receptor>\n        <RUTRecep>${invoice.customerRut}</RUTRecep>\n        <RznSocRecep>${invoice.customerName}</RznSocRecep>\n      </Receptor>\n      <Totales>\n        <MntNeto>${Math.round(invoice.subtotal)}</MntNeto>\n        <IVA>${Math.round(invoice.tax)}</IVA>\n        <MntTotal>${Math.round(invoice.total)}</MntTotal>\n      </Totales>\n    </Encabezado>\n  </Documento>\n  <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">\n    <!-- TODO: Firma RSA del Certificado Digital -->\n    <SignatureValue>MOCK_SIGNATURE_VALUE_RSA_SHA1_ACTIVO...</SignatureValue>\n  </Signature>\n</DTE>`);
-                          }}
+                          onClick={() => setXmlInvoice(invoice)}
                           className="inline-flex items-center gap-2 rounded-xl border border-slate-200 px-4 py-2 text-sm font-bold text-slate-700 transition-colors hover:bg-slate-50 dark:border-slate-700 dark:text-slate-200 dark:hover:bg-slate-800"
                         >
                           <FileCode className="h-4 w-4" />

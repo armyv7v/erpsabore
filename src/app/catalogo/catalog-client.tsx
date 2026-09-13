@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect, useMemo, useState, useTransition } from "react";
+import { useEscapeClose } from "@/hooks/useEscapeClose";
 import {
   Ban,
   Filter,
@@ -191,6 +192,8 @@ export default function CatalogClient({ products, customers = [], user = null }:
   const [customerSearch, setCustomerSearch] = useState("");
   const [isCustomerDropdownOpen, setIsCustomerDropdownOpen] = useState(false);
   const [isNewCustomerModalOpen, setIsNewCustomerModalOpen] = useState(false);
+  useEscapeClose(isCartOpen, () => setIsCartOpen(false));
+  useEscapeClose(isNewCustomerModalOpen, () => setIsNewCustomerModalOpen(false));
 
   // Estados de Procesamiento
   const [isPendingOrder, startTransitionOrder] = useTransition();

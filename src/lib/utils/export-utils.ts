@@ -3,6 +3,7 @@
  * El PDF usa importaciones dinámicas para mantener el bundle inicial ligero.
  * CSV se genera en puro JS: sin librerías externas (xlsx tiene CVEs sin fix en npm).
  */
+import { showToast } from "@/components/ui/toast";
 
 // Helper para formatear monedas chilenas (CLP)
 function formatCurrency(val: any): string {
@@ -93,7 +94,7 @@ export async function exportToCsv(
     URL.revokeObjectURL(url);
   } catch (error) {
     console.error("Error al exportar a CSV:", error);
-    alert("Ocurrió un error al generar el archivo CSV. Por favor reintenta.");
+    showToast("Ocurrió un error al generar el archivo CSV. Por favor reintenta.", "error");
   }
 }
 
@@ -237,6 +238,6 @@ export async function exportToPdf(
     doc.save(`${fileName}.pdf`);
   } catch (error) {
     console.error("Error al exportar a PDF:", error);
-    alert("Ocurrió un error al generar el archivo PDF. Por favor reintenta.");
+    showToast("Ocurrió un error al generar el archivo PDF. Por favor reintenta.", "error");
   }
 }

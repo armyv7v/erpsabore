@@ -17,6 +17,7 @@ import {
 import type { BIBaseMetrics } from "@/lib/services/bi-service";
 import { getSalesReportData, getPosShiftReportData, getInventoryReportData } from "@/app/actions/reports";
 import { exportToCsv, exportToPdf } from "@/lib/utils/export-utils";
+import { showToast } from "@/components/ui/toast";
 
 const BanknotesIcon = () => (
   <svg
@@ -77,14 +78,14 @@ export default function BIClient({ biBase }: Props) {
       }
 
       if (result.status === "error") {
-        alert(result.message || "Error al obtener los datos del reporte.");
+        showToast(result.message || "Error al obtener los datos del reporte.", "error");
         return;
       }
 
       const data = result.data;
 
       if (!data || data.length === 0) {
-        alert("No hay datos disponibles para este reporte.");
+        showToast("No hay datos disponibles para este reporte.", "info");
         return;
       }
 
@@ -178,7 +179,7 @@ export default function BIClient({ biBase }: Props) {
       }
     } catch (error) {
       console.error("Error al exportar:", error);
-      alert("Ocurrió un error inesperado al generar el archivo.");
+      showToast("Ocurrió un error inesperado al generar el archivo.", "error");
     } finally {
       setExportLoading((prev) => ({ ...prev, [key]: false }));
     }

@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useMemo, useTransition } from "react";
+import { useEscapeClose } from "@/hooks/useEscapeClose";
 import {
   Truck,
   Search,
@@ -95,6 +96,7 @@ export default function ShipmentsClient({ shipments, userRole }: Props) {
   const [search, setSearch] = useState("");
   const [activeStatus, setActiveStatus] = useState<ShipmentStatus | "all">("all");
   const [editingShipment, setEditingShipment] = useState<ShipmentRecord | null>(null);
+  useEscapeClose(Boolean(editingShipment), () => setEditingShipment(null));
   const [submitError, setSubmitError] = useState("");
   const [isPending, startTransition] = useTransition();
 

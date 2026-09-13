@@ -2,6 +2,8 @@
 
 import React, { useState, useMemo, useTransition } from "react";
 import { Search, UserPlus, X, AlertCircle, CheckCircle2 } from "lucide-react";
+import { showToast } from "@/components/ui/toast";
+import { useEscapeClose } from "@/hooks/useEscapeClose";
 import type { EmployeeRecord } from "@/lib/repositories/employee-repository";
 import { createEmployeeAction } from "@/app/actions/employees";
 import type { ActionState } from "@/lib/types/erp";
@@ -46,6 +48,7 @@ export default function EmployeesClient({ employees }: Props) {
   const [searchQuery, setSearchQuery] = useState("");
   const [activeDept, setActiveDept] = useState("Todos");
   const [isModalOpen, setIsModalOpen] = useState(false);
+  useEscapeClose(isModalOpen, () => setIsModalOpen(false));
   const [newHiring, setNewHiring] = useState({ name: "", role: "", dept: "", email: "" });
   const [formState, setFormState] = useState<ActionState>({ status: "idle", message: "" });
   const [isPending, startTransition] = useTransition();
@@ -76,11 +79,10 @@ export default function EmployeesClient({ employees }: Props) {
       const res = await createEmployeeAction({ status: "idle", message: "" }, fd);
       setFormState(res);
       if (res.status === "success") {
+        // El mensaje de exito permanece visible hasta que el usuario cierre
+        // el modal (E4: no se autodescarta a los 1.5s).
+        showToast(res.message || "Contratación registrada correctamente.");
         setNewHiring({ name: "", role: "", dept: "", email: "" });
-        setTimeout(() => {
-          setIsModalOpen(false);
-          setFormState({ status: "idle", message: "" });
-        }, 1500);
       }
     });
   };
