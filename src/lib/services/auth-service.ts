@@ -1,7 +1,7 @@
 import { redirect } from "next/navigation";
 import type { SupabaseClient } from "@supabase/supabase-js";
 import type { AppRole, AuthUser } from "@/lib/types/erp";
-import { isSupabaseConfigured } from "@/lib/supabase/config";
+import { isSupabaseConfigured, isPlaywrightBypassActive } from "@/lib/supabase/config";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import { ensureDefaultProfile } from "@/lib/repositories/profile-repository";
 
@@ -16,7 +16,7 @@ export async function getOptionalAuthUser(): Promise<AuthUser | null> {
 }
 
 export async function getOptionalAuthContext(): Promise<AuthContext | null> {
-  if (process.env.PLAYWRIGHT_TEST_BYPASS === "true") {
+  if (isPlaywrightBypassActive()) {
     return {
       user: {
         id: "mock-e2e-user-id",

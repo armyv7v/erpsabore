@@ -1,5 +1,5 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
-import { isSupabaseConfigured } from "@/lib/supabase/config";
+import { isSupabaseConfigured, isPlaywrightBypassActive } from "@/lib/supabase/config";
 import { getFallbackCustomers, getFallbackInvoices, getFallbackReceivables } from "@/lib/mock/fallback-data";
 import { listCustomers } from "@/lib/repositories/customer-repository";
 import { getActiveCertificate } from "@/lib/repositories/certificate-repository";
@@ -146,7 +146,7 @@ export async function createDraftInvoice(
   assertUserHasRole(user, ["admin", "ventas", "finanzas"]);
   const parsedInput = createInvoiceSchema.parse(input);
 
-  if (process.env.PLAYWRIGHT_TEST_BYPASS === "true") {
+  if (isPlaywrightBypassActive()) {
     return "mock-e2e-invoice-id";
   }
 
@@ -186,7 +186,7 @@ export async function issueInvoice(
 ) {
   assertUserHasRole(user, ["admin", "ventas", "finanzas"]);
 
-  if (process.env.PLAYWRIGHT_TEST_BYPASS === "true") {
+  if (isPlaywrightBypassActive()) {
     return;
   }
 
@@ -206,7 +206,7 @@ export async function registerInvoicePayment(
   assertUserHasRole(user, ["admin", "ventas", "finanzas"]);
   const parsedInput = registerPaymentSchema.parse(input);
 
-  if (process.env.PLAYWRIGHT_TEST_BYPASS === "true") {
+  if (isPlaywrightBypassActive()) {
     return {
       paymentId: "mock-e2e-payment-id",
     };
