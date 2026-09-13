@@ -242,3 +242,11 @@ body {
   min-width: 2.75rem;
   min-height: 2.75rem;
 }
+
+/* A1 (audit 2026-09-13): indicador de foco de teclado visible en toda la app.
+   Los estilos por componente no lo tenian (solo Sidebar); esto cubre todo. */
+:where(a, button, input, select, textarea, [tabindex]):focus-visible {
+  outline: 2px solid var(--color-primary, #BC7A3A);
+  outline-offset: 2px;
+  border-radius: 4px;
+}

@@ -10,11 +10,6 @@ export async function updateSession(request: NextRequest) {
 
   let response = NextResponse.next({ request });
   const { url, anonKey } = getSupabaseEnv();
-  const supabaseCookieNames = request.cookies
-    .getAll()
-    .map((cookie) => cookie.name)
-    .filter((name) => name.startsWith("sb-"));
-
   const supabase = createServerClient(url, anonKey, {
     cookies: {
       getAll() {
