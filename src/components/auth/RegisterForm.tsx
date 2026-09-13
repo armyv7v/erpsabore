@@ -1,6 +1,7 @@
 "use client";
 
 import { useActionState, useState } from "react";
+import { formatRut } from "@/lib/utils/rut";
 import { Lock, LogIn, Mail, User, ShieldAlert, Chrome } from "lucide-react";
 import { registerClientAction } from "@/app/actions/auth";
 import { createSupabaseBrowserClient } from "@/lib/supabase/client";
@@ -89,6 +90,9 @@ export default function RegisterForm() {
               placeholder="Ej: 19.876.543-2"
               type="text"
               required
+              onBlur={(e) => {
+                e.currentTarget.value = formatRut(e.currentTarget.value);
+              }}
             />
           </div>
         </div>

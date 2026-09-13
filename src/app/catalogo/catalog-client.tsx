@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect, useMemo, useState, useTransition } from "react";
+import { formatRut } from "@/lib/utils/rut";
 import { useEscapeClose } from "@/hooks/useEscapeClose";
 import {
   Ban,
@@ -1426,6 +1427,9 @@ export default function CatalogClient({ products, customers = [], user = null }:
                   type="text"
                   name="rut"
                   required
+                  onBlur={(e) => {
+                    e.currentTarget.value = formatRut(e.currentTarget.value);
+                  }}
                   className="w-full px-3 py-2 text-xs rounded-xl border border-slate-200 dark:border-slate-700 bg-transparent focus:ring-2 focus:ring-primary/25 outline-none uppercase placeholder:text-slate-400"
                   placeholder="Ej. 76.123.456-7"
                 />

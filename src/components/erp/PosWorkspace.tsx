@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef, useTransition, useMemo, useDeferredValue } from "react";
 import { escapeHtml } from "@/lib/utils/escape-html";
+import { formatRut } from "@/lib/utils/rut";
 import { useEscapeClose } from "@/hooks/useEscapeClose";
 import Link from "next/link";
 import { 
@@ -1602,6 +1603,7 @@ export default function PosWorkspace({ products: initialProducts, branches }: Po
                         type="text"
                         value={customerRut}
                         onChange={(e) => setCustomerRut(e.target.value.toUpperCase())}
+                        onBlur={(e) => setCustomerRut(formatRut(e.target.value))}
                         placeholder="12.345.678-K"
                         className="w-full rounded-xl border border-slate-250 dark:border-slate-700 px-3.5 py-2.5 bg-white dark:bg-slate-950 text-xs font-bold uppercase outline-none focus:ring-2 focus:ring-primary/20"
                       />

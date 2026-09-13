@@ -37,7 +37,6 @@ export async function getOptionalAuthContext(): Promise<AuthContext | null> {
   const supabase = await createSupabaseServerClient();
   const {
     data: { user },
-    error: userError,
   } = await supabase.auth.getUser();
 
 

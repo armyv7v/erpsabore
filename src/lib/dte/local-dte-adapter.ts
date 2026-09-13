@@ -127,7 +127,7 @@ export class LocalDteAdapter implements DteAdapter {
               .replace(/\s+/g, "");
 
             isMockSignature = false;
-            console.log(`[DTE Cripto] Usando Firma Digital REAL del SII para rut_firmante: ${cert.rutFirmante}`);
+            console.log("[DTE Cripto] Usando Firma Digital REAL del SII.");
           }
         } catch (dbErr) {
           console.error("[DTE Warning] Error al cargar la firma digital real de la base de datos. Se usará el mock de desarrollo:", dbErr);

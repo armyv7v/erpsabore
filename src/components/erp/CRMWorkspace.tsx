@@ -1,6 +1,18 @@
 "use client";
 
 import { useMemo, useState, useTransition } from "react";
+import { formatRut } from "@/lib/utils/rut";
+
+// Gr1 (audit 2026-09-13): campo con <label> asociado por id, sin placeholder como etiqueta.
+function CrmField({ label, id, children }: { label: string; id: string; children: React.ReactNode }) {
+  return (
+    <div className="flex flex-col gap-1">
+      <label htmlFor={id} className="text-xs font-bold uppercase tracking-wider text-slate-500">{label}</label>
+      {children}
+    </div>
+  );
+}
+
 import { useEscapeClose } from "@/hooks/useEscapeClose";
 import { ChevronRight, FilePenLine, LineChart, TrendingDown, TrendingUp, UserPlus, X } from "lucide-react";
 import { useRouter } from "next/navigation";
@@ -279,10 +291,10 @@ export default function CRMWorkspace({ customers, opportunities }: { customers: 
               <button type="button" onClick={() => setIsCustomerModalOpen(false)} className="rounded-full p-2 text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800"><X className="w-5 h-5" /></button>
             </div>
             <form className="space-y-4 p-4" onSubmit={(event) => { event.preventDefault(); submitCustomer(new FormData(event.currentTarget)); }}>
-              <input name="fullName" required placeholder="Nombre del cliente" className="w-full rounded-lg border border-slate-200 bg-transparent px-3 py-2 dark:border-slate-700" />
-              <input name="rut" required placeholder="RUT" className="w-full rounded-lg border border-slate-200 bg-transparent px-3 py-2 dark:border-slate-700" />
-              <input name="email" type="email" placeholder="Correo" className="w-full rounded-lg border border-slate-200 bg-transparent px-3 py-2 dark:border-slate-700" />
-              <input name="phone" type="text" placeholder="Teléfono" className="w-full rounded-lg border border-slate-200 bg-transparent px-3 py-2 dark:border-slate-700" />
+              <CrmField label="Nombre del cliente" id="crm-new-fullname"><input id="crm-new-fullname" name="fullName" required placeholder="Nombre del cliente" className="w-full rounded-lg border border-slate-200 bg-transparent px-3 py-2 dark:border-slate-700" /></CrmField>
+              <CrmField label="RUT" id="crm-new-rut"><input id="crm-new-rut" name="rut" required placeholder="12.345.678-K" onBlur={(e) => { e.currentTarget.value = formatRut(e.currentTarget.value); }} className="w-full rounded-lg border border-slate-200 bg-transparent px-3 py-2 dark:border-slate-700" /></CrmField>
+              <CrmField label="Correo" id="crm-new-email"><input id="crm-new-email" name="email" type="email" placeholder="Correo" className="w-full rounded-lg border border-slate-200 bg-transparent px-3 py-2 dark:border-slate-700" /></CrmField>
+              <CrmField label="Teléfono" id="crm-new-phone"><input id="crm-new-phone" name="phone" type="text" placeholder="Teléfono" className="w-full rounded-lg border border-slate-200 bg-transparent px-3 py-2 dark:border-slate-700" /></CrmField>
               <div className="flex gap-3"><button type="button" onClick={() => setIsCustomerModalOpen(false)} className="flex-1 rounded-xl border border-slate-200 px-4 py-2.5 font-bold dark:border-slate-700">Cancelar</button><button type="submit" disabled={isPending} className="flex-1 rounded-xl bg-primary px-4 py-2.5 font-bold text-white disabled:opacity-70">{isPending ? "Guardando..." : "Guardar cliente"}</button></div>
             </form>
           </div>
@@ -297,16 +309,17 @@ export default function CRMWorkspace({ customers, opportunities }: { customers: 
               <button type="button" onClick={() => setIsOpportunityModalOpen(false)} className="rounded-full p-2 text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800"><X className="w-5 h-5" /></button>
             </div>
             <form className="space-y-4 p-4" onSubmit={(event) => { event.preventDefault(); submitOpportunity(new FormData(event.currentTarget)); }}>
-              <input name="customerName" required placeholder="Cliente u oportunidad" className="w-full rounded-lg border border-slate-200 bg-transparent px-3 py-2 dark:border-slate-700" />
-              <select name="stage" defaultValue="prospect" className="w-full rounded-lg border border-slate-200 bg-transparent px-3 py-2 dark:border-slate-700">
+              <CrmField label="Cliente u oportunidad" id="crm-opp-name"><input id="crm-opp-name" name="customerName" required placeholder="Cliente u oportunidad" className="w-full rounded-lg border border-slate-200 bg-transparent px-3 py-2 dark:border-slate-700" /></CrmField>
+              <CrmField label="Etapa" id="crm-opp-stage"><select id="crm-opp-stage" name="stage" defaultValue="prospect" className="w-full rounded-lg border border-slate-200 bg-transparent px-3 py-2 dark:border-slate-700">
                 <option value="prospect">Prospecto</option>
                 <option value="qualified">Calificado</option>
                 <option value="proposal">Propuesta</option>
                 <option value="negotiation">Negociación</option>
                 <option value="closed">Cerrado</option>
               </select>
-              <input name="amount" type="number" min="0" step="1" required placeholder="Monto estimado" className="w-full rounded-lg border border-slate-200 bg-transparent px-3 py-2 dark:border-slate-700" />
-              <textarea name="notes" placeholder="Notas" className="w-full rounded-lg border border-slate-200 bg-transparent px-3 py-2 dark:border-slate-700" rows={3}></textarea>
+              </CrmField>
+              <CrmField label="Monto estimado" id="crm-opp-amount"><input id="crm-opp-amount" name="amount" type="number" min="0" step="1" required placeholder="Monto estimado" className="w-full rounded-lg border border-slate-200 bg-transparent px-3 py-2 dark:border-slate-700" /></CrmField>
+              <CrmField label="Notas" id="crm-opp-notes"><textarea id="crm-opp-notes" name="notes" placeholder="Notas" className="w-full rounded-lg border border-slate-200 bg-transparent px-3 py-2 dark:border-slate-700" rows={3}></textarea></CrmField>
               <div className="flex gap-3"><button type="button" onClick={() => setIsOpportunityModalOpen(false)} className="flex-1 rounded-xl border border-slate-200 px-4 py-2.5 font-bold dark:border-slate-700">Cancelar</button><button type="submit" disabled={isPending} className="flex-1 rounded-xl bg-primary px-4 py-2.5 font-bold text-white disabled:opacity-70">{isPending ? "Guardando..." : "Guardar oportunidad"}</button></div>
             </form>
           </div>
@@ -322,16 +335,17 @@ export default function CRMWorkspace({ customers, opportunities }: { customers: 
             </div>
             <form className="space-y-4 p-4" onSubmit={(event) => { event.preventDefault(); submitOpportunityUpdate(new FormData(event.currentTarget)); }}>
               <input type="hidden" name="opportunityId" value={editingOpportunity.id} />
-              <input name="customerName" required defaultValue={editingOpportunity.customerName} placeholder="Cliente u oportunidad" className="w-full rounded-lg border border-slate-200 bg-transparent px-3 py-2 dark:border-slate-700" />
-              <select name="stage" defaultValue={editingOpportunity.stage} className="w-full rounded-lg border border-slate-200 bg-transparent px-3 py-2 dark:border-slate-700">
+              <CrmField label="Cliente u oportunidad" id="crm-edit-name"><input id="crm-edit-name" name="customerName" required defaultValue={editingOpportunity.customerName} placeholder="Cliente u oportunidad" className="w-full rounded-lg border border-slate-200 bg-transparent px-3 py-2 dark:border-slate-700" /></CrmField>
+              <CrmField label="Etapa" id="crm-edit-stage"><select id="crm-edit-stage" name="stage" defaultValue={editingOpportunity.stage} className="w-full rounded-lg border border-slate-200 bg-transparent px-3 py-2 dark:border-slate-700">
                 <option value="prospect">Prospecto</option>
                 <option value="qualified">Calificado</option>
                 <option value="proposal">Propuesta</option>
                 <option value="negotiation">Negociación</option>
                 <option value="closed">Cerrado</option>
               </select>
-              <input name="amount" type="number" min="0" step="1" required defaultValue={editingOpportunity.amount} placeholder="Monto estimado" className="w-full rounded-lg border border-slate-200 bg-transparent px-3 py-2 dark:border-slate-700" />
-              <textarea name="notes" defaultValue={editingOpportunity.notes ?? ""} placeholder="Notas" className="w-full rounded-lg border border-slate-200 bg-transparent px-3 py-2 dark:border-slate-700" rows={3}></textarea>
+              </CrmField>
+              <CrmField label="Monto estimado" id="crm-edit-amount"><input id="crm-edit-amount" name="amount" type="number" min="0" step="1" required defaultValue={editingOpportunity.amount} placeholder="Monto estimado" className="w-full rounded-lg border border-slate-200 bg-transparent px-3 py-2 dark:border-slate-700" /></CrmField>
+              <CrmField label="Notas" id="crm-edit-notes"><textarea id="crm-edit-notes" name="notes" defaultValue={editingOpportunity.notes ?? ""} placeholder="Notas" className="w-full rounded-lg border border-slate-200 bg-transparent px-3 py-2 dark:border-slate-700" rows={3}></textarea></CrmField>
               <div className="flex gap-3"><button type="button" onClick={() => setEditingOpportunity(null)} className="flex-1 rounded-xl border border-slate-200 px-4 py-2.5 font-bold dark:border-slate-700">Cancelar</button><button type="submit" disabled={isPending} className="flex-1 rounded-xl bg-primary px-4 py-2.5 font-bold text-white disabled:opacity-70">{isPending ? "Guardando..." : "Guardar cambios"}</button></div>
             </form>
           </div>
@@ -382,10 +396,10 @@ export default function CRMWorkspace({ customers, opportunities }: { customers: 
             </div>
             <form className="space-y-4 p-4" onSubmit={(event) => { event.preventDefault(); submitOpportunityConversion(new FormData(event.currentTarget)); }}>
               <input type="hidden" name="opportunityId" value={convertingOpportunity.id} />
-              <input name="fullName" required defaultValue={convertingOpportunity.customerName} placeholder="Nombre del cliente" className="w-full rounded-lg border border-slate-200 bg-transparent px-3 py-2 dark:border-slate-700" />
-              <input name="rut" required placeholder="RUT" className="w-full rounded-lg border border-slate-200 bg-transparent px-3 py-2 dark:border-slate-700" />
-              <input name="email" type="email" placeholder="Correo" className="w-full rounded-lg border border-slate-200 bg-transparent px-3 py-2 dark:border-slate-700" />
-              <input name="phone" type="text" placeholder="Teléfono" className="w-full rounded-lg border border-slate-200 bg-transparent px-3 py-2 dark:border-slate-700" />
+              <CrmField label="Nombre del cliente" id="crm-convert-fullname"><input id="crm-convert-fullname" name="fullName" required defaultValue={convertingOpportunity.customerName} placeholder="Nombre del cliente" className="w-full rounded-lg border border-slate-200 bg-transparent px-3 py-2 dark:border-slate-700" /></CrmField>
+              <CrmField label="RUT" id="crm-convert-rut"><input id="crm-convert-rut" name="rut" required placeholder="12.345.678-K" onBlur={(e) => { e.currentTarget.value = formatRut(e.currentTarget.value); }} className="w-full rounded-lg border border-slate-200 bg-transparent px-3 py-2 dark:border-slate-700" /></CrmField>
+              <CrmField label="Correo" id="crm-convert-email"><input id="crm-convert-email" name="email" type="email" placeholder="Correo" className="w-full rounded-lg border border-slate-200 bg-transparent px-3 py-2 dark:border-slate-700" /></CrmField>
+              <CrmField label="Teléfono" id="crm-convert-phone"><input id="crm-convert-phone" name="phone" type="text" placeholder="Teléfono" className="w-full rounded-lg border border-slate-200 bg-transparent px-3 py-2 dark:border-slate-700" /></CrmField>
               <div className="flex gap-3"><button type="button" onClick={() => setConvertingOpportunity(null)} className="flex-1 rounded-xl border border-slate-200 px-4 py-2.5 font-bold dark:border-slate-700">Cancelar</button><button type="submit" disabled={isPending} className="flex-1 rounded-xl bg-primary px-4 py-2.5 font-bold text-white disabled:opacity-70">{isPending ? "Guardando..." : "Convertir"}</button></div>
             </form>
           </div>
