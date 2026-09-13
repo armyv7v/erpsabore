@@ -143,3 +143,24 @@ Se transformaron los siguientes módulos de estáticos a **Client Components** c
 - **Interfaz de Usuario (UI):** Añadido el botón "Corregir (NC)" en `BillingWorkspace.tsx`, implementado el modal premium `CorrectionModal.tsx` con soporte para anulación completa, corrección de texto y ajuste manual de montos/ítems (Código 3).
 - **PDF DTE:** Actualizado el visualizador del PDF oficial (`src/app/dte/pdf/[id]/page.tsx`) para soportar cabeceras de Notas de Crédito/Débito y renderizar un recuadro detallando el documento original referenciado y el motivo legal del reparo.
 - **Pruebas:** Cobertura de tests unitarios completa (Vitest, 31 passed).
+
+---
+
+## Sesión: 13 de Septiembre, 2026
+
+### 1. Auditoría Automatizada del Sistema + Laws of UX
+- **Origen:** barridos automatizados del equipo (seguridad/calidad y UX) + verificación manual, consolidados en `openspec/history/auditoria-sistema-laws-of-ux-2026-09-13.md`.
+- **Punto de partida:** 1 crítica y 3 altas de seguridad, 19 vulnerabilidades de dependencias, 61 hallazgos de UX (11 altos), 91 tests.
+
+### 2. Ejecución del Plan: 6 PRs mergeados el mismo día
+- **PR-A [#7]:** hotfix de seguridad — clave fallback hardcodeada del cifrador SII (crítica), guarda `NODE_ENV=production` en el bypass de Playwright, verificación de tenant antes de `deleteUser`, rol admin/finanzas para el certificado digital (issue #6).
+- **PR-B [#9]:** dependencias — `xlsx` (prototype pollution sin fix) reemplazado por exportación CSV nativa con BOM; `next` 16.1.6→16.3.5; `npm audit` en 0 vulnerabilidades (issue #8).
+- **PR-C [#11]:** 9 botones muertos eliminados (Despachos/Empleados/Catálogo) y filtro "Almacén" teatral fuera de POS y Catálogo; "Confirmar Pago y Emitir DTE" con `disabled={isPending}` contra doble emisión (issue #10).
+- **PR-D [#13]:** targets táctiles de 44px en steppers/montos/X de modales del POS, clase compartida `.ux-touch-target` para las 4 paginaciones, tirador de sidebar y papelera de notificaciones (issue #12).
+- **PR-E [#15]:** sistema de toasts por eventos + `ConfirmDialog` accesible (14 `alert()/confirm()` nativos migrados), visor propio del XML DTE, `escapeHtml` en impresiones (XSS), feedback de éxito en alta de producto/contratación, hook `useEscapeClose` en 15 modales (issue #14).
+- **PR-F [#17]:** headers de seguridad en `next.config` (CSP report-only, HSTS, XFO, nosniff), `formatRut` con autoformato en los 4 inputs de RUT, 16 campos de CRM con `<label>` real, `:focus-visible` global, código muerto y PII en logs eliminados (issue #16).
+
+### 3. Estado Final
+- **Tests:** 117/117 en verde (26 regresiones estáticas nuevas añadidas durante el plan). `tsc` y build de producción limpios.
+- **Seguridad:** sin alert()/confirm() nativos, sin PII en logs, npm audit 0 vulnerabilidades.
+- **Pendiente documentado:** features faltantes (POD, foto de empleado, inventario por sucursal — issue #10) y barrido de console.*/any + CSP enforce (issue #16).
