@@ -234,3 +234,11 @@ body {
     scroll-behavior: auto !important;
   }
 }
+
+/* Fitts (audit 2026-09-13, F13/F16/F20/F27): todo control de paginacion
+   cumple target táctil de 44px. min-* gana sobre width/height de Tailwind,
+   por eso la clase funciona incluso en botones con size-8 o w-9 h-9. */
+.ux-touch-target {
+  min-width: 2.75rem;
+  min-height: 2.75rem;
+}

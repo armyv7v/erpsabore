@@ -51,7 +51,7 @@ export default function DashboardShell({ user, children }: DashboardShellProps) 
             type="button"
             onClick={() => setIsPosSidebarHovered(true)}
             onMouseEnter={() => setIsPosSidebarHovered(true)}
-            className="fixed left-0 top-1/2 -translate-y-1/2 bg-slate-200/80 dark:bg-slate-800/80 hover:bg-slate-300 dark:hover:bg-slate-700 text-slate-500 dark:text-slate-400 w-3.5 h-16 rounded-r-lg z-30 flex items-center justify-center transition-all opacity-30 hover:opacity-100"
+            className="fixed left-0 top-1/2 -translate-y-1/2 bg-slate-200/80 dark:bg-slate-800/80 hover:bg-slate-300 dark:hover:bg-slate-700 text-slate-500 dark:text-slate-400 w-8 h-24 rounded-r-lg z-30 flex items-center justify-center transition-all opacity-70 hover:opacity-100"
           >
             <span className="text-[10px] font-extrabold">›</span>
           </button>

@@ -226,10 +226,10 @@ export default function Navbar({ user, onMenuClick }: NavbarProps) {
                                 e.stopPropagation();
                                 deleteNotification(notification.id);
                               }}
-                              className="opacity-60 md:opacity-0 group-hover:opacity-100 text-slate-400 hover:text-rose-500 transition-all p-0.5 rounded hover:bg-slate-100 dark:hover:bg-slate-800"
+                              className="opacity-60 md:opacity-0 group-hover:opacity-100 text-slate-400 hover:text-rose-500 transition-all min-w-11 min-h-11 flex items-center justify-center rounded hover:bg-slate-100 dark:hover:bg-slate-800 -mr-2"
                               title="Eliminar notificación"
                             >
-                              <Trash2 className="w-3.5 h-3.5" />
+                              <Trash2 className="w-4 h-4" />
                             </button>
                           </div>
                         </div>
