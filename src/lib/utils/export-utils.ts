@@ -1,6 +1,7 @@
 /**
- * Utilidades para exportar datos en formatos Excel (.xlsx) y PDF (.pdf) en el cliente.
- * Se utilizan importaciones dinámicas para mantener el bundle inicial ligero.
+ * Utilidades para exportar datos en formatos CSV (.csv) y PDF (.pdf) en el cliente.
+ * El PDF usa importaciones dinámicas para mantener el bundle inicial ligero.
+ * CSV se genera en puro JS: sin librerías externas (xlsx tiene CVEs sin fix en npm).
  */
 
 // Helper para formatear monedas chilenas (CLP)
@@ -29,64 +30,70 @@ function formatDate(val: any): string {
   }
 }
 
+const CSV_DELIMITER = ";";
+
+// Excel es-CL requiere BOM para detectar UTF-8 (si no, muestra acentos rotos)
+const CSV_BOM = "\uFEFF";
+
+function toCsvValue(value: string): string {
+  if (value.includes(CSV_DELIMITER) || value.includes('"') || value.includes("\n") || value.includes("\r")) {
+    return `"${value.replace(/"/g, '""')}"`;
+  }
+  return value;
+}
+
 /**
- * Exporta datos tabulares a un archivo Excel (.xlsx).
+ * Construye el contenido CSV (con BOM) a partir de filas ya mapeadas.
+ * Exportado para poder testear el escapado sin DOM.
+ */
+export function buildCsv(rows: string[][]): string {
+  return CSV_BOM + rows.map((row) => row.map(toCsvValue).join(CSV_DELIMITER)).join("\r\n");
+}
+
+/**
+ * Exporta datos tabulares a un archivo CSV compatible con Excel.
+ * Reemplaza a exportToExcel (xlsx): prototype pollution/ReDoS sin fix disponible.
  * @param data Array de objetos con los datos de las filas
  * @param headers Mapa de llaves de objeto a etiquetas amigables (ej: { sku: "SKU", name: "Nombre" })
  * @param fileName Nombre del archivo de salida (sin extensión)
- * @param sheetName Nombre de la pestaña de la hoja
  */
-export async function exportToExcel(
+export async function exportToCsv(
   data: any[],
   headers: Record<string, string>,
-  fileName: string,
-  sheetName: string = "Reporte"
+  fileName: string
 ) {
   try {
-    // Importación dinámica de SheetJS
-    const XLSX = await import("xlsx");
-
-    // Mapear los datos al formato de los encabezados amigables
     const keys = Object.keys(headers);
-    const mappedData = data.map((item) => {
-      const row: Record<string, any> = {};
-      keys.forEach((key) => {
-        const val = item[key];
-        // Formatear tipos de datos específicos para Excel
-        if (key.toLowerCase().includes("price") || key.toLowerCase().includes("total") || key.toLowerCase().includes("cash") || key.toLowerCase().includes("debit") || key.toLowerCase().includes("credit") || key.toLowerCase().includes("transfer") || key === "difference" || key === "subtotal" || key === "tax") {
-          row[headers[key]] = Number(val) || 0;
-        } else if (key.toLowerCase().includes("date") || key.toLowerCase().includes("at")) {
-          row[headers[key]] = val ? new Date(val).toLocaleDateString("es-CL") : "-";
-        } else {
-          row[headers[key]] = val === null || val === undefined ? "" : val;
-        }
-      });
-      return row;
-    });
+    const rows: string[][] = [
+      keys.map((key) => headers[key]),
+      ...data.map((item) =>
+        keys.map((key) => {
+          const val = item[key];
+          // Formatear tipos de datos específicos igual que el resto de reportes
+          if (key.toLowerCase().includes("price") || key.toLowerCase().includes("total") || key.toLowerCase().includes("cash") || key.toLowerCase().includes("debit") || key.toLowerCase().includes("credit") || key.toLowerCase().includes("transfer") || key === "difference" || key === "subtotal" || key === "tax") {
+            return formatCurrency(val);
+          }
+          if (key.toLowerCase().includes("date") || key.toLowerCase().includes("at")) {
+            return val ? new Date(val).toLocaleDateString("es-CL") : "-";
+          }
+          return val === null || val === undefined ? "" : String(val);
+        })
+      ),
+    ];
 
-    const worksheet = XLSX.utils.json_to_sheet(mappedData);
-    const workbook = XLSX.utils.book_new();
-    
-    // Auto-ajustar el ancho de las columnas
-    const maxLens = keys.map((key) => {
-      const label = headers[key];
-      let maxLen = label.length;
-      data.forEach((item) => {
-        const val = item[key];
-        const strVal = val === null || val === undefined ? "" : String(val);
-        if (strVal.length > maxLen) {
-          maxLen = strVal.length;
-        }
-      });
-      return { wch: Math.min(Math.max(maxLen + 3, 10), 50) };
-    });
-    worksheet["!cols"] = maxLens;
-
-    XLSX.utils.book_append_sheet(workbook, worksheet, sheetName);
-    XLSX.writeFile(workbook, `${fileName}.xlsx`);
+    const csv = buildCsv(rows);
+    const blob = new Blob([csv], { type: "text/csv;charset=utf-8" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = `${fileName}.csv`;
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    URL.revokeObjectURL(url);
   } catch (error) {
-    console.error("Error al exportar a Excel:", error);
-    alert("Ocurrió un error al generar el archivo Excel. Por favor reintenta.");
+    console.error("Error al exportar a CSV:", error);
+    alert("Ocurrió un error al generar el archivo CSV. Por favor reintenta.");
   }
 }
 
