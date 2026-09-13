@@ -154,6 +154,22 @@ export async function deleteManagedUserAction(userId: string): Promise<ActionSta
     const { createSupabaseAdminClient } = await import("@/lib/supabase/admin");
     const adminSupabase = createSupabaseAdminClient();
 
+    // Verificar que el usuario objetivo pertenece al tenant del admin antes de
+    // borrarlo con service role (sin este chequeo seria posible un borrado cross-tenant).
+    const { data: targetProfile, error: profileError } = await adminSupabase
+      .from("profiles")
+      .select("tenant_id")
+      .eq("id", userId)
+      .single();
+
+    if (profileError || !targetProfile) {
+      throw new Error("No se encontró el usuario a eliminar.");
+    }
+
+    if (targetProfile.tenant_id !== user.tenantId) {
+      throw new Error("El usuario no pertenece a tu organización.");
+    }
+
     // Deleting from auth.users will cascade-delete the profile
     const { error: authErr } = await adminSupabase.auth.admin.deleteUser(userId);
     if (authErr) {

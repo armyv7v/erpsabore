@@ -12,8 +12,17 @@ export function getSupabaseAdminEnv() {
   };
 }
 
+// El bypass de auth para E2E solo es válido fuera de producción: si la var
+// llegara a un despliegue productivo, no debe desactivar la autenticación real.
+export function isPlaywrightBypassActive() {
+  return (
+    process.env.PLAYWRIGHT_TEST_BYPASS === "true" &&
+    process.env.NODE_ENV !== "production"
+  );
+}
+
 export function isSupabaseConfigured() {
-  if (process.env.PLAYWRIGHT_TEST_BYPASS === "true") {
+  if (isPlaywrightBypassActive()) {
     return false;
   }
   const { url, anonKey } = getSupabaseEnv();

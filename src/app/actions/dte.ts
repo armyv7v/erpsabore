@@ -1,7 +1,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { requireAuthenticatedContext } from "@/lib/services/auth-service";
+import { requireAuthenticatedContext, assertUserHasRole } from "@/lib/services/auth-service";
 import { parseDigitalCertificate } from "@/lib/services/cert-parser";
 import { encryptPrivateKey } from "@/lib/services/crypto-service";
 import { saveDigitalCertificate, deleteActiveCertificate } from "@/lib/repositories/certificate-repository";
@@ -16,6 +16,8 @@ export async function uploadDigitalCertificateAction(
 ): Promise<ActionState> {
   try {
     const { user, supabase } = await requireAuthenticatedContext();
+    // El certificado de firma tributaria es material sensible: solo admin/finanzas.
+    assertUserHasRole(user, ["admin", "finanzas"]);
     
     const file = formData.get("certificateFile") as File | null;
     const password = String(formData.get("password") ?? "");
@@ -72,6 +74,8 @@ export async function uploadDigitalCertificateAction(
 export async function deleteDigitalCertificateAction(): Promise<ActionState> {
   try {
     const { user, supabase } = await requireAuthenticatedContext();
+    // Revocar la firma del tenant es tan sensible como cargarla: solo admin/finanzas.
+    assertUserHasRole(user, ["admin", "finanzas"]);
     
     await deleteActiveCertificate(supabase, user.tenantId);
     

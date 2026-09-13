@@ -4,6 +4,14 @@ import * as crypto from "crypto";
 const getEncryptionKey = (): Buffer => {
   const secret = process.env.SII_CERT_ENCRYPTION_KEY;
   if (!secret) {
+    // Sin la clave de entorno, las claves privadas de certificados SII
+    // quedarian cifradas con un literal publico en el repo. En produccion
+    // eso es inaceptable: fallar duro en vez de degradar en silencio.
+    if (process.env.NODE_ENV === "production") {
+      throw new Error(
+        "Falta SII_CERT_ENCRYPTION_KEY: no se puede cifrar ni descifrar claves privadas de certificados SII sin esta variable de entorno."
+      );
+    }
     console.warn(
       "[CryptoService] WARNING: SII_CERT_ENCRYPTION_KEY is not defined. Using development fallback key."
     );
