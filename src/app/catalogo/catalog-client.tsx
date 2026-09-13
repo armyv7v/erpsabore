@@ -21,13 +21,11 @@ import {
   Check,
   Users,
   Loader2,
-  MapPin,
   ArrowUpDown,
   Printer,
   BookOpen,
 } from "lucide-react";
 
-const MOCK_BRANCHES = ["Todos", "Almacén Central", "Sucursal Providencia", "Sucursal Las Condes"];
 const SORT_OPTIONS = [
   { value: "name-asc", label: "A-Z" },
   { value: "name-desc", label: "Z-A" },
@@ -179,10 +177,8 @@ export default function CatalogClient({ products, customers = [], user = null }:
 
   // Estados de Filtros Avanzados
   const [stockFilter, setStockFilter] = useState<"all" | "critical" | "out_of_stock">("all");
-  const [activeBranch, setActiveBranch] = useState("Todos");
   const [sortBy, setSortBy] = useState("name-asc");
   const [isCategoryDropdownOpen, setIsCategoryDropdownOpen] = useState(false);
-  const [isBranchDropdownOpen, setIsBranchDropdownOpen] = useState(false);
   const [isSortDropdownOpen, setIsSortDropdownOpen] = useState(false);
 
   // Estados de Paginación
@@ -656,12 +652,6 @@ export default function CatalogClient({ products, customers = [], user = null }:
                 value={searchQuery}
                 onChange={(event) => setSearchQuery(event.target.value)}
               />
-              <button
-                type="button"
-                className="text-primary hover:bg-primary/5 flex items-center gap-1 rounded-r-xl px-4 font-medium transition-colors"
-              >
-                <Filter className="hidden w-4 h-4 sm:block" /> Filtrar
-              </button>
             </div>
           </label>
         </div>
@@ -711,7 +701,6 @@ export default function CatalogClient({ products, customers = [], user = null }:
               type="button"
               onClick={() => {
                 setIsCategoryDropdownOpen(!isCategoryDropdownOpen);
-                setIsBranchDropdownOpen(false);
                 setIsSortDropdownOpen(false);
               }}
               className="flex items-center gap-1.5 rounded-xl border border-slate-200 bg-white px-3 py-2 text-xs font-bold text-slate-700 dark:border-slate-800 dark:bg-slate-950 dark:text-slate-200 hover:border-primary transition-all active:scale-95 cursor-pointer shadow-sm"
@@ -745,46 +734,6 @@ export default function CatalogClient({ products, customers = [], user = null }:
             )}
           </div>
 
-          {/* Dropdown Almacén */}
-          <div className="relative">
-            <button
-              type="button"
-              onClick={() => {
-                setIsBranchDropdownOpen(!isBranchDropdownOpen);
-                setIsCategoryDropdownOpen(false);
-                setIsSortDropdownOpen(false);
-              }}
-              className="flex items-center gap-1.5 rounded-xl border border-slate-200 bg-white px-3 py-2 text-xs font-bold text-slate-700 dark:border-slate-800 dark:bg-slate-950 dark:text-slate-200 hover:border-primary transition-all active:scale-95 cursor-pointer shadow-sm"
-            >
-              <MapPin className="w-3.5 h-3.5 text-slate-400" />
-              <span>Almacén: <strong>{activeBranch}</strong></span>
-            </button>
-            {isBranchDropdownOpen && (
-              <>
-                <div className="fixed inset-0 z-10" onClick={() => setIsBranchDropdownOpen(false)} />
-                <div className="absolute left-0 mt-1.5 w-56 rounded-xl border border-slate-200 bg-white p-1.5 shadow-xl dark:border-slate-800 dark:bg-slate-950 z-20 animate-in slide-in-from-top-1 duration-150">
-                  {MOCK_BRANCHES.map((branchName) => (
-                    <button
-                      key={branchName}
-                      type="button"
-                      onClick={() => {
-                        setActiveBranch(branchName);
-                        setIsBranchDropdownOpen(false);
-                      }}
-                      className={`w-full text-left rounded-lg px-2.5 py-2 text-xs font-semibold transition-colors cursor-pointer ${
-                        activeBranch === branchName
-                          ? "bg-primary text-white"
-                          : "text-slate-600 hover:bg-slate-50 dark:text-slate-300 dark:hover:bg-slate-900"
-                      }`}
-                    >
-                      {branchName}
-                    </button>
-                  ))}
-                </div>
-              </>
-            )}
-          </div>
-
           {/* Dropdown Ordenar por */}
           <div className="relative">
             <button
@@ -792,7 +741,6 @@ export default function CatalogClient({ products, customers = [], user = null }:
               onClick={() => {
                 setIsSortDropdownOpen(!isSortDropdownOpen);
                 setIsCategoryDropdownOpen(false);
-                setIsBranchDropdownOpen(false);
               }}
               className="flex items-center gap-1.5 rounded-xl border border-slate-200 bg-white px-3 py-2 text-xs font-bold text-slate-700 dark:border-slate-800 dark:bg-slate-950 dark:text-slate-200 hover:border-primary transition-all active:scale-95 cursor-pointer shadow-sm"
             >

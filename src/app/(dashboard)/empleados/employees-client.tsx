@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useMemo, useTransition } from "react";
-import { Search, UserPlus, MoreVertical, X, Upload, AlertCircle, CheckCircle2 } from "lucide-react";
+import { Search, UserPlus, X, AlertCircle, CheckCircle2 } from "lucide-react";
 import type { EmployeeRecord } from "@/lib/repositories/employee-repository";
 import { createEmployeeAction } from "@/app/actions/employees";
 import type { ActionState } from "@/lib/types/erp";
@@ -180,9 +180,6 @@ export default function EmployeesClient({ employees }: Props) {
                   >
                     {STATUS_TEXT[employee.status] ?? employee.status}
                   </span>
-                  <button className="text-slate-400 hover:text-primary transition-colors">
-                    <MoreVertical className="w-5 h-5" />
-                  </button>
                 </div>
               </div>
             </div>
@@ -222,12 +219,6 @@ export default function EmployeesClient({ employees }: Props) {
                 </div>
               )}
 
-              <div className="flex justify-center">
-                <div className="size-20 rounded-full bg-slate-100 dark:bg-slate-800 border-2 border-dashed border-slate-300 dark:border-slate-600 flex flex-col items-center justify-center cursor-pointer hover:border-primary transition-colors">
-                  <Upload className="w-6 h-6 text-slate-400" />
-                  <span className="text-[10px] font-bold text-slate-400 uppercase mt-1">Foto</span>
-                </div>
-              </div>
               <div>
                 <label className="block text-sm font-semibold mb-1">Nombre Completo *</label>
                 <input
