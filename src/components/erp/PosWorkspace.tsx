@@ -1128,18 +1128,18 @@ export default function PosWorkspace({ products: initialProducts, branches }: Po
                         </div>
 
                         {/* Fila de Controles de Cantidad / Stock */}
-                        <div className="flex items-center justify-between pt-1.5 border-t border-slate-150 dark:border-slate-800 mt-1.5 h-7">
+                        <div className="flex items-center justify-between pt-1.5 border-t border-slate-150 dark:border-slate-800 mt-1.5 h-11">
                           {cartQty > 0 ? (
-                            <div className="flex items-center gap-1 bg-slate-50 dark:bg-slate-900 p-0.5 rounded-lg border border-slate-200 dark:border-slate-700 w-full justify-between">
+                            <div className="flex items-center gap-1 bg-slate-50 dark:bg-slate-900 p-1 rounded-lg border border-slate-200 dark:border-slate-700 w-full justify-between">
                               <button
                                 type="button"
                                 onClick={(e) => {
                                   e.stopPropagation();
                                   removeFromCart(p.id);
                                 }}
-                                className="p-0.5 rounded bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:bg-slate-100 text-slate-700 dark:text-slate-200 cursor-pointer"
+                                className="w-11 h-11 flex items-center justify-center rounded bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:bg-slate-100 text-slate-700 dark:text-slate-200 cursor-pointer"
                               >
-                                <Minus className="w-2.5 h-2.5" />
+                                <Minus className="w-4 h-4" />
                               </button>
                               
                               <input
@@ -1159,9 +1159,9 @@ export default function PosWorkspace({ products: initialProducts, branches }: Po
                                   e.stopPropagation();
                                   addToCart(p);
                                 }}
-                                className="p-0.5 rounded bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:bg-slate-100 text-slate-700 dark:text-slate-200 cursor-pointer"
+                                className="w-11 h-11 flex items-center justify-center rounded bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:bg-slate-100 text-slate-700 dark:text-slate-200 cursor-pointer"
                               >
-                                <Plus className="w-2.5 h-2.5" />
+                                <Plus className="w-4 h-4" />
                               </button>
                             </div>
                           ) : (
@@ -1398,9 +1398,9 @@ export default function PosWorkspace({ products: initialProducts, branches }: Po
                 <div className="flex items-center gap-2">
                   <button
                     onClick={() => removeFromCart(item.product.id)}
-                    className="p-1 rounded-lg border border-slate-250 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-650"
+                    className="w-11 h-11 flex items-center justify-center rounded-lg border border-slate-250 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-650"
                   >
-                    <Minus className="w-3.5 h-3.5" />
+                    <Minus className="w-4 h-4" />
                   </button>
                   <input
                     type="number"
@@ -1413,9 +1413,9 @@ export default function PosWorkspace({ products: initialProducts, branches }: Po
                   />
                   <button
                     onClick={() => addToCart(item.product)}
-                    className="p-1 rounded-lg border border-slate-250 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-650"
+                    className="w-11 h-11 flex items-center justify-center rounded-lg border border-slate-250 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-650"
                   >
-                    <Plus className="w-3.5 h-3.5" />
+                    <Plus className="w-4 h-4" />
                   </button>
                 </div>
 
@@ -1425,7 +1425,7 @@ export default function PosWorkspace({ products: initialProducts, branches }: Po
                   </p>
                   <button
                     onClick={() => deleteLine(item.product.id)}
-                    className="text-[9px] font-bold text-red-500 hover:underline pt-0.5"
+                    className="min-h-11 px-2 text-[11px] font-bold text-red-500 hover:underline"
                   >
                     Eliminar
                   </button>
@@ -1518,7 +1518,7 @@ export default function PosWorkspace({ products: initialProducts, branches }: Po
               <button 
                 type="button"
                 onClick={() => setShowPaymentModal(false)}
-                className="p-1.5 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-400 hover:text-slate-650 transition-colors"
+                className="w-11 h-11 flex items-center justify-center rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-400 hover:text-slate-650 transition-colors"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -1782,7 +1782,7 @@ export default function PosWorkspace({ products: initialProducts, branches }: Po
                                     setAmountPaid(String(amt));
                                     setShowCashDropdown(false);
                                   }}
-                                  className={`flex flex-col items-center justify-center min-w-[80px] px-3 py-1.5 rounded-xl border text-center transition-all shrink-0 select-none cursor-pointer ${
+                                  className={`flex flex-col items-center justify-center min-w-[80px] min-h-11 px-3 py-1 rounded-xl border text-center transition-all shrink-0 select-none cursor-pointer ${
                                     focusedDropdownIndex === idx
                                       ? "bg-primary border-primary text-white shadow-md scale-[1.03]"
                                       : "bg-slate-50 dark:bg-slate-955 border-slate-200 dark:border-slate-850 text-slate-750 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800"
@@ -1910,9 +1910,9 @@ export default function PosWorkspace({ products: initialProducts, branches }: Po
               <button 
                 type="button"
                 onClick={() => setShowCashPopup(false)}
-                className="p-1 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-400 hover:text-slate-650"
+                className="w-11 h-11 flex items-center justify-center rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-400 hover:text-slate-650"
               >
-                <X className="w-4 h-4" />
+                <X className="w-5 h-5" />
               </button>
             </div>
 
@@ -1950,7 +1950,7 @@ export default function PosWorkspace({ products: initialProducts, branches }: Po
                       key={amt}
                       type="button"
                       onClick={() => setAmountPaid(String(amt))}
-                      className={`py-2 rounded-xl border text-xs font-extrabold text-center transition-all ${
+                      className={`min-h-11 py-1 rounded-xl border text-xs font-extrabold text-center transition-all ${
                         Number(amountPaid) === amt
                           ? "bg-primary border-primary text-white shadow-md scale-[1.03]"
                           : "bg-slate-50 dark:bg-slate-900 border-slate-200 dark:border-slate-850 text-slate-750 dark:text-slate-350 hover:bg-slate-100 dark:hover:bg-slate-800"
@@ -2010,9 +2010,9 @@ export default function PosWorkspace({ products: initialProducts, branches }: Po
               <button 
                 type="button"
                 onClick={() => setShowTransferPopup(false)}
-                className="p-1 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-400 hover:text-slate-650"
+                className="w-11 h-11 flex items-center justify-center rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-400 hover:text-slate-650"
               >
-                <X className="w-4 h-4" />
+                <X className="w-5 h-5" />
               </button>
             </div>
 
@@ -2168,9 +2168,9 @@ export default function PosWorkspace({ products: initialProducts, branches }: Po
               <button 
                 type="button"
                 onClick={() => setShowCloseShiftModal(false)}
-                className="p-1 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-400 hover:text-slate-650"
+                className="w-11 h-11 flex items-center justify-center rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-400 hover:text-slate-650"
               >
-                <X className="w-4 h-4" />
+                <X className="w-5 h-5" />
               </button>
             </div>
 

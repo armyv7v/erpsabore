@@ -579,7 +579,7 @@ export default function MovementsClient({ movements }: Props) {
               <button
                 onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
                 disabled={currentPage === 1}
-                className="p-2 border border-slate-200 dark:border-slate-700 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 disabled:opacity-40 transition-colors text-slate-600 dark:text-slate-300"
+                className="ux-touch-target border border-slate-200 dark:border-slate-700 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 disabled:opacity-40 transition-colors text-slate-600 dark:text-slate-300"
               >
                 <ChevronLeft className="w-4 h-4" />
               </button>
@@ -591,7 +591,7 @@ export default function MovementsClient({ movements }: Props) {
               <button
                 onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
                 disabled={currentPage === totalPages}
-                className="p-2 border border-slate-200 dark:border-slate-700 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 disabled:opacity-40 transition-colors text-slate-600 dark:text-slate-300"
+                className="ux-touch-target border border-slate-200 dark:border-slate-700 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 disabled:opacity-40 transition-colors text-slate-600 dark:text-slate-300"
               >
                 <ChevronRight className="w-4 h-4" />
               </button>

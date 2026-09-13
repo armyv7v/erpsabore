@@ -737,7 +737,7 @@ export default function InventoryClient({ products, summary }: Props) {
                   type="button"
                   onClick={() => setCurrentPage(1)}
                   disabled={currentPage === 1}
-                  className="flex size-8 items-center justify-center rounded-lg border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-350 disabled:opacity-40 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors disabled:cursor-not-allowed cursor-pointer"
+                  className="flex size-8 ux-touch-target items-center justify-center rounded-lg border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-350 disabled:opacity-40 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors disabled:cursor-not-allowed cursor-pointer"
                   title="Primera Página"
                 >
                   <ChevronsLeft className="w-4 h-4" />
@@ -746,7 +746,7 @@ export default function InventoryClient({ products, summary }: Props) {
                   type="button"
                   onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
                   disabled={currentPage === 1}
-                  className="flex size-8 items-center justify-center rounded-lg border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-350 disabled:opacity-40 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors disabled:cursor-not-allowed cursor-pointer"
+                  className="flex size-8 ux-touch-target items-center justify-center rounded-lg border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-350 disabled:opacity-40 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors disabled:cursor-not-allowed cursor-pointer"
                   title="Página Anterior"
                 >
                   <ChevronLeft className="w-4 h-4" />
@@ -757,7 +757,7 @@ export default function InventoryClient({ products, summary }: Props) {
                     key={p}
                     type="button"
                     onClick={() => setCurrentPage(p)}
-                    className={`flex size-8 items-center justify-center rounded-lg text-xs font-bold transition-all cursor-pointer ${
+                    className={`flex size-8 ux-touch-target items-center justify-center rounded-lg text-xs font-bold transition-all cursor-pointer ${
                       currentPage === p
                         ? "bg-primary text-white shadow-sm shadow-primary/20"
                         : "border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-350 hover:bg-slate-50 dark:hover:bg-slate-800"
@@ -771,7 +771,7 @@ export default function InventoryClient({ products, summary }: Props) {
                   type="button"
                   onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
                   disabled={currentPage === totalPages}
-                  className="flex size-8 items-center justify-center rounded-lg border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-350 disabled:opacity-40 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors disabled:cursor-not-allowed cursor-pointer"
+                  className="flex size-8 ux-touch-target items-center justify-center rounded-lg border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-350 disabled:opacity-40 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors disabled:cursor-not-allowed cursor-pointer"
                   title="Siguiente Página"
                 >
                   <ChevronRight className="w-4 h-4" />
@@ -780,7 +780,7 @@ export default function InventoryClient({ products, summary }: Props) {
                   type="button"
                   onClick={() => setCurrentPage(totalPages)}
                   disabled={currentPage === totalPages}
-                  className="flex size-8 items-center justify-center rounded-lg border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-350 disabled:opacity-40 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors disabled:cursor-not-allowed cursor-pointer"
+                  className="flex size-8 ux-touch-target items-center justify-center rounded-lg border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-350 disabled:opacity-40 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors disabled:cursor-not-allowed cursor-pointer"
                   title="Última Página"
                 >
                   <ChevronsRight className="w-4 h-4" />
