@@ -6,6 +6,7 @@ import { requireAuthenticatedContext } from "@/lib/services/auth-service";
 import { isSupabaseConfigured, getSupabaseAdminEnv } from "@/lib/supabase/config";
 import { createClient } from "@supabase/supabase-js";
 import { createAnnouncement, deleteAnnouncement } from "@/lib/repositories/announcement-repository";
+import { sendTenantPushNotification } from "@/lib/notifications/web-push";
 import { createVacationRequest, updateVacationRequestStatus } from "@/lib/repositories/vacation-repository";
 import type { ActionState } from "@/lib/types/erp";
 
@@ -60,10 +61,22 @@ export async function createAnnouncementAction(
 
     const parsed = announcementSchema.parse(rawData);
 
-    await createAnnouncement(adminSupabase, user.tenantId, {
+    const announcement = await createAnnouncement(adminSupabase, user.tenantId, {
       ...parsed,
       createdBy: user.id,
     });
+
+    try {
+      await sendTenantPushNotification(user.tenantId, {
+        title: announcement.title,
+        body: announcement.content || "Nuevo comunicado disponible en ERP Sabore.",
+        url: "/rrhh/portal",
+        tag: `announcement-${announcement.id}`,
+      });
+    } catch (pushError) {
+      // Push is best-effort: publishing the announcement is the source of truth.
+      console.error("[createAnnouncementAction Push Error]:", pushError);
+    }
 
     revalidatePath("/rrhh/portal");
 
