@@ -3,6 +3,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { Bell, LogOut, Menu, Search, FileText, CheckCircle2, Wallet, Check, Trash2 } from "lucide-react";
 import { logoutAction } from "@/app/actions/auth";
+import PushNotificationControl from "@/components/notifications/PushNotificationControl";
 import type { AuthUser } from "@/lib/types/erp";
 
 interface NavbarProps {
@@ -238,6 +239,7 @@ export default function Navbar({ user, onMenuClick }: NavbarProps) {
                   ))
                 )}
               </div>
+              <PushNotificationControl />
             </div>
           )}
         </div>
@@ -252,4 +254,5 @@ export default function Navbar({ user, onMenuClick }: NavbarProps) {
     </header>
   );
 }
+
 

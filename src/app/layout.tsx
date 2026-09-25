@@ -12,6 +12,8 @@ const publicSans = Public_Sans({
 export const metadata: Metadata = {
   title: "ERP Sabore",
   description: "Sistema ERP Empresarial",
+  manifest: "/manifest.webmanifest",
+  themeColor: "#0f766e",
 };
 
 export default function RootLayout({
@@ -33,3 +35,4 @@ export default function RootLayout({
     </html>
   );
 }
+
