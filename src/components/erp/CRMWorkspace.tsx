@@ -7,7 +7,7 @@ import { formatRut } from "@/lib/utils/rut";
 function CrmField({ label, id, children }: { label: string; id: string; children: React.ReactNode }) {
   return (
     <div className="flex flex-col gap-1">
-      <label htmlFor={id} className="text-xs font-bold uppercase tracking-wider text-slate-500">{label}</label>
+      <label htmlFor={id} className="text-xs font-bold text-slate-500">{label}</label>
       {children}
     </div>
   );
@@ -27,7 +27,7 @@ function getStatusColor(status: string) {
     case "prospect": return "bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400";
     case "client": return "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400";
     case "proposal": return "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400";
-    case "qualified": return "bg-violet-100 text-violet-700 dark:bg-violet-900/30 dark:text-violet-400";
+    case "qualified": return "bg-slate-100 text-slate-700";
     case "negotiation": return "bg-orange-100 text-orange-700 dark:bg-orange-900/30 dark:text-orange-400";
     case "closed": return "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400";
     default: return "bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-300";
@@ -184,7 +184,7 @@ export default function CRMWorkspace({ customers, opportunities }: { customers: 
   return (
     <div className="p-4 md:p-8 space-y-6">
       <div className="mb-6">
-        <h1 className="text-2xl font-bold tracking-tight">Módulo CRM</h1>
+        <h2 className="text-2xl font-bold tracking-tight">Módulo CRM</h2>
         <p className="text-sm text-slate-500 dark:text-slate-400">Gestión de clientes y oportunidades conectada al ERP del tenant.</p>
       </div>
 
@@ -195,18 +195,18 @@ export default function CRMWorkspace({ customers, opportunities }: { customers: 
       ) : null}
 
       <div className="flex flex-col sm:flex-row gap-3">
-        <button type="button" onClick={() => { setCustomerState(initialState); setIsCustomerModalOpen(true); }} className="flex items-center justify-center gap-2 bg-primary hover:bg-primary/90 text-white px-4 py-3 rounded-xl font-semibold shadow-sm flex-1 whitespace-nowrap transition-colors">
+        <button type="button" onClick={() => { setCustomerState(initialState); setIsCustomerModalOpen(true); }} className="flex items-center justify-center gap-2 bg-primary hover:bg-primary/90 text-white px-4 py-3 rounded-xl font-semibold flex-1 whitespace-nowrap transition-colors">
           <UserPlus className="w-5 h-5" />
           <span>Nuevo Cliente</span>
         </button>
-        <button type="button" onClick={() => { setOpportunityState(initialState); setIsOpportunityModalOpen(true); }} className="flex items-center justify-center gap-2 bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800/80 border border-primary/30 text-primary px-4 py-3 rounded-xl font-semibold shadow-sm flex-1 whitespace-nowrap transition-colors">
+        <button type="button" onClick={() => { setOpportunityState(initialState); setIsOpportunityModalOpen(true); }} className="flex items-center justify-center gap-2 bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800/80 border border-primary/30 text-primary px-4 py-3 rounded-xl font-semibold flex-1 whitespace-nowrap transition-colors">
           <LineChart className="w-5 h-5" />
           <span>Nueva Oportunidad</span>
         </button>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <div className="lg:col-span-2 bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
+        <div className="lg:col-span-2 bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800">
           <div className="flex justify-between items-end mb-6">
             <div>
               <h3 className="text-slate-900 dark:text-slate-100 text-lg font-bold">Pipeline de Ventas</h3>
@@ -232,14 +232,14 @@ export default function CRMWorkspace({ customers, opportunities }: { customers: 
 
         <div className="space-y-6">
           <div className="flex flex-col sm:flex-row lg:flex-col gap-4">
-            <div className="flex flex-1 flex-col gap-2 rounded-xl p-5 border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-sm">
+            <div className="flex flex-1 flex-col gap-2 rounded-xl p-5 border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900">
               <p className="text-slate-500 text-sm font-medium">Tasa de Conversión</p>
               <p className="text-slate-900 dark:text-white text-2xl font-bold">{conversionRate}%</p>
               <p className="text-emerald-500 text-xs font-semibold flex items-center gap-1">
                 <TrendingUp className="w-4 h-4" /> oportunidades cerradas / total
               </p>
             </div>
-            <div className="flex flex-1 flex-col gap-2 rounded-xl p-5 border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-sm">
+            <div className="flex flex-1 flex-col gap-2 rounded-xl p-5 border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900">
               <p className="text-slate-500 text-sm font-medium">Tiempo Cierre</p>
               <p className="text-slate-900 dark:text-white text-2xl font-bold">{opportunities.length > 0 ? "14 días" : "-"}</p>
               <p className="text-rose-500 text-xs font-semibold flex items-center gap-1">
@@ -248,7 +248,7 @@ export default function CRMWorkspace({ customers, opportunities }: { customers: 
             </div>
           </div>
 
-          <div className="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm p-5">
+          <div className="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 p-5">
             <div className="flex justify-between items-center mb-4">
               <h3 className="text-slate-900 dark:text-slate-100 text-lg font-bold">Contactos Recientes</h3>
               <button type="button" onClick={() => setShowAllContacts((value) => !value)} className="text-primary text-sm font-bold hover:underline">
@@ -270,7 +270,7 @@ export default function CRMWorkspace({ customers, opportunities }: { customers: 
                       <p className="text-slate-500 text-xs truncate">RUT: {contact.rut}</p>
                     </div>
                     <div className="flex items-center gap-2">
-                      <span className={`inline-block px-2 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider ${getStatusColor(contactStatus)}`}>
+                      <span className={`inline-block px-2 py-1 rounded-full text-xs font-bold ${getStatusColor(contactStatus)}`}>
                         {getStatusText(contactStatus)}
                       </span>
                       <ChevronRight className="w-4 h-4 text-slate-400 opacity-0 group-hover:opacity-100 transition-opacity" />
@@ -352,14 +352,14 @@ export default function CRMWorkspace({ customers, opportunities }: { customers: 
         </div>
       ) : null}
 
-      <div className="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm p-5">
+      <div className="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 p-5">
         <div className="flex items-center justify-between mb-4">
           <h3 className="text-slate-900 dark:text-slate-100 text-lg font-bold">Clientes del ERP</h3>
           <span className="text-xs text-slate-500">{customers.length} registrados</span>
         </div>
         <div className="overflow-x-auto">
           <table className="w-full text-left">
-            <thead className="bg-slate-50 dark:bg-slate-800/50 text-slate-500 uppercase text-xs font-bold tracking-wider">
+            <thead className="bg-slate-50 dark:bg-slate-800/50 text-slate-500 text-xs font-bold tracking-wider">
               <tr>
                 <th className="px-4 py-3">Cliente</th>
                 <th className="px-4 py-3">RUT</th>
@@ -406,14 +406,14 @@ export default function CRMWorkspace({ customers, opportunities }: { customers: 
         </div>
       ) : null}
 
-      <div className="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm p-5">
+      <div className="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 p-5">
         <div className="flex items-center justify-between mb-4">
           <h3 className="text-slate-900 dark:text-slate-100 text-lg font-bold">Oportunidades recientes</h3>
           <span className="text-xs text-slate-500">{opportunities.length} registradas</span>
         </div>
         <div className="overflow-x-auto">
           <table className="w-full text-left">
-            <thead className="bg-slate-50 dark:bg-slate-800/50 text-slate-500 uppercase text-xs font-bold tracking-wider">
+            <thead className="bg-slate-50 dark:bg-slate-800/50 text-slate-500 text-xs font-bold tracking-wider">
               <tr>
                 <th className="px-4 py-3">Cliente</th>
                 <th className="px-4 py-3">Etapa</th>
@@ -431,7 +431,7 @@ export default function CRMWorkspace({ customers, opportunities }: { customers: 
                   <tr key={opportunity.id} className="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
                     <td className="px-4 py-3 font-medium">{opportunity.customerName}</td>
                     <td className="px-4 py-3">
-                      <span className={`inline-block px-2 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider ${getStatusColor(opportunity.stage)}`}>
+                      <span className={`inline-block px-2 py-1 rounded-full text-xs font-bold ${getStatusColor(opportunity.stage)}`}>
                         {getStatusText(opportunity.stage)}
                       </span>
                     </td>
@@ -462,7 +462,7 @@ export default function CRMWorkspace({ customers, opportunities }: { customers: 
                         <button
                           type="button"
                           onClick={() => createQuoteFromOpportunity(opportunity)}
-                          className="text-sm font-bold text-violet-600 hover:underline"
+                          className="text-sm font-bold text-slate-700 hover:underline"
                         >
                           Guardar cotización
                         </button>

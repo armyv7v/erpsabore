@@ -21,7 +21,7 @@ export default function RegisterPage() {
               </picture>
             </div>
             <div className="px-3 py-1 bg-primary/10 rounded-full">
-              <span className="text-primary text-xs font-bold uppercase tracking-wider">Clientes</span>
+              <span className="text-primary text-xs font-bold">Clientes</span>
             </div>
           </div>
 

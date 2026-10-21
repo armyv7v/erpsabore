@@ -155,7 +155,7 @@ export default function ShipmentsClient({ shipments, userRole }: Props) {
               <Truck className="w-6 h-6" />
             </div>
             <div>
-              <h1 className="text-xl font-bold tracking-tight">Logística y Despachos</h1>
+              <h2 className="text-xl font-bold tracking-tight">Logística y Despachos</h2>
               {shipments.length > 0 && (
                 <p className="text-xs text-slate-500 dark:text-slate-400">
                   {shipments.length} despacho{shipments.length !== 1 ? "s" : ""}
@@ -170,7 +170,7 @@ export default function ShipmentsClient({ shipments, userRole }: Props) {
         {/* Search + Filters */}
         <div className="flex flex-col md:flex-row gap-4">
           <div className="flex-1">
-            <div className="flex h-12 w-full items-stretch rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 focus-within:border-primary transition-all shadow-sm">
+            <div className="flex h-12 w-full items-stretch rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 focus-within:border-primary transition-all">
               <div className="text-slate-400 flex items-center justify-center pl-4">
                 <Search className="w-5 h-5" />
               </div>
@@ -235,7 +235,7 @@ export default function ShipmentsClient({ shipments, userRole }: Props) {
               return (
                 <div
                   key={shipment.id}
-                  className="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 p-3.5 shadow-sm hover:shadow-md transition-shadow"
+                  className="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 p-3.5 hover:shadow-md transition-shadow"
                 >
                   <div className="flex flex-wrap justify-between items-start gap-3 mb-2.5">
                     <div className="flex items-center gap-2.5">
@@ -250,7 +250,7 @@ export default function ShipmentsClient({ shipments, userRole }: Props) {
                           {shipment.customerName ?? "Cliente sin asignar"}
                         </h3>
                         {shipment.invoiceNumber && (
-                          <p className="text-[10px] text-slate-405 dark:text-slate-400 mt-0.5 leading-none">
+                          <p className="text-xs text-slate-405 dark:text-slate-400 mt-0.5 leading-none">
                             Factura: {shipment.invoiceNumber}
                           </p>
                         )}
@@ -258,12 +258,12 @@ export default function ShipmentsClient({ shipments, userRole }: Props) {
                     </div>
                     <div className="flex flex-col items-end gap-0.5">
                       <span
-                        className={`px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider ${STATUS_BADGE[shipment.status]}`}
+                        className={`px-2 py-0.5 rounded-full text-xs font-bold ${STATUS_BADGE[shipment.status]}`}
                       >
                         {STATUS_LABELS[shipment.status]}
                       </span>
                       {shipment.estimatedAt && (
-                        <p className="text-[10px] text-slate-405 dark:text-slate-405 italic flex items-center gap-1 leading-none mt-0.5">
+                        <p className="text-xs text-slate-405 dark:text-slate-405 italic flex items-center gap-1 leading-none mt-0.5">
                           <Clock className="w-2.5 h-2.5" />
                           Est. {formatDate(shipment.estimatedAt)}
                         </p>
@@ -320,7 +320,7 @@ export default function ShipmentsClient({ shipments, userRole }: Props) {
                             </div>
                           </>
                         ) : shipment.carrier ? (
-                          <span className="px-2 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-[10px] font-bold text-slate-600 dark:text-slate-405 uppercase tracking-wider">
+                          <span className="px-2 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-xs font-bold text-slate-600 dark:text-slate-405">
                             {shipment.carrier}
                           </span>
                         ) : (
@@ -335,7 +335,7 @@ export default function ShipmentsClient({ shipments, userRole }: Props) {
                           userRole !== "cliente" ? (
                             <button
                               onClick={() => setEditingShipment(shipment)}
-                              className="bg-primary/10 text-primary px-2.5 py-1 rounded-lg text-[10px] font-bold hover:bg-primary/20 transition-colors cursor-pointer"
+                              className="bg-primary/10 text-primary px-2.5 py-1 rounded-lg text-xs font-bold hover:bg-primary/20 transition-colors cursor-pointer"
                             >
                               Actualizar Dir.
                             </button>
@@ -411,7 +411,7 @@ export default function ShipmentsClient({ shipments, userRole }: Props) {
 
               {/* Dirección de Despacho */}
               <div>
-                <label className="block text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-1.5">
+                <label className="block text-xs font-bold text-slate-500 mb-1.5">
                   Dirección de Despacho *
                 </label>
                 <input
@@ -426,7 +426,7 @@ export default function ShipmentsClient({ shipments, userRole }: Props) {
 
               {/* Estado */}
               <div>
-                <label className="block text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-1.5">
+                <label className="block text-xs font-bold text-slate-500 mb-1.5">
                   Estado del Envío *
                 </label>
                 <select
@@ -445,7 +445,7 @@ export default function ShipmentsClient({ shipments, userRole }: Props) {
 
               {/* Carrier */}
               <div>
-                <label className="block text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-1.5">
+                <label className="block text-xs font-bold text-slate-500 mb-1.5">
                   Carrier / Transportista
                 </label>
                 <input
@@ -459,7 +459,7 @@ export default function ShipmentsClient({ shipments, userRole }: Props) {
 
               {/* Tracking Code */}
               <div>
-                <label className="block text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-1.5">
+                <label className="block text-xs font-bold text-slate-500 mb-1.5">
                   Código de Seguimiento
                 </label>
                 <input
@@ -473,7 +473,7 @@ export default function ShipmentsClient({ shipments, userRole }: Props) {
 
               {/* Notas */}
               <div>
-                <label className="block text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-1.5">
+                <label className="block text-xs font-bold text-slate-500 mb-1.5">
                   Notas / Observaciones
                 </label>
                 <textarea

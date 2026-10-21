@@ -92,3 +92,44 @@ export const mobileNavigation = [
   { href: "/facturacion", label: "Facturas", icon: Receipt, roles: ["admin", "ventas", "finanzas"] },
   { href: "/inventario", label: "Inventario", icon: Package, roles: ["admin", "bodega"] },
 ];
+
+/**
+ * The name the shell shows for a screen. It is the one h1 of every page, so it has to
+ * say what the screen is, not repeat the product name. Sentence case, no trailing colon.
+ */
+const screenTitles: Record<string, string> = {
+  "/": "Resumen",
+  "/pos": "Punto de venta",
+  "/ventas": "Ventas",
+  "/cotizaciones": "Cotizaciones",
+  "/inventario": "Inventario",
+  "/catalogo": "Catálogo",
+  "/reportes": "Reportes",
+  "/proveedores": "Proveedores",
+  "/despachos": "Despachos",
+  "/crm": "CRM",
+  "/facturacion": "Facturación",
+  "/finanzas/flujo-caja": "Flujo de caja",
+  "/finanzas/conciliacion": "Conciliación",
+  "/finanzas/estado-resultados": "Estado de resultados",
+  "/finanzas/impuestos": "Impuestos",
+  "/empleados": "Empleados",
+  "/rrhh/nomina": "Nómina",
+  "/rrhh/portal": "Portal del empleado",
+  "/sucursales": "Sucursales",
+  "/usuarios": "Usuarios",
+  "/configuracion": "Configuración de la empresa",
+};
+
+export function screenTitle(pathname: string): string {
+  const exact = screenTitles[pathname];
+  if (exact) {
+    return exact;
+  }
+
+  const parent = Object.keys(screenTitles)
+    .filter((href) => href !== "/" && pathname.startsWith(`${href}/`))
+    .sort((a, b) => b.length - a.length)[0];
+
+  return parent ? screenTitles[parent] : "Panel";
+}

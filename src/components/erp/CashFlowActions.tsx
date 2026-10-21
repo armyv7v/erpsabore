@@ -269,7 +269,7 @@ export default function CashFlowActions({ movements, today }: CashFlowActionsPro
                 <button
                   type="submit"
                   disabled={isPending}
-                  className="flex-1 rounded-xl bg-primary px-4 py-2.5 font-bold text-white transition-colors shadow-sm hover:bg-primary/90 disabled:opacity-70"
+                  className="flex-1 rounded-xl bg-primary px-4 py-2.5 font-bold text-white transition-colors hover:bg-primary/90 disabled:opacity-70"
                 >
                   {isPending ? "Guardando..." : "Guardar movimiento"}
                 </button>

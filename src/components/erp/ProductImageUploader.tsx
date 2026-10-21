@@ -122,7 +122,7 @@ export default function ProductImageUploader({ currentImageUrl = null, name = "i
       <input type="hidden" name="removeImage" value={removeImage.toString()} />
 
       {previewUrl ? (
-        <div className="relative rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950/40 group transition-all duration-300 shadow-sm max-w-full aspect-[4/3] flex items-center justify-center">
+        <div className="relative rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950/40 group transition-all duration-300 max-w-full aspect-[4/3] flex items-center justify-center">
           <img
             src={previewUrl}
             alt="Vista previa del producto"
@@ -167,10 +167,10 @@ export default function ProductImageUploader({ currentImageUrl = null, name = "i
           <p className="text-xs font-bold text-slate-800 dark:text-slate-250">
             Cargue una foto del producto
           </p>
-          <p className="text-[10px] text-slate-450 mt-1">
+          <p className="text-xs text-slate-450 mt-1">
             Arrastre y suelte aquí o haga clic para explorar
           </p>
-          <p className="text-[9px] text-slate-400 dark:text-slate-550 mt-3 font-medium uppercase tracking-wider">
+          <p className="text-[11px] text-slate-400 dark:text-slate-550 mt-3 font-medium">
             JPG, PNG, WEBP, GIF hasta 2MB
           </p>
         </div>

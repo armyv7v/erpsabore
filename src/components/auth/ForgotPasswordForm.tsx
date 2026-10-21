@@ -38,7 +38,7 @@ export default function ForgotPasswordForm() {
       <div className="flex flex-col login-fade-3">
         <label
           htmlFor="forgot-email"
-          className="text-[rgba(248,246,246,0.5)] text-xs font-bold uppercase tracking-[0.15em] pb-2 px-1"
+          className="text-[rgba(248,246,246,0.5)] text-xs font-bold pb-2 px-1"
         >
           Correo electrónico
         </label>

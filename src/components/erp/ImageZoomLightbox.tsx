@@ -50,7 +50,7 @@ export default function ImageZoomLightbox({ imageUrl, onClose }: Props) {
         />
       </div>
 
-      <div className="absolute bottom-6 px-4 py-2 bg-white/5 backdrop-blur-sm rounded-full text-[10px] text-slate-400 uppercase tracking-widest pointer-events-none">
+      <div className="absolute bottom-6 px-4 py-2 bg-white/5 backdrop-blur-sm rounded-full text-xs text-slate-400 pointer-events-none">
         Haz clic en cualquier lugar para cerrar
       </div>
     </div>

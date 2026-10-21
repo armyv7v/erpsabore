@@ -89,13 +89,13 @@ export default function ProductDetailsModal({ product, onClose, onAddToCart, onE
                   <div className="size-11 bg-white/10 backdrop-blur-sm rounded-full flex items-center justify-center scale-90 group-hover:scale-100 transition-transform duration-500">
                     <Maximize2 className="w-5 h-5" />
                   </div>
-                  <span className="text-xs tracking-wider uppercase">Ver foto ampliada</span>
+                  <span className="text-xs">Ver foto ampliada</span>
                 </div>
               </>
             ) : (
               <div className="flex flex-col items-center gap-3 py-16">
                 <Package className="w-16 h-16 text-slate-350 dark:text-slate-600" />
-                <span className="text-xs text-slate-400 font-semibold uppercase tracking-wider">Sin foto cargada</span>
+                <span className="text-xs text-slate-400 font-semibold">Sin foto cargada</span>
               </div>
             )}
           </div>
@@ -114,15 +114,15 @@ export default function ProductDetailsModal({ product, onClose, onAddToCart, onE
             <div className="space-y-4">
               {/* SKU & Barcode Badges */}
               <div className="flex flex-wrap items-center gap-2">
-                <span className="bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700/80 rounded-lg px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-slate-650 dark:text-slate-350">
+                <span className="bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700/80 rounded-lg px-2.5 py-1 text-xs font-bold text-slate-650 dark:text-slate-350">
                   SKU: {product.sku}
                 </span>
                 {product.barcode && (
-                  <span className="bg-blue-50 dark:bg-blue-950/40 border border-blue-100 dark:border-blue-900/50 rounded-lg px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-blue-600 dark:text-blue-400">
+                  <span className="bg-blue-50 dark:bg-blue-950/40 border border-blue-100 dark:border-blue-900/50 rounded-lg px-2.5 py-1 text-xs font-bold text-blue-600 dark:text-blue-400">
                     Cód: {product.barcode}
                   </span>
                 )}
-                <span className={`border rounded-lg px-2.5 py-1 text-[10px] font-extrabold uppercase tracking-wider ${stockBadgeClass}`}>
+                <span className={`border rounded-lg px-2.5 py-1 text-xs font-extrabold ${stockBadgeClass}`}>
                   {stockLabel}
                 </span>
               </div>
@@ -135,18 +135,18 @@ export default function ProductDetailsModal({ product, onClose, onAddToCart, onE
               {/* Precios */}
               <div className={`py-2.5 border-y border-slate-100 dark:border-slate-800/80 grid gap-4 ${showCostPrice ? "grid-cols-2" : "grid-cols-1"}`}>
                 <div>
-                  <p className="text-[10px] text-slate-405 dark:text-slate-400 uppercase font-extrabold tracking-wider">Precio de Venta</p>
+                  <p className="text-xs text-slate-405 dark:text-slate-400 font-extrabold tracking-wider">Precio de Venta</p>
                   <p className="text-xl font-black text-primary mt-0.5">
                     {formatCLP(product.unitPrice)}
-                    <span className="text-[10px] text-slate-400 font-bold uppercase"> CLP</span>
+                    <span className="text-xs text-slate-400 font-bold uppercase"> CLP</span>
                   </p>
                 </div>
                 {showCostPrice && (
                   <div>
-                    <p className="text-[10px] text-slate-405 dark:text-slate-400 uppercase font-extrabold tracking-wider">Precio de Costo</p>
+                    <p className="text-xs text-slate-405 dark:text-slate-400 font-extrabold tracking-wider">Precio de Costo</p>
                     <p className="text-xl font-black text-slate-700 dark:text-slate-200 mt-0.5">
                       {product.costPrice !== undefined && product.costPrice !== null ? formatCLP(product.costPrice) : "$0"}
-                      <span className="text-[10px] text-slate-400 font-bold uppercase"> CLP</span>
+                      <span className="text-xs text-slate-400 font-bold uppercase"> CLP</span>
                     </p>
                   </div>
                 )}
@@ -154,7 +154,7 @@ export default function ProductDetailsModal({ product, onClose, onAddToCart, onE
 
               {/* Stock info */}
               <div className="space-y-2">
-                <div className="flex justify-between text-xs font-bold text-slate-500 uppercase tracking-wider">
+                <div className="flex justify-between text-xs font-bold text-slate-500">
                   <span>Stock Disponible</span>
                   <span className={product.stockQuantity === 0 ? "text-red-500 font-extrabold" : "text-slate-850 dark:text-slate-200"}>
                     {product.stockQuantity} uds
@@ -176,7 +176,7 @@ export default function ProductDetailsModal({ product, onClose, onAddToCart, onE
 
               {/* Descripción */}
               <div className="space-y-1.5 pt-2">
-                <div className="flex items-center gap-1.5 text-xs text-slate-450 uppercase font-bold tracking-wider">
+                <div className="flex items-center gap-1.5 text-xs text-slate-450 font-bold tracking-wider">
                   <Info className="w-4 h-4 text-slate-400" />
                   <span>Descripción / Info</span>
                 </div>

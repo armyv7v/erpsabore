@@ -3,7 +3,7 @@
 :root {
   --background: #221610;
   --foreground: #f8f6f6;
-  --color-primary: #BC7A3A;
+  --color-primary: #9a5f26;
   --color-brand-green: #42431C;
   --color-highlight: #E6A868;
 }
@@ -11,13 +11,64 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --color-primary: #BC7A3A;
-  --color-brand-green: #42431C;
   --color-background-light: #f8f6f6;
   --color-background-dark: #221610;
+
+  /* Brand: one accent. #9a5f26 is the brand amber taken dark enough that white text on a
+     filled button clears 5.2:1 and the same hue on white clears 5.2:1 as text. */
+  --color-primary: #9a5f26;
+  --color-primary-ink: #6b4416;
+  --color-primary-mark: #bc7a3a;
+  --color-primary-light: #e3b486;
+  --color-brand-green: #42431c;
+
+  /* The framed sheet: chrome on the frame, work on the sheet. The frame is a neutral
+     stone, not a cream: a low-chroma warm off-white reads as paper, a saturated one
+     reads as the cream-and-terracotta default. */
+  --color-frame: #f3f2f0;
+  --color-sheet: #ffffff;
+  --color-border: #e7e5e1;
+  --color-rule: #efeeeb;
+  --color-control: #d5d2cd;
+  --color-edge: #e0ddd8;
+
+  /* Ink, three tiers. All readable on the sheet (4.6:1 or better). */
+  --color-ink: #1c1512;
+  --color-muted: #5f574e;
+  --color-faint: #7a7168;
+
+  /* Warm neutral ramp. Tailwind's slate is cool and the whole app leans on it:
+     retinting the ramp is the one lever that makes 1,800-odd utilities warm at once.
+     Every step from 400 up clears 4.5:1 on white, so meta text stays readable. */
+  --color-slate-50: #faf9f7;
+  --color-slate-100: #f3f1ee;
+  --color-slate-200: #e7e4df;
+  --color-slate-300: #d3cfc8;
+  --color-slate-400: #7a7168;
+  --color-slate-500: #6b6359;
+  --color-slate-600: #57504a;
+  --color-slate-700: #453f39;
+  --color-slate-800: #2e2a26;
+  --color-slate-900: #221e1a;
+  --color-slate-950: #16130f;
+
+  /* Status: pale ground, dark ink, never a saturated fill. */
+  --color-positive: #1f7a4d;
+  --color-positive-bg: #dcfae5;
+  --color-positive-ink: #04250e;
+  --color-negative: #b42328;
+  --color-negative-bg: #ffedea;
+  --color-negative-ink: #831c1e;
+  --color-warning-bg: #fffbeb;
+  --color-warning-ink: #92400e;
+
   --font-sans: var(--font-public-sans), Arial, Helvetica, sans-serif;
   --font-display: var(--font-public-sans), Arial, Helvetica, sans-serif;
+
   --radius-DEFAULT: 0.25rem;
+  --radius-chip: 4px;
+  --radius-control: 8px;
+  --radius-card: 16px;
   --radius-lg: 0.5rem;
   --radius-xl: 0.75rem;
   --radius-full: 9999px;
@@ -34,19 +85,19 @@ body {
   overflow-x: hidden;
 }
 
-/* Custom living scrollbar */
+/* Scrollbar: quiet on both the dark landing and the light sheet. */
 ::-webkit-scrollbar {
-  width: 6px;
+  width: 8px;
 }
 ::-webkit-scrollbar-track {
-  background: #18100b;
+  background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-  background: rgba(188, 122, 58, 0.4);
+  background: rgba(28, 21, 18, 0.18);
   border-radius: 9999px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(188, 122, 58, 0.8);
+  background: rgba(28, 21, 18, 0.32);
 }
 
 /* ═══════════════════════════════════════════════════
@@ -241,6 +292,12 @@ body {
 .ux-touch-target {
   min-width: 2.75rem;
   min-height: 2.75rem;
+}
+
+/* Data figures are read down a column: tabular numerals in every table, so a 9 and a 1
+   occupy the same width. */
+table {
+  font-variant-numeric: tabular-nums;
 }
 
 /* A1 (audit 2026-09-13): indicador de foco de teclado visible en toda la app.

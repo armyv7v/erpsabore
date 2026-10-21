@@ -20,7 +20,7 @@ export default function LoginForm() {
       <div className="flex flex-col login-fade-3">
         <label
           htmlFor="login-email"
-          className="text-[rgba(248,246,246,0.5)] text-xs font-bold uppercase tracking-[0.15em] pb-2 px-1"
+          className="text-[rgba(248,246,246,0.5)] text-xs font-bold pb-2 px-1"
         >
           Correo electrónico
         </label>
@@ -41,7 +41,7 @@ export default function LoginForm() {
       <div className="flex flex-col login-fade-4">
         <label
           htmlFor="login-password"
-          className="text-[rgba(248,246,246,0.5)] text-xs font-bold uppercase tracking-[0.15em] pb-2 px-1"
+          className="text-[rgba(248,246,246,0.5)] text-xs font-bold pb-2 px-1"
         >
           Contraseña
         </label>

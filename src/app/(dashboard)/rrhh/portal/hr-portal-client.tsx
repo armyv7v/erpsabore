@@ -183,7 +183,7 @@ export default function HRPortalClient({
       Empresa: "text-primary",
       Capacitación: "text-green-600",
       Beneficios: "text-blue-600",
-      Eventos: "text-purple-600"
+      Eventos: "text-slate-700"
     };
 
     const fd = new FormData();
@@ -264,7 +264,7 @@ export default function HRPortalClient({
       {/* Header section with Tabs if Admin/HR */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b border-slate-200 dark:border-slate-800 pb-5">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight">Portal & Comunicados RRHH</h1>
+          <h2 className="text-2xl font-bold tracking-tight">Portal & Comunicados RRHH</h2>
           <p className="text-sm text-slate-500 dark:text-slate-400">
             {isAdminOrHR
               ? "Panel de administración y vista de empleado para recursos humanos."
@@ -279,7 +279,7 @@ export default function HRPortalClient({
               onClick={() => setActiveTab("announcements")}
               className={`flex-1 sm:flex-initial px-4 py-2 text-xs font-bold rounded-lg transition-colors flex items-center gap-1.5 justify-center ${
                 activeTab === "announcements"
-                  ? "bg-white dark:bg-slate-900 text-slate-900 dark:text-white shadow-sm"
+                  ? "bg-white dark:bg-slate-900 text-slate-900 dark:text-white"
                   : "text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200"
               }`}
             >
@@ -290,7 +290,7 @@ export default function HRPortalClient({
               onClick={() => setActiveTab("vacations")}
               className={`flex-1 sm:flex-initial px-4 py-2 text-xs font-bold rounded-lg transition-colors flex items-center gap-1.5 justify-center ${
                 activeTab === "vacations"
-                  ? "bg-white dark:bg-slate-900 text-slate-900 dark:text-white shadow-sm"
+                  ? "bg-white dark:bg-slate-900 text-slate-900 dark:text-white"
                   : "text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200"
               }`}
             >
@@ -301,7 +301,7 @@ export default function HRPortalClient({
               onClick={() => setActiveTab("portal")}
               className={`flex-1 sm:flex-initial px-4 py-2 text-xs font-bold rounded-lg transition-colors flex items-center gap-1.5 justify-center ${
                 activeTab === "portal"
-                  ? "bg-white dark:bg-slate-900 text-slate-900 dark:text-white shadow-sm"
+                  ? "bg-white dark:bg-slate-900 text-slate-900 dark:text-white"
                   : "text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200"
               }`}
             >
@@ -319,17 +319,17 @@ export default function HRPortalClient({
             <h2 className="text-lg font-bold text-slate-950 dark:text-slate-50">Listado de Comunicados</h2>
             <button
               onClick={() => setIsAnnModalOpen(true)}
-              className="bg-primary hover:bg-primary/90 text-white px-4 py-2.5 rounded-xl flex items-center gap-2 text-sm font-semibold transition-colors shadow-sm cursor-pointer"
+              className="bg-primary hover:bg-primary/90 text-white px-4 py-2.5 rounded-xl flex items-center gap-2 text-sm font-semibold transition-colors cursor-pointer"
             >
               <Plus className="w-4 h-4" />
               <span>Nuevo Comunicado</span>
             </button>
           </div>
 
-          <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl overflow-hidden shadow-sm">
+          <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl overflow-hidden">
             <div className="overflow-x-auto">
               <table className="w-full border-collapse text-left text-sm text-slate-500 dark:text-slate-400">
-                <thead className="bg-slate-50 dark:bg-slate-800/50 text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider">
+                <thead className="bg-slate-50 dark:bg-slate-800/50 text-xs font-bold text-slate-700 dark:text-slate-300">
                   <tr>
                     <th scope="col" className="px-6 py-4">Título</th>
                     <th scope="col" className="px-6 py-4">Categoría</th>
@@ -388,10 +388,10 @@ export default function HRPortalClient({
         <div className="space-y-6">
           <h2 className="text-lg font-bold text-slate-950 dark:text-slate-50">Solicitudes de Vacaciones Recibidas</h2>
 
-          <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl overflow-hidden shadow-sm">
+          <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl overflow-hidden">
             <div className="overflow-x-auto">
               <table className="w-full border-collapse text-left text-sm text-slate-500 dark:text-slate-400">
-                <thead className="bg-slate-50 dark:bg-slate-800/50 text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider">
+                <thead className="bg-slate-50 dark:bg-slate-800/50 text-xs font-bold text-slate-700 dark:text-slate-300">
                   <tr>
                     <th scope="col" className="px-6 py-4">Empleado</th>
                     <th scope="col" className="px-6 py-4">Período</th>
@@ -498,7 +498,7 @@ export default function HRPortalClient({
                 />
               </div>
               <div>
-                <p className="text-[10px] uppercase tracking-wider text-slate-500 dark:text-slate-400 font-bold">
+                <p className="text-xs text-slate-500 dark:text-slate-400 font-bold">
                   Hola, {employee?.fullName || currentUser.fullName}
                 </p>
                 <h2 className="text-sm font-bold leading-tight">Portal Empleado</h2>
@@ -546,45 +546,45 @@ export default function HRPortalClient({
             <section className="px-4 py-4">
               <h3 className="text-slate-900 dark:text-slate-100 text-lg font-bold mb-4">Accesos Directos</h3>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-                <button className="flex flex-col items-start gap-3 p-4 bg-white dark:bg-slate-800/50 rounded-xl border border-slate-200 dark:border-slate-800 hover:border-primary transition-colors text-left group shadow-sm cursor-pointer">
+                <button className="flex flex-col items-start gap-3 p-4 bg-white dark:bg-slate-800/50 rounded-xl border border-slate-200 dark:border-slate-800 hover:border-primary transition-colors text-left group cursor-pointer">
                   <div className="size-10 rounded-lg bg-orange-100 dark:bg-orange-900/30 text-primary flex items-center justify-center group-hover:bg-primary group-hover:text-white transition-colors">
                     <PaymentsIcon />
                   </div>
                   <div>
                     <p className="font-bold text-sm text-slate-900 dark:text-white">Mis Liquidaciones</p>
-                    <p className="text-[10px] sm:text-xs text-slate-500 mt-1">Última: Octubre 2023</p>
+                    <p className="text-xs sm:text-xs text-slate-500 mt-1">Última: Octubre 2023</p>
                   </div>
                 </button>
 
-                <button className="flex flex-col items-start gap-3 p-4 bg-white dark:bg-slate-800/50 rounded-xl border border-slate-200 dark:border-slate-800 hover:border-blue-500 transition-colors text-left group shadow-sm cursor-pointer">
+                <button className="flex flex-col items-start gap-3 p-4 bg-white dark:bg-slate-800/50 rounded-xl border border-slate-200 dark:border-slate-800 hover:border-blue-500 transition-colors text-left group cursor-pointer">
                   <div className="size-10 rounded-lg bg-blue-100 dark:bg-blue-900/30 text-blue-600 flex items-center justify-center group-hover:bg-blue-600 group-hover:text-white transition-colors">
                     <FileBadge className="w-5 h-5" />
                   </div>
                   <div>
                     <p className="font-bold text-sm text-slate-900 dark:text-white">Mis Certificados</p>
-                    <p className="text-[10px] sm:text-xs text-slate-500 mt-1">Antigüedad, Renta</p>
+                    <p className="text-xs sm:text-xs text-slate-500 mt-1">Antigüedad, Renta</p>
                   </div>
                 </button>
 
-                <button className="flex flex-col items-start gap-3 p-4 bg-white dark:bg-slate-800/50 rounded-xl border border-slate-200 dark:border-slate-800 hover:border-green-500 transition-colors text-left group shadow-sm cursor-pointer">
+                <button className="flex flex-col items-start gap-3 p-4 bg-white dark:bg-slate-800/50 rounded-xl border border-slate-200 dark:border-slate-800 hover:border-green-500 transition-colors text-left group cursor-pointer">
                   <div className="size-10 rounded-lg bg-green-100 dark:bg-green-900/30 text-green-600 flex items-center justify-center group-hover:bg-green-600 group-hover:text-white transition-colors">
                     <CalendarRange className="w-5 h-5" />
                   </div>
                   <div>
                     <p className="font-bold text-sm text-slate-900 dark:text-white">Saldo Vacaciones</p>
-                    <p className="text-[10px] sm:text-xs text-slate-500 mt-1">
+                    <p className="text-xs sm:text-xs text-slate-500 mt-1">
                       {employee?.vacationDaysLeft ?? 15} días pendientes
                     </p>
                   </div>
                 </button>
 
-                <button className="flex flex-col items-start gap-3 p-4 bg-white dark:bg-slate-800/50 rounded-xl border border-slate-200 dark:border-slate-800 hover:border-purple-500 transition-colors text-left group shadow-sm cursor-pointer">
-                  <div className="size-10 rounded-lg bg-purple-100 dark:bg-purple-900/30 text-purple-600 flex items-center justify-center group-hover:bg-purple-600 group-hover:text-white transition-colors">
+                <button className="flex flex-col items-start gap-3 p-4 bg-white dark:bg-slate-800/50 rounded-xl border border-slate-200 dark:border-slate-800 hover:border-control transition-colors text-left group cursor-pointer">
+                  <div className="size-10 rounded-lg bg-slate-100 text-slate-700 flex items-center justify-center group-hover:bg-slate-900 group-hover:text-white transition-colors">
                     <UserCircle className="w-5 h-5" />
                   </div>
                   <div>
                     <p className="font-bold text-sm text-slate-900 dark:text-white">Mis Datos</p>
-                    <p className="text-[10px] sm:text-xs text-slate-500 mt-1">Actualizar perfil</p>
+                    <p className="text-xs sm:text-xs text-slate-500 mt-1">Actualizar perfil</p>
                   </div>
                 </button>
               </div>
@@ -605,7 +605,7 @@ export default function HRPortalClient({
                     <div
                       key={news.id}
                       onClick={() => setSelectedAnnouncement(news)}
-                      className="flex gap-4 p-3 bg-white dark:bg-slate-800/30 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-md transition-shadow cursor-pointer"
+                      className="flex gap-4 p-3 bg-white dark:bg-slate-800/30 rounded-xl border border-slate-200 dark:border-slate-800 hover:shadow-md transition-shadow cursor-pointer"
                     >
                       <div className="w-24 h-24 rounded-lg overflow-hidden shrink-0 relative bg-slate-100 dark:bg-slate-800 flex items-center justify-center">
                         {news.imageUrl ? (
@@ -621,7 +621,7 @@ export default function HRPortalClient({
                         )}
                       </div>
                       <div className="flex flex-col justify-center gap-1.5 py-1">
-                        <span className={`text-[10px] font-bold uppercase ${news.categoryColor}`}>
+                        <span className={`text-xs font-bold uppercase ${news.categoryColor}`}>
                           {news.category}
                         </span>
                         <h4 className="text-sm font-bold leading-snug line-clamp-2 text-slate-900 dark:text-white">
@@ -676,7 +676,7 @@ export default function HRPortalClient({
 
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-2">
+                  <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-2">
                     Fecha de Inicio
                   </label>
                   <input
@@ -690,7 +690,7 @@ export default function HRPortalClient({
                   />
                 </div>
                 <div>
-                  <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-2">
+                  <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-2">
                     Fecha de Término
                   </label>
                   <input
@@ -712,7 +712,7 @@ export default function HRPortalClient({
               )}
 
               <div>
-                <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-2">
+                <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-2">
                   Notas / Comentarios
                 </label>
                 <textarea
@@ -782,7 +782,7 @@ export default function HRPortalClient({
 
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-2">
+                  <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-2">
                     Título del Comunicado
                   </label>
                   <input
@@ -795,7 +795,7 @@ export default function HRPortalClient({
                   />
                 </div>
                 <div>
-                  <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-2">
+                  <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-2">
                     Categoría
                   </label>
                   <select
@@ -812,7 +812,7 @@ export default function HRPortalClient({
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-2">
+                <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-2">
                   URL de la Imagen (Opcional)
                 </label>
                 <input
@@ -825,7 +825,7 @@ export default function HRPortalClient({
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-2">
+                <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-2">
                   Contenido
                 </label>
                 <textarea
@@ -870,7 +870,7 @@ export default function HRPortalClient({
             <div className="flex justify-between items-center p-6 border-b border-slate-200 dark:border-slate-800">
               <div className="flex flex-col gap-1">
                 <span
-                  className={`text-[10px] font-bold uppercase tracking-wider ${selectedAnnouncement.categoryColor}`}
+                  className={`text-xs font-bold ${selectedAnnouncement.categoryColor}`}
                 >
                   {selectedAnnouncement.category}
                 </span>

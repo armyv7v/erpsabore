@@ -160,7 +160,7 @@ export default async function DtePdfPage({ params }: PageProps) {
                 {dteName}
               </span>
               <span className="text-xl font-black tracking-widest">Nº {folioText}</span>
-              <span className="text-[10px] font-black text-rose-600/80 dark:text-rose-400/80 print:text-rose-600">
+              <span className="text-xs font-black text-rose-600/80 dark:text-rose-400/80 print:text-rose-600">
                 S.I.I. - {tenantDetails.comuna.toUpperCase()}
               </span>
             </div>
@@ -172,7 +172,7 @@ export default async function DtePdfPage({ params }: PageProps) {
         <section className="mt-6 bg-slate-50 dark:bg-slate-900/50 print:bg-transparent border border-slate-100 dark:border-slate-800/60 print:border-0 rounded-2xl p-6 print:p-0 grid grid-cols-1 md:grid-cols-2 gap-4">
           
           <div className="flex flex-col gap-1.5">
-            <h2 className="text-xs font-bold uppercase tracking-wider text-slate-400 print:text-slate-500">
+            <h2 className="text-xs font-bold text-slate-400 print:text-slate-500">
               Señor(es):
             </h2>
             <p className="font-extrabold text-slate-900 dark:text-white print:text-black text-base">
@@ -187,7 +187,7 @@ export default async function DtePdfPage({ params }: PageProps) {
           </div>
 
           <div className="flex flex-col gap-1.5 md:border-l md:border-slate-200 md:dark:border-slate-800 print:border-slate-300 md:pl-6">
-            <h2 className="text-xs font-bold uppercase tracking-wider text-slate-400 print:text-slate-500">
+            <h2 className="text-xs font-bold text-slate-400 print:text-slate-500">
               Datos del Documento:
             </h2>
             <div className="text-xs flex flex-col gap-1.5 text-slate-600 dark:text-slate-400 print:text-slate-700">
@@ -210,7 +210,7 @@ export default async function DtePdfPage({ params }: PageProps) {
 
         {referencedInvoice && (
           <section className="mt-4 bg-amber-50/40 dark:bg-amber-950/10 border border-amber-100 dark:border-amber-900/30 rounded-2xl p-6 text-xs flex flex-col gap-2">
-            <h2 className="font-bold uppercase tracking-wider text-amber-850 dark:text-amber-400">
+            <h2 className="font-bold text-amber-850 dark:text-amber-400">
               Información de Referencia (Normativa SII):
             </h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-slate-750 dark:text-slate-300">
@@ -281,7 +281,7 @@ export default async function DtePdfPage({ params }: PageProps) {
           <div className="md:col-span-7 flex flex-col items-center justify-center border border-dashed border-slate-300 dark:border-slate-700 print:border-slate-400 p-4 rounded-3xl min-h-[220px]">
             <BarcodePdf417 code={tedXml} width={450} height={160} />
             <div className="mt-3 text-center flex flex-col gap-0.5">
-              <span className="text-[10px] font-black uppercase tracking-wider text-rose-600 dark:text-rose-400 print:text-black">
+              <span className="text-xs font-black text-rose-600 dark:text-rose-400 print:text-black">
                 Timbre Electrónico SII
               </span>
               <span className="text-[8px] font-bold text-slate-400 dark:text-slate-500 print:text-slate-600">
@@ -307,7 +307,7 @@ export default async function DtePdfPage({ params }: PageProps) {
             </div>
 
             <div className="flex justify-between text-base pt-2 text-slate-900 dark:text-white print:text-black">
-              <span className="font-extrabold uppercase text-xs tracking-wider text-slate-400 print:text-slate-600 flex items-center">
+              <span className="font-extrabold text-xs tracking-wider text-slate-400 print:text-slate-600 flex items-center">
                 Total:
               </span>
               <strong className="text-lg font-black tracking-tight text-emerald-600 dark:text-emerald-400 print:text-black">
@@ -319,7 +319,7 @@ export default async function DtePdfPage({ params }: PageProps) {
         </section>
 
         {/* PIE DE PÁGINA COMERCIAL */}
-        <footer className="mt-12 pt-6 border-t border-slate-100 dark:border-slate-800/80 text-center text-[10px] text-slate-400 dark:text-slate-500 print:text-slate-500">
+        <footer className="mt-12 pt-6 border-t border-slate-100 dark:border-slate-800/80 text-center text-xs text-slate-400 dark:text-slate-500 print:text-slate-500">
           <p>{tenantDetails.razonSocial} — Gracias por su preferencia.</p>
           <p className="mt-1">Documento tributario emitido de forma automatizada mediante ERP Sabore.</p>
         </footer>

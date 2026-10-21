@@ -248,14 +248,14 @@ export default function InventoryClient({ products, summary }: Props) {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight">Inventario Central</h1>
+          <h2 className="text-2xl font-bold tracking-tight">Inventario Central</h2>
           <p className="text-sm text-slate-500 dark:text-slate-400">
             Gestión y control de stock
           </p>
         </div>
         <button
           onClick={() => setIsModalOpen(true)}
-          className="hidden md:flex items-center gap-2 bg-primary text-white px-4 py-2.5 rounded-xl font-bold shadow-sm hover:bg-primary/90 transition-colors"
+          className="hidden md:flex items-center gap-2 bg-primary text-white px-4 py-2.5 rounded-xl font-bold hover:bg-primary/90 transition-colors"
         >
           <Plus className="w-5 h-5" />
           Añadir Producto
@@ -271,11 +271,11 @@ export default function InventoryClient({ products, summary }: Props) {
           }}
           className={`p-4 rounded-xl border transition-all duration-200 cursor-pointer select-none active:scale-[0.98] ${
             activeTab === "all"
-              ? "bg-primary/5 border-primary shadow-sm"
+              ? "bg-primary/5 border-primary"
               : "bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 hover:border-primary/50 dark:hover:border-primary/50 hover:shadow-xs"
           }`}
         >
-          <p className="text-slate-500 dark:text-slate-400 text-xs font-medium uppercase tracking-wider">
+          <p className="text-slate-500 dark:text-slate-400 text-xs font-medium">
             Total SKU
           </p>
           <p className="text-2xl font-bold mt-1">
@@ -289,11 +289,11 @@ export default function InventoryClient({ products, summary }: Props) {
           }}
           className={`p-4 rounded-xl border transition-all duration-200 cursor-pointer select-none active:scale-[0.98] ${
             activeTab === "low"
-              ? "bg-orange-500/5 border-orange-500 shadow-sm"
+              ? "bg-orange-500/5 border-orange-500"
               : "bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 hover:border-orange-500/50 dark:hover:border-orange-950/50 hover:shadow-xs"
           }`}
         >
-          <p className="text-slate-500 dark:text-slate-400 text-xs font-medium uppercase tracking-wider">
+          <p className="text-slate-500 dark:text-slate-400 text-xs font-medium">
             Stock Bajo
           </p>
           <p className="text-2xl font-bold mt-1 text-orange-500">
@@ -301,7 +301,7 @@ export default function InventoryClient({ products, summary }: Props) {
           </p>
         </div>
         <div className="bg-white dark:bg-slate-900 p-4 rounded-xl border border-slate-200 dark:border-slate-800">
-          <p className="text-slate-500 dark:text-slate-400 text-xs font-medium uppercase tracking-wider">
+          <p className="text-slate-500 dark:text-slate-400 text-xs font-medium">
             Valor Total
           </p>
           <p className="text-2xl font-bold mt-1">
@@ -315,11 +315,11 @@ export default function InventoryClient({ products, summary }: Props) {
           }}
           className={`p-4 rounded-xl border transition-all duration-200 cursor-pointer select-none active:scale-[0.98] ${
             activeTab === "alerts"
-              ? "bg-red-500/5 border-red-500 shadow-sm"
+              ? "bg-red-500/5 border-red-500"
               : "bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 hover:border-red-500/50 dark:hover:border-red-950/50 hover:shadow-xs"
           }`}
         >
-          <p className="text-slate-500 dark:text-slate-400 text-xs font-medium uppercase tracking-wider">
+          <p className="text-slate-500 dark:text-slate-400 text-xs font-medium">
             Alertas
           </p>
           <p className={`text-2xl font-bold mt-1 ${summary.stockAlertCount > 0 ? "text-red-500" : "text-green-500"}`}>
@@ -511,7 +511,7 @@ export default function InventoryClient({ products, summary }: Props) {
 
       {/* Product List Table */}
       <div className="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 overflow-visible">
-        <div className="hidden md:grid grid-cols-6 gap-4 p-4 border-b border-slate-200 dark:border-slate-800 text-xs font-bold uppercase text-slate-500 tracking-wider">
+        <div className="hidden md:grid grid-cols-6 gap-4 p-4 border-b border-slate-200 dark:border-slate-800 text-[12px] font-medium text-muted tabular-nums">
           <div className="col-span-2">Producto / SKU</div>
           <div>Precio Unit.</div>
           <div>Estado Stock</div>
@@ -536,7 +536,7 @@ export default function InventoryClient({ products, summary }: Props) {
                 <div
                   key={product.id}
                   onDoubleClick={() => setDetailsProduct(product)}
-                  className={`p-4 flex flex-col md:grid md:grid-cols-6 md:items-center gap-4 cursor-pointer select-none transition-all hover:bg-slate-50/50 dark:hover:bg-slate-850/20 ${
+                  className={`p-4 flex flex-col md:grid md:grid-cols-6 md:items-center gap-4 cursor-pointer select-none tabular-nums transition-all hover:bg-slate-50/50 dark:hover:bg-slate-850/20 ${
                     product.stockStatus === "low"
                       ? "bg-orange-50/30 dark:bg-primary/5"
                       : isOutOfStock
@@ -558,13 +558,13 @@ export default function InventoryClient({ products, summary }: Props) {
                     <div className="min-w-0 space-y-1">
                       <h3 className="font-semibold text-sm truncate">{product.name}</h3>
                       <div className="flex flex-wrap items-center gap-1.5">
-                        <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-slate-500">
+                        <span className="text-xs font-bold px-1.5 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-slate-500">
                           SKU: {product.sku}
                         </span>
-                        <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-blue-50 dark:bg-blue-950/40 text-blue-600 dark:text-blue-400">
+                        <span className="text-xs font-bold px-1.5 py-0.5 rounded bg-blue-50 dark:bg-blue-950/40 text-blue-600 dark:text-blue-400">
                           {detectCategory(product.name)}
                         </span>
-                        <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-purple-50 dark:bg-purple-950/40 text-purple-600 dark:text-purple-400">
+                        <span className="text-xs font-bold px-1.5 py-0.5 rounded bg-slate-100 text-slate-700">
                           {getProductWarehouse(product)}
                         </span>
                       </div>
@@ -578,11 +578,11 @@ export default function InventoryClient({ products, summary }: Props) {
 
                   <div className={`space-y-2 ${outOfStockClass}`}>
                     <div
-                      className={`flex justify-between text-[10px] font-bold uppercase ${
+                      className={`flex justify-between text-[12px] font-medium ${
                         product.stockStatus === "low"
-                          ? "text-orange-600"
+                          ? "text-[var(--color-warning-ink)]"
                           : isOutOfStock
-                            ? "text-red-600"
+                            ? "text-[var(--color-negative)]"
                             : "text-slate-500"
                       }`}
                     >
@@ -610,12 +610,14 @@ export default function InventoryClient({ products, summary }: Props) {
                   </div>
 
                   <div className={`flex justify-between md:block ${outOfStockClass}`}>
-                    <span className="md:hidden text-xs text-slate-500 uppercase font-bold">Cant:</span>
+                    <span className="md:hidden text-[12px] font-medium text-muted">Cant:</span>
                     <span
                       className={`text-sm ${
                         product.stockStatus !== "normal"
                           ? "font-bold " +
-                            (product.stockStatus === "low" ? "text-orange-600" : "text-red-600")
+                            (product.stockStatus === "low"
+                              ? "text-[var(--color-warning-ink)]"
+                              : "text-[var(--color-negative)]")
                           : ""
                       }`}
                     >
@@ -765,7 +767,7 @@ export default function InventoryClient({ products, summary }: Props) {
                     onClick={() => setCurrentPage(p)}
                     className={`flex size-8 ux-touch-target items-center justify-center rounded-lg text-xs font-bold transition-all cursor-pointer ${
                       currentPage === p
-                        ? "bg-primary text-white shadow-sm shadow-primary/20"
+                        ? "bg-primary text-white shadow-primary/20"
                         : "border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-350 hover:bg-slate-50 dark:hover:bg-slate-800"
                     }`}
                   >
@@ -934,7 +936,7 @@ export default function InventoryClient({ products, summary }: Props) {
                 <button
                   type="submit"
                   disabled={isPending}
-                  className="flex-1 px-4 py-2.5 rounded-xl font-bold bg-primary text-white hover:bg-primary/90 transition-colors shadow-sm disabled:opacity-70 flex items-center justify-center gap-2"
+                  className="flex-1 px-4 py-2.5 rounded-xl font-bold bg-primary text-white hover:bg-primary/90 transition-colors disabled:opacity-70 flex items-center justify-center gap-2"
                 >
                   {isPending ? (
                     <>
@@ -1054,14 +1056,14 @@ export default function InventoryClient({ products, summary }: Props) {
                 
                 {/* Control interactivo de Stock Actual */}
                 <div className="bg-slate-50 dark:bg-slate-850/40 p-4 rounded-xl border border-slate-200 dark:border-slate-800 space-y-2">
-                  <label className="block text-xs font-bold uppercase tracking-wider text-slate-500">
+                  <label className="block text-xs font-bold text-slate-500">
                     Stock Actual en Inventario
                   </label>
                   <div className="flex items-center gap-3">
                     <button
                       type="button"
                       onClick={() => setEditStockQty((q) => Math.max(0, q - 1))}
-                      className="flex size-10 items-center justify-center rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-350 transition-all font-bold text-lg select-none active:scale-95 cursor-pointer shadow-sm"
+                      className="flex size-10 items-center justify-center rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-350 transition-all font-bold text-lg select-none active:scale-95 cursor-pointer"
                     >
                       -
                     </button>
@@ -1075,7 +1077,7 @@ export default function InventoryClient({ products, summary }: Props) {
                     <button
                       type="button"
                       onClick={() => setEditStockQty((q) => q + 1)}
-                      className="flex size-10 items-center justify-center rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-350 transition-all font-bold text-lg select-none active:scale-95 cursor-pointer shadow-sm"
+                      className="flex size-10 items-center justify-center rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-350 transition-all font-bold text-lg select-none active:scale-95 cursor-pointer"
                     >
                       +
                     </button>
@@ -1111,7 +1113,7 @@ export default function InventoryClient({ products, summary }: Props) {
                 <button
                   type="submit"
                   disabled={isEditPending}
-                  className="flex-1 px-4 py-2.5 rounded-xl font-bold bg-primary text-white hover:bg-primary/90 transition-colors shadow-sm disabled:opacity-70 flex items-center justify-center gap-2"
+                  className="flex-1 px-4 py-2.5 rounded-xl font-bold bg-primary text-white hover:bg-primary/90 transition-colors disabled:opacity-70 flex items-center justify-center gap-2"
                 >
                   {isEditPending ? (
                     <>
@@ -1192,7 +1194,7 @@ export default function InventoryClient({ products, summary }: Props) {
                 <button
                   type="submit"
                   disabled={isStockPending}
-                  className="flex-1 px-4 py-2.5 rounded-xl font-bold bg-primary text-white hover:bg-primary/90 transition-colors shadow-sm disabled:opacity-70 flex items-center justify-center gap-2"
+                  className="flex-1 px-4 py-2.5 rounded-xl font-bold bg-primary text-white hover:bg-primary/90 transition-colors disabled:opacity-70 flex items-center justify-center gap-2"
                 >
                   {isStockPending ? (
                     <>

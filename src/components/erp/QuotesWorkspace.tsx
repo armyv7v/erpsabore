@@ -70,7 +70,7 @@ export default function QuotesWorkspace({ quotes }: { quotes: QuoteRecord[] }) {
   return (
     <div className="p-4 md:p-8 space-y-6">
       <div>
-        <h1 className="text-2xl font-bold tracking-tight">Cotizaciones</h1>
+        <h2 className="text-2xl font-bold tracking-tight">Cotizaciones</h2>
         <p className="text-sm text-slate-500 dark:text-slate-400">Gestión formal de cotizaciones comerciales del tenant.</p>
       </div>
 
@@ -80,10 +80,10 @@ export default function QuotesWorkspace({ quotes }: { quotes: QuoteRecord[] }) {
         </div>
       ) : null}
 
-      <div className="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden">
+      <div className="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-left">
-            <thead className="bg-slate-50 dark:bg-slate-800/50 text-slate-500 uppercase text-xs font-bold tracking-wider">
+            <thead className="bg-slate-50 dark:bg-slate-800/50 text-slate-500 text-xs font-bold tracking-wider">
               <tr>
                 <th className="px-4 py-3">Cliente</th>
                 <th className="px-4 py-3">Descripción</th>

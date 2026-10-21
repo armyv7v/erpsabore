@@ -95,7 +95,7 @@ export default function SuppliersClient({ suppliers }: Props) {
               <Store className="w-6 h-6" />
             </div>
             <div>
-              <h1 className="text-xl font-bold tracking-tight">Directorio de Proveedores</h1>
+              <h2 className="text-xl font-bold tracking-tight">Directorio de Proveedores</h2>
               {suppliers.length > 0 && (
                 <p className="text-xs text-slate-500 dark:text-slate-400">
                   {suppliers.length} proveedor{suppliers.length !== 1 ? "es" : ""} ·{" "}
@@ -165,7 +165,7 @@ export default function SuppliersClient({ suppliers }: Props) {
               return (
                 <div
                   key={supplier.id}
-                  className={`bg-white dark:bg-slate-800/50 rounded-xl p-4 border border-slate-200 dark:border-slate-700 shadow-sm hover:border-primary/30 transition-all ${
+                  className={`bg-white dark:bg-slate-800/50 rounded-xl p-4 border border-slate-200 dark:border-slate-700 hover:border-primary/30 transition-all ${
                     supplier.pendingBalance === 0 ? "opacity-80" : ""
                   }`}
                 >
@@ -184,7 +184,7 @@ export default function SuppliersClient({ suppliers }: Props) {
                       </div>
                     </div>
                     <div className="text-right shrink-0">
-                      <p className="text-[10px] uppercase font-bold text-slate-400 dark:text-slate-500">
+                      <p className="text-xs uppercase font-bold text-slate-400 dark:text-slate-500">
                         Saldo Pendiente
                       </p>
                       <p
@@ -201,7 +201,7 @@ export default function SuppliersClient({ suppliers }: Props) {
 
                   <div className="flex items-center gap-2 mb-4">
                     {supplier.category && (
-                      <span className="px-2 py-0.5 rounded bg-slate-100 dark:bg-slate-700 text-[10px] font-bold text-slate-600 dark:text-slate-300 uppercase">
+                      <span className="px-2 py-0.5 rounded bg-slate-100 dark:bg-slate-700 text-xs font-bold text-slate-600 dark:text-slate-300 uppercase">
                         {supplier.category}
                       </span>
                     )}

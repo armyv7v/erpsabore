@@ -142,7 +142,7 @@ export default function CorrectionModal({ invoice, onClose, onSuccess }: Correct
           {/* Selector de Documento y Código SII */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="space-y-1.5">
-              <label className="text-xs font-bold uppercase tracking-wider text-slate-500 block">
+              <label className="text-xs font-bold text-slate-500 block">
                 Tipo de Corrección DTE
               </label>
               <select
@@ -157,7 +157,7 @@ export default function CorrectionModal({ invoice, onClose, onSuccess }: Correct
             </div>
 
             <div className="space-y-1.5">
-              <label className="text-xs font-bold uppercase tracking-wider text-slate-500 block">
+              <label className="text-xs font-bold text-slate-500 block">
                 Acción de Referencia (SII)
               </label>
               <select
@@ -184,7 +184,7 @@ export default function CorrectionModal({ invoice, onClose, onSuccess }: Correct
 
           {/* Motivo de la corrección */}
           <div className="space-y-1.5">
-            <label className="text-xs font-bold uppercase tracking-wider text-slate-500 block">
+            <label className="text-xs font-bold text-slate-500 block">
               Motivo legal de la corrección (SII)
             </label>
             <textarea
@@ -197,7 +197,7 @@ export default function CorrectionModal({ invoice, onClose, onSuccess }: Correct
               required
               disabled={isPending}
             />
-            <span className="text-[10px] text-slate-400 block text-right">
+            <span className="text-xs text-slate-400 block text-right">
               {referenceReason.length}/90 caracteres
             </span>
           </div>
@@ -205,7 +205,7 @@ export default function CorrectionModal({ invoice, onClose, onSuccess }: Correct
           {/* Sección de Ítems a ajustar si el código es 3 */}
           {referenceCode === 3 && (
             <div className="space-y-3">
-              <label className="text-xs font-bold uppercase tracking-wider text-slate-500 block">
+              <label className="text-xs font-bold text-slate-500 block">
                 Ajuste de Ítems y Cantidades
               </label>
               <div className="overflow-hidden rounded-2xl border border-slate-250 dark:border-slate-800">
@@ -250,7 +250,7 @@ export default function CorrectionModal({ invoice, onClose, onSuccess }: Correct
         {/* Totales y Acciones */}
         <div className="bg-slate-50 dark:bg-slate-900/60 border-t border-slate-100 dark:border-slate-800 px-6 py-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div>
-            <p className="text-[10px] uppercase font-bold tracking-wider text-slate-400">
+            <p className="text-xs font-bold tracking-wider text-slate-400">
               Total Documento Corrección
             </p>
             <p className="text-lg font-black text-emerald-600 dark:text-emerald-400">

@@ -1,17 +1,232 @@
 import React from "react";
 import Link from "next/link";
-import { AlertTriangle, ArrowDown, ArrowUp, FileText, Grid2X2, MoreHorizontal, Package, Percent, Receipt, ShoppingCart, TrendingUp, Users, Wallet } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { formatInvoiceStatus } from "@/lib/formatters/status";
 import { requireAuthenticatedUser, createAuthenticatedSupabaseClient } from "@/lib/services/auth-service";
 import { getDashboardMetrics } from "@/lib/services/metrics-service";
+import type { AuthUser, DashboardMetrics, InvoiceRecord, InvoiceStatus } from "@/lib/types/erp";
 
 export const dynamic = "force-dynamic";
+
+const importe = (value: number) => `$${Math.round(value).toLocaleString("es-CL")}`;
+
+const statusTone: Record<InvoiceStatus, string> = {
+  paid: "bg-[var(--color-positive-bg)] text-[var(--color-positive-ink)]",
+  issued: "bg-slate-100 text-slate-700",
+  draft: "bg-slate-100 text-slate-700",
+  partially_paid: "bg-[var(--color-warning-bg)] text-[var(--color-warning-ink)]",
+  overdue: "bg-[var(--color-negative-bg)] text-[var(--color-negative-ink)]",
+  cancelled: "bg-slate-100 text-slate-500",
+};
+
+function StatusPill({ status }: { status: InvoiceStatus }) {
+  return (
+    <span
+      className={`inline-flex h-5 items-center whitespace-nowrap rounded-chip px-2 text-[11px] font-medium ${statusTone[status] ?? "bg-slate-100 text-slate-700"}`}
+    >
+      {formatInvoiceStatus(status)}
+    </span>
+  );
+}
+
+function Kpi({
+  label,
+  value,
+  unit,
+  hint,
+  href,
+  tone,
+}: {
+  label: string;
+  value: string;
+  unit?: string;
+  hint?: string;
+  href?: string;
+  tone?: "negative";
+}) {
+  const body = (
+    <>
+      <p className="text-[12px] leading-4 text-muted">{label}</p>
+      <p
+        className={`mt-1 text-[24px] font-normal leading-7 tabular-nums ${
+          tone === "negative" ? "text-[var(--color-negative)]" : "text-ink"
+        }`}
+      >
+        {value}
+        {unit ? <span className="ml-1 text-[12px] text-muted">{unit}</span> : null}
+      </p>
+      {hint ? <p className="mt-0.5 text-[12px] leading-4 text-muted">{hint}</p> : null}
+    </>
+  );
+
+  return href ? (
+    <Link href={href} className="block px-5 py-4 transition-colors hover:bg-slate-50">
+      {body}
+    </Link>
+  ) : (
+    <div className="px-5 py-4">{body}</div>
+  );
+}
+
+function InvoicesTable({
+  invoices,
+  showCustomer = true,
+}: {
+  invoices: InvoiceRecord[];
+  showCustomer?: boolean;
+}) {
+  if (invoices.length === 0) {
+    return (
+      <div className="px-5 py-10 text-center">
+        <p className="text-[13px] text-muted">Todavía no hay facturas emitidas en este periodo.</p>
+        <Link
+          href="/facturacion"
+          className="mt-2 inline-block text-[13px] font-medium text-ink underline underline-offset-4"
+        >
+          Emitir la primera
+        </Link>
+      </div>
+    );
+  }
+
+  return (
+    <div className="overflow-x-auto">
+      <table className="w-full">
+        <thead>
+          <tr className="text-[12px] text-muted">
+            {showCustomer ? (
+              <th scope="col" className="px-5 py-2 text-left font-normal">Cliente</th>
+            ) : (
+              <th scope="col" className="px-5 py-2 text-left font-normal">Documento</th>
+            )}
+            <th scope="col" className="px-5 py-2 text-left font-normal">Emisión</th>
+            <th scope="col" className="px-5 py-2 text-right font-normal">Monto</th>
+            <th scope="col" className="px-5 py-2 text-left font-normal">Estado</th>
+            <th scope="col" className="px-5 py-2"><span className="sr-only">Acciones</span></th>
+          </tr>
+        </thead>
+        <tbody className="divide-y divide-rule">
+          {invoices.map((invoice) => (
+            <tr key={invoice.id} className="text-[13px] text-muted hover:bg-slate-50">
+              <td className="px-5 py-3 font-medium text-ink">
+                <span className="block max-w-[220px] truncate">
+                  {showCustomer ? invoice.customerName : `Factura #${invoice.number}`}
+                </span>
+                {showCustomer ? (
+                  <span className="block text-[11px] text-muted">#{invoice.number}</span>
+                ) : null}
+              </td>
+              <td className="whitespace-nowrap px-5 py-3">{invoice.issueDate}</td>
+              <td className="whitespace-nowrap px-5 py-3 text-right tabular-nums text-ink">
+                {importe(invoice.total)}
+              </td>
+              <td className="px-5 py-3"><StatusPill status={invoice.status} /></td>
+              <td className="px-5 py-3 text-right">
+                <Link
+                  href="/facturacion"
+                  className="whitespace-nowrap text-[12px] font-medium text-muted transition-colors hover:text-ink"
+                >
+                  Gestionar
+                </Link>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+}
+
+function PendingBlock({ metrics }: { metrics: DashboardMetrics }) {
+  const items: { text: string; href: string }[] = [];
+  if (metrics.pendingInvoicesCount > 0) {
+    items.push({
+      text: `${metrics.pendingInvoicesCount} ${metrics.pendingInvoicesCount === 1 ? "factura" : "facturas"} por cobrar`,
+      href: "/facturacion",
+    });
+  }
+  if (metrics.stockAlertCount > 0) {
+    items.push({
+      text: `${metrics.stockAlertCount} ${metrics.stockAlertCount === 1 ? "producto" : "productos"} bajo stock mínimo`,
+      href: "/inventario?tab=low",
+    });
+  }
+
+  return (
+    <section className="rounded-card border border-border">
+      <h2 className="px-5 pt-4 text-[16px] font-medium text-ink">Pendientes</h2>
+      {items.length === 0 ? (
+        <p className="px-5 pb-5 pt-2 text-[13px] text-muted">
+          Nada por resolver: no hay facturas vencidas ni productos bajo su stock mínimo.
+        </p>
+      ) : (
+        <ul className="mt-2">
+          {items.map((item) => (
+            <li key={item.href}>
+              <Link
+                href={item.href}
+                className="flex items-center justify-between gap-3 border-t border-rule px-5 py-3 text-[13px] text-ink transition-colors hover:bg-slate-50"
+              >
+                {item.text}
+                <ArrowRight className="h-3.5 w-3.5 shrink-0 text-muted" aria-hidden="true" />
+              </Link>
+            </li>
+          ))}
+        </ul>
+      )}
+    </section>
+  );
+}
+
+function kpisFor(
+  role: AuthUser["role"],
+  metrics: DashboardMetrics,
+): React.ComponentProps<typeof Kpi>[] {
+  const sales: React.ComponentProps<typeof Kpi> = {
+    label: "Ventas del periodo",
+    value: importe(metrics.monthlySales),
+    unit: "CLP",
+    hint: "Facturas emitidas",
+    href: "/ventas",
+  };
+  const collected: React.ComponentProps<typeof Kpi> = {
+    label: "Cobrado",
+    value: importe(metrics.collectedTotal),
+    unit: "CLP",
+    hint: `${metrics.collectionRate}% de lo emitido`,
+    href: "/facturacion",
+  };
+  const pending: React.ComponentProps<typeof Kpi> = {
+    label: "Por cobrar",
+    value: String(metrics.pendingInvoicesCount),
+    unit: metrics.pendingInvoicesCount === 1 ? "factura" : "facturas",
+    href: "/facturacion",
+  };
+  const alerts: React.ComponentProps<typeof Kpi> = {
+    label: "Bajo stock mínimo",
+    value: String(metrics.stockAlertCount),
+    unit: metrics.stockAlertCount === 1 ? "producto" : "productos",
+    href: "/inventario?tab=low",
+    tone: metrics.stockAlertCount > 0 ? "negative" : undefined,
+  };
+
+  if (role === "bodega") return [alerts, pending, sales];
+  if (role === "finanzas") return [sales, collected, pending, alerts];
+  return [sales, collected, pending, alerts];
+}
+
+const primaryAction: Record<string, { label: string; href: string }> = {
+  admin: { label: "Abrir punto de venta", href: "/pos" },
+  ventas: { label: "Abrir punto de venta", href: "/pos" },
+  finanzas: { label: "Conciliar movimientos", href: "/finanzas/conciliacion" },
+  bodega: { label: "Revisar stock bajo", href: "/inventario?tab=low" },
+};
 
 export default async function DashboardPage() {
   const user = await requireAuthenticatedUser();
 
   if (user.role === "cliente") {
-    let customerInvoices: any[] = [];
+    let customerInvoices: InvoiceRecord[] = [];
     if (user.customerId) {
       const supabase = await createAuthenticatedSupabaseClient();
       const { data } = await supabase
@@ -20,448 +235,130 @@ export default async function DashboardPage() {
         .eq("customer_id", user.customerId)
         .order("created_at", { ascending: false })
         .limit(5);
-      customerInvoices = data ?? [];
+      customerInvoices = (data ?? []) as unknown as InvoiceRecord[];
     }
 
+    const hasPurchases = customerInvoices.length > 0;
+
     return (
-      <div className="p-4 md:p-8 space-y-8 animate-fade-in">
-        <div className="flex flex-col gap-2">
-          <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-100">Portal de Clientes</h2>
-          <p className="text-slate-500 dark:text-slate-400">
-            Bienvenido, {user.fullName}. Aquí puede realizar el seguimiento de sus compras, consultar el catálogo y gestionar sus despachos.
-          </p>
+      <div className="mx-auto max-w-[1240px] px-6 py-5">
+        <div className="flex items-end justify-between gap-4">
+          <p className="text-[13px] text-muted">Sus compras con Saboré Insumos</p>
+          {hasPurchases ? (
+            <Link
+              href="/catalogo"
+              className="inline-flex min-h-[44px] items-center rounded-control bg-[var(--color-primary)] px-4 text-[13px] font-medium text-white transition-opacity hover:opacity-90"
+            >
+              Explorar catálogo
+            </Link>
+          ) : null}
         </div>
 
-        {/* Accesos directos */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <Link href="/catalogo" className="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-md hover:border-primary/40 transition-all block group">
-            <div className="flex items-center justify-between mb-4">
-              <span className="bg-primary/10 p-2 rounded-lg group-hover:bg-primary/20 transition-colors">
-                <Grid2X2 className="text-primary w-5 h-5" />
-              </span>
+        <section className="mt-4 rounded-card border border-border">
+          <h2 className="px-5 pt-4 text-[16px] font-medium text-ink">Compras recientes</h2>
+          {hasPurchases ? (
+            <div className="mt-2">
+              <InvoicesTable invoices={customerInvoices} showCustomer={false} />
             </div>
-            <p className="text-sm font-semibold text-slate-700 dark:text-slate-300 uppercase tracking-wider group-hover:text-primary transition-colors">Consultar Catálogo</p>
-            <p className="text-xs text-slate-400 mt-2">Explore los productos, stock y precios vigentes en tiempo real.</p>
-          </Link>
-
-          <Link href="/ventas" className="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-md hover:border-primary/40 transition-all block group">
-            <div className="flex items-center justify-between mb-4">
-              <span className="bg-emerald-150 dark:bg-emerald-950 p-2 rounded-lg group-hover:bg-emerald-250 transition-colors">
-                <ShoppingCart className="text-emerald-600 dark:text-emerald-450 w-5 h-5" />
-              </span>
+          ) : (
+            <div className="px-5 pb-8 pt-3">
+              <p className="text-[13px] text-muted">
+                Aún no registra compras con Saboré Insumos. El catálogo muestra precios y stock
+                vigentes para su cuenta.
+              </p>
+              <Link
+                href="/catalogo"
+                className="mt-4 inline-flex min-h-[44px] items-center rounded-control bg-[var(--color-primary)] px-4 text-[13px] font-medium text-white transition-opacity hover:opacity-90"
+              >
+                Explorar catálogo
+              </Link>
             </div>
-            <p className="text-sm font-semibold text-slate-700 dark:text-slate-300 uppercase tracking-wider group-hover:text-emerald-600 dark:group-hover:text-emerald-455 transition-colors">Mis Pedidos / Compras</p>
-            <p className="text-xs text-slate-400 mt-2">Revise el estado de facturación, borradores y sus compras previas.</p>
-          </Link>
-
-          <Link href="/despachos" className="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-md hover:border-primary/40 transition-all block group">
-            <div className="flex items-center justify-between mb-4">
-              <span className="bg-purple-100 dark:bg-purple-950 p-2 rounded-lg group-hover:bg-purple-200 transition-colors">
-                <Package className="text-purple-600 dark:text-purple-400 w-5 h-5" />
-              </span>
-            </div>
-            <p className="text-sm font-semibold text-slate-700 dark:text-slate-300 uppercase tracking-wider group-hover:text-purple-600 dark:group-hover:text-purple-455 transition-colors">Direcciones de Envío</p>
-            <p className="text-xs text-slate-400 mt-2">Gestione sus datos de entrega y realice el seguimiento de los despachos activos.</p>
-          </Link>
-        </div>
-
-        {/* Últimas compras */}
-        <div className="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden">
-          <div className="p-6 border-b border-slate-200 dark:border-slate-800 flex justify-between items-center">
-            <h3 className="text-lg font-bold">Sus compras recientes</h3>
-            <Link href="/ventas" className="text-sm font-semibold text-primary hover:underline">Ver todas</Link>
-          </div>
-          <div className="overflow-x-auto">
-            {customerInvoices.length > 0 ? (
-              <table className="w-full text-left">
-                <thead className="bg-slate-50 dark:bg-slate-800/50 text-slate-500 uppercase text-xs font-bold tracking-wider">
-                  <tr>
-                    <th className="px-6 py-4">Documento</th>
-                    <th className="px-6 py-4">Fecha Emisión</th>
-                    <th className="px-6 py-4">Monto Total</th>
-                    <th className="px-6 py-4">Estado Pago</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
-                  {customerInvoices.map((inv) => (
-                    <tr key={inv.id} className="hover:bg-slate-50/50 dark:hover:bg-slate-800/20 text-sm font-medium">
-                      <td className="px-6 py-4 font-bold text-slate-900 dark:text-white">#{inv.number}</td>
-                      <td className="px-6 py-4 text-slate-500 dark:text-slate-400">{new Date(inv.issue_date).toLocaleDateString("es-CL")}</td>
-                      <td className="px-6 py-4 text-slate-900 dark:text-white">${inv.total.toLocaleString("es-CL")}</td>
-                      <td className="px-6 py-4">{formatInvoiceStatus(inv.status)}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            ) : (
-              <div className="p-12 text-center text-slate-400">
-                <p className="font-semibold text-slate-600 dark:text-slate-350">Aún no registra compras en nuestro sistema.</p>
-                <p className="text-xs text-slate-400 mt-1">Le invitamos a revisar nuestro catálogo de productos.</p>
-                <Link href="/catalogo" className="mt-6 inline-flex min-h-[44px] items-center justify-center rounded-xl bg-primary px-6 py-2.5 text-sm font-bold text-white transition-colors hover:bg-primary/90">
-                  Explorar catálogo
-                </Link>
-              </div>
-            )}
-          </div>
-        </div>
+          )}
+        </section>
       </div>
     );
   }
 
-  let metrics: Awaited<ReturnType<typeof getDashboardMetrics>>;
+  let metrics: DashboardMetrics;
   try {
     metrics = await getDashboardMetrics(user);
   } catch {
     metrics = {
       monthlySales: 0,
+      collectedTotal: 0,
+      collectionRate: 0,
       pendingInvoicesCount: 0,
-      grossMarginPercentage: 0,
       stockAlertCount: 0,
-      revenueTrendTotal: 0,
-      revenueTrendGrowth: "+0%",
       latestInvoices: [],
     };
   }
 
-  if (user.role === "ventas") {
-    return (
-      <div className="p-4 md:p-8 space-y-8">
-        <div className="flex flex-col gap-2">
-          <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-100">Panel de Ventas</h2>
-          <p className="text-slate-500 dark:text-slate-400">
-            Bienvenido {user.fullName}. Aqui tienes tus indicadores y accesos comerciales para {user.tenantName}.
-          </p>
-        </div>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          <Link href="/ventas" className="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-md hover:border-primary/40 transition-all block group">
-            <div className="flex items-center justify-between mb-4">
-              <span className="bg-primary/10 p-2 rounded-lg group-hover:bg-primary/20 transition-colors"><TrendingUp className="text-primary w-5 h-5" /></span>
-              <span className="text-green-500 text-sm font-medium flex items-center gap-1">{metrics.revenueTrendGrowth} <ArrowUp className="w-3 h-3" /></span>
-            </div>
-            <p className="text-sm font-medium text-slate-500 uppercase tracking-wider group-hover:text-slate-700 dark:group-hover:text-slate-350 transition-colors">Ventas del Periodo</p>
-            <p className="text-2xl font-bold mt-1 text-slate-900 dark:text-slate-100 group-hover:text-primary transition-colors">${metrics.monthlySales.toLocaleString("es-CL")}</p>
-          </Link>
-
-          <Link href="/facturacion" className="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-md hover:border-primary/40 transition-all block group">
-            <div className="flex items-center justify-between mb-4">
-              <span className="bg-orange-100 p-2 rounded-lg group-hover:bg-orange-200/50 transition-colors"><Receipt className="text-orange-600 w-5 h-5" /></span>
-              <span className="text-orange-500 text-sm font-medium flex items-center gap-1">por cobrar <ArrowDown className="w-3 h-3" /></span>
-            </div>
-            <p className="text-sm font-medium text-slate-500 uppercase tracking-wider group-hover:text-slate-700 dark:group-hover:text-slate-350 transition-colors">Facturas Pendientes</p>
-            <p className="text-2xl font-bold mt-1 text-slate-900 dark:text-slate-100 group-hover:text-primary transition-colors">{metrics.pendingInvoicesCount}</p>
-          </Link>
-
-          <Link href="/ventas" className="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-md hover:border-primary/40 transition-all block group">
-            <div className="flex items-center justify-between mb-4">
-              <span className="bg-primary/10 p-2 rounded-lg group-hover:bg-primary/20 transition-colors"><Wallet className="text-primary w-5 h-5" /></span>
-              <span className="text-slate-500 text-sm font-medium">gestion comercial</span>
-            </div>
-            <p className="text-sm font-medium text-slate-500 uppercase tracking-wider group-hover:text-slate-700 dark:group-hover:text-slate-350 transition-colors">Documentos Recientes</p>
-            <p className="text-2xl font-bold mt-1 text-slate-900 dark:text-slate-100 group-hover:text-primary transition-colors">{metrics.latestInvoices.length}</p>
-          </Link>
-        </div>
-
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-          <Link href="/ventas" className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm transition-colors hover:border-primary/40 dark:border-slate-800 dark:bg-slate-900">
-            <p className="inline-flex items-center gap-2 text-sm font-semibold"><Wallet className="w-4 h-4 text-primary" /> Ventas</p>
-            <p className="mt-2 text-xs text-slate-500">Crear borradores y seguimiento comercial.</p>
-          </Link>
-          <Link href="/facturacion" className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm transition-colors hover:border-primary/40 dark:border-slate-800 dark:bg-slate-900">
-            <p className="inline-flex items-center gap-2 text-sm font-semibold"><FileText className="w-4 h-4 text-primary" /> Facturacion</p>
-            <p className="mt-2 text-xs text-slate-500">Emitir y registrar pagos de facturas.</p>
-          </Link>
-          <Link href="/crm" className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm transition-colors hover:border-primary/40 dark:border-slate-800 dark:bg-slate-900">
-            <p className="inline-flex items-center gap-2 text-sm font-semibold"><Users className="w-4 h-4 text-primary" /> CRM</p>
-            <p className="mt-2 text-xs text-slate-500">Gestion de clientes y oportunidades.</p>
-          </Link>
-          <Link href="/catalogo" className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm transition-colors hover:border-primary/40 dark:border-slate-800 dark:bg-slate-900">
-            <p className="inline-flex items-center gap-2 text-sm font-semibold"><Grid2X2 className="w-4 h-4 text-primary" /> Catalogo</p>
-            <p className="mt-2 text-xs text-slate-500">Consulta productos y precios vigentes.</p>
-          </Link>
-        </div>
-
-        <div className="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden">
-          <div className="p-6 border-b border-slate-200 dark:border-slate-800 flex justify-between items-center">
-            <h3 className="text-lg font-bold">Ultimas facturas comerciales</h3>
-            <Link href="/ventas" className="text-sm font-semibold text-primary hover:underline">Ver todas</Link>
-          </div>
-          <div className="overflow-x-auto">
-            <table className="w-full text-left">
-              <thead className="bg-slate-50 dark:bg-slate-800/50 text-slate-500 uppercase text-xs font-bold tracking-wider">
-                <tr>
-                  <th className="px-6 py-4">Cliente</th>
-                  <th className="px-6 py-4">Emision</th>
-                  <th className="px-6 py-4">Monto</th>
-                  <th className="px-6 py-4">Estado</th>
-                  <th className="px-6 py-4">Accion</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
-                {metrics.latestInvoices.map((invoice) => (
-                  <tr key={invoice.id} className="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
-                    <td className="px-6 py-4 font-medium">{invoice.customerName}</td>
-                    <td className="px-6 py-4 text-sm">{invoice.issueDate}</td>
-                    <td className="px-6 py-4 text-sm font-bold">${invoice.total.toLocaleString("es-CL")}</td>
-                    <td className="px-6 py-4">
-                      <span className="px-3 py-1 bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-300 rounded-full text-xs font-semibold">
-                        {formatInvoiceStatus(invoice.status)}
-                      </span>
-                    </td>
-                    <td className="px-6 py-4">
-                      <Link href="/facturacion" className="text-sm font-semibold text-primary hover:underline">Gestionar</Link>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  if (user.role === "finanzas") {
-    return (
-      <div className="p-4 md:p-8 space-y-8">
-        <div className="flex flex-col gap-2">
-          <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-100">Panel de Finanzas</h2>
-          <p className="text-slate-500 dark:text-slate-400">
-            Hola {user.fullName}. Este panel prioriza caja, conciliacion y control de facturas por cobrar.
-          </p>
-        </div>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          <Link href="/finanzas/flujo-caja" className="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-md hover:border-primary/40 transition-all block group">
-            <p className="text-sm font-medium text-slate-500 uppercase tracking-wider group-hover:text-slate-700 dark:group-hover:text-slate-350 transition-colors">Ingresos del Periodo</p>
-            <p className="text-2xl font-bold mt-2 text-slate-900 dark:text-slate-100 group-hover:text-primary transition-colors">${metrics.monthlySales.toLocaleString("es-CL")}</p>
-          </Link>
-          <Link href="/facturacion" className="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-md hover:border-primary/40 transition-all block group">
-            <p className="text-sm font-medium text-slate-500 uppercase tracking-wider group-hover:text-slate-700 dark:group-hover:text-slate-350 transition-colors">Cuentas por Cobrar</p>
-            <p className="text-2xl font-bold mt-2 text-orange-600 group-hover:text-primary transition-colors">{metrics.pendingInvoicesCount}</p>
-          </Link>
-          <Link href="/finanzas/estado-resultados" className="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-md hover:border-primary/40 transition-all block group">
-            <p className="text-sm font-medium text-slate-500 uppercase tracking-wider group-hover:text-slate-700 dark:group-hover:text-slate-350 transition-colors">Margen Bruto</p>
-            <p className="text-2xl font-bold mt-2 text-slate-900 dark:text-slate-100 group-hover:text-primary transition-colors">{metrics.grossMarginPercentage}%</p>
-          </Link>
-          <Link href="/reportes" className="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-md hover:border-primary/40 transition-all block group">
-            <p className="text-sm font-medium text-slate-500 uppercase tracking-wider group-hover:text-slate-700 dark:group-hover:text-slate-355 transition-colors">Tendencia</p>
-            <p className="text-2xl font-bold mt-2 text-green-600 group-hover:text-primary transition-colors">{metrics.revenueTrendGrowth}</p>
-          </Link>
-        </div>
-
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-          <Link href="/facturacion" className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm transition-colors hover:border-primary/40 dark:border-slate-800 dark:bg-slate-900">
-            <p className="inline-flex items-center gap-2 text-sm font-semibold"><FileText className="w-4 h-4 text-primary" /> Facturacion</p>
-            <p className="mt-2 text-xs text-slate-500">Emitir, cobrar y revisar estado de documentos.</p>
-          </Link>
-          <Link href="/finanzas/flujo-caja" className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm transition-colors hover:border-primary/40 dark:border-slate-800 dark:bg-slate-900">
-            <p className="inline-flex items-center gap-2 text-sm font-semibold"><Wallet className="w-4 h-4 text-primary" /> Flujo de Caja</p>
-            <p className="mt-2 text-xs text-slate-500">Registrar movimientos y exportar caja.</p>
-          </Link>
-          <Link href="/finanzas/conciliacion" className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm transition-colors hover:border-primary/40 dark:border-slate-800 dark:bg-slate-900">
-            <p className="inline-flex items-center gap-2 text-sm font-semibold"><Receipt className="w-4 h-4 text-primary" /> Conciliacion</p>
-            <p className="mt-2 text-xs text-slate-500">Auto-conciliar y resolver pendientes.</p>
-          </Link>
-          <Link href="/finanzas/estado-resultados" className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm transition-colors hover:border-primary/40 dark:border-slate-800 dark:bg-slate-900">
-            <p className="inline-flex items-center gap-2 text-sm font-semibold"><Percent className="w-4 h-4 text-primary" /> Estado de Resultados</p>
-            <p className="mt-2 text-xs text-slate-500">Visualizar resultado operativo del periodo.</p>
-          </Link>
-        </div>
-      </div>
-    );
-  }
-
-  if (user.role === "bodega") {
-    return (
-      <div className="p-4 md:p-8 space-y-8">
-        <div className="flex flex-col gap-2">
-          <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-100">Panel de Bodega</h2>
-          <p className="text-slate-500 dark:text-slate-400">
-            Hola {user.fullName}. Este panel concentra inventario, catalogo y despacho operativo.
-          </p>
-        </div>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          <Link href="/inventario?tab=low" className="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-md hover:border-primary/40 transition-all block group">
-            <p className="text-sm font-medium text-slate-500 uppercase tracking-wider group-hover:text-slate-700 dark:group-hover:text-slate-350 transition-colors">Items en Alerta</p>
-            <p className="text-2xl font-bold mt-2 text-orange-600 group-hover:text-primary transition-colors">{metrics.stockAlertCount}</p>
-          </Link>
-          <Link href="/facturacion" className="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-md hover:border-primary/40 transition-all block group">
-            <p className="text-sm font-medium text-slate-500 uppercase tracking-wider group-hover:text-slate-700 dark:group-hover:text-slate-350 transition-colors">Facturas Pendientes</p>
-            <p className="text-2xl font-bold mt-2 text-slate-900 dark:text-slate-100 group-hover:text-primary transition-colors">{metrics.pendingInvoicesCount}</p>
-          </Link>
-          <Link href="/inventario" className="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-md hover:border-primary/40 transition-all block group">
-            <p className="text-sm font-medium text-slate-500 uppercase tracking-wider group-hover:text-slate-700 dark:group-hover:text-slate-350 transition-colors">Tendencia Comercial</p>
-            <p className="text-2xl font-bold mt-2 text-green-600 group-hover:text-primary transition-colors">{metrics.revenueTrendGrowth}</p>
-          </Link>
-        </div>
-
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-          <Link href="/inventario" className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm transition-colors hover:border-primary/40 dark:border-slate-800 dark:bg-slate-900">
-            <p className="inline-flex items-center gap-2 text-sm font-semibold"><Package className="w-4 h-4 text-primary" /> Inventario</p>
-            <p className="mt-2 text-xs text-slate-500">Control de stock, estados y cantidades.</p>
-          </Link>
-          <Link href="/catalogo" className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm transition-colors hover:border-primary/40 dark:border-slate-800 dark:bg-slate-900">
-            <p className="inline-flex items-center gap-2 text-sm font-semibold"><Grid2X2 className="w-4 h-4 text-primary" /> Catalogo</p>
-            <p className="mt-2 text-xs text-slate-500">Consulta productos e imagenes vigentes.</p>
-          </Link>
-          <Link href="/despachos" className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm transition-colors hover:border-primary/40 dark:border-slate-800 dark:bg-slate-900">
-            <p className="inline-flex items-center gap-2 text-sm font-semibold"><ShoppingCart className="w-4 h-4 text-primary" /> Despachos</p>
-            <p className="mt-2 text-xs text-slate-500">Coordinar entregas, estados y seguimiento.</p>
-          </Link>
-          <Link href="/proveedores" className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm transition-colors hover:border-primary/40 dark:border-slate-800 dark:bg-slate-900">
-            <p className="inline-flex items-center gap-2 text-sm font-semibold"><Users className="w-4 h-4 text-primary" /> Proveedores</p>
-            <p className="mt-2 text-xs text-slate-500">Gestion de abastecimiento y compras.</p>
-          </Link>
-        </div>
-      </div>
-    );
-  }
+  const action = primaryAction[user.role] ?? primaryAction.admin;
 
   return (
-    <div className="p-4 md:p-8 space-y-8">
-      <div>
-        <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-100">Hola, {user.fullName}</h2>
-        <p className="text-slate-500 dark:text-slate-400">
-          Resumen operativo del tenant {user.tenantName}.
-        </p>
-      </div>
-
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        <Link href="/ventas" className="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-md hover:border-primary/40 transition-all block group">
-          <div className="flex items-center justify-between mb-4">
-            <span className="bg-primary/10 p-2 rounded-lg group-hover:bg-primary/20 transition-colors"><TrendingUp className="text-primary w-5 h-5" /></span>
-            <span className="text-green-500 text-sm font-medium flex items-center gap-1">{metrics.revenueTrendGrowth} <ArrowUp className="w-3 h-3" /></span>
-          </div>
-          <p className="text-sm font-medium text-slate-500 uppercase tracking-wider group-hover:text-slate-700 dark:group-hover:text-slate-350 transition-colors">Ventas del Periodo</p>
-          <p className="text-2xl font-bold mt-1 text-slate-900 dark:text-slate-100 group-hover:text-primary transition-colors">${metrics.monthlySales.toLocaleString("es-CL")}</p>
-        </Link>
-
-        <Link href="/facturacion" className="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-md hover:border-primary/40 transition-all block group">
-          <div className="flex items-center justify-between mb-4">
-            <span className="bg-primary/10 p-2 rounded-lg group-hover:bg-primary/20 transition-colors"><Receipt className="text-primary w-5 h-5" /></span>
-            <span className="text-orange-500 text-sm font-medium flex items-center gap-1">por cobrar <ArrowDown className="w-3 h-3" /></span>
-          </div>
-          <p className="text-sm font-medium text-slate-500 uppercase tracking-wider group-hover:text-slate-700 dark:group-hover:text-slate-350 transition-colors">Facturas Pendientes</p>
-          <p className="text-2xl font-bold mt-1 text-slate-900 dark:text-slate-100 group-hover:text-primary transition-colors">{metrics.pendingInvoicesCount}</p>
-        </Link>
-
-        <Link href="/reportes" className="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-md hover:border-primary/40 transition-all block group">
-          <div className="flex items-center justify-between mb-4">
-            <span className="bg-primary/10 p-2 rounded-lg group-hover:bg-primary/20 transition-colors"><Percent className="text-primary w-5 h-5" /></span>
-            <span className="text-green-500 text-sm font-medium flex items-center gap-1">actual <ArrowUp className="w-3 h-3" /></span>
-          </div>
-          <p className="text-sm font-medium text-slate-500 uppercase tracking-wider group-hover:text-slate-700 dark:group-hover:text-slate-350 transition-colors">Margen Bruto</p>
-          <p className="text-2xl font-bold mt-1 text-slate-900 dark:text-slate-100 group-hover:text-primary transition-colors">{metrics.grossMarginPercentage}%</p>
-        </Link>
-
-        <Link href="/inventario?tab=low" className="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-md hover:border-primary/40 transition-all block group">
-          <div className="flex items-center justify-between mb-4">
-            <span className="bg-primary/10 p-2 rounded-lg group-hover:bg-primary/20 transition-colors"><Package className="text-primary w-5 h-5" /></span>
-            <span className="text-slate-500 text-sm font-medium">stock bajo</span>
-          </div>
-          <p className="text-sm font-medium text-slate-500 uppercase tracking-wider group-hover:text-slate-700 dark:group-hover:text-slate-350 transition-colors">Items en Alerta</p>
-          <p className="text-2xl font-bold mt-1 text-slate-900 dark:text-slate-100 group-hover:text-primary transition-colors">{metrics.stockAlertCount}</p>
+    <div className="mx-auto max-w-[1240px] px-6 py-5">
+      <div className="flex items-end justify-between gap-4">
+        <p className="text-[13px] text-muted">Periodo actual · {user.tenantName}</p>
+        <Link
+          href={action.href}
+          className="inline-flex min-h-[44px] items-center rounded-control bg-[var(--color-primary)] px-3 text-[13px] font-medium text-white transition-opacity hover:opacity-90"
+        >
+          {action.label}
         </Link>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <div className="lg:col-span-2 bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col">
-          <div className="flex items-center justify-between mb-6">
-            <h3 className="text-lg font-bold">Rendimiento de Ingresos</h3>
-            <select className="text-xs bg-slate-100 dark:bg-slate-800 border-none rounded-lg focus:ring-primary outline-none">
-              <option>Periodo actual</option>
-            </select>
+      <section aria-label="Indicadores del periodo" className="mt-4 overflow-hidden rounded-card border border-border">
+        <div className="grid grid-cols-2 divide-x divide-y divide-rule lg:grid-cols-4 lg:divide-y-0">
+          {kpisFor(user.role, metrics).map((kpi) => (
+            <Kpi key={kpi.label} {...kpi} />
+          ))}
+        </div>
+      </section>
+
+      <div className="mt-4 grid grid-cols-1 gap-4 lg:grid-cols-3">
+        <section className="rounded-card border border-border lg:col-span-2">
+          <div className="flex items-center justify-between px-5 pt-4">
+            <h2 className="text-[16px] font-medium text-ink">Últimas facturas</h2>
+            <Link href="/ventas" className="text-[12px] font-medium text-muted transition-colors hover:text-ink">
+              Ver todas
+            </Link>
           </div>
-          <div className="flex-1 flex flex-col justify-end min-h-[220px]">
-            <p className="text-3xl font-bold mb-4">
-              ${metrics.revenueTrendTotal.toLocaleString("es-CL")}
-              <span className="text-green-500 text-sm font-normal ml-2">{metrics.revenueTrendGrowth} sobre base actual</span>
-            </p>
-            <div className="grid grid-cols-3 gap-3">
-              {metrics.latestInvoices.map((invoice) => (
-                <Link href="/facturacion" key={invoice.id} className="rounded-xl border border-slate-200 dark:border-slate-800 p-4 bg-slate-50 dark:bg-slate-800/40 hover:border-primary/40 transition-colors block">
-                  <p className="text-xs text-slate-500">{invoice.number}</p>
-                  <p className="font-semibold mt-1 truncate">{invoice.customerName}</p>
-                  <p className="text-sm text-primary mt-2">${invoice.total.toLocaleString("es-CL")}</p>
+          <div className="mt-2">
+            <InvoicesTable invoices={metrics.latestInvoices} />
+          </div>
+        </section>
+
+        <PendingBlock metrics={metrics} />
+      </div>
+
+      {metrics.latestInvoices.length === 0 && (user.role === "admin" || user.role === "ventas") ? (
+        <section className="mt-4 rounded-card border border-border px-5 py-4">
+          <h2 className="text-[16px] font-medium text-ink">Para empezar el periodo</h2>
+          <p className="mt-1 text-[13px] text-muted">
+            Todavía no hay documentos emitidos. Tres caminos para el primer movimiento:
+          </p>
+          <ul className="mt-3 grid gap-x-6 gap-y-2 sm:grid-cols-3">
+            {[
+              { href: "/facturacion", title: "Emitir una factura", note: "Desde una venta o un cliente" },
+              { href: "/pos", title: "Abrir el punto de venta", note: "Cobro en mostrador" },
+              { href: "/inventario", title: "Revisar el inventario", note: "Precios, stock y alertas" },
+            ].map((step) => (
+              <li key={step.href}>
+                <Link
+                  href={step.href}
+                  className="flex items-start justify-between gap-3 border-t border-rule pt-2 text-[13px] text-ink transition-colors hover:text-[var(--color-primary-ink)]"
+                >
+                  <span>
+                    <span className="block font-medium">{step.title}</span>
+                    <span className="block text-[12px] text-muted">{step.note}</span>
+                  </span>
+                  <ArrowRight className="mt-1 h-3.5 w-3.5 shrink-0 text-muted" aria-hidden="true" />
                 </Link>
-              ))}
-            </div>
-          </div>
-        </div>
-
-        <div className="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
-          <h3 className="text-lg font-bold mb-6">Acciones Recientes</h3>
-          <div className="space-y-4">
-            <div className="flex gap-4 items-start">
-              <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center shrink-0">
-                <ShoppingCart className="text-blue-600 w-4 h-4" />
-              </div>
-              <div>
-                <p className="text-sm font-semibold">Nueva factura disponible para emitir</p>
-                <p className="text-xs text-slate-500">Revisa Ventas y Facturación para continuar.</p>
-              </div>
-            </div>
-            <div className="flex gap-4 items-start">
-              <div className="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center shrink-0">
-                <TrendingUp className="text-green-600 w-4 h-4" />
-              </div>
-              <div>
-                <p className="text-sm font-semibold">Métricas conectadas a servicios</p>
-                <p className="text-xs text-slate-500">Panel y finanzas ya consumen la nueva capa real.</p>
-              </div>
-            </div>
-            <div className="flex gap-4 items-start">
-              <div className="w-8 h-8 rounded-full bg-orange-100 flex items-center justify-center shrink-0">
-                <AlertTriangle className="text-orange-600 w-4 h-4" />
-              </div>
-              <div>
-                <p className="text-sm font-semibold">Configura Supabase para persistencia</p>
-                <p className="text-xs text-slate-500">Mientras tanto, las lecturas usan fallback seguro.</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div className="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden">
-        <div className="p-6 border-b border-slate-200 dark:border-slate-800 flex justify-between items-center">
-          <h3 className="text-lg font-bold">Últimas Ventas</h3>
-        </div>
-        <div className="overflow-x-auto">
-          <table className="w-full text-left">
-            <thead className="bg-slate-50 dark:bg-slate-800/50 text-slate-500 uppercase text-xs font-bold tracking-wider">
-              <tr>
-                <th className="px-6 py-4">Cliente</th>
-                <th className="px-6 py-4">Emisión</th>
-                <th className="px-6 py-4">Monto</th>
-                <th className="px-6 py-4">Estado</th>
-                <th className="px-6 py-4">Acción</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
-              {metrics.latestInvoices.map((invoice) => (
-                <tr key={invoice.id} className="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
-                  <td className="px-6 py-4 font-medium">{invoice.customerName}</td>
-                  <td className="px-6 py-4 text-sm">{invoice.issueDate}</td>
-                  <td className="px-6 py-4 text-sm font-bold">${invoice.total.toLocaleString("es-CL")}</td>
-                  <td className="px-6 py-4">
-                    <span className="px-3 py-1 bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-300 rounded-full text-xs font-semibold">
-                      {formatInvoiceStatus(invoice.status)}
-                    </span>
-                  </td>
-                  <td className="px-6 py-4">
-                    <Link href="/facturacion" className="inline-flex p-1.5 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg text-slate-400 hover:text-primary transition-colors">
-                      <MoreHorizontal className="w-5 h-5" />
-                    </Link>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </div>
+              </li>
+            ))}
+          </ul>
+        </section>
+      ) : null}
     </div>
   );
 }

@@ -14,7 +14,7 @@ export default async function ProfitAndLossPage() {
     <div className="max-w-4xl mx-auto pb-24 md:p-8 space-y-6">
       <div className="flex justify-between items-center px-4 md:px-0">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight">Estado de Resultados</h1>
+          <h2 className="text-2xl font-bold tracking-tight">Estado de Resultados</h2>
           <p className="text-sm text-slate-500 dark:text-slate-400">Consolidado desde ventas, pagos y costos proxy.</p>
         </div>
         <div className="flex gap-2">
@@ -28,11 +28,11 @@ export default async function ProfitAndLossPage() {
       </div>
 
       <div className="px-4 md:px-0">
-        <div className="bg-white dark:bg-slate-900/50 rounded-xl p-6 shadow-sm border border-slate-200 dark:border-slate-800">
+        <div className="bg-white dark:bg-slate-900/50 rounded-xl p-6 border border-slate-200 dark:border-slate-800">
           <div className="flex justify-between items-start mb-6">
             <div>
               <p className="text-sm font-medium text-slate-500 dark:text-slate-400">Utilidad Neta del Periodo</p>
-              <p className="text-3xl font-bold mt-1">\${profitAndLoss.netProfit.toLocaleString("es-CL")} <span className="text-xs font-normal text-slate-400">CLP</span></p>
+              <p className="text-3xl font-bold mt-1">${profitAndLoss.netProfit.toLocaleString("es-CL")} <span className="text-xs font-normal text-slate-400">CLP</span></p>
               <div className="flex items-center gap-1 mt-1">
                 <TrendingUp className="text-emerald-500 w-4 h-4" />
                 <p className="text-emerald-500 text-sm font-medium">{profitAndLoss.netMarginPercentage}% margen neto actual</p>
@@ -46,15 +46,15 @@ export default async function ProfitAndLossPage() {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             <div className="rounded-xl bg-slate-50 dark:bg-slate-800/40 p-4">
               <p className="text-xs uppercase text-slate-500 font-bold">Ingresos</p>
-              <p className="mt-1 font-bold">\${profitAndLoss.totalRevenue.toLocaleString("es-CL")}</p>
+              <p className="mt-1 font-bold">${profitAndLoss.totalRevenue.toLocaleString("es-CL")}</p>
             </div>
             <div className="rounded-xl bg-slate-50 dark:bg-slate-800/40 p-4">
               <p className="text-xs uppercase text-slate-500 font-bold">COGS</p>
-              <p className="mt-1 font-bold">\${profitAndLoss.costOfSales.toLocaleString("es-CL")}</p>
+              <p className="mt-1 font-bold">${profitAndLoss.costOfSales.toLocaleString("es-CL")}</p>
             </div>
             <div className="rounded-xl bg-slate-50 dark:bg-slate-800/40 p-4">
               <p className="text-xs uppercase text-slate-500 font-bold">Gastos</p>
-              <p className="mt-1 font-bold">\${profitAndLoss.operatingExpenses.toLocaleString("es-CL")}</p>
+              <p className="mt-1 font-bold">${profitAndLoss.operatingExpenses.toLocaleString("es-CL")}</p>
             </div>
             <div className="rounded-xl bg-slate-50 dark:bg-slate-800/40 p-4">
               <p className="text-xs uppercase text-slate-500 font-bold">ROI</p>
@@ -67,35 +67,35 @@ export default async function ProfitAndLossPage() {
       <div className="px-4 md:px-0 space-y-4">
         <h2 className="text-lg font-bold px-1">Desglose Financiero</h2>
 
-        <div className="bg-white dark:bg-slate-900/50 rounded-xl p-4 shadow-sm border border-slate-200 dark:border-slate-800 flex items-center justify-between hover:border-primary/30 transition-colors cursor-pointer group">
+        <div className="bg-white dark:bg-slate-900/50 rounded-xl p-4 border border-slate-200 dark:border-slate-800 flex items-center justify-between hover:border-primary/30 transition-colors cursor-pointer group">
           <div className="flex items-center gap-3">
             <div className="size-10 rounded-full bg-emerald-100 dark:bg-emerald-900/30 flex items-center justify-center text-emerald-600">
               <BanknotesIcon />
             </div>
             <div>
               <p className="text-sm font-medium text-slate-500">Ingresos Totales</p>
-              <p className="text-lg font-bold text-slate-900 dark:text-white">\${profitAndLoss.totalRevenue.toLocaleString("es-CL")}</p>
+              <p className="text-lg font-bold text-slate-900 dark:text-white">${profitAndLoss.totalRevenue.toLocaleString("es-CL")}</p>
             </div>
           </div>
           <ChevronRight className="text-slate-400 group-hover:text-primary transition-colors" />
         </div>
 
-        <div className="bg-white dark:bg-slate-900/50 rounded-xl p-4 shadow-sm border border-slate-200 dark:border-slate-800 flex items-center justify-between hover:border-primary/30 transition-colors cursor-pointer group">
+        <div className="bg-white dark:bg-slate-900/50 rounded-xl p-4 border border-slate-200 dark:border-slate-800 flex items-center justify-between hover:border-primary/30 transition-colors cursor-pointer group">
           <div className="flex items-center gap-3">
             <div className="size-10 rounded-full bg-orange-100 dark:bg-orange-900/30 flex items-center justify-center text-orange-600">
               <InventoryIcon />
             </div>
             <div>
               <p className="text-sm font-medium text-slate-500">Costo de Ventas</p>
-              <p className="text-lg font-bold text-slate-900 dark:text-white">\${profitAndLoss.costOfSales.toLocaleString("es-CL")}</p>
+              <p className="text-lg font-bold text-slate-900 dark:text-white">${profitAndLoss.costOfSales.toLocaleString("es-CL")}</p>
             </div>
           </div>
           <ChevronRight className="text-slate-400 group-hover:text-primary transition-colors" />
         </div>
 
         <div className="bg-slate-100 dark:bg-slate-800/50 rounded-xl p-4 flex items-center justify-between border border-transparent">
-          <p className="text-sm font-bold uppercase tracking-wider text-slate-500">Margen Bruto ({profitAndLoss.grossMarginPercentage}%)</p>
-          <p className="text-lg font-bold text-slate-900 dark:text-white">\${profitAndLoss.grossMarginAmount.toLocaleString("es-CL")}</p>
+          <p className="text-sm font-bold text-slate-500">Margen Bruto ({profitAndLoss.grossMarginPercentage}%)</p>
+          <p className="text-lg font-bold text-slate-900 dark:text-white">${profitAndLoss.grossMarginAmount.toLocaleString("es-CL")}</p>
         </div>
       </div>
     </div>

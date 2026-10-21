@@ -92,7 +92,7 @@ export default function EmployeesClient({ employees }: Props) {
       {/* Header */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight">Directorio de Empleados</h1>
+          <h2 className="text-2xl font-bold tracking-tight">Directorio de Empleados</h2>
           <p className="text-sm text-slate-500 dark:text-slate-400">
             {employees.length > 0
               ? `${employees.length} empleado${employees.length !== 1 ? "s" : ""} registrado${employees.length !== 1 ? "s" : ""}`
@@ -101,7 +101,7 @@ export default function EmployeesClient({ employees }: Props) {
         </div>
         <button
           onClick={() => setIsModalOpen(true)}
-          className="bg-primary hover:bg-primary/90 text-white px-4 py-2 rounded-xl flex items-center gap-2 text-sm font-semibold transition-colors w-full sm:w-auto justify-center shadow-sm"
+          className="bg-primary hover:bg-primary/90 text-white px-4 py-2 rounded-xl flex items-center gap-2 text-sm font-semibold transition-colors w-full sm:w-auto justify-center"
         >
           <UserPlus className="w-5 h-5" />
           <span>Contratar Nuevo</span>
@@ -149,7 +149,7 @@ export default function EmployeesClient({ employees }: Props) {
           filteredEmployees.map((employee) => (
             <div
               key={employee.id}
-              className="bg-white dark:bg-slate-800 p-4 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm hover:shadow-md transition-shadow"
+              className="bg-white dark:bg-slate-800 p-4 rounded-xl border border-slate-200 dark:border-slate-700 hover:shadow-md transition-shadow"
             >
               <div className="flex items-start justify-between">
                 <div className="flex gap-4">
@@ -176,7 +176,7 @@ export default function EmployeesClient({ employees }: Props) {
                 </div>
                 <div className="flex flex-col items-end gap-2 shrink-0">
                   <span
-                    className={`px-2 py-1 text-[10px] font-bold rounded uppercase tracking-wider ${
+                    className={`px-2 py-1 text-xs font-bold rounded ${
                       STATUS_STYLES[employee.status] ?? "bg-slate-100 text-slate-700"
                     }`}
                   >
@@ -286,7 +286,7 @@ export default function EmployeesClient({ employees }: Props) {
                 <button
                   type="submit"
                   disabled={isPending}
-                  className="flex-1 px-4 py-2.5 rounded-xl font-bold bg-primary text-white hover:bg-primary/90 transition-colors shadow-sm disabled:opacity-50 flex items-center justify-center gap-2"
+                  className="flex-1 px-4 py-2.5 rounded-xl font-bold bg-primary text-white hover:bg-primary/90 transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
                 >
                   {isPending ? (
                     <>

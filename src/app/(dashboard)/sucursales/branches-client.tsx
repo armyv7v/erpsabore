@@ -205,7 +205,7 @@ export default function BranchesClient({ branches }: Props) {
       {/* Header */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight">Gestión de Sucursales</h1>
+          <h2 className="text-2xl font-bold tracking-tight">Gestión de Sucursales</h2>
           <p className="text-sm text-slate-500 dark:text-slate-400">
             {branches.length > 0
               ? `${branches.length} sucursal${branches.length !== 1 ? "es" : ""} registrada${branches.length !== 1 ? "s" : ""}`
@@ -215,7 +215,7 @@ export default function BranchesClient({ branches }: Props) {
         <div className="flex gap-2 w-full sm:w-auto">
           <button
             onClick={() => setShowAddModal(true)}
-            className="flex flex-1 sm:flex-none justify-center items-center gap-2 px-4 py-2 rounded-xl bg-primary text-white font-medium shadow-sm hover:bg-primary/90 transition-all hover:scale-[1.02] active:scale-[0.98]"
+            className="flex flex-1 sm:flex-none justify-center items-center gap-2 px-4 py-2 rounded-xl bg-primary text-white font-medium hover:bg-primary/90 transition-all hover:scale-[1.02] active:scale-[0.98]"
           >
             <Plus className="w-5 h-5" />
             <span>Añadir Sucursal</span>
@@ -271,7 +271,7 @@ export default function BranchesClient({ branches }: Props) {
             {branches.length === 0 && (
               <button
                 onClick={() => setShowAddModal(true)}
-                className="flex items-center gap-2 px-4 py-2 rounded-xl bg-primary text-white text-sm font-semibold shadow-sm hover:bg-primary/90 transition-all hover:scale-[1.02] active:scale-[0.98]"
+                className="flex items-center gap-2 px-4 py-2 rounded-xl bg-primary text-white text-sm font-semibold hover:bg-primary/90 transition-all hover:scale-[1.02] active:scale-[0.98]"
               >
                 <Plus className="w-4 h-4" />
                 <span>Añadir Sucursal</span>
@@ -282,7 +282,7 @@ export default function BranchesClient({ branches }: Props) {
           filtered.map((branch) => (
             <div
               key={branch.id}
-              className="group relative overflow-hidden bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-sm transition-all hover:shadow-md hover:border-primary/30"
+              className="group relative overflow-hidden bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl transition-all hover:shadow-md hover:border-primary/30"
             >
               <div className="flex flex-col md:flex-row">
                 {/* Color accent panel (reemplaza la imagen) */}
@@ -297,7 +297,7 @@ export default function BranchesClient({ branches }: Props) {
                         {branch.name}
                       </h3>
                       <span
-                        className={`text-xs font-bold px-2 py-1 rounded-full uppercase tracking-wider flex items-center gap-1 ${STATUS_BADGE[branch.status] ?? "bg-slate-100 text-slate-700"}`}
+                        className={`text-xs font-bold px-2 py-1 rounded-full flex items-center gap-1 ${STATUS_BADGE[branch.status] ?? "bg-slate-100 text-slate-700"}`}
                       >
                         <StatusIcon status={branch.status} />
                         {STATUS_LABEL[branch.status] ?? branch.status}
@@ -320,29 +320,29 @@ export default function BranchesClient({ branches }: Props) {
                     {/* KPI mini-grid */}
                     <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 mb-4 mt-3">
                       <div className="p-3 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-primary/5">
-                        <p className="text-[10px] text-slate-500 uppercase font-bold tracking-wider mb-1 flex items-center gap-1">
+                        <p className="text-xs text-slate-500 font-bold tracking-wider mb-1 flex items-center gap-1">
                           <Users className="w-3 h-3" /> Empleados
                         </p>
                         <p className="text-lg font-bold text-primary">
                           {branch.employeesCount > 0 ? branch.employeesCount : "—"}
                         </p>
-                        <p className="text-[10px] text-slate-400 font-medium">
+                        <p className="text-xs text-slate-400 font-medium">
                           {branch.employeesCount > 0 ? "registrados" : "sin datos"}
                         </p>
                       </div>
                       <div className="p-3 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-primary/5">
-                        <p className="text-[10px] text-slate-500 uppercase font-bold tracking-wider mb-1 flex items-center gap-1">
+                        <p className="text-xs text-slate-500 font-bold tracking-wider mb-1 flex items-center gap-1">
                           <Truck className="w-3 h-3" /> Despachos
                         </p>
                         <p className="text-lg font-bold text-primary">
                           {branch.shipmentsActive > 0 ? branch.shipmentsActive : "—"}
                         </p>
-                        <p className="text-[10px] text-slate-400 font-medium">
+                        <p className="text-xs text-slate-400 font-medium">
                           {branch.shipmentsActive > 0 ? "activos" : "sin datos"}
                         </p>
                       </div>
                       <div className="p-3 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-primary/5 col-span-2 sm:col-span-1">
-                        <p className="text-[10px] text-slate-500 uppercase font-bold tracking-wider mb-1">
+                        <p className="text-xs text-slate-500 font-bold tracking-wider mb-1">
                           Contacto
                         </p>
                         <div className="flex flex-col gap-1">
@@ -384,7 +384,7 @@ export default function BranchesClient({ branches }: Props) {
                     </button>
                     <button
                       onClick={() => handleOpenDetails(branch)}
-                      className="px-4 py-2 text-sm font-semibold bg-primary text-white rounded-xl shadow-sm hover:bg-primary/90 transition-all hover:scale-[1.02] active:scale-[0.98]"
+                      className="px-4 py-2 text-sm font-semibold bg-primary text-white rounded-xl hover:bg-primary/90 transition-all hover:scale-[1.02] active:scale-[0.98]"
                     >
                       Ver Detalles
                     </button>
@@ -440,7 +440,7 @@ export default function BranchesClient({ branches }: Props) {
               <div className="space-y-4">
                 {/* Nombre */}
                 <div>
-                  <label className="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1.5">
+                  <label className="block text-xs font-bold text-slate-500 dark:text-slate-400 mb-1.5">
                     Nombre de la Sucursal *
                   </label>
                   <input
@@ -455,7 +455,7 @@ export default function BranchesClient({ branches }: Props) {
 
                 {/* Dirección */}
                 <div>
-                  <label className="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1.5">
+                  <label className="block text-xs font-bold text-slate-500 dark:text-slate-400 mb-1.5">
                     Dirección
                   </label>
                   <input
@@ -470,7 +470,7 @@ export default function BranchesClient({ branches }: Props) {
                 {/* Ciudad y Región */}
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1.5">
+                    <label className="block text-xs font-bold text-slate-500 dark:text-slate-400 mb-1.5">
                       Región
                     </label>
                     <div className="relative">
@@ -489,7 +489,7 @@ export default function BranchesClient({ branches }: Props) {
                     </div>
                   </div>
                   <div>
-                    <label className="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1.5">
+                    <label className="block text-xs font-bold text-slate-500 dark:text-slate-400 mb-1.5">
                       Comuna / Ciudad
                     </label>
                     <div className="relative">
@@ -512,7 +512,7 @@ export default function BranchesClient({ branches }: Props) {
                 {/* Teléfono y Email */}
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1.5">
+                    <label className="block text-xs font-bold text-slate-500 dark:text-slate-400 mb-1.5">
                       Teléfono
                     </label>
                     <input
@@ -524,7 +524,7 @@ export default function BranchesClient({ branches }: Props) {
                     />
                   </div>
                   <div>
-                    <label className="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1.5">
+                    <label className="block text-xs font-bold text-slate-500 dark:text-slate-400 mb-1.5">
                       Email
                     </label>
                     <input
@@ -540,7 +540,7 @@ export default function BranchesClient({ branches }: Props) {
                 {/* Encargado y Estado */}
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1.5">
+                    <label className="block text-xs font-bold text-slate-500 dark:text-slate-400 mb-1.5">
                       Responsable / Encargado
                     </label>
                     <input
@@ -552,7 +552,7 @@ export default function BranchesClient({ branches }: Props) {
                     />
                   </div>
                   <div>
-                    <label className="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1.5">
+                    <label className="block text-xs font-bold text-slate-500 dark:text-slate-400 mb-1.5">
                       Estado
                     </label>
                     <div className="relative">
@@ -645,7 +645,7 @@ export default function BranchesClient({ branches }: Props) {
               <div className="space-y-4">
                 {/* Nombre */}
                 <div>
-                  <label className="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1.5">
+                  <label className="block text-xs font-bold text-slate-500 dark:text-slate-400 mb-1.5">
                     Nombre de la Sucursal *
                   </label>
                   <input
@@ -660,7 +660,7 @@ export default function BranchesClient({ branches }: Props) {
 
                 {/* Dirección */}
                 <div>
-                  <label className="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1.5">
+                  <label className="block text-xs font-bold text-slate-500 dark:text-slate-400 mb-1.5">
                     Dirección
                   </label>
                   <input
@@ -675,7 +675,7 @@ export default function BranchesClient({ branches }: Props) {
                 {/* Región y Comuna */}
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1.5">
+                    <label className="block text-xs font-bold text-slate-500 dark:text-slate-400 mb-1.5">
                       Región
                     </label>
                     <div className="relative">
@@ -694,7 +694,7 @@ export default function BranchesClient({ branches }: Props) {
                     </div>
                   </div>
                   <div>
-                    <label className="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1.5">
+                    <label className="block text-xs font-bold text-slate-500 dark:text-slate-400 mb-1.5">
                       Comuna / Ciudad
                     </label>
                     <div className="relative">
@@ -717,7 +717,7 @@ export default function BranchesClient({ branches }: Props) {
                 {/* Teléfono y Email */}
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1.5">
+                    <label className="block text-xs font-bold text-slate-500 dark:text-slate-400 mb-1.5">
                       Teléfono
                     </label>
                     <input
@@ -729,7 +729,7 @@ export default function BranchesClient({ branches }: Props) {
                     />
                   </div>
                   <div>
-                    <label className="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1.5">
+                    <label className="block text-xs font-bold text-slate-500 dark:text-slate-400 mb-1.5">
                       Email
                     </label>
                     <input
@@ -745,7 +745,7 @@ export default function BranchesClient({ branches }: Props) {
                 {/* Encargado y Estado */}
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1.5">
+                    <label className="block text-xs font-bold text-slate-500 dark:text-slate-400 mb-1.5">
                       Responsable / Encargado
                     </label>
                     <input
@@ -757,7 +757,7 @@ export default function BranchesClient({ branches }: Props) {
                     />
                   </div>
                   <div>
-                    <label className="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1.5">
+                    <label className="block text-xs font-bold text-slate-500 dark:text-slate-400 mb-1.5">
                       Estado
                     </label>
                     <div className="relative">
@@ -813,7 +813,7 @@ export default function BranchesClient({ branches }: Props) {
             <div className="px-6 py-5 border-b border-slate-100 dark:border-slate-800 flex justify-between items-start bg-gradient-to-br from-primary/5 via-transparent to-transparent">
               <div>
                 <span
-                  className={`text-[10px] font-bold px-2 py-1 rounded-full uppercase tracking-wider inline-flex items-center gap-1 mb-2 ${STATUS_BADGE[detailsBranch.status] ?? "bg-slate-100 text-slate-700"}`}
+                  className={`text-xs font-bold px-2 py-1 rounded-full inline-flex items-center gap-1 mb-2 ${STATUS_BADGE[detailsBranch.status] ?? "bg-slate-100 text-slate-700"}`}
                 >
                   <StatusIcon status={detailsBranch.status} />
                   {STATUS_LABEL[detailsBranch.status] ?? detailsBranch.status}
@@ -845,7 +845,7 @@ export default function BranchesClient({ branches }: Props) {
               {/* KPIs Grid */}
               <div className="grid grid-cols-2 gap-4">
                 <div className="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-800">
-                  <p className="text-[10px] text-slate-500 dark:text-slate-400 uppercase font-bold tracking-wider mb-2 flex items-center gap-1.5">
+                  <p className="text-xs text-slate-500 dark:text-slate-400 font-bold tracking-wider mb-2 flex items-center gap-1.5">
                     <Users className="w-4 h-4 text-primary" />
                     Colaboradores
                   </p>
@@ -857,7 +857,7 @@ export default function BranchesClient({ branches }: Props) {
                   </p>
                 </div>
                 <div className="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-800">
-                  <p className="text-[10px] text-slate-500 dark:text-slate-400 uppercase font-bold tracking-wider mb-2 flex items-center gap-1.5">
+                  <p className="text-xs text-slate-500 dark:text-slate-400 font-bold tracking-wider mb-2 flex items-center gap-1.5">
                     <Truck className="w-4 h-4 text-primary" />
                     Despachos Activos
                   </p>
@@ -872,7 +872,7 @@ export default function BranchesClient({ branches }: Props) {
 
               {/* Informacion de Contacto */}
               <div className="space-y-3">
-                <h4 className="text-xs font-bold text-slate-400 uppercase tracking-wider">
+                <h4 className="text-xs font-bold text-slate-400">
                   Información y Contacto
                 </h4>
                 <div className="p-4 rounded-2xl border border-slate-100 dark:border-slate-800 space-y-3 bg-white dark:bg-slate-900">
@@ -881,7 +881,7 @@ export default function BranchesClient({ branches }: Props) {
                       <Users className="w-4 h-4" />
                     </div>
                     <div>
-                      <p className="text-[10px] text-slate-400 uppercase font-bold">Encargado / Responsable</p>
+                      <p className="text-xs text-slate-400 uppercase font-bold">Encargado / Responsable</p>
                       <p className="text-sm font-semibold text-slate-800 dark:text-slate-200">
                         {detailsBranch.manager || "Sin asignar"}
                       </p>
@@ -893,7 +893,7 @@ export default function BranchesClient({ branches }: Props) {
                         <Phone className="w-4 h-4" />
                       </div>
                       <div>
-                        <p className="text-[10px] text-slate-400 uppercase font-bold">Teléfono de Contacto</p>
+                        <p className="text-xs text-slate-400 uppercase font-bold">Teléfono de Contacto</p>
                         <a
                           href={`tel:${detailsBranch.phone}`}
                           className="text-sm font-semibold text-primary hover:underline"
@@ -909,7 +909,7 @@ export default function BranchesClient({ branches }: Props) {
                         <Mail className="w-4 h-4" />
                       </div>
                       <div>
-                        <p className="text-[10px] text-slate-400 uppercase font-bold">Correo Electrónico</p>
+                        <p className="text-xs text-slate-400 uppercase font-bold">Correo Electrónico</p>
                         <a
                           href={`mailto:${detailsBranch.email}`}
                           className="text-sm font-semibold text-primary hover:underline break-all"
@@ -928,7 +928,7 @@ export default function BranchesClient({ branches }: Props) {
                 <p className="text-xs font-semibold text-slate-700 dark:text-slate-300">
                   Ubicación Georeferenciada
                 </p>
-                <p className="text-[10px] text-slate-400 max-w-[280px]">
+                <p className="text-xs text-slate-400 max-w-[280px]">
                   La sucursal está localizada en {detailsBranch.city || "la comuna registrada"}, Región de {detailsBranch.region || "Chile"}.
                 </p>
               </div>

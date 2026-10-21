@@ -135,7 +135,7 @@ export default function RegisterForm() {
 
       <div className="relative flex py-2 items-center">
         <div className="flex-grow border-t border-slate-200 dark:border-slate-800"></div>
-        <span className="flex-shrink mx-4 text-slate-400 text-xs font-semibold uppercase tracking-wider">o</span>
+        <span className="flex-shrink mx-4 text-slate-400 text-xs font-semibold">o</span>
         <div className="flex-grow border-t border-slate-200 dark:border-slate-800"></div>
       </div>
 
@@ -151,7 +151,7 @@ export default function RegisterForm() {
           type="button"
           onClick={handleGoogleSignUp}
           disabled={isPending || isGoogleLoading}
-          className="w-full bg-white dark:bg-slate-950 hover:bg-slate-50 dark:hover:bg-slate-900 text-slate-700 dark:text-slate-200 border border-slate-250 dark:border-slate-850 font-bold py-3.5 rounded-xl transition-all flex items-center justify-center gap-2 text-sm shadow-sm disabled:opacity-75"
+          className="w-full bg-white dark:bg-slate-950 hover:bg-slate-50 dark:hover:bg-slate-900 text-slate-700 dark:text-slate-200 border border-slate-250 dark:border-slate-850 font-bold py-3.5 rounded-xl transition-all flex items-center justify-center gap-2 text-sm disabled:opacity-75"
         >
           <Chrome className="w-4 h-4 text-red-500 shrink-0" />
           <span>{isGoogleLoading ? "Conectando con Google..." : "Registrarse con Google"}</span>

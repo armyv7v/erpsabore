@@ -36,7 +36,7 @@ export default async function TaxesPage() {
             <Percent className="text-primary w-6 h-6" />
           </div>
           <div>
-            <h1 className="text-2xl font-bold tracking-tight">Impuestos y Previred</h1>
+            <h2 className="text-2xl font-bold tracking-tight">Impuestos y Previred</h2>
             <p className="text-sm text-slate-500 dark:text-slate-400">
               Cálculo y control de IVA (F29), Pagos Provisionales Mensuales (PPM), cotizaciones previsionales y proyección anual de Renta (F22).
             </p>
