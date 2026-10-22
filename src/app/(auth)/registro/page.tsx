@@ -6,9 +6,9 @@ import { isSupabaseConfigured } from "@/lib/supabase/config";
 
 export default function RegisterPage() {
   return (
-    <div className="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 min-h-screen flex items-center justify-center p-4">
-      <div className="w-full max-w-[480px] bg-white dark:bg-slate-900 rounded-xl shadow-2xl border border-slate-200 dark:border-slate-800 overflow-hidden">
-        <div className="relative flex h-auto w-full flex-col bg-slate-50 dark:bg-slate-900 overflow-x-hidden">
+    <div className="bg-[var(--color-frame)] dark:bg-background-dark text-slate-900 dark:text-slate-100 min-h-screen flex items-center justify-center p-4">
+      <div className="w-full max-w-[480px] bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 overflow-hidden">
+        <div className="relative flex h-auto w-full flex-col bg-white dark:bg-slate-900 overflow-x-hidden">
           <div className="flex items-center p-6 pb-2 justify-between">
             <div className="flex items-center gap-2 h-10">
               <picture className="block h-8 w-auto">
@@ -33,9 +33,9 @@ export default function RegisterPage() {
           </div>
 
           <div className="px-6">
-            <h2 className="text-slate-900 dark:text-white tracking-tight text-2xl font-bold leading-tight pb-1 pt-4">
+            <h1 className="text-slate-900 dark:text-white tracking-tight text-2xl font-bold leading-tight pb-1 pt-4">
               Registro de Clientes
-            </h2>
+            </h1>
             <p className="text-slate-600 dark:text-slate-400 text-sm font-normal leading-normal pb-6">
               Cree su cuenta de cliente para consultar precios, stock y gestionar despachos.
             </p>
