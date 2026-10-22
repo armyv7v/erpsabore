@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useRef, useEffect } from "react";
-import { Upload, X, RefreshCw } from "lucide-react";
+import { AlertTriangle, Upload, X, RefreshCw } from "lucide-react";
 
 interface Props {
   currentImageUrl?: string | null;
@@ -178,7 +178,7 @@ export default function ProductImageUploader({ currentImageUrl = null, name = "i
 
       {errorMsg && (
         <p className="text-xs text-[var(--color-negative)] font-semibold animate-pulse mt-1 flex items-center gap-1.5">
-          <span>⚠️</span> {errorMsg}
+          <AlertTriangle className="w-3.5 h-3.5 shrink-0" /> {errorMsg}
         </p>
       )}
     </div>

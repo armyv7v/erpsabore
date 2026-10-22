@@ -2247,7 +2247,7 @@ export default function PosWorkspace({ products: initialProducts, branches }: Po
                       
                       {discrepancy === 0 ? (
                         <span className="px-2.5 py-1 rounded-full bg-green-500/10 border border-green-500/20 text-[var(--color-positive)] dark:text-green-400 font-extrabold text-xs uppercase">
-                          Caja Cuadrada ✓
+                          Caja Cuadrada
                         </span>
                       ) : discrepancy < 0 ? (
                         <span className="px-2.5 py-1 rounded-full bg-red-500/10 border border-red-500/20 text-red-600 dark:text-red-400 font-extrabold text-xs uppercase font-mono">

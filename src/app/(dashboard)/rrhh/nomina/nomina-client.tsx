@@ -738,7 +738,7 @@ export default function NominaClient({ initialEmployees }: { initialEmployees: E
                 </span>
                 {selectedEmployeeForSlip.status === 'paid' ? (
                   <span className="block mt-2 text-xs font-bold text-[var(--color-positive)]">
-                    ✓ TRANSFERENCIA PROCESADA
+                    TRANSFERENCIA PROCESADA
                   </span>
                 ) : (
                   <span className="block mt-2 text-xs font-bold text-blue-500">

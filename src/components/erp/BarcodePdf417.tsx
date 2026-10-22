@@ -38,7 +38,7 @@ export default function BarcodePdf417({ code, width = 450, height = 150 }: Barco
   if (error) {
     return (
       <div className="flex flex-col items-center justify-center rounded-xl border border-rose-200 bg-rose-50/50 p-4 text-center text-rose-700 dark:border-rose-900/50 dark:bg-rose-950/20">
-        <p className="text-xs font-semibold">⚠️ Timbre PDF417 no disponible</p>
+        <p className="text-xs font-semibold">Timbre PDF417 no disponible</p>
         <p className="mt-1 text-xs opacity-80">{error}</p>
       </div>
     );
