@@ -45,6 +45,9 @@ next-env.d.ts
 # debug logs
 .next-dev.log
 
+# local tooling (contiene cookies.json con credenciales de prueba)
+.taste-skill/
+
 # Playwright / Testing
 /playwright-report/
 /test-results/
