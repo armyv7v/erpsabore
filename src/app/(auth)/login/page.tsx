@@ -7,8 +7,8 @@ const LivingLandingClient = dynamic(
   {
     ssr: false,
     loading: () => (
-      <main className="min-h-screen bg-[#1c110b] text-[#f8f6f6] flex items-center justify-center">
-        <div className="login-dot-live" />
+      <main className="flex min-h-screen items-center justify-center bg-[#f3f2f0]">
+        <div className="size-6 animate-pulse rounded-full bg-[var(--color-primary)]/30" />
       </main>
     ),
   }

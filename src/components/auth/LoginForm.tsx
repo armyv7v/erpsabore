@@ -16,20 +16,23 @@ export default function LoginForm() {
   const [showPassword, setShowPassword] = useState(false);
 
   return (
-    <form action={formAction} className="space-y-5">
-      <div className="flex flex-col login-fade-3">
+    <form action={formAction} className="space-y-4">
+      <div className="flex flex-col">
         <label
           htmlFor="login-email"
-          className="text-[rgba(248,246,246,0.5)] text-xs font-bold pb-2 px-1"
+          className="pb-1.5 text-[13px] font-medium text-[var(--color-muted)]"
         >
           Correo electrónico
         </label>
         <div className="relative">
-          <User className="absolute left-4 top-1/2 -translate-y-1/2 text-primary/60 w-5 h-5" />
+          <User
+            aria-hidden="true"
+            className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-[var(--color-muted)]"
+          />
           <input
             id="login-email"
             name="email"
-            className="login-glass-input flex w-full rounded-xl h-14 pl-12 pr-4 text-base font-normal leading-normal"
+            className="h-11 w-full rounded-lg border border-[#1c1512]/15 bg-white pl-10 pr-3 text-[14px] leading-normal text-[var(--color-ink)] transition-colors placeholder:text-[var(--color-muted)] hover:border-[#1c1512]/25 focus:border-[var(--color-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]/20"
             placeholder="correo@ejemplo.cl"
             type="email"
             autoComplete="email"
@@ -38,19 +41,22 @@ export default function LoginForm() {
         </div>
       </div>
 
-      <div className="flex flex-col login-fade-4">
+      <div className="flex flex-col">
         <label
           htmlFor="login-password"
-          className="text-[rgba(248,246,246,0.5)] text-xs font-bold pb-2 px-1"
+          className="pb-1.5 text-[13px] font-medium text-[var(--color-muted)]"
         >
           Contraseña
         </label>
         <div className="relative">
-          <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-primary/60 w-5 h-5" />
+          <Lock
+            aria-hidden="true"
+            className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-[var(--color-muted)]"
+          />
           <input
             id="login-password"
             name="password"
-            className="login-glass-input flex w-full rounded-xl h-14 pl-12 pr-14 text-base font-normal leading-normal"
+            className="h-11 w-full rounded-lg border border-[#1c1512]/15 bg-white pl-10 pr-12 text-[14px] leading-normal text-[var(--color-ink)] transition-colors placeholder:text-[var(--color-muted)] hover:border-[#1c1512]/25 focus:border-[var(--color-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]/20"
             placeholder="••••••••"
             type={showPassword ? "text" : "password"}
             autoComplete="current-password"
@@ -61,37 +67,42 @@ export default function LoginForm() {
             onClick={() => setShowPassword((prev) => !prev)}
             aria-label={showPassword ? "Ocultar contraseña" : "Mostrar contraseña"}
             aria-pressed={showPassword}
-            className="absolute right-1 top-1/2 flex min-h-[44px] min-w-[44px] -translate-y-1/2 items-center justify-center rounded-lg text-primary/60 transition-colors hover:text-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+            className="absolute right-0 top-1/2 flex min-h-[44px] min-w-[44px] -translate-y-1/2 items-center justify-center rounded-lg text-[var(--color-muted)] transition-colors hover:text-[var(--color-ink)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-primary)]"
           >
-            {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+            {showPassword ? (
+              <EyeOff className="size-4" aria-hidden="true" />
+            ) : (
+              <Eye className="size-4" aria-hidden="true" />
+            )}
           </button>
         </div>
-        <div className="flex justify-end pt-2">
+        <div className="flex justify-end pt-1.5">
           <Link
             href="/forgot-password"
-            className="rounded px-1 py-1 text-xs font-semibold text-primary/80 underline-offset-4 hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+            className="rounded py-1 text-[13px] text-[var(--color-muted)] underline-offset-4 transition-colors hover:text-[var(--color-primary-ink)] hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-primary)]"
           >
-            ¿Olvidaste tu contraseña?
+            ¿Olvidó su contraseña?
           </Link>
         </div>
       </div>
 
       {state.status === "error" ? (
-        <div className="rounded-xl border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-300 login-fade-5">
+        <div
+          role="alert"
+          className="rounded-lg border border-[var(--color-negative)]/25 bg-[var(--color-negative-bg)] px-3 py-2.5 text-[13px] leading-relaxed text-[var(--color-negative-ink)]"
+        >
           {state.message}
         </div>
       ) : null}
 
-      <div className="pt-2 login-fade-5">
-        <button
-          className="login-cta-btn w-full text-white font-bold py-4 rounded-xl flex items-center justify-center gap-2 group disabled:opacity-70"
-          type="submit"
-          disabled={isPending}
-        >
-          <span>{isPending ? "Ingresando..." : "Iniciar sesión"}</span>
-          <LogIn className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-        </button>
-      </div>
+      <button
+        className="flex w-full items-center justify-center gap-2 rounded-xl bg-[var(--color-primary)] py-3 text-[13px] font-semibold text-white transition-colors hover:bg-[var(--color-primary-ink)] disabled:cursor-not-allowed disabled:opacity-70"
+        type="submit"
+        disabled={isPending}
+      >
+        <span>{isPending ? "Ingresando…" : "Iniciar sesión"}</span>
+        <LogIn className="size-4" aria-hidden="true" />
+      </button>
     </form>
   );
 }
