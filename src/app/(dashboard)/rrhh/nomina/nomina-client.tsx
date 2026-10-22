@@ -322,7 +322,7 @@ export default function NominaClient({ initialEmployees }: { initialEmployees: E
             }`}
           >
             {toast.type === 'success' && <CheckCircle className="w-5 h-5 shrink-0 text-[var(--color-positive)]" />}
-            {toast.type === 'error' && <AlertCircle className="w-5 h-5 shrink-0 text-red-500" />}
+            {toast.type === 'error' && <AlertCircle className="w-5 h-5 shrink-0 text-[var(--color-negative)]" />}
             {toast.type === 'info' && <Info className="w-5 h-5 shrink-0 text-blue-500" />}
             <span className="flex-1">{toast.message}</span>
             <button 
@@ -688,7 +688,7 @@ export default function NominaClient({ initialEmployees }: { initialEmployees: E
                   <span className="text-right text-slate-900 dark:text-white">${editComputedValues.afc.toLocaleString('es-CL')}</span>
                   
                   <span className="border-t border-slate-100 dark:border-slate-800 pt-2 font-bold text-slate-800 dark:text-slate-200">Total Descuentos:</span>
-                  <span className="border-t border-slate-100 dark:border-slate-800 pt-2 text-right font-bold text-red-500">${editComputedValues.deductions.toLocaleString('es-CL')}</span>
+                  <span className="border-t border-slate-100 dark:border-slate-800 pt-2 text-right font-bold text-[var(--color-negative)]">${editComputedValues.deductions.toLocaleString('es-CL')}</span>
                   
                   <span className="border-t border-primary/20 pt-2 text-primary font-bold">Sueldo Líquido Final:</span>
                   <span className="border-t border-primary/20 pt-2 text-right text-primary font-black text-base">${editComputedValues.net.toLocaleString('es-CL')}</span>
@@ -807,7 +807,7 @@ export default function NominaClient({ initialEmployees }: { initialEmployees: E
                     <span className="text-slate-600 dark:text-slate-400">Seguro de Cesantía (AFC 3%)</span>
                     <span className="text-slate-900 dark:text-white">${selectedEmployeeForSlip.afc.toLocaleString('es-CL')}</span>
                   </div>
-                  <div className="border-t border-slate-100 dark:border-slate-800 pt-2 flex justify-between font-bold text-red-500">
+                  <div className="border-t border-slate-100 dark:border-slate-800 pt-2 flex justify-between font-bold text-[var(--color-negative)]">
                     <span>Total Descuentos Previsionales:</span>
                     <span>${selectedEmployeeForSlip.deductions.toLocaleString('es-CL')}</span>
                   </div>

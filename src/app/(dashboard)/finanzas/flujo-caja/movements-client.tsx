@@ -456,7 +456,7 @@ export default function MovementsClient({ movements }: Props) {
               className="flex-1 md:flex-none px-3.5 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700 text-sm font-bold flex items-center justify-center gap-1.5 transition-colors disabled:opacity-50"
               title="Exportar PDF para impresión"
             >
-              <FileText className="w-4 h-4 text-red-500" />
+              <FileText className="w-4 h-4 text-[var(--color-negative)]" />
               <span className="hidden sm:inline">PDF</span>
             </button>
             <button
@@ -465,7 +465,7 @@ export default function MovementsClient({ movements }: Props) {
               className="flex-1 md:flex-none px-3.5 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700 text-sm font-bold flex items-center justify-center gap-1.5 transition-colors disabled:opacity-50"
               title="Exportar Excel"
             >
-              <FileSpreadsheet className="w-4 h-4 text-emerald-600" />
+              <FileSpreadsheet className="w-4 h-4 text-[var(--color-positive)]" />
               <span className="hidden sm:inline">Excel</span>
             </button>
           </div>
@@ -546,7 +546,7 @@ export default function MovementsClient({ movements }: Props) {
                       <td className="px-4 py-3 text-sm">{movement.paymentMethod ?? "-"}</td>
                       <td className="px-4 py-3 text-sm">{formatCashMovementStatus(movement.status)}</td>
                       <td className={`px-4 py-3 text-sm text-right font-bold ${
-                        movement.kind === "income" ? "text-emerald-600 dark:text-emerald-400" : "text-rose-600 dark:text-rose-400"
+                        movement.kind === "income" ? "text-[var(--color-positive)] dark:text-emerald-400" : "text-rose-600 dark:text-rose-400"
                       }`}>
                         {movement.kind === "income" ? "+" : "-"}${movement.amount.toLocaleString("es-CL")}
                       </td>

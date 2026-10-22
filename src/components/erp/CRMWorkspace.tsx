@@ -234,15 +234,15 @@ export default function CRMWorkspace({ customers, opportunities }: { customers: 
           <div className="flex flex-col sm:flex-row lg:flex-col gap-4">
             <div className="flex flex-1 flex-col gap-2 rounded-xl p-5 border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900">
               <p className="text-slate-500 text-sm font-medium">Tasa de Conversión</p>
-              <p className="text-slate-900 dark:text-white text-2xl font-bold">{conversionRate}%</p>
-              <p className="text-emerald-500 text-xs font-semibold flex items-center gap-1">
+              <p className="text-slate-900 dark:text-white text-2xl font-bold tabular-nums">{conversionRate}%</p>
+              <p className="text-[var(--color-positive)] text-xs font-semibold flex items-center gap-1">
                 <TrendingUp className="w-4 h-4" /> oportunidades cerradas / total
               </p>
             </div>
             <div className="flex flex-1 flex-col gap-2 rounded-xl p-5 border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900">
               <p className="text-slate-500 text-sm font-medium">Tiempo Cierre</p>
               <p className="text-slate-900 dark:text-white text-2xl font-bold">{opportunities.length > 0 ? "14 días" : "-"}</p>
-              <p className="text-rose-500 text-xs font-semibold flex items-center gap-1">
+              <p className="text-[var(--color-negative)] text-xs font-semibold flex items-center gap-1">
                 <TrendingDown className="w-4 h-4" /> estimación comercial
               </p>
             </div>
@@ -359,7 +359,7 @@ export default function CRMWorkspace({ customers, opportunities }: { customers: 
         </div>
         <div className="overflow-x-auto">
           <table className="w-full text-left">
-            <thead className="bg-slate-50 dark:bg-slate-800/50 text-slate-500 text-xs font-bold tracking-wider">
+            <thead className="bg-slate-50 dark:bg-slate-800/50 text-slate-500 text-xs font-semibold">
               <tr>
                 <th className="px-4 py-3">Cliente</th>
                 <th className="px-4 py-3">RUT</th>
@@ -413,7 +413,7 @@ export default function CRMWorkspace({ customers, opportunities }: { customers: 
         </div>
         <div className="overflow-x-auto">
           <table className="w-full text-left">
-            <thead className="bg-slate-50 dark:bg-slate-800/50 text-slate-500 text-xs font-bold tracking-wider">
+            <thead className="bg-slate-50 dark:bg-slate-800/50 text-slate-500 text-xs font-semibold">
               <tr>
                 <th className="px-4 py-3">Cliente</th>
                 <th className="px-4 py-3">Etapa</th>
@@ -448,7 +448,7 @@ export default function CRMWorkspace({ customers, opportunities }: { customers: 
                         <button
                           type="button"
                           onClick={() => setConvertingOpportunity(opportunity)}
-                          className="text-sm font-bold text-emerald-600 hover:underline"
+                          className="text-sm font-bold text-[var(--color-positive)] hover:underline"
                         >
                           Convertir a cliente
                         </button>

@@ -229,7 +229,7 @@ export default function BranchesClient({ branches }: Props) {
 
       {/* Filters */}
       <div className="flex gap-2 overflow-x-auto no-scrollbar pb-2">
-        <div className="flex h-9 shrink-0 items-center justify-center gap-x-2 rounded-full border border-primary/20 bg-white dark:bg-slate-800 px-4 transition-all hover:border-primary">
+        <div className="flex h-9 shrink-0 items-center justify-center gap-x-2 rounded-full border border-[#e6e2dd] bg-white dark:border-slate-700 dark:bg-slate-800 px-4 transition-colors hover:border-primary">
           <select
             value={regionFilter}
             onChange={(e) => setRegionFilter(e.target.value)}
@@ -243,7 +243,7 @@ export default function BranchesClient({ branches }: Props) {
           </select>
           <ChevronDown className="w-4 h-4 text-slate-400 shrink-0" />
         </div>
-        <div className="flex h-9 shrink-0 items-center justify-center gap-x-2 rounded-full border border-primary/20 bg-white dark:bg-slate-800 px-4 transition-all hover:border-primary">
+        <div className="flex h-9 shrink-0 items-center justify-center gap-x-2 rounded-full border border-[#e6e2dd] bg-white dark:border-slate-700 dark:bg-slate-800 px-4 transition-colors hover:border-primary">
           <select
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}
@@ -282,11 +282,11 @@ export default function BranchesClient({ branches }: Props) {
           filtered.map((branch) => (
             <div
               key={branch.id}
-              className="group relative overflow-hidden bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl transition-all hover:shadow-md hover:border-primary/30"
+              className="group relative overflow-hidden bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl transition-colors hover:border-primary/30"
             >
               <div className="flex flex-col md:flex-row">
                 {/* Color accent panel (reemplaza la imagen) */}
-                <div className="w-full md:w-48 h-32 md:h-auto bg-gradient-to-br from-primary/20 to-primary/5 dark:from-primary/10 dark:to-slate-800 flex items-center justify-center shrink-0">
+                <div className="w-full md:w-48 h-32 md:h-auto bg-slate-100 dark:bg-slate-800 flex items-center justify-center shrink-0">
                   <Building2 className="w-16 h-16 text-primary/40" />
                 </div>
 
@@ -319,7 +319,7 @@ export default function BranchesClient({ branches }: Props) {
 
                     {/* KPI mini-grid */}
                     <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 mb-4 mt-3">
-                      <div className="p-3 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-primary/5">
+                      <div className="p-3 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-[#efece7] dark:border-slate-800">
                         <p className="text-xs text-slate-500 font-bold tracking-wider mb-1 flex items-center gap-1">
                           <Users className="w-3 h-3" /> Empleados
                         </p>
@@ -330,7 +330,7 @@ export default function BranchesClient({ branches }: Props) {
                           {branch.employeesCount > 0 ? "registrados" : "sin datos"}
                         </p>
                       </div>
-                      <div className="p-3 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-primary/5">
+                      <div className="p-3 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-[#efece7] dark:border-slate-800">
                         <p className="text-xs text-slate-500 font-bold tracking-wider mb-1 flex items-center gap-1">
                           <Truck className="w-3 h-3" /> Despachos
                         </p>
@@ -341,7 +341,7 @@ export default function BranchesClient({ branches }: Props) {
                           {branch.shipmentsActive > 0 ? "activos" : "sin datos"}
                         </p>
                       </div>
-                      <div className="p-3 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-primary/5 col-span-2 sm:col-span-1">
+                      <div className="p-3 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-[#efece7] dark:border-slate-800 col-span-2 sm:col-span-1">
                         <p className="text-xs text-slate-500 font-bold tracking-wider mb-1">
                           Contacto
                         </p>
@@ -400,7 +400,7 @@ export default function BranchesClient({ branches }: Props) {
         <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 transition-all duration-300">
           <div className="bg-white dark:bg-slate-900 rounded-3xl max-w-lg w-full overflow-hidden shadow-2xl border border-slate-200 dark:border-slate-800 flex flex-col max-h-[90vh] animate-in fade-in zoom-in-95 duration-200">
             {/* Header */}
-            <div className="px-6 py-4 border-b border-slate-100 dark:border-slate-800 flex justify-between items-center bg-gradient-to-r from-primary/5 to-transparent">
+            <div className="px-6 py-4 border-b border-slate-100 dark:border-slate-800 flex justify-between items-center bg-slate-50 dark:bg-slate-800/50">
               <div>
                 <h3 className="text-lg font-bold text-slate-900 dark:text-slate-100">
                   Añadir Nueva Sucursal
@@ -429,9 +429,9 @@ export default function BranchesClient({ branches }: Props) {
                   }`}
                 >
                   {formState.status === "success" ? (
-                    <CheckCircle2 className="w-5 h-5 text-green-500 shrink-0 mt-0.5" />
+                    <CheckCircle2 className="w-5 h-5 text-[var(--color-positive)] shrink-0 mt-0.5" />
                   ) : (
-                    <AlertCircle className="w-5 h-5 text-red-500 shrink-0 mt-0.5" />
+                    <AlertCircle className="w-5 h-5 text-[var(--color-negative)] shrink-0 mt-0.5" />
                   )}
                   <div className="text-sm font-medium">{formState.message}</div>
                 </div>
@@ -449,7 +449,7 @@ export default function BranchesClient({ branches }: Props) {
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                     placeholder="Ej. Sucursal Central, Bodega Norte"
-                    className="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary text-sm transition-all"
+                    className="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary text-sm transition-colors"
                   />
                 </div>
 
@@ -463,7 +463,7 @@ export default function BranchesClient({ branches }: Props) {
                     value={address}
                     onChange={(e) => setAddress(e.target.value)}
                     placeholder="Ej. Av. Vitacura 1234"
-                    className="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary text-sm transition-all"
+                    className="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary text-sm transition-colors"
                   />
                 </div>
 
@@ -477,7 +477,7 @@ export default function BranchesClient({ branches }: Props) {
                       <select
                         value={region}
                         onChange={(e) => handleRegionChange(e.target.value)}
-                        className="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary text-sm transition-all appearance-none cursor-pointer text-ellipsis overflow-hidden"
+                        className="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary text-sm transition-colors appearance-none cursor-pointer text-ellipsis overflow-hidden"
                       >
                         {CHILE_REGIONS.map((r) => (
                           <option key={r.name} value={r.name}>
@@ -496,7 +496,7 @@ export default function BranchesClient({ branches }: Props) {
                       <select
                         value={city}
                         onChange={(e) => setCity(e.target.value)}
-                        className="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary text-sm transition-all appearance-none cursor-pointer text-ellipsis overflow-hidden"
+                        className="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary text-sm transition-colors appearance-none cursor-pointer text-ellipsis overflow-hidden"
                       >
                         {activeCommunes.map((c) => (
                           <option key={c} value={c}>
@@ -520,7 +520,7 @@ export default function BranchesClient({ branches }: Props) {
                       value={phone}
                       onChange={(e) => setPhone(e.target.value)}
                       placeholder="Ej. +56 9 1234 5678"
-                      className="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary text-sm transition-all"
+                      className="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary text-sm transition-colors"
                     />
                   </div>
                   <div>
@@ -532,7 +532,7 @@ export default function BranchesClient({ branches }: Props) {
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                       placeholder="Ej. sucursal@empresa.com"
-                      className="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary text-sm transition-all"
+                      className="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary text-sm transition-colors"
                     />
                   </div>
                 </div>
@@ -548,7 +548,7 @@ export default function BranchesClient({ branches }: Props) {
                       value={manager}
                       onChange={(e) => setManager(e.target.value)}
                       placeholder="Ej. Juan Pérez"
-                      className="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary text-sm transition-all"
+                      className="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary text-sm transition-colors"
                     />
                   </div>
                   <div>
@@ -559,7 +559,7 @@ export default function BranchesClient({ branches }: Props) {
                       <select
                         value={status}
                         onChange={(e) => setStatus(e.target.value as any)}
-                        className="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary text-sm transition-all appearance-none cursor-pointer"
+                        className="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary text-sm transition-colors appearance-none cursor-pointer"
                       >
                         <option value="active">Operativa</option>
                         <option value="inactive">Inactiva</option>
@@ -605,7 +605,7 @@ export default function BranchesClient({ branches }: Props) {
         <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 transition-all duration-300">
           <div className="bg-white dark:bg-slate-900 rounded-3xl max-w-lg w-full overflow-hidden shadow-2xl border border-slate-200 dark:border-slate-800 flex flex-col max-h-[90vh] animate-in fade-in zoom-in-95 duration-200">
             {/* Header */}
-            <div className="px-6 py-4 border-b border-slate-100 dark:border-slate-800 flex justify-between items-center bg-gradient-to-r from-primary/5 to-transparent">
+            <div className="px-6 py-4 border-b border-slate-100 dark:border-slate-800 flex justify-between items-center bg-slate-50 dark:bg-slate-800/50">
               <div>
                 <h3 className="text-lg font-bold text-slate-900 dark:text-slate-100">
                   Configurar Sucursal: {editingBranch.name}
@@ -634,9 +634,9 @@ export default function BranchesClient({ branches }: Props) {
                   }`}
                 >
                   {formState.status === "success" ? (
-                    <CheckCircle2 className="w-5 h-5 text-green-500 shrink-0 mt-0.5" />
+                    <CheckCircle2 className="w-5 h-5 text-[var(--color-positive)] shrink-0 mt-0.5" />
                   ) : (
-                    <AlertCircle className="w-5 h-5 text-red-500 shrink-0 mt-0.5" />
+                    <AlertCircle className="w-5 h-5 text-[var(--color-negative)] shrink-0 mt-0.5" />
                   )}
                   <div className="text-sm font-medium">{formState.message}</div>
                 </div>
@@ -654,7 +654,7 @@ export default function BranchesClient({ branches }: Props) {
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                     placeholder="Ej. Sucursal Central, Bodega Norte"
-                    className="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary text-sm transition-all"
+                    className="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary text-sm transition-colors"
                   />
                 </div>
 
@@ -668,7 +668,7 @@ export default function BranchesClient({ branches }: Props) {
                     value={address}
                     onChange={(e) => setAddress(e.target.value)}
                     placeholder="Ej. Av. Vitacura 1234"
-                    className="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary text-sm transition-all"
+                    className="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary text-sm transition-colors"
                   />
                 </div>
 
@@ -682,7 +682,7 @@ export default function BranchesClient({ branches }: Props) {
                       <select
                         value={region}
                         onChange={(e) => handleRegionChange(e.target.value)}
-                        className="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary text-sm transition-all appearance-none cursor-pointer text-ellipsis overflow-hidden"
+                        className="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary text-sm transition-colors appearance-none cursor-pointer text-ellipsis overflow-hidden"
                       >
                         {CHILE_REGIONS.map((r) => (
                           <option key={r.name} value={r.name}>
@@ -701,7 +701,7 @@ export default function BranchesClient({ branches }: Props) {
                       <select
                         value={city}
                         onChange={(e) => setCity(e.target.value)}
-                        className="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary text-sm transition-all appearance-none cursor-pointer text-ellipsis overflow-hidden"
+                        className="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary text-sm transition-colors appearance-none cursor-pointer text-ellipsis overflow-hidden"
                       >
                         {activeCommunes.map((c) => (
                           <option key={c} value={c}>
@@ -725,7 +725,7 @@ export default function BranchesClient({ branches }: Props) {
                       value={phone}
                       onChange={(e) => setPhone(e.target.value)}
                       placeholder="Ej. +56 9 1234 5678"
-                      className="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary text-sm transition-all"
+                      className="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary text-sm transition-colors"
                     />
                   </div>
                   <div>
@@ -737,7 +737,7 @@ export default function BranchesClient({ branches }: Props) {
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                       placeholder="Ej. sucursal@empresa.com"
-                      className="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary text-sm transition-all"
+                      className="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary text-sm transition-colors"
                     />
                   </div>
                 </div>
@@ -753,7 +753,7 @@ export default function BranchesClient({ branches }: Props) {
                       value={manager}
                       onChange={(e) => setManager(e.target.value)}
                       placeholder="Ej. Juan Pérez"
-                      className="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary text-sm transition-all"
+                      className="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary text-sm transition-colors"
                     />
                   </div>
                   <div>
@@ -764,7 +764,7 @@ export default function BranchesClient({ branches }: Props) {
                       <select
                         value={status}
                         onChange={(e) => setStatus(e.target.value as any)}
-                        className="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary text-sm transition-all appearance-none cursor-pointer"
+                        className="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary text-sm transition-colors appearance-none cursor-pointer"
                       >
                         <option value="active">Operativa</option>
                         <option value="inactive">Inactiva</option>
@@ -810,7 +810,7 @@ export default function BranchesClient({ branches }: Props) {
         <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 transition-all duration-300">
           <div className="bg-white dark:bg-slate-900 rounded-3xl max-w-lg w-full overflow-hidden shadow-2xl border border-slate-200 dark:border-slate-800 flex flex-col max-h-[90vh] animate-in fade-in zoom-in-95 duration-200">
             {/* Header */}
-            <div className="px-6 py-5 border-b border-slate-100 dark:border-slate-800 flex justify-between items-start bg-gradient-to-br from-primary/5 via-transparent to-transparent">
+            <div className="px-6 py-5 border-b border-slate-100 dark:border-slate-800 flex justify-between items-start bg-slate-50 dark:bg-slate-800/50">
               <div>
                 <span
                   className={`text-xs font-bold px-2 py-1 rounded-full inline-flex items-center gap-1 mb-2 ${STATUS_BADGE[detailsBranch.status] ?? "bg-slate-100 text-slate-700"}`}

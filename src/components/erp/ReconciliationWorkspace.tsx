@@ -630,7 +630,7 @@ export default function ReconciliationWorkspace({
                         <p className="text-xs text-slate-500">{row.reference}</p>
                       </div>
                       <div className="sm:text-right flex flex-row sm:flex-col justify-between sm:justify-start items-center sm:items-end">
-                        <p className={`font-bold ${row.type === "expense" ? "text-red-500" : "text-green-600"}`}>
+                        <p className={`font-bold ${row.type === "expense" ? "text-[var(--color-negative)]" : "text-[var(--color-positive)]"}`}>
                           {row.type === "expense" ? "-" : "+"}${row.amount.toLocaleString("es-CL", { minimumFractionDigits: 2 })}
                         </p>
                         <span className="inline-flex items-center gap-1 text-xs px-2 py-0.5 rounded-full mt-1 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400">
@@ -679,12 +679,12 @@ export default function ReconciliationWorkspace({
                       <p className="text-xs text-slate-500">{erp.reference}</p>
                     </div>
                     <div className="sm:text-right flex flex-row sm:flex-col justify-between sm:justify-start items-center sm:items-end">
-                      <p className={`font-bold ${erp.type === "expense" ? "text-red-500" : "text-green-600"}`}>
+                      <p className={`font-bold ${erp.type === "expense" ? "text-[var(--color-negative)]" : "text-[var(--color-positive)]"}`}>
                         {erp.type === "expense" ? "-" : "+"}${erp.amount.toLocaleString("es-CL", { minimumFractionDigits: 2 })}
                       </p>
                       <span
                         className={`inline-flex items-center gap-1 font-bold text-xs px-2 py-0.5 rounded-full mt-1 ${
-                          erp.matchConfidence ? "bg-primary/10 text-primary" : "text-green-600 bg-transparent"
+                          erp.matchConfidence ? "bg-primary/10 text-primary" : "text-[var(--color-positive)] bg-transparent"
                         }`}
                       >
                         {erp.matchConfidence ? (
@@ -866,7 +866,7 @@ export default function ReconciliationWorkspace({
                             <td className="p-3 font-semibold max-w-[200px] truncate">{m.concept}</td>
                             <td className="p-3 font-mono text-slate-400">{m.reference}</td>
                             <td className={`p-3 text-right font-bold ${
-                              m.kind === "expense" ? "text-red-500" : "text-green-600"
+                              m.kind === "expense" ? "text-[var(--color-negative)]" : "text-[var(--color-positive)]"
                             }`}>
                               {m.kind === "expense" ? "-" : "+"}${m.amount.toLocaleString("es-CL", { minimumFractionDigits: 2 })}
                             </td>
@@ -885,7 +885,7 @@ export default function ReconciliationWorkspace({
                 </div>
               ) : importStep === 3 ? (
                 <div className="flex flex-col items-center justify-center py-8 text-center space-y-4">
-                  <div className="w-16 h-16 rounded-full bg-green-50 dark:bg-green-950/30 flex items-center justify-center text-green-600 dark:text-green-400 animate-bounce">
+                  <div className="w-16 h-16 rounded-full bg-green-50 dark:bg-green-950/30 flex items-center justify-center text-[var(--color-positive)] dark:text-green-400 animate-bounce">
                     <CheckCircle2 className="w-10 h-10" />
                   </div>
                   <h3 className="text-xl font-bold text-slate-900 dark:text-slate-50">¡Importación Exitosa!</h3>

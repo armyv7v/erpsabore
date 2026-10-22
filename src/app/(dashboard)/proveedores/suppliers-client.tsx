@@ -208,7 +208,7 @@ export default function SuppliersClient({ suppliers }: Props) {
                     <span className="text-xs text-slate-400">•</span>
                     <span
                       className={`text-xs ${
-                        isWarning ? "text-amber-500 font-medium" : "text-slate-500 dark:text-slate-400"
+                        isWarning ? "text-[var(--color-warning-ink)] font-medium" : "text-slate-500 dark:text-slate-400"
                       }`}
                     >
                       {statusText}

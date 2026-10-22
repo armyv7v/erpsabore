@@ -59,7 +59,7 @@ export default function RegisterPage() {
 
             <div className="mt-6 py-4 border-t border-slate-200 dark:border-slate-800">
               <div className="flex items-center gap-3 text-slate-500 dark:text-slate-400">
-                <Shield className="text-green-500 w-4 h-4" />
+                <Shield className="text-[var(--color-positive)] w-4 h-4" />
                 <p className="text-[11px]">Conexión segura y encriptada.</p>
               </div>
             </div>

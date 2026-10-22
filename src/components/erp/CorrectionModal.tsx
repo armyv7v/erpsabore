@@ -253,7 +253,7 @@ export default function CorrectionModal({ invoice, onClose, onSuccess }: Correct
             <p className="text-xs font-bold tracking-wider text-slate-400">
               Total Documento Corrección
             </p>
-            <p className="text-lg font-black text-emerald-600 dark:text-emerald-400">
+            <p className="text-lg font-black text-[var(--color-positive)] dark:text-emerald-400">
               ${Math.round(correctedTotal).toLocaleString("es-CL")} CLP
             </p>
           </div>

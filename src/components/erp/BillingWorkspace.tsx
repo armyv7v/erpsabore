@@ -416,7 +416,7 @@ export default function BillingWorkspace({
         <button
           type="button"
           onClick={() => setActiveTab("invoices")}
-          className={`px-4 py-2.5 text-sm font-bold border-b-2 transition-all ${
+          className={`px-4 py-2.5 text-sm font-semibold border-b-2 transition-colors ${
             activeTab === "invoices"
               ? "border-primary text-primary"
               : "border-transparent text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200"
@@ -427,7 +427,7 @@ export default function BillingWorkspace({
         <button
           type="button"
           onClick={() => setActiveTab("dte")}
-          className={`px-4 py-2.5 text-sm font-bold border-b-2 transition-all ${
+          className={`px-4 py-2.5 text-sm font-semibold border-b-2 transition-colors ${
             activeTab === "dte"
               ? "border-primary text-primary"
               : "border-transparent text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200"
@@ -460,9 +460,9 @@ export default function BillingWorkspace({
       {activeTab === "invoices" ? (
         <>
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-            <div className="flex flex-col gap-2 rounded-xl border border-primary/20 bg-white p-5 dark:bg-slate-800/50">
+            <div className="flex flex-col gap-2 rounded-xl border border-[#e8e3dc] bg-white p-5 dark:border-slate-800 dark:bg-slate-800/50">
               <p className="text-sm font-medium leading-normal text-slate-600 dark:text-slate-400">Total Emitido</p>
-              <p className="text-2xl font-bold leading-tight tracking-tight text-slate-900 dark:text-slate-100">
+              <p className="text-2xl font-bold tabular-nums leading-tight tracking-tight text-slate-900 dark:text-slate-100">
                 ${localTotals.totalIssued.toLocaleString("es-CL")}
               </p>
               <div className="flex items-center gap-1">
@@ -471,25 +471,25 @@ export default function BillingWorkspace({
               </div>
             </div>
 
-            <div className="flex flex-col gap-2 rounded-xl border border-primary/20 bg-white p-5 dark:bg-slate-800/50">
+            <div className="flex flex-col gap-2 rounded-xl border border-[#e8e3dc] bg-white p-5 dark:border-slate-800 dark:bg-slate-800/50">
               <p className="text-sm font-medium leading-normal text-slate-600 dark:text-slate-400">Saldo Pendiente</p>
-              <p className="text-2xl font-bold leading-tight tracking-tight text-slate-900 dark:text-slate-100">
+              <p className="text-2xl font-bold tabular-nums leading-tight tracking-tight text-slate-900 dark:text-slate-100">
                 ${localTotals.totalOutstanding.toLocaleString("es-CL")}
               </p>
               <div className="flex items-center gap-1">
-                <Clock className="h-4 w-4 text-amber-500" />
-                <p className="text-xs font-semibold text-amber-500">Facturas activas por cobrar</p>
+                <Clock className="h-4 w-4 text-[var(--color-warning-ink)]" />
+                <p className="text-xs font-semibold text-[var(--color-warning-ink)]">Facturas activas por cobrar</p>
               </div>
             </div>
 
-            <div className="flex flex-col gap-2 rounded-xl border border-primary/20 bg-white p-5 dark:bg-slate-800/50">
+            <div className="flex flex-col gap-2 rounded-xl border border-[#e8e3dc] bg-white p-5 dark:border-slate-800 dark:bg-slate-800/50">
               <p className="text-sm font-medium leading-normal text-slate-600 dark:text-slate-400">Borradores</p>
-              <p className="text-2xl font-bold leading-tight tracking-tight text-slate-900 dark:text-slate-100">
+              <p className="text-2xl font-bold tabular-nums leading-tight tracking-tight text-slate-900 dark:text-slate-100">
                 {localTotals.draftCount}
               </p>
               <div className="flex items-center gap-1">
-                <PlusCircle className="h-4 w-4 text-emerald-500" />
-                <p className="text-xs font-semibold text-emerald-500">Listos para emitir desde Ventas</p>
+                <PlusCircle className="h-4 w-4 text-[var(--color-positive)]" />
+                <p className="text-xs font-semibold text-[var(--color-positive)]">Listos para emitir desde Ventas</p>
               </div>
             </div>
           </div>
@@ -589,7 +589,7 @@ export default function BillingWorkspace({
                           rel="noopener noreferrer"
                           className="inline-flex items-center gap-2 rounded-xl border border-emerald-200 bg-emerald-50/50 px-4 py-2 text-sm font-bold text-emerald-700 transition-colors hover:bg-emerald-50 dark:border-emerald-900/50 dark:text-emerald-300 dark:hover:bg-emerald-950/30"
                         >
-                          <FileText className="h-4 w-4 text-emerald-600" />
+                          <FileText className="h-4 w-4 text-[var(--color-positive)]" />
                           Ver PDF DTE
                         </a>
                       ) : null}
@@ -817,7 +817,7 @@ export default function BillingWorkspace({
                 <button
                   type="submit"
                   disabled={isUploadingCert}
-                  className="w-full rounded-xl bg-primary py-2 text-xs font-bold text-white hover:bg-primary/90 disabled:opacity-70 transition-all flex items-center justify-center gap-2 cursor-pointer"
+                  className="w-full rounded-xl bg-primary py-2 text-xs font-bold text-white hover:bg-primary/90 disabled:opacity-70 transition-colors flex items-center justify-center gap-2 cursor-pointer"
                 >
                   <UploadCloud className="h-4 w-4" />
                   {isUploadingCert ? "Procesando Certificado..." : "Cargar y Configurar Firma Real"}
@@ -833,7 +833,7 @@ export default function BillingWorkspace({
           {/* Tarjeta 2: Folios Autorizados (CAF) */}
           <div className="rounded-2xl border border-slate-200 bg-white p-6 dark:border-slate-800 dark:bg-slate-900">
             <div className="flex items-center gap-3">
-              <div className="rounded-xl bg-emerald-100 p-2.5 text-emerald-600 dark:bg-emerald-950/50 dark:text-emerald-400">
+              <div className="rounded-xl bg-emerald-100 p-2.5 text-[var(--color-positive)] dark:bg-emerald-950/50 dark:text-emerald-400">
                 <FileCode className="h-6 w-6" />
               </div>
               <div>
@@ -883,7 +883,7 @@ export default function BillingWorkspace({
                   />
                 </div>
                 {cafFeedback && (
-                  <p className="text-xs font-semibold text-emerald-600">{cafFeedback}</p>
+                  <p className="text-xs font-semibold text-[var(--color-positive)]">{cafFeedback}</p>
                 )}
               </div>
             </div>
@@ -973,7 +973,7 @@ export default function BillingWorkspace({
                     setIsDeletingCert(false);
                   }
                 }}
-                className="px-4 py-2 bg-red-600 hover:bg-red-700 active:scale-98 rounded-xl text-xs font-bold text-white transition-all shadow-md shadow-red-600/10 flex items-center gap-1.5"
+                className="px-4 py-2 bg-red-600 hover:bg-red-700 rounded-xl text-xs font-bold text-white transition-colors flex items-center gap-1.5"
                 disabled={isDeletingCert}
               >
                 {isDeletingCert ? "Revocando..." : "Sí, Revocar"}

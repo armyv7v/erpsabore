@@ -19,7 +19,7 @@ export const mockHRNews: HRNews[] = [
   {
     id: '2',
     category: 'Capacitación',
-    categoryColor: 'text-green-600',
+    categoryColor: 'text-[var(--color-positive)]',
     title: 'Taller de Liderazgo Consciente: Inscripciones abiertas',
     timeAgo: 'Ayer',
     imageUrl: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDrw0NFGZ0GgT2GIJaq7-yPWghBAHJRhq_AiHqpjnj85VAAHiZSkzfw0rnGc2aaLLeHZ-IzhwOEfMtBJ0tq_z0MYcz9w7aeVJKqlj3aYk4Hq-9ZHueGv_nwJxs4R1c2MQQqC9zEVegVnV4cdWZmUF6zEpXL4Zd-wxZoapEd_Axjsql6b_r8NvZ2pXSZEWPw18VkjipG0G4Z3hkoTDyJHU74xi1A027BxnCgK0wAGYvUBKrTA19OKdTVCnVzfch6hNsW8U_xEjzMxWg'

@@ -213,9 +213,9 @@ export default function EmployeesClient({ employees }: Props) {
                   }`}
                 >
                   {formState.status === "success" ? (
-                    <CheckCircle2 className="w-5 h-5 text-green-500 shrink-0 mt-0.5" />
+                    <CheckCircle2 className="w-5 h-5 text-[var(--color-positive)] shrink-0 mt-0.5" />
                   ) : (
-                    <AlertCircle className="w-5 h-5 text-red-500 shrink-0 mt-0.5" />
+                    <AlertCircle className="w-5 h-5 text-[var(--color-negative)] shrink-0 mt-0.5" />
                   )}
                   <div className="text-sm font-medium">{formState.message}</div>
                 </div>

@@ -152,7 +152,7 @@ export default function TaxesClient({ initialData, defaultStartDate, defaultEndD
       </div>
 
       {errorMessage && (
-        <div className="bg-rose-50 dark:bg-rose-950/20 text-rose-600 border border-rose-200 p-4 rounded-xl text-sm font-medium">
+        <div className="bg-rose-50 dark:bg-rose-950/20 text-[var(--color-negative)] border border-rose-200 p-4 rounded-xl text-sm font-medium">
           {errorMessage}
         </div>
       )}
@@ -233,20 +233,20 @@ export default function TaxesClient({ initialData, defaultStartDate, defaultEndD
               <div className="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 space-y-4">
                 <div className="flex justify-between items-center border-b border-slate-100 dark:border-slate-800 pb-3">
                   <h3 className="font-bold text-lg text-slate-800 dark:text-slate-200">IVA Débito Fiscal (Ventas)</h3>
-                  <span className="text-xs font-bold text-emerald-600 bg-emerald-50 dark:bg-emerald-950/30 px-2.5 py-1 rounded-full">Ingreso Afecto</span>
+                  <span className="text-xs font-bold text-[var(--color-positive)] bg-emerald-50 dark:bg-emerald-950/30 px-2.5 py-1 rounded-full">Ingreso Afecto</span>
                 </div>
                 <div className="grid grid-cols-3 gap-4 text-center">
                   <div className="bg-slate-50 dark:bg-slate-800/40 p-4 rounded-xl">
                     <p className="text-xs text-slate-500">Monto Neto</p>
-                    <p className="font-bold text-base mt-1 text-slate-800 dark:text-slate-200">${data.iva.salesNet.toLocaleString("es-CL")}</p>
+                    <p className="font-bold text-base tabular-nums mt-1 text-slate-800 dark:text-slate-200">${data.iva.salesNet.toLocaleString("es-CL")}</p>
                   </div>
                   <div className="bg-slate-50 dark:bg-slate-800/40 p-4 rounded-xl border border-primary/10">
                     <p className="text-xs text-primary font-semibold">IVA Débito (19%)</p>
-                    <p className="font-bold text-base mt-1 text-primary">${data.iva.salesIva.toLocaleString("es-CL")}</p>
+                    <p className="font-bold text-base tabular-nums mt-1 text-primary">${data.iva.salesIva.toLocaleString("es-CL")}</p>
                   </div>
                   <div className="bg-slate-50 dark:bg-slate-800/40 p-4 rounded-xl">
                     <p className="text-xs text-slate-500">Total Bruto</p>
-                    <p className="font-bold text-base mt-1 text-slate-800 dark:text-slate-200">${data.iva.salesTotal.toLocaleString("es-CL")}</p>
+                    <p className="font-bold text-base tabular-nums mt-1 text-slate-800 dark:text-slate-200">${data.iva.salesTotal.toLocaleString("es-CL")}</p>
                   </div>
                 </div>
               </div>
@@ -255,20 +255,20 @@ export default function TaxesClient({ initialData, defaultStartDate, defaultEndD
               <div className="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 space-y-4">
                 <div className="flex justify-between items-center border-b border-slate-100 dark:border-slate-800 pb-3">
                   <h3 className="font-bold text-lg text-slate-800 dark:text-slate-200">IVA Crédito Fiscal (Compras y Gastos)</h3>
-                  <span className="text-xs font-bold text-rose-600 bg-rose-50 dark:bg-rose-950/30 px-2.5 py-1 rounded-full">Egreso Afecto</span>
+                  <span className="text-xs font-bold text-[var(--color-negative)] bg-rose-50 dark:bg-rose-950/30 px-2.5 py-1 rounded-full">Egreso Afecto</span>
                 </div>
                 <div className="grid grid-cols-3 gap-4 text-center">
                   <div className="bg-slate-50 dark:bg-slate-800/40 p-4 rounded-xl">
                     <p className="text-xs text-slate-500">Monto Neto</p>
-                    <p className="font-bold text-base mt-1 text-slate-800 dark:text-slate-200">${data.iva.purchasesNet.toLocaleString("es-CL")}</p>
+                    <p className="font-bold text-base tabular-nums mt-1 text-slate-800 dark:text-slate-200">${data.iva.purchasesNet.toLocaleString("es-CL")}</p>
                   </div>
                   <div className="bg-slate-50 dark:bg-slate-800/40 p-4 rounded-xl border border-rose-100 dark:border-rose-950/20">
-                    <p className="text-xs text-rose-600 font-semibold">IVA Crédito</p>
-                    <p className="font-bold text-base mt-1 text-rose-600">${data.iva.purchasesIva.toLocaleString("es-CL")}</p>
+                    <p className="text-xs text-[var(--color-negative)] font-semibold">IVA Crédito</p>
+                    <p className="font-bold text-base tabular-nums mt-1 text-[var(--color-negative)]">${data.iva.purchasesIva.toLocaleString("es-CL")}</p>
                   </div>
                   <div className="bg-slate-50 dark:bg-slate-800/40 p-4 rounded-xl">
                     <p className="text-xs text-slate-500">Total Bruto</p>
-                    <p className="font-bold text-base mt-1 text-slate-800 dark:text-slate-200">${data.iva.purchasesTotal.toLocaleString("es-CL")}</p>
+                    <p className="font-bold text-base tabular-nums mt-1 text-slate-800 dark:text-slate-200">${data.iva.purchasesTotal.toLocaleString("es-CL")}</p>
                   </div>
                 </div>
               </div>
@@ -283,11 +283,11 @@ export default function TaxesClient({ initialData, defaultStartDate, defaultEndD
                 <div className="space-y-3 text-sm">
                   <div className="flex justify-between">
                     <span className="text-slate-500">IVA Débito (Ventas):</span>
-                    <span className="font-semibold text-emerald-600">+${data.iva.salesIva.toLocaleString("es-CL")}</span>
+                    <span className="font-semibold text-[var(--color-positive)]">+${data.iva.salesIva.toLocaleString("es-CL")}</span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-slate-500">IVA Crédito (Compras):</span>
-                    <span className="font-semibold text-rose-600">-${data.iva.purchasesIva.toLocaleString("es-CL")}</span>
+                    <span className="font-semibold text-[var(--color-negative)]">-${data.iva.purchasesIva.toLocaleString("es-CL")}</span>
                   </div>
                   <hr className="border-slate-100 dark:border-slate-800" />
                   <div className="flex justify-between">
@@ -414,12 +414,12 @@ export default function TaxesClient({ initialData, defaultStartDate, defaultEndD
                 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div className="bg-emerald-50/30 dark:bg-emerald-950/10 p-4 rounded-xl border border-emerald-100 dark:border-emerald-950/20">
-                    <p className="text-xs text-emerald-600 font-semibold uppercase">Ingresos Totales Registrados</p>
+                    <p className="text-xs text-[var(--color-positive)] font-semibold uppercase">Ingresos Totales Registrados</p>
                     <p className="text-xl font-bold text-slate-800 dark:text-slate-200 mt-1">${data.renta.totalIncome.toLocaleString("es-CL")}</p>
                     <p className="text-xxs text-slate-400 mt-1">Facturas emitidas y otros ingresos.</p>
                   </div>
                   <div className="bg-rose-50/30 dark:bg-rose-950/10 p-4 rounded-xl border border-rose-100 dark:border-rose-950/20">
-                    <p className="text-xs text-rose-600 font-semibold uppercase">Egresos Totales Registrados</p>
+                    <p className="text-xs text-[var(--color-negative)] font-semibold uppercase">Egresos Totales Registrados</p>
                     <p className="text-xl font-bold text-slate-800 dark:text-slate-200 mt-1">${data.renta.totalExpense.toLocaleString("es-CL")}</p>
                     <p className="text-xxs text-slate-400 mt-1">Gastos operacionales y compras.</p>
                   </div>

@@ -29,8 +29,8 @@ interface ToastItem extends Required<Pick<ToastPayload, "message" | "kind" | "du
 }
 
 const KIND_STYLES: Record<ToastKind, { border: string; icon: React.ReactNode }> = {
-  success: { border: "border-green-200 dark:border-green-900/50", icon: <CheckCircle2 className="w-5 h-5 text-green-500 shrink-0" /> },
-  error: { border: "border-red-200 dark:border-red-900/50", icon: <AlertCircle className="w-5 h-5 text-red-500 shrink-0" /> },
+  success: { border: "border-green-200 dark:border-green-900/50", icon: <CheckCircle2 className="w-5 h-5 text-[var(--color-positive)] shrink-0" /> },
+  error: { border: "border-red-200 dark:border-red-900/50", icon: <AlertCircle className="w-5 h-5 text-[var(--color-negative)] shrink-0" /> },
   info: { border: "border-slate-200 dark:border-slate-700", icon: <Info className="w-5 h-5 text-primary shrink-0" /> },
 };
 

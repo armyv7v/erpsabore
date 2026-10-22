@@ -177,7 +177,7 @@ export default function ProductImageUploader({ currentImageUrl = null, name = "i
       )}
 
       {errorMsg && (
-        <p className="text-xs text-red-500 font-semibold animate-pulse mt-1 flex items-center gap-1.5">
+        <p className="text-xs text-[var(--color-negative)] font-semibold animate-pulse mt-1 flex items-center gap-1.5">
           <span>⚠️</span> {errorMsg}
         </p>
       )}

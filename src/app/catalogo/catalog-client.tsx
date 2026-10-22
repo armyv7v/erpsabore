@@ -1036,7 +1036,7 @@ export default function CatalogClient({ products, customers = [], user = null }:
 
               {/* Notification of order status */}
               {orderState.status === "success" && (
-                <div className="mb-4 flex items-center gap-2 p-3 rounded-xl bg-green-50 dark:bg-green-950/30 text-green-600 dark:text-green-400 text-xs font-semibold animate-in zoom-in duration-200">
+                <div className="mb-4 flex items-center gap-2 p-3 rounded-xl bg-green-50 dark:bg-green-950/30 text-[var(--color-positive)] dark:text-green-400 text-xs font-semibold animate-in zoom-in duration-200">
                   <Check className="w-4 h-4 flex-shrink-0" />
                   {orderState.message}
                 </div>
@@ -1073,7 +1073,7 @@ export default function CatalogClient({ products, customers = [], user = null }:
                           <button
                             type="button"
                             onClick={() => updateQuantity(item.id, -item.quantity)}
-                            className="rounded-lg p-1.5 text-slate-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-950/20 transition-all cursor-pointer"
+                            className="rounded-lg p-1.5 text-slate-400 hover:text-[var(--color-negative)] hover:bg-red-50 dark:hover:bg-red-950/20 transition-all cursor-pointer"
                             title="Eliminar producto"
                           >
                             <Trash2 className="w-3.5 h-3.5" />
@@ -1132,7 +1132,7 @@ export default function CatalogClient({ products, customers = [], user = null }:
                           setSelectedCustomer(null);
                           setCustomerSearch("");
                         }}
-                        className="text-xs font-bold text-red-500 hover:text-red-600 transition-colors px-2.5 py-1 rounded-lg bg-red-500/10 cursor-pointer"
+                        className="text-xs font-bold text-[var(--color-negative)] hover:text-red-600 transition-colors px-2.5 py-1 rounded-lg bg-red-500/10 cursor-pointer"
                       >
                         Cambiar
                       </button>
@@ -1513,7 +1513,7 @@ export default function CatalogClient({ products, customers = [], user = null }:
           <div className="w-full max-w-lg bg-white dark:bg-[#221610] rounded-2xl border border-slate-200 dark:border-slate-800 shadow-2xl p-6 overflow-hidden max-h-[90vh] flex flex-col animate-in zoom-in-95 duration-200">
             {/* Header */}
             <div className="text-center pb-4 border-b border-slate-100 dark:border-slate-800/80">
-              <div className="w-12 h-12 bg-green-100 dark:bg-green-950/50 text-green-600 dark:text-green-400 rounded-full flex items-center justify-center mx-auto mb-3 shadow-inner">
+              <div className="w-12 h-12 bg-green-100 dark:bg-green-950/50 text-[var(--color-positive)] dark:text-green-400 rounded-full flex items-center justify-center mx-auto mb-3 shadow-inner">
                 <Check className="w-7 h-7" />
               </div>
               <h3 className="text-lg font-black text-slate-900 dark:text-slate-100">

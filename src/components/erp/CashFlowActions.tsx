@@ -221,7 +221,7 @@ export default function CashFlowActions({ movements, today }: CashFlowActionsPro
                       </div>
                       <div>
                         <span className="text-slate-500">IVA Crédito (19%):</span>
-                        <p className="font-bold text-emerald-600 dark:text-emerald-400">
+                        <p className="font-bold text-[var(--color-positive)] dark:text-emerald-400">
                           ${Math.round(amount - amount / 1.19).toLocaleString("es-CL")}
                         </p>
                       </div>

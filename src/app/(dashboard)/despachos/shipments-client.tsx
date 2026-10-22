@@ -62,8 +62,8 @@ function StatusIcon({ status }: { status: ShipmentStatus }) {
   const cls = "w-5 h-5";
   switch (status) {
     case "in_transit": return <Package className={`${cls} text-primary`} />;
-    case "pending": return <PackageOpen className={`${cls} text-amber-500`} />;
-    case "delivered": return <CheckCircle2 className={`${cls} text-green-600 dark:text-green-400`} />;
+    case "pending": return <PackageOpen className={`${cls} text-[var(--color-warning-ink)]`} />;
+    case "delivered": return <CheckCircle2 className={`${cls} text-[var(--color-positive)] dark:text-green-400`} />;
     case "failed": return <AlertCircle className={`${cls} text-red-600 dark:text-red-400`} />;
     case "cancelled": return <XCircle className={`${cls} text-slate-400`} />;
   }
@@ -486,7 +486,7 @@ export default function ShipmentsClient({ shipments, userRole }: Props) {
               </div>
 
               {submitError && (
-                <p className="text-xs text-red-500 font-semibold">{submitError}</p>
+                <p className="text-xs text-[var(--color-negative)] font-semibold">{submitError}</p>
               )}
 
               {/* Footer */}

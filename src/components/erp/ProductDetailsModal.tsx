@@ -36,12 +36,12 @@ function getStockStatusDetails(product: GeneralProduct) {
   const min = product.stockMinQuantity ?? 10;
   
   if (stock === 0) {
-    return { label: "Agotado", colorClass: "text-red-500 bg-red-500/10 border-red-500/20", levelPercent: 0 };
+    return { label: "Agotado", colorClass: "text-[var(--color-negative)] bg-red-500/10 border-red-500/20", levelPercent: 0 };
   }
   if (stock <= min) {
-    return { label: "Stock Crítico", colorClass: "text-orange-500 bg-orange-500/10 border-orange-500/20", levelPercent: Math.min(100, Math.round((stock / (min * 5)) * 100)) };
+    return { label: "Stock Crítico", colorClass: "text-[var(--color-warning-ink)] bg-orange-500/10 border-orange-500/20", levelPercent: Math.min(100, Math.round((stock / (min * 5)) * 100)) };
   }
-  return { label: "Normal", colorClass: "text-green-500 bg-green-500/10 border-green-500/20", levelPercent: Math.min(100, Math.round((stock / (min * 5)) * 100)) };
+  return { label: "Normal", colorClass: "text-[var(--color-positive)] bg-green-500/10 border-green-500/20", levelPercent: Math.min(100, Math.round((stock / (min * 5)) * 100)) };
 }
 
 export default function ProductDetailsModal({ product, onClose, onAddToCart, onEdit, showCostPrice = false }: Props) {
@@ -156,7 +156,7 @@ export default function ProductDetailsModal({ product, onClose, onAddToCart, onE
               <div className="space-y-2">
                 <div className="flex justify-between text-xs font-bold text-slate-500">
                   <span>Stock Disponible</span>
-                  <span className={product.stockQuantity === 0 ? "text-red-500 font-extrabold" : "text-slate-850 dark:text-slate-200"}>
+                  <span className={product.stockQuantity === 0 ? "text-[var(--color-negative)] font-extrabold" : "text-slate-850 dark:text-slate-200"}>
                     {product.stockQuantity} uds
                   </span>
                 </div>

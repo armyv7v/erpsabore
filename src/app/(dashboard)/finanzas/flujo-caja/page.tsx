@@ -30,25 +30,25 @@ export default async function CashFlowPage() {
         <div className="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800">
           <p className="text-slate-500 dark:text-slate-400 text-sm font-medium">Saldo Disponible</p>
           <h3 className="text-2xl font-bold mt-1">${cashFlow.availableCash.toLocaleString("es-CL")} CLP</h3>
-          <div className="mt-2 flex items-center gap-1 text-emerald-600 dark:text-emerald-400 text-sm font-medium">
+          <div className="mt-2 flex items-center gap-1 text-[var(--color-positive)] dark:text-emerald-400 text-sm font-medium">
             <TrendingUp className="w-4 h-4" />
             <span>${cashFlow.pendingReceivables.toLocaleString("es-CL")} por cobrar</span>
           </div>
         </div>
         <div className="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800">
           <p className="text-slate-500 dark:text-slate-400 text-sm font-medium">Entradas Confirmadas</p>
-          <h3 className="text-2xl font-bold mt-1 text-emerald-600 dark:text-emerald-500">${cashFlow.monthlyIncome.toLocaleString("es-CL")} CLP</h3>
+          <h3 className="text-2xl font-bold mt-1 text-[var(--color-positive)] dark:text-[var(--color-positive)]">${cashFlow.monthlyIncome.toLocaleString("es-CL")} CLP</h3>
           <p className="text-xs text-slate-400 mt-2">Derivadas de pagos registrados.</p>
         </div>
         <div className="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800">
           <p className="text-slate-500 dark:text-slate-400 text-sm font-medium">Salidas</p>
-          <h3 className="text-2xl font-bold mt-1 text-rose-600 dark:text-rose-500">${cashFlow.monthlyExpenses.toLocaleString("es-CL")} CLP</h3>
+          <h3 className="text-2xl font-bold mt-1 text-rose-600 dark:text-[var(--color-negative)]">${cashFlow.monthlyExpenses.toLocaleString("es-CL")} CLP</h3>
           <p className="text-xs text-slate-400 mt-2">${cashFlow.committedPayments.toLocaleString("es-CL")} comprometidos con proveedores</p>
         </div>
         <div className="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800">
           <p className="text-slate-500 dark:text-slate-400 text-sm font-medium">Flujo Neto</p>
           <h3 className="text-2xl font-bold mt-1 text-primary">${cashFlow.netFlow.toLocaleString("es-CL")} CLP</h3>
-          <div className="mt-2 flex items-center gap-1 text-emerald-600 dark:text-emerald-400 text-sm font-medium">
+          <div className="mt-2 flex items-center gap-1 text-[var(--color-positive)] dark:text-emerald-400 text-sm font-medium">
             <CheckCircle2 className="w-4 h-4" />
             <span>{cashFlow.netFlow >= 0 ? "Superávit operativo" : "Déficit operativo"}</span>
           </div>

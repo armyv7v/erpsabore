@@ -13,7 +13,7 @@ export default function DashboardError({
   return (
     <div className="flex flex-col items-center justify-center min-h-[60vh] p-8 text-center gap-6">
       <div className="bg-red-100 dark:bg-red-900/20 p-4 rounded-full">
-        <AlertTriangle className="w-10 h-10 text-red-500" />
+        <AlertTriangle className="w-10 h-10 text-[var(--color-negative)]" />
       </div>
       <div className="space-y-2 max-w-md">
         <h2 className="text-xl font-bold text-slate-900 dark:text-slate-100">

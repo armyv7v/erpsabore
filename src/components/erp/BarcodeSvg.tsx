@@ -20,7 +20,7 @@ export default function BarcodeSvg({
 
   if (!binary) {
     return (
-      <div className={`text-[11px] font-mono text-red-500 flex items-center justify-center border border-red-200 bg-red-50 p-1 rounded ${className}`}>
+      <div className={`text-[11px] font-mono text-[var(--color-negative)] flex items-center justify-center border border-red-200 bg-red-50 p-1 rounded ${className}`}>
         Cód Inválido
       </div>
     );

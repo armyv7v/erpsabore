@@ -181,7 +181,7 @@ export default function HRPortalClient({
 
     const colorMap: Record<string, string> = {
       Empresa: "text-primary",
-      Capacitación: "text-green-600",
+      Capacitación: "text-[var(--color-positive)]",
       Beneficios: "text-blue-600",
       Eventos: "text-slate-700"
     };
@@ -352,7 +352,7 @@ export default function HRPortalClient({
                         </td>
                         <td className="px-6 py-4">
                           <span
-                            className={`px-2.5 py-1 rounded-full text-xs font-bold uppercase ${ann.categoryColor} bg-slate-100 dark:bg-slate-800`}
+                            className="px-2.5 py-1 rounded-full text-xs font-semibold uppercase text-slate-700 bg-slate-100 dark:bg-slate-800 dark:text-slate-200"
                           >
                             {ann.category}
                           </span>
@@ -451,7 +451,7 @@ export default function HRPortalClient({
                             <div className="flex justify-end gap-2">
                               <button
                                 onClick={() => handleVacationDecision(req.id, "approved")}
-                                className="p-1 text-green-600 hover:bg-green-50 dark:hover:bg-green-950/30 rounded-lg transition-colors cursor-pointer"
+                                className="p-1 text-[var(--color-positive)] hover:bg-green-50 dark:hover:bg-green-950/30 rounded-lg transition-colors cursor-pointer"
                                 title="Aprobar vacaciones"
                               >
                                 <Check className="w-5 h-5" />
@@ -567,7 +567,7 @@ export default function HRPortalClient({
                 </button>
 
                 <button className="flex flex-col items-start gap-3 p-4 bg-white dark:bg-slate-800/50 rounded-xl border border-slate-200 dark:border-slate-800 hover:border-green-500 transition-colors text-left group cursor-pointer">
-                  <div className="size-10 rounded-lg bg-green-100 dark:bg-green-900/30 text-green-600 flex items-center justify-center group-hover:bg-green-600 group-hover:text-white transition-colors">
+                  <div className="size-10 rounded-lg bg-green-100 dark:bg-green-900/30 text-[var(--color-positive)] flex items-center justify-center group-hover:bg-green-600 group-hover:text-white transition-colors">
                     <CalendarRange className="w-5 h-5" />
                   </div>
                   <div>
@@ -621,7 +621,7 @@ export default function HRPortalClient({
                         )}
                       </div>
                       <div className="flex flex-col justify-center gap-1.5 py-1">
-                        <span className={`text-xs font-bold uppercase ${news.categoryColor}`}>
+                        <span className="text-xs font-semibold uppercase text-[var(--color-muted)]">
                           {news.category}
                         </span>
                         <h4 className="text-sm font-bold leading-snug line-clamp-2 text-slate-900 dark:text-white">
@@ -870,7 +870,7 @@ export default function HRPortalClient({
             <div className="flex justify-between items-center p-6 border-b border-slate-200 dark:border-slate-800">
               <div className="flex flex-col gap-1">
                 <span
-                  className={`text-xs font-bold ${selectedAnnouncement.categoryColor}`}
+                  className="text-xs font-semibold uppercase text-[var(--color-muted)]"
                 >
                   {selectedAnnouncement.category}
                 </span>

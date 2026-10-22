@@ -135,7 +135,7 @@ export default async function DtePdfPage({ params }: PageProps) {
             <h1 className="text-2xl font-black tracking-tight text-slate-900 dark:text-white print:text-black">
               {tenantDetails.razonSocial}
             </h1>
-            <p className="text-xs font-bold text-emerald-600 dark:text-emerald-400 print:text-slate-700">
+            <p className="text-xs font-bold text-[var(--color-positive)] dark:text-emerald-400 print:text-slate-700">
               Giro: {tenantDetails.giro}
             </p>
             <div className="text-xs text-slate-500 dark:text-slate-400 print:text-slate-600 flex flex-col gap-0.5">
@@ -201,7 +201,7 @@ export default async function DtePdfPage({ params }: PageProps) {
               </span>
               <span className="flex justify-between">
                 <span>Forma de Pago:</span>
-                <span className="font-semibold text-emerald-600 dark:text-emerald-400 print:text-black">30 Días Crédito</span>
+                <span className="font-semibold text-[var(--color-positive)] dark:text-emerald-400 print:text-black">30 Días Crédito</span>
               </span>
             </div>
           </div>
@@ -310,7 +310,7 @@ export default async function DtePdfPage({ params }: PageProps) {
               <span className="font-extrabold text-xs tracking-wider text-slate-400 print:text-slate-600 flex items-center">
                 Total:
               </span>
-              <strong className="text-lg font-black tracking-tight text-emerald-600 dark:text-emerald-400 print:text-black">
+              <strong className="text-lg font-black tracking-tight text-[var(--color-positive)] dark:text-emerald-400 print:text-black">
                 ${Math.round(invoice.total).toLocaleString("es-CL")}
               </strong>
             </div>

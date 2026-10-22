@@ -58,7 +58,7 @@ export default function ConfirmDialog({
         className="w-full max-w-sm bg-white dark:bg-slate-950 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-2xl p-6 animate-in zoom-in-95 duration-200"
       >
         <div className="flex items-start gap-3">
-          {destructive && <AlertTriangle className="w-6 h-6 text-amber-500 shrink-0 mt-0.5" />}
+          {destructive && <AlertTriangle className="w-6 h-6 text-[var(--color-warning-ink)] shrink-0 mt-0.5" />}
           <div className="min-w-0">
             <h3 className="text-base font-extrabold text-slate-900 dark:text-slate-100">{title}</h3>
             <p className="text-sm text-slate-500 dark:text-slate-400 mt-1.5 break-words">{message}</p>
