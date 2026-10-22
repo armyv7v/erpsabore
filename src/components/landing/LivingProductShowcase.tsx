@@ -164,7 +164,7 @@ export default function LivingProductShowcase() {
 
       {/* Header with Spatial Typography */}
       <div className="max-w-6xl mx-auto text-center mb-16 relative z-10">
-        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-primary text-xs font-bold uppercase tracking-[0.2em] mb-4 backdrop-blur-md">
+        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-primary text-xs font-bold tracking-[0.2em] mb-4 backdrop-blur-md">
           <Sparkles className="w-3.5 h-3.5" />
           <span>Matriz de Suministros & Insumos Vivos</span>
         </div>
@@ -277,7 +277,7 @@ export default function LivingProductShowcase() {
                 <div className="grid grid-cols-2 gap-3 mb-6">
                   {selectedSpecimen.specs.map((s, idx) => (
                     <div key={idx} className="bg-white/5 rounded-xl p-2.5 border border-white/5">
-                      <span className="text-[10px] uppercase text-[rgba(248,246,246,0.4)] block font-bold">
+                      <span className="text-xs uppercase text-[rgba(248,246,246,0.4)] block font-bold">
                         {s.label}
                       </span>
                       <span className="text-xs font-semibold text-white">
@@ -381,10 +381,10 @@ function LivingTiltCard({
 
       {/* Top Meta */}
       <div className="relative z-10 flex items-center justify-between mb-4">
-        <span className="text-[11px] font-bold uppercase tracking-wider text-primary/90 bg-primary/10 px-2.5 py-1 rounded-full border border-primary/20">
+        <span className="text-[11px] font-bold text-primary/90 bg-primary/10 px-2.5 py-1 rounded-full border border-primary/20">
           {specimen.categoryLabel}
         </span>
-        <span className="text-[10px] font-medium text-[rgba(248,246,246,0.4)]">
+        <span className="text-xs font-medium text-[rgba(248,246,246,0.4)]">
           {specimen.badge}
         </span>
       </div>

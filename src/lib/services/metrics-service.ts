@@ -19,11 +19,6 @@ function ratio(part: number, total: number) {
   return Math.round(((part / total) * 100 + Number.EPSILON) * 10) / 10;
 }
 
-function formatSignedPercent(value: number) {
-  const rounded = Math.round((value + Number.EPSILON) * 10) / 10;
-  return `${rounded >= 0 ? "+" : ""}${rounded}%`;
-}
-
 function latestInvoices(invoices: InvoiceRecord[]) {
   return [...invoices].slice(0, 3);
 }
@@ -45,23 +40,12 @@ export async function getDashboardMetrics(user: AuthUser): Promise<DashboardMetr
   const pendingInvoicesCount = summary.pendingCount + summary.overdueCount;
   const paidTotal = summary.totalPaid;
 
-  const estimatedCogs = Math.round(currentTotal * 0.42);
-  const grossMarginPercentage = currentTotal > 0
-    ? Math.round(((currentTotal - estimatedCogs) / currentTotal) * 100 * 10) / 10
-    : 0;
-
   return {
     monthlySales: currentTotal,
+    collectedTotal: paidTotal,
+    collectionRate: ratio(paidTotal, Math.max(currentTotal, 1)),
     pendingInvoicesCount,
-    grossMarginPercentage,
     stockAlertCount: stockSummary?.stockAlertCount ?? 0,
-    revenueTrendTotal: currentTotal,
-    revenueTrendGrowth: formatSignedPercent(
-      ratio(
-        paidTotal,
-        Math.max(currentTotal, 1),
-      ),
-    ),
     latestInvoices: latestInvoices(committedInvoices),
   };
 }

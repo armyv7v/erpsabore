@@ -28,47 +28,45 @@ export default function DashboardShell({ user, children }: DashboardShellProps) 
 
   if (!canAccessPath(user.role, pathname)) {
     return (
-      <div className="flex h-screen items-center justify-center bg-background-light text-slate-600 dark:bg-background-dark dark:text-slate-300">
-        Redirigiendo a tu panel autorizado...
+      <div className="flex h-screen items-center justify-center bg-frame text-[13px] text-muted">
+        Redirigiendo a tu panel autorizado…
       </div>
     );
   }
 
-  // Si es la página del POS, aislamos el layout con Sidebar hoverable/desplegable
+  // El POS se trabaja a pantalla completa, con el sidebar fuera del flujo.
   const isPosPage = pathname === "/pos";
 
   if (isPosPage) {
     return (
-      <div className="h-screen w-screen overflow-hidden bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-slate-100 relative">
-        {/* Strip sensible al hover en el extremo izquierdo */}
-        <div 
+      <div className="relative h-screen w-screen overflow-hidden bg-white text-ink">
+        <div
           onMouseEnter={() => setIsPosSidebarHovered(true)}
-          className="fixed left-0 top-0 bottom-0 w-3.5 z-40 bg-transparent cursor-e-resize"
+          aria-hidden="true"
+          className="fixed bottom-0 left-0 top-0 z-40 w-8 cursor-e-resize bg-transparent"
         />
 
-        {/* Tirador visual discreto para pantallas táctiles y guía de usuario */}
         {!isPosSidebarHovered && (
           <button
             type="button"
             onClick={() => setIsPosSidebarHovered(true)}
             onMouseEnter={() => setIsPosSidebarHovered(true)}
-            className="fixed left-0 top-1/2 -translate-y-1/2 bg-slate-200/80 dark:bg-slate-800/80 hover:bg-slate-300 dark:hover:bg-slate-700 text-slate-500 dark:text-slate-400 w-8 h-24 rounded-r-lg z-30 flex items-center justify-center transition-all opacity-70 hover:opacity-100"
+            aria-label="Abrir navegación"
+            className="fixed left-0 top-1/2 z-30 flex w-8 h-24 -translate-y-1/2 items-center justify-center rounded-r-control bg-frame text-muted transition-colors hover:text-ink"
           >
-            <span className="text-[10px] font-extrabold">›</span>
+            <span aria-hidden="true" className="text-[11px]">›</span>
           </button>
         )}
 
-        {/* Sidebar flotante con transición suave y sombra elegante */}
         <div
           onMouseLeave={() => setIsPosSidebarHovered(false)}
-          className={`fixed inset-y-0 left-0 z-50 transition-all duration-300 transform ${
-            isPosSidebarHovered ? "translate-x-0 shadow-[10px_0_30px_rgba(0,0,0,0.15)]" : "-translate-x-full"
+          className={`fixed inset-y-0 left-0 z-50 transition-transform duration-200 ${
+            isPosSidebarHovered ? "translate-x-0" : "-translate-x-full"
           }`}
         >
           <Sidebar user={user} />
         </div>
 
-        {/* Contenido POS en pantalla completa */}
         <main className="h-full w-full overflow-hidden">
           {children}
         </main>
@@ -78,14 +76,15 @@ export default function DashboardShell({ user, children }: DashboardShellProps) 
   }
 
   return (
-    <div className="flex h-screen overflow-hidden bg-background-light text-slate-900 dark:bg-background-dark dark:text-slate-100">
+    <div className="flex h-screen overflow-hidden bg-frame text-ink">
       <Sidebar user={user} />
 
       {isSidebarOpen ? (
-        <div className="fixed inset-0 z-40 md:hidden" aria-hidden="true">
+        <div className="fixed inset-0 z-40 md:hidden">
           <button
             type="button"
-            className="absolute inset-0 bg-slate-950/45 backdrop-blur-[1px]"
+            aria-label="Cerrar menú lateral"
+            className="absolute inset-0 bg-slate-950/30"
             onClick={() => setIsSidebarOpen(false)}
           />
           <Sidebar user={user} mode="mobile" onNavigate={() => setIsSidebarOpen(false)} />
@@ -94,9 +93,11 @@ export default function DashboardShell({ user, children }: DashboardShellProps) 
 
       <main className="flex min-w-0 flex-1 flex-col overflow-hidden">
         <Navbar user={user} onMenuClick={() => setIsSidebarOpen(true)} />
-        <div className="flex-1 overflow-y-auto">
-          {children}
-          <div className="h-16 md:hidden"></div>
+        <div className="min-h-0 flex-1 pb-0 pr-0 md:pb-2 md:pr-2">
+          <div className="h-full overflow-y-auto rounded-none border-0 border-border bg-white md:rounded-card md:border">
+            {children}
+            <div className="h-14 md:hidden" />
+          </div>
         </div>
       </main>
 

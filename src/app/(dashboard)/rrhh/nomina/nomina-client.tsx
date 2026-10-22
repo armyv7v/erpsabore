@@ -342,8 +342,8 @@ export default function NominaClient({ initialEmployees }: { initialEmployees: E
             <Receipt className="w-5 h-5" />
           </div>
           <div>
-            <h1 className="text-lg font-bold leading-tight tracking-tight">Nómina Chile PYME</h1>
-            <p className="text-xs text-slate-500 dark:text-slate-400 font-bold uppercase tracking-wider">{currentSummary.month}</p>
+            <h2 className="text-lg font-bold leading-tight tracking-tight">Nómina Chile PYME</h2>
+            <p className="text-xs text-slate-500 dark:text-slate-400 font-bold">{currentSummary.month}</p>
           </div>
         </div>
       </div>
@@ -394,7 +394,7 @@ export default function NominaClient({ initialEmployees }: { initialEmployees: E
  
         {/* Financial Summary Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <div className="flex flex-col gap-2 rounded-xl p-6 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-md transition-shadow">
+          <div className="flex flex-col gap-2 rounded-xl p-6 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:shadow-md transition-shadow">
             <div className="flex items-center justify-between">
               <p className="text-slate-500 dark:text-slate-400 text-sm font-semibold">Total Haberes (Bruto)</p>
               <span className="p-1.5 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400"><BankIcon /></span>
@@ -408,7 +408,7 @@ export default function NominaClient({ initialEmployees }: { initialEmployees: E
             </div>
           </div>
  
-          <div className="flex flex-col gap-2 rounded-xl p-6 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-md transition-shadow">
+          <div className="flex flex-col gap-2 rounded-xl p-6 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:shadow-md transition-shadow">
             <div className="flex items-center justify-between">
               <p className="text-slate-500 dark:text-slate-400 text-sm font-semibold">Descuentos Previsionales</p>
               <span className="p-1.5 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400"><BankIcon /></span>
@@ -439,7 +439,7 @@ export default function NominaClient({ initialEmployees }: { initialEmployees: E
         </div>
  
         {/* Specific Breakdown Section */}
-        <div className="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+        <div className="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 overflow-hidden hover:shadow-md transition-shadow">
           <div className="px-6 py-4 border-b border-slate-100 dark:border-slate-800 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 bg-slate-50/50 dark:bg-slate-900/50">
             <div>
               <h3 className="font-bold text-lg text-slate-900 dark:text-white">Detalle de Empleados</h3>
@@ -471,13 +471,13 @@ export default function NominaClient({ initialEmployees }: { initialEmployees: E
               <table className="w-full text-left border-collapse">
                 <thead className="bg-slate-50 dark:bg-slate-800/50 border-b border-slate-200 dark:border-slate-800">
                   <tr>
-                    <th className="px-6 py-3 text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Empleado</th>
-                    <th className="px-6 py-3 text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">RUT</th>
-                    <th className="px-6 py-3 text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Cargo</th>
-                    <th className="px-6 py-3 text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider text-right">Monto Bruto</th>
-                    <th className="px-6 py-3 text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider text-right">Líquido a Pago</th>
-                    <th className="px-6 py-3 text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider text-center">Estado</th>
-                    <th className="px-6 py-3 text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider text-center">Acciones</th>
+                    <th className="px-6 py-3 text-xs font-bold text-slate-500 dark:text-slate-400">Empleado</th>
+                    <th className="px-6 py-3 text-xs font-bold text-slate-500 dark:text-slate-400">RUT</th>
+                    <th className="px-6 py-3 text-xs font-bold text-slate-500 dark:text-slate-400">Cargo</th>
+                    <th className="px-6 py-3 text-xs font-bold text-slate-500 dark:text-slate-400 text-right">Monto Bruto</th>
+                    <th className="px-6 py-3 text-xs font-bold text-slate-500 dark:text-slate-400 text-right">Líquido a Pago</th>
+                    <th className="px-6 py-3 text-xs font-bold text-slate-500 dark:text-slate-400 text-center">Estado</th>
+                    <th className="px-6 py-3 text-xs font-bold text-slate-500 dark:text-slate-400 text-center">Acciones</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
@@ -490,7 +490,7 @@ export default function NominaClient({ initialEmployees }: { initialEmployees: E
                           </div>
                           <div>
                             <span className="font-bold text-sm text-slate-900 dark:text-white block">{emp.name}</span>
-                            <span className="text-[10px] text-slate-400 block">{emp.rut}</span>
+                            <span className="text-xs text-slate-400 block">{emp.rut}</span>
                           </div>
                         </div>
                       </td>
@@ -569,7 +569,7 @@ export default function NominaClient({ initialEmployees }: { initialEmployees: E
  
         {/* Detailed Breakdown of Discounts & Milestones */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div className="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
+          <div className="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800">
             <h3 className="font-bold mb-4 flex items-center gap-2 text-slate-900 dark:text-white">
               <PieChart className="w-5 h-5 text-primary" /> Distribución Descuentos Legales
             </h3>
@@ -595,7 +595,7 @@ export default function NominaClient({ initialEmployees }: { initialEmployees: E
             )}
           </div>
  
-          <div className="bg-slate-50 dark:bg-slate-900/50 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col justify-center">
+          <div className="bg-slate-50 dark:bg-slate-900/50 p-6 rounded-xl border border-slate-200 dark:border-slate-800 flex flex-col justify-center">
             <h3 className="font-bold mb-6 flex items-center gap-2 text-primary">
               <CalendarDays className="w-5 h-5 animate-bounce" /> Próximos Vencimientos Legales
             </h3>
@@ -646,7 +646,7 @@ export default function NominaClient({ initialEmployees }: { initialEmployees: E
  
             <div className="space-y-4">
               <div>
-                <label className="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1.5">Sueldo Base Mensual (CLP)</label>
+                <label className="block text-xs font-bold text-slate-500 dark:text-slate-400 mb-1.5">Sueldo Base Mensual (CLP)</label>
                 <input 
                   type="number" 
                   value={editBase} 
@@ -656,7 +656,7 @@ export default function NominaClient({ initialEmployees }: { initialEmployees: E
               </div>
  
               <div>
-                <label className="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1.5">Horas Extraordinarias (CLP)</label>
+                <label className="block text-xs font-bold text-slate-500 dark:text-slate-400 mb-1.5">Horas Extraordinarias (CLP)</label>
                 <input 
                   type="number" 
                   value={editOvertime} 
@@ -666,7 +666,7 @@ export default function NominaClient({ initialEmployees }: { initialEmployees: E
               </div>
  
               <div>
-                <label className="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1.5">Bonos e Incentivos (CLP)</label>
+                <label className="block text-xs font-bold text-slate-500 dark:text-slate-400 mb-1.5">Bonos e Incentivos (CLP)</label>
                 <input 
                   type="number" 
                   value={editBonuses} 
@@ -676,7 +676,7 @@ export default function NominaClient({ initialEmployees }: { initialEmployees: E
               </div>
  
               <div className="border-t border-slate-100 dark:border-slate-800 pt-4 mt-6">
-                <h4 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">Imposiciones Legales Recalculadas</h4>
+                <h4 className="text-xs font-bold text-slate-400 mb-3">Imposiciones Legales Recalculadas</h4>
                 
                 <div className="grid grid-cols-2 gap-y-2 gap-x-4 text-sm font-semibold text-slate-600 dark:text-slate-400">
                   <span>AFP (10%):</span>
@@ -731,18 +731,18 @@ export default function NominaClient({ initialEmployees }: { initialEmployees: E
               <div>
                 <h3 className="font-extrabold text-2xl tracking-tight text-slate-900 dark:text-white">LIQUIDACIÓN DE SUELDO</h3>
                 <p className="text-xs font-bold text-primary mt-1">SABORES ERP LIMITADA • RUT 76.540.210-9</p>
-                <p className="text-[10px] text-slate-400">Av. Nueva Providencia 1881, Santiago de Chile</p>
+                <p className="text-xs text-slate-400">Av. Nueva Providencia 1881, Santiago de Chile</p>
               </div>
               <div className="text-left sm:text-right">
                 <span className="inline-block bg-slate-100 dark:bg-slate-800 px-3 py-1 rounded-lg text-xs font-extrabold text-slate-700 dark:text-slate-300">
                   PERIODO: {currentSummary.month.toUpperCase()}
                 </span>
                 {selectedEmployeeForSlip.status === 'paid' ? (
-                  <span className="block mt-2 text-xs font-bold text-emerald-500 uppercase tracking-widest">
+                  <span className="block mt-2 text-xs font-bold text-emerald-500">
                     ✓ TRANSFERENCIA PROCESADA
                   </span>
                 ) : (
-                  <span className="block mt-2 text-xs font-bold text-blue-500 uppercase tracking-widest">
+                  <span className="block mt-2 text-xs font-bold text-blue-500">
                     • BORRADOR GENERADO
                   </span>
                 )}
@@ -772,7 +772,7 @@ export default function NominaClient({ initialEmployees }: { initialEmployees: E
             {/* Breakdown table */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-sm mb-8">
               <div>
-                <h4 className="font-black text-xs text-slate-400 uppercase tracking-wider border-b border-slate-200 dark:border-slate-800 pb-2 mb-3">Haberes (Ingresos)</h4>
+                <h4 className="font-black text-xs text-slate-400 border-b border-slate-200 dark:border-slate-800 pb-2 mb-3">Haberes (Ingresos)</h4>
                 <div className="space-y-2 font-semibold">
                   <div className="flex justify-between">
                     <span className="text-slate-600 dark:text-slate-400">Sueldo Base Contractual</span>
@@ -794,7 +794,7 @@ export default function NominaClient({ initialEmployees }: { initialEmployees: E
               </div>
  
               <div>
-                <h4 className="font-black text-xs text-slate-400 uppercase tracking-wider border-b border-slate-200 dark:border-slate-800 pb-2 mb-3">Descuentos Previsionales</h4>
+                <h4 className="font-black text-xs text-slate-400 border-b border-slate-200 dark:border-slate-800 pb-2 mb-3">Descuentos Previsionales</h4>
                 <div className="space-y-2 font-semibold">
                   <div className="flex justify-between">
                     <span className="text-slate-600 dark:text-slate-400">AFP (Previsión 10%)</span>
@@ -819,7 +819,7 @@ export default function NominaClient({ initialEmployees }: { initialEmployees: E
             {/* Total Neto section */}
             <div className="bg-primary/5 dark:bg-primary/20 border-2 border-primary/20 dark:border-primary/40 p-4 rounded-xl flex justify-between items-center mb-8">
               <div>
-                <span className="text-[10px] font-bold text-primary uppercase tracking-widest block">SUELDO LÍQUIDO A RECIBIR</span>
+                <span className="text-xs font-bold text-primary block">SUELDO LÍQUIDO A RECIBIR</span>
                 <span className="text-xs text-slate-500 dark:text-slate-400 block font-medium">Equivalente en pesos chilenos nominales</span>
               </div>
               <span className="text-2xl font-black text-primary">
@@ -828,7 +828,7 @@ export default function NominaClient({ initialEmployees }: { initialEmployees: E
             </div>
  
             {/* Signature & Disclaimer */}
-            <div className="grid grid-cols-2 gap-8 text-center pt-8 border-t border-dashed border-slate-200 dark:border-slate-800 text-[10px] text-slate-400 font-bold uppercase tracking-wider">
+            <div className="grid grid-cols-2 gap-8 text-center pt-8 border-t border-dashed border-slate-200 dark:border-slate-800 text-xs text-slate-400 font-bold">
               <div className="flex flex-col items-center justify-end h-24">
                 <div className="w-full max-w-[180px] border-b border-slate-300 dark:border-slate-700 mb-2" />
                 <span>FIRMA EMPLEADOR</span>

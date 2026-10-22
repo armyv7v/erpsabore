@@ -11,7 +11,7 @@ export default async function AccessDeniedPage({
 
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-slate-950 flex items-center justify-center p-6">
-      <div className="w-full max-w-lg rounded-2xl border border-slate-200 bg-white p-8 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+      <div className="w-full max-w-lg rounded-2xl border border-slate-200 bg-white p-8 dark:border-slate-800 dark:bg-slate-900">
         <div className="mb-4 inline-flex rounded-2xl bg-orange-100 p-3 text-orange-600 dark:bg-orange-900/30 dark:text-orange-400">
           <LockKeyhole className="h-6 w-6" />
         </div>

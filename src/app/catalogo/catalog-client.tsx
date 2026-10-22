@@ -599,7 +599,7 @@ export default function CatalogClient({ products, customers = [], user = null }:
           <button
             type="button"
             onClick={() => handlePrint("simple")}
-            className="flex items-center gap-2 px-3 h-12 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-750 text-slate-800 dark:text-slate-200 text-xs font-extrabold transition-all hover:scale-[1.02] active:scale-95 cursor-pointer shadow-sm"
+            className="flex items-center gap-2 px-3 h-12 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-750 text-slate-800 dark:text-slate-200 text-xs font-extrabold transition-all hover:scale-[1.02] active:scale-95 cursor-pointer"
             title="Exportar catálogo simple para clientes (sin códigos de barra, fotos más grandes)"
           >
             <Printer className="w-4 h-4" />
@@ -609,7 +609,7 @@ export default function CatalogClient({ products, customers = [], user = null }:
           <button
             type="button"
             onClick={() => handlePrint("book")}
-            className="flex items-center gap-2 px-3 h-12 rounded-xl bg-primary/10 hover:bg-primary/15 text-primary text-xs font-extrabold transition-all hover:scale-[1.02] active:scale-95 cursor-pointer shadow-sm shadow-primary/5"
+            className="flex items-center gap-2 px-3 h-12 rounded-xl bg-primary/10 hover:bg-primary/15 text-primary text-xs font-extrabold transition-all hover:scale-[1.02] active:scale-95 cursor-pointer shadow-primary/5"
             title="Exportar catálogo completo a formato PDF Libro (A4) con portada, índice y códigos de barra"
           >
             <BookOpen className="w-4 h-4" />
@@ -622,7 +622,7 @@ export default function CatalogClient({ products, customers = [], user = null }:
             className="relative flex size-12 cursor-pointer items-center justify-center rounded-full bg-slate-100 text-slate-700 transition-colors hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-700"
           >
             <ShoppingCart className="w-5 h-5" />
-            <span className="bg-primary absolute top-2 right-2 flex h-4 min-w-4 items-center justify-center rounded-full px-1 text-[10px] font-bold text-white">
+            <span className="bg-primary absolute top-2 right-2 flex h-4 min-w-4 items-center justify-center rounded-full px-1 text-xs font-bold text-white">
               {cartCount}
             </span>
           </button>
@@ -631,11 +631,11 @@ export default function CatalogClient({ products, customers = [], user = null }:
 
       <main className="no-print flex-1 pb-24 md:p-8">
         {/* Banner de Bienvenida Corporativo */}
-        <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-[#E8C19D] to-[#BC7A3A] px-6 py-8 text-[#221610] shadow-sm mb-6 mx-4 md:mx-0 border border-[#BC7A3A]/30">
+        <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-[#E8C19D] to-[#BC7A3A] px-6 py-8 text-[#221610] mb-6 mx-4 md:mx-0 border border-[#BC7A3A]/30">
           {/* Fondo decorativo con marcas de agua */}
           <div className="absolute right-0 top-0 bottom-0 w-1/3 opacity-15 pointer-events-none bg-contain bg-right bg-no-repeat" style={{ backgroundImage: 'url("/brand/logo_negro_sin_fondo.png")' }}></div>
           <div className="relative z-10 max-w-2xl text-left">
-            <span className="bg-[#221610]/10 text-[#221610] px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider border border-[#221610]/20">
+            <span className="bg-[#221610]/10 text-[#221610] px-2.5 py-0.5 rounded-full text-xs font-black border border-[#221610]/20">
               Saboré Insumos y Suministros
             </span>
             <h2 className="text-2xl md:text-3xl font-black mt-2 tracking-tight text-[#221610]">Catálogo Digital Oficial</h2>
@@ -645,7 +645,7 @@ export default function CatalogClient({ products, customers = [], user = null }:
         {/* Search */}
         <div className="px-4 py-4 md:px-0">
           <label className="group flex w-full flex-col">
-            <div className="flex h-12 w-full items-stretch rounded-xl border border-slate-200 bg-white shadow-sm transition-colors focus-within:border-primary dark:border-slate-700 dark:bg-slate-800">
+            <div className="flex h-12 w-full items-stretch rounded-xl border border-slate-200 bg-white transition-colors focus-within:border-primary dark:border-slate-700 dark:bg-slate-800">
               <div className="text-slate-400 flex items-center justify-center pl-4">
                 <Search className="w-5 h-5" />
               </div>
@@ -707,7 +707,7 @@ export default function CatalogClient({ products, customers = [], user = null }:
                 setIsCategoryDropdownOpen(!isCategoryDropdownOpen);
                 setIsSortDropdownOpen(false);
               }}
-              className="flex items-center gap-1.5 rounded-xl border border-slate-200 bg-white px-3 py-2 text-xs font-bold text-slate-700 dark:border-slate-800 dark:bg-slate-950 dark:text-slate-200 hover:border-primary transition-all active:scale-95 cursor-pointer shadow-sm"
+              className="flex items-center gap-1.5 rounded-xl border border-slate-200 bg-white px-3 py-2 text-xs font-bold text-slate-700 dark:border-slate-800 dark:bg-slate-950 dark:text-slate-200 hover:border-primary transition-all active:scale-95 cursor-pointer"
             >
               <Filter className="w-3.5 h-3.5 text-slate-400" />
               <span>Categoría: <strong>{activeCategory}</strong></span>
@@ -746,7 +746,7 @@ export default function CatalogClient({ products, customers = [], user = null }:
                 setIsSortDropdownOpen(!isSortDropdownOpen);
                 setIsCategoryDropdownOpen(false);
               }}
-              className="flex items-center gap-1.5 rounded-xl border border-slate-200 bg-white px-3 py-2 text-xs font-bold text-slate-700 dark:border-slate-800 dark:bg-slate-950 dark:text-slate-200 hover:border-primary transition-all active:scale-95 cursor-pointer shadow-sm"
+              className="flex items-center gap-1.5 rounded-xl border border-slate-200 bg-white px-3 py-2 text-xs font-bold text-slate-700 dark:border-slate-800 dark:bg-slate-950 dark:text-slate-200 hover:border-primary transition-all active:scale-95 cursor-pointer"
             >
               <ArrowUpDown className="w-3.5 h-3.5 text-slate-400" />
               <span>Ordenar por: <strong>{SORT_OPTIONS.find(o => o.value === sortBy)?.label}</strong></span>
@@ -791,7 +791,7 @@ export default function CatalogClient({ products, customers = [], user = null }:
               <div
                 key={product.id}
                 onClick={() => setDetailsProduct(product)}
-                className={`flex flex-col overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm transition-all hover:shadow-md dark:border-slate-800 dark:bg-slate-900 cursor-pointer select-none ${
+                className={`flex flex-col overflow-hidden rounded-xl border border-slate-200 bg-white transition-all hover:shadow-md dark:border-slate-800 dark:bg-slate-900 cursor-pointer select-none ${
                   product.stockQuantity === 0
                     ? "grayscale opacity-60"
                     : "hover:border-primary/30"
@@ -816,19 +816,19 @@ export default function CatalogClient({ products, customers = [], user = null }:
                           className="w-16 h-16 object-contain"
                         />
                       </picture>
-                      <span className="absolute bottom-2 text-[9px] font-black text-slate-300 dark:text-slate-700 tracking-widest uppercase">
+                      <span className="absolute bottom-2 text-[11px] font-black text-slate-300 dark:text-slate-700">
                         Sin Imagen
                       </span>
                     </div>
                   )}
                   <div
-                    className={`absolute top-2 right-2 rounded px-2 py-1 text-[10px] font-bold uppercase tracking-wider text-white backdrop-blur-sm ${stockBadgeClass(product.stockQuantity)}`}
+                    className={`absolute top-2 right-2 rounded px-2 py-1 text-xs font-bold text-white backdrop-blur-sm ${stockBadgeClass(product.stockQuantity)}`}
                   >
                     {product.stockQuantity > 0 ? `Stock: ${product.stockQuantity}` : "Sin stock"}
                   </div>
                 </div>
                 <div className="flex flex-1 flex-col p-3">
-                  <p className="text-slate-500 text-[10px] font-bold uppercase tracking-widest dark:text-slate-400">
+                  <p className="text-slate-500 text-xs font-bold dark:text-slate-400">
                     {product.sku}
                   </p>
                   <h3
@@ -839,10 +839,10 @@ export default function CatalogClient({ products, customers = [], user = null }:
                   </h3>
                   {product.category && (
                     <div className="flex flex-wrap items-center gap-1.5 mb-2">
-                      <span className="bg-primary/10 text-primary px-1.5 py-0.5 rounded text-[8px] font-black uppercase tracking-wider">
+                      <span className="bg-primary/10 text-primary px-1.5 py-0.5 rounded text-[8px] font-black">
                         {product.category}
                       </span>
-                      <span className="text-slate-400 dark:text-slate-500 text-[8px] font-bold uppercase tracking-wider">
+                      <span className="text-slate-400 dark:text-slate-500 text-[8px] font-bold">
                         • {getShortSubcategory(product.name)}
                       </span>
                     </div>
@@ -853,7 +853,7 @@ export default function CatalogClient({ products, customers = [], user = null }:
                     }`}
                   >
                     ${product.unitPrice.toLocaleString("es-CL")}
-                    <span className="text-slate-400 text-[10px] font-normal"> CLP</span>
+                    <span className="text-slate-400 text-xs font-normal"> CLP</span>
                   </p>
                   {(() => {
                     const cartItem = cartItems.find((item) => item.id === product.id);
@@ -900,7 +900,7 @@ export default function CatalogClient({ products, customers = [], user = null }:
                         }}
                         className={`mt-3 w-full rounded-lg py-2.5 text-xs font-bold flex items-center justify-center gap-1 transition-all h-[38px] ${
                           product.stockQuantity > 0
-                            ? "bg-primary text-white active:scale-95 shadow-sm shadow-primary/20 hover:bg-primary/90"
+                            ? "bg-primary text-white active:scale-95 shadow-primary/20 hover:bg-primary/90"
                             : "cursor-not-allowed border border-slate-200 bg-slate-100 text-slate-400 dark:border-slate-700 dark:bg-slate-800"
                         }`}
                         disabled={product.stockQuantity === 0}
@@ -982,7 +982,7 @@ export default function CatalogClient({ products, customers = [], user = null }:
                       onClick={() => setCurrentPage(p)}
                       className={`flex size-8 ux-touch-target items-center justify-center rounded-lg text-xs font-bold transition-all cursor-pointer ${
                         currentPage === p
-                          ? "bg-primary text-white shadow-sm shadow-primary/20"
+                          ? "bg-primary text-white shadow-primary/20"
                           : "border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-350 hover:bg-slate-50 dark:hover:bg-slate-800"
                       }`}
                     >
@@ -1063,7 +1063,7 @@ export default function CatalogClient({ products, customers = [], user = null }:
                     >
                       <div className="flex justify-between items-start">
                         <div>
-                          <p className="text-[10px] text-slate-500 font-bold uppercase tracking-wider">{item.sku}</p>
+                          <p className="text-xs text-slate-500 font-bold">{item.sku}</p>
                           <p className="font-semibold text-xs leading-tight mt-0.5">{item.name}</p>
                         </div>
                         <div className="flex items-center gap-2 shrink-0">
@@ -1117,14 +1117,14 @@ export default function CatalogClient({ products, customers = [], user = null }:
                 <div className="mt-5 border-t border-slate-200 pt-4 dark:border-slate-800">
                   <div className="flex items-center gap-1.5 text-slate-900 dark:text-slate-100 mb-2">
                     <Users className="w-4 h-4 text-primary" />
-                    <h3 className="text-xs font-bold uppercase tracking-wider">Cliente Destinatario</h3>
+                    <h3 className="text-xs font-bold">Cliente Destinatario</h3>
                   </div>
 
                   {selectedCustomer ? (
                     <div className="flex items-center justify-between rounded-xl bg-primary/5 p-3 dark:bg-slate-900 border border-primary/20 animate-in fade-in duration-200">
                       <div>
                         <p className="font-bold text-xs text-slate-900 dark:text-slate-100">{selectedCustomer.name}</p>
-                        <p className="text-[10px] text-slate-500 font-semibold mt-0.5">{selectedCustomer.rut}</p>
+                        <p className="text-xs text-slate-500 font-semibold mt-0.5">{selectedCustomer.rut}</p>
                       </div>
                       <button
                         type="button"
@@ -1132,7 +1132,7 @@ export default function CatalogClient({ products, customers = [], user = null }:
                           setSelectedCustomer(null);
                           setCustomerSearch("");
                         }}
-                        className="text-[10px] font-bold text-red-500 hover:text-red-600 transition-colors px-2.5 py-1 rounded-lg bg-red-500/10 cursor-pointer"
+                        className="text-xs font-bold text-red-500 hover:text-red-600 transition-colors px-2.5 py-1 rounded-lg bg-red-500/10 cursor-pointer"
                       >
                         Cambiar
                       </button>
@@ -1206,7 +1206,7 @@ export default function CatalogClient({ products, customers = [], user = null }:
                               >
                                 <div>
                                   <p className="font-bold text-slate-950 dark:text-slate-100">{cust.name}</p>
-                                  <p className="text-[10px] text-slate-500 font-semibold mt-0.5">{cust.rut}</p>
+                                  <p className="text-xs text-slate-500 font-semibold mt-0.5">{cust.rut}</p>
                                 </div>
                                 <ChevronRight className="w-3.5 h-3.5 text-slate-400" />
                               </button>
@@ -1224,12 +1224,12 @@ export default function CatalogClient({ products, customers = [], user = null }:
                 <div className="mt-5 border-t border-slate-200 pt-4 dark:border-slate-800 space-y-4">
                   <div className="flex items-center gap-1.5 text-slate-900 dark:text-slate-100 mb-1">
                     <Users className="w-4 h-4 text-primary" />
-                    <h3 className="text-xs font-bold uppercase tracking-wider">Datos de Envío y Despacho</h3>
+                    <h3 className="text-xs font-bold">Datos de Envío y Despacho</h3>
                   </div>
 
                   <div className="space-y-3">
                     <div>
-                      <label className="block text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-1">
+                      <label className="block text-xs font-bold text-slate-500 mb-1">
                         Nombre Completo / Razón Social *
                       </label>
                       <input
@@ -1244,7 +1244,7 @@ export default function CatalogClient({ products, customers = [], user = null }:
 
                     <div className="grid grid-cols-2 gap-3">
                       <div>
-                        <label className="block text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-1">
+                        <label className="block text-xs font-bold text-slate-500 mb-1">
                           RUT / DNI *
                         </label>
                         <input
@@ -1257,7 +1257,7 @@ export default function CatalogClient({ products, customers = [], user = null }:
                         />
                       </div>
                       <div>
-                        <label className="block text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-1">
+                        <label className="block text-xs font-bold text-slate-500 mb-1">
                           Teléfono
                         </label>
                         <input
@@ -1271,7 +1271,7 @@ export default function CatalogClient({ products, customers = [], user = null }:
                     </div>
 
                     <div>
-                      <label className="block text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-1">
+                      <label className="block text-xs font-bold text-slate-500 mb-1">
                         Correo Electrónico *
                       </label>
                       <input
@@ -1285,7 +1285,7 @@ export default function CatalogClient({ products, customers = [], user = null }:
                     </div>
 
                     <div>
-                      <label className="block text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-1">
+                      <label className="block text-xs font-bold text-slate-500 mb-1">
                         Dirección de Despacho *
                       </label>
                       <input
@@ -1299,7 +1299,7 @@ export default function CatalogClient({ products, customers = [], user = null }:
                     </div>
 
                     <div>
-                      <label className="block text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-2">
+                      <label className="block text-xs font-bold text-slate-500 mb-2">
                         Tipo de Documento
                       </label>
                       <div className="flex gap-4">
@@ -1408,7 +1408,7 @@ export default function CatalogClient({ products, customers = [], user = null }:
 
             <form onSubmit={handleCreateCustomerExpress} className="p-4 space-y-4">
               <div>
-                <label className="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1">
+                <label className="block text-xs font-bold text-slate-500 mb-1">
                   Nombre Completo / Razón Social
                 </label>
                 <input
@@ -1422,7 +1422,7 @@ export default function CatalogClient({ products, customers = [], user = null }:
               </div>
 
               <div>
-                <label className="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1">RUT</label>
+                <label className="block text-xs font-bold text-slate-500 mb-1">RUT</label>
                 <input
                   type="text"
                   name="rut"
@@ -1437,7 +1437,7 @@ export default function CatalogClient({ products, customers = [], user = null }:
 
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1">Teléfono</label>
+                  <label className="block text-xs font-bold text-slate-500 mb-1">Teléfono</label>
                   <input
                     type="tel"
                     name="phone"
@@ -1446,7 +1446,7 @@ export default function CatalogClient({ products, customers = [], user = null }:
                   />
                 </div>
                 <div>
-                  <label className="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1">Email</label>
+                  <label className="block text-xs font-bold text-slate-500 mb-1">Email</label>
                   <input
                     type="email"
                     name="email"
@@ -1558,7 +1558,7 @@ export default function CatalogClient({ products, customers = [], user = null }:
 
               {/* Detalle Items */}
               <div>
-                <h4 className="text-[10px] font-extrabold uppercase tracking-wider text-slate-500 dark:text-slate-405 mb-2">
+                <h4 className="text-xs font-extrabold text-slate-500 dark:text-slate-405 mb-2">
                   Detalle de la Compra
                 </h4>
                 <div className="divide-y divide-slate-100 dark:divide-slate-800/60 border border-slate-100 dark:border-slate-800/65 rounded-xl overflow-hidden bg-white dark:bg-transparent">
@@ -1568,7 +1568,7 @@ export default function CatalogClient({ products, customers = [], user = null }:
                         <p className="font-bold text-slate-800 dark:text-slate-200 line-clamp-1">
                           {item.name}
                         </p>
-                        <p className="text-[10px] text-slate-400 font-semibold mt-0.5">
+                        <p className="text-xs text-slate-400 font-semibold mt-0.5">
                           {item.quantity} x {item.price.toLocaleString("es-CL", { style: "currency", currency: "CLP", maximumFractionDigits: 0 })}
                         </p>
                       </div>
@@ -1580,7 +1580,7 @@ export default function CatalogClient({ products, customers = [], user = null }:
                   
                   {/* Total */}
                   <div className="flex justify-between items-center p-3.5 bg-slate-50 dark:bg-slate-900/30">
-                    <span className="font-black text-slate-900 dark:text-slate-100 uppercase tracking-wide">
+                    <span className="font-black text-slate-900 dark:text-slate-100 tracking-wide">
                       Total
                     </span>
                     <span className="text-base font-black text-primary font-mono">
@@ -1592,7 +1592,7 @@ export default function CatalogClient({ products, customers = [], user = null }:
               
               <div className="rounded-lg bg-blue-50 dark:bg-blue-950/20 border border-blue-100 dark:border-blue-900/30 p-3 flex gap-2">
                 <AlertCircle className="w-4 h-4 text-blue-500 shrink-0 mt-0.5" />
-                <p className="text-[10px] text-blue-750 dark:text-blue-300 font-semibold leading-relaxed">
+                <p className="text-xs text-blue-750 dark:text-blue-300 font-semibold leading-relaxed">
                   Conserve el <strong>ID del Pedido</strong>. Le servirá próximamente para realizar el seguimiento en línea del despacho de su paquete.
                 </p>
               </div>

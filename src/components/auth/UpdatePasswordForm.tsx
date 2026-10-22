@@ -40,7 +40,7 @@ export default function UpdatePasswordForm() {
       <div className="flex flex-col login-fade-3">
         <label
           htmlFor="update-password"
-          className="text-[rgba(248,246,246,0.5)] text-xs font-bold uppercase tracking-[0.15em] pb-2 px-1"
+          className="text-[rgba(248,246,246,0.5)] text-xs font-bold pb-2 px-1"
         >
           Nueva contraseña
         </label>
@@ -70,7 +70,7 @@ export default function UpdatePasswordForm() {
       <div className="flex flex-col login-fade-4">
         <label
           htmlFor="update-confirm"
-          className="text-[rgba(248,246,246,0.5)] text-xs font-bold uppercase tracking-[0.15em] pb-2 px-1"
+          className="text-[rgba(248,246,246,0.5)] text-xs font-bold pb-2 px-1"
         >
           Confirmar contraseña
         </label>

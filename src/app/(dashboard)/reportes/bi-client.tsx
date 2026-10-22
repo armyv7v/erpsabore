@@ -244,7 +244,7 @@ export default function BIClient({ biBase }: Props) {
           </p>
         </div>
         <div className="flex flex-wrap items-center gap-3 w-full md:w-auto">
-          <div className="flex items-center gap-2 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 px-3 py-2 shadow-sm flex-1 md:flex-none">
+          <div className="flex items-center gap-2 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 px-3 py-2 flex-1 md:flex-none">
             <CalendarDays className="text-slate-400 w-4 h-4 shrink-0" />
             <select
               value={timeRange}
@@ -256,7 +256,7 @@ export default function BIClient({ biBase }: Props) {
               <option value="anio">Año Actual</option>
             </select>
           </div>
-          <div className="flex items-center gap-2 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 px-3 py-2 shadow-sm flex-1 md:flex-none">
+          <div className="flex items-center gap-2 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 px-3 py-2 flex-1 md:flex-none">
             <Building2 className="text-slate-400 w-4 h-4 shrink-0" />
             <select
               value={department}
@@ -270,7 +270,7 @@ export default function BIClient({ biBase }: Props) {
           </div>
           <button
             onClick={handleExport}
-            className="flex w-full md:w-auto items-center justify-center gap-2 rounded-xl bg-primary px-4 py-2.5 text-sm font-bold text-white shadow-sm shadow-primary/20 hover:bg-primary/95 hover:shadow-md transition-all active:scale-[0.98]"
+            className="flex w-full md:w-auto items-center justify-center gap-2 rounded-xl bg-primary px-4 py-2.5 text-sm font-bold text-white shadow-primary/20 hover:bg-primary/95 hover:shadow-md transition-all active:scale-[0.98]"
           >
             <Download className="w-4 h-4" />
             Exportar CSV
@@ -280,7 +280,7 @@ export default function BIClient({ biBase }: Props) {
 
       {/* KPI Cards */}
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        <div className="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-6 shadow-sm transition-all hover:shadow-md">
+        <div className="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-6 transition-all hover:shadow-md">
           <div className="flex items-center justify-between">
             <p className="text-sm font-semibold text-slate-500 dark:text-slate-400">Ingresos Totales (CLP)</p>
             <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400">
@@ -314,7 +314,7 @@ export default function BIClient({ biBase }: Props) {
           </div>
         </div>
 
-        <div className="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-6 shadow-sm transition-all hover:shadow-md">
+        <div className="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-6 transition-all hover:shadow-md">
           <div className="flex items-center justify-between">
             <p className="text-sm font-semibold text-slate-500 dark:text-slate-400">Margen Bruto</p>
             <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400">
@@ -340,7 +340,7 @@ export default function BIClient({ biBase }: Props) {
           </div>
         </div>
 
-        <div className="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-6 shadow-sm transition-all hover:shadow-md sm:col-span-2 lg:col-span-1">
+        <div className="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-6 transition-all hover:shadow-md sm:col-span-2 lg:col-span-1">
           <div className="flex items-center justify-between">
             <p className="text-sm font-semibold text-slate-500 dark:text-slate-400">Costo Adquisición (CAC)</p>
             <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-orange-100 dark:bg-orange-900/30 text-orange-600 dark:text-orange-400">
@@ -370,7 +370,7 @@ export default function BIClient({ biBase }: Props) {
       {/* Charts Grid */}
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-2 pt-2 pb-24 md:pb-0">
         {/* Revenue Trends */}
-        <div className="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-6 shadow-sm">
+        <div className="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-6">
           <div className="mb-6 flex items-center justify-between">
             <h4 className="font-bold">Tendencia de Ingresos</h4>
             <button className="text-slate-400 hover:text-slate-600 transition-colors">
@@ -425,7 +425,7 @@ export default function BIClient({ biBase }: Props) {
         </div>
 
         {/* Revenue Breakdown */}
-        <div className="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-6 shadow-sm">
+        <div className="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-6">
           <div className="mb-6 flex items-center justify-between">
             <h4 className="font-bold">Ingresos por Categoría</h4>
             <button className="text-slate-400 hover:text-slate-600 transition-colors">
@@ -442,7 +442,7 @@ export default function BIClient({ biBase }: Props) {
               </svg>
               <div className="absolute inset-0 flex flex-col items-center justify-center">
                 <span className="text-2xl font-bold">100%</span>
-                <span className="text-[10px] uppercase text-slate-400 font-bold">Total</span>
+                <span className="text-xs uppercase text-slate-400 font-bold">Total</span>
               </div>
             </div>
             <div className="flex-1 space-y-4 w-full sm:w-auto">
@@ -465,7 +465,7 @@ export default function BIClient({ biBase }: Props) {
       </div>
 
       {/* Internal Control and Audit Reports */}
-      <div className="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-6 shadow-sm space-y-6">
+      <div className="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-6 space-y-6">
         <div>
           <h3 className="text-lg font-bold text-slate-900 dark:text-white">
             Reportes Operativos y Auditoría

@@ -1,10 +1,12 @@
 "use client";
 
 import React, { useState, useRef, useEffect } from "react";
-import { Bell, LogOut, Menu, Search, FileText, CheckCircle2, Wallet, Check, Trash2 } from "lucide-react";
+import { Bell, LogOut, Menu, FileText, CheckCircle2, Wallet, Check, Trash2 } from "lucide-react";
 import { logoutAction } from "@/app/actions/auth";
 import PushNotificationControl from "@/components/notifications/PushNotificationControl";
+import { screenTitle } from "@/lib/navigation";
 import type { AuthUser } from "@/lib/types/erp";
+import { usePathname } from "next/navigation";
 
 interface NavbarProps {
   user: AuthUser;
@@ -20,58 +22,39 @@ interface NotificationItem {
   type: "invoice" | "payment" | "cash";
 }
 
+const DEFAULT_NOTIFICATIONS: NotificationItem[] = [
+  {
+    id: 1,
+    title: "Nueva factura borrador",
+    description: "Se creó el borrador FV-2026-0004 por CLP 150.000.",
+    time: "Hace 5 min",
+    unread: true,
+    type: "invoice",
+  },
+  {
+    id: 2,
+    title: "Pago registrado",
+    description: "FV-2026-0002 marcada como pagada (CLP 450.000).",
+    time: "Hace 1 hora",
+    unread: true,
+    type: "payment",
+  },
+  {
+    id: 3,
+    title: "Arqueo de caja",
+    description: "Cierre de caja de sucursal Centro completado.",
+    time: "Hace 3 horas",
+    unread: false,
+    type: "cash",
+  },
+];
+
 export default function Navbar({ user, onMenuClick }: NavbarProps) {
+  const pathname = usePathname();
   const [showNotifications, setShowNotifications] = useState(false);
-  const DEFAULT_NOTIFICATIONS: NotificationItem[] = [
-    {
-      id: 1,
-      title: "Nueva factura borrador",
-      description: "Se creó el borrador FV-2026-0004 por CLP 150.000.",
-      time: "Hace 5 min",
-      unread: true,
-      type: "invoice",
-    },
-    {
-      id: 2,
-      title: "Pago registrado",
-      description: "FV-2026-0002 marcada como pagada (CLP 450.000).",
-      time: "Hace 1 hora",
-      unread: true,
-      type: "payment",
-    },
-    {
-      id: 3,
-      title: "Arqueo de caja",
-      description: "Cierre de caja de sucursal Centro completado.",
-      time: "Hace 3 horas",
-      unread: false,
-      type: "cash",
-    },
-  ];
 
-  const [notifications, setNotifications] = useState<NotificationItem[]>([]);
-  const [isLoaded, setIsLoaded] = useState(false);
+  const [notifications, setNotifications] = useState<NotificationItem[]>(DEFAULT_NOTIFICATIONS);
   const dropdownRef = useRef<HTMLDivElement>(null);
-  
-  useEffect(() => {
-    const saved = localStorage.getItem("erp_notifications_state");
-    if (saved) {
-      try {
-        setNotifications(JSON.parse(saved));
-      } catch (e) {
-        setNotifications(DEFAULT_NOTIFICATIONS);
-      }
-    } else {
-      setNotifications(DEFAULT_NOTIFICATIONS);
-    }
-    setIsLoaded(true);
-  }, []);
-
-  useEffect(() => {
-    if (isLoaded) {
-      localStorage.setItem("erp_notifications_state", JSON.stringify(notifications));
-    }
-  }, [notifications, isLoaded]);
 
   const unreadCount = notifications.filter((n) => n.unread).length;
 
@@ -85,154 +68,130 @@ export default function Navbar({ user, onMenuClick }: NavbarProps) {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  const markAllAsRead = () => {
-    setNotifications(notifications.map((n) => ({ ...n, unread: false })));
-  };
-
-  const clearReadNotifications = () => {
-    setNotifications(notifications.filter((n) => n.unread));
-  };
-
-  const deleteNotification = (id: number) => {
+  const markAllAsRead = () => setNotifications(notifications.map((n) => ({ ...n, unread: false })));
+  const clearReadNotifications = () => setNotifications(notifications.filter((n) => n.unread));
+  const deleteNotification = (id: number) =>
     setNotifications(notifications.filter((n) => n.id !== id));
-  };
+  const toggleRead = (id: number) =>
+    setNotifications(notifications.map((n) => (n.id === id ? { ...n, unread: !n.unread } : n)));
 
-  const toggleRead = (id: number) => {
-    setNotifications(
-      notifications.map((n) => (n.id === id ? { ...n, unread: !n.unread } : n))
-    );
-  };
-
-  const getIcon = (type: string) => {
+  const typeIcon = (type: string) => {
     switch (type) {
       case "invoice":
-        return <FileText className="w-4 h-4 text-amber-500" />;
+        return <FileText className="h-4 w-4 text-muted" aria-hidden="true" />;
       case "payment":
-        return <CheckCircle2 className="w-4 h-4 text-emerald-500" />;
+        return <CheckCircle2 className="h-4 w-4 text-muted" aria-hidden="true" />;
       case "cash":
-        return <Wallet className="w-4 h-4 text-blue-500" />;
+        return <Wallet className="h-4 w-4 text-muted" aria-hidden="true" />;
       default:
-        return <Bell className="w-4 h-4 text-slate-500" />;
+        return <Bell className="h-4 w-4 text-muted" aria-hidden="true" />;
     }
   };
 
   return (
-    <header className="h-16 flex items-center justify-between px-6 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 shrink-0 relative z-30">
-      <div className="flex items-center gap-4">
-        <button
-          type="button"
-          onClick={onMenuClick}
-          aria-label="Abrir menu lateral"
-          className="rounded-xl p-2 text-slate-600 transition-colors hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800 md:hidden"
-        >
-          <Menu className="w-6 h-6" />
-        </button>
-        <div>
-          <h1 className="text-xl font-bold bg-gradient-to-r from-slate-900 to-slate-700 dark:from-white dark:to-slate-300 bg-clip-text text-transparent">
-            Panel de Control
-          </h1>
-          <p className="text-xs text-slate-500 font-medium">{user.tenantName}</p>
-        </div>
+    <header className="flex h-12 shrink-0 items-center gap-2 px-3 md:px-4">
+      <button
+        type="button"
+        onClick={onMenuClick}
+        aria-label="Abrir menú lateral"
+        className="flex h-9 w-9 items-center justify-center rounded-control text-muted transition-colors hover:bg-slate-900/[0.06] hover:text-ink md:hidden"
+      >
+        <Menu className="h-4 w-4" />
+      </button>
+
+      <div className="min-w-0 pl-1">
+        <h1 className="truncate text-[16px] font-semibold leading-tight text-ink">
+          {screenTitle(pathname)}
+        </h1>
+        <p className="truncate text-[11px] leading-tight text-muted">
+          {user.tenantName} · {user.fullName}
+        </p>
       </div>
 
-      <div className="flex items-center gap-4">
-        <div className="relative hidden sm:block">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 w-4 h-4" />
-          <input
-            className="pl-10 pr-4 py-2 bg-slate-100 dark:bg-slate-800 border-none rounded-lg focus:ring-2 focus:ring-primary text-sm w-64 outline-none transition-all focus:bg-white focus:shadow-md dark:focus:bg-slate-950"
-            placeholder="Buscar..."
-            type="text"
-          />
-        </div>
-
-        {/* Notifications Dropdown Container */}
+      <div className="ml-auto flex items-center gap-1">
         <div className="relative" ref={dropdownRef}>
           <button
+            type="button"
             onClick={() => setShowNotifications(!showNotifications)}
-            aria-label="Notificaciones"
-            className={`relative p-2 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full transition-all duration-200 ${
-              showNotifications ? "bg-slate-100 dark:bg-slate-800 text-primary dark:text-white" : ""
-            }`}
+            aria-label={`Notificaciones${unreadCount > 0 ? `, ${unreadCount} sin leer` : ""}`}
+            aria-expanded={showNotifications}
+            className={`relative flex min-w-11 min-h-11 items-center justify-center rounded-control transition-colors hover:bg-slate-900/[0.06] ${showNotifications ? "bg-slate-900/[0.06] text-ink" : "text-muted"}`}
           >
-            <Bell className="w-6 h-6" />
+            <Bell className="h-[18px] w-[18px]" />
             {unreadCount > 0 && (
-              <span className="absolute top-1.5 right-1.5 min-w-[16px] h-4 px-1 flex items-center justify-center bg-rose-500 text-white text-[9px] font-bold rounded-full border border-white dark:border-slate-900 animate-pulse">
+              <span className="absolute right-1.5 top-1.5 flex h-4 min-w-4 items-center justify-center rounded-chip bg-[var(--color-negative)] px-1 text-xs font-semibold text-white">
                 {unreadCount}
               </span>
             )}
           </button>
 
           {showNotifications && (
-            <div className="absolute right-0 mt-2 w-80 md:w-96 rounded-2xl border border-slate-100 bg-white shadow-2xl dark:border-slate-800 dark:bg-slate-900 overflow-hidden transform origin-top-right transition-all z-50">
-              <div className="flex items-center justify-between px-4 py-3 bg-slate-50 dark:bg-slate-950 border-b border-slate-100 dark:border-slate-800">
-                <span className="text-sm font-bold text-slate-800 dark:text-slate-200">Notificaciones</span>
+            <div className="absolute right-0 z-50 mt-1.5 w-80 overflow-hidden rounded-card border border-border bg-white shadow-[0_8px_24px_rgba(28,21,18,0.12)] md:w-96">
+              <div className="flex items-center justify-between border-b border-rule px-4 py-2.5">
+                <span className="text-[13px] font-semibold text-ink">Notificaciones</span>
                 <div className="flex items-center gap-3">
                   {unreadCount > 0 && (
                     <button
+                      type="button"
                       onClick={markAllAsRead}
-                      className="text-xs font-semibold text-primary hover:text-primary-dark transition-colors flex items-center gap-1"
+                      className="flex items-center gap-1 text-[12px] font-medium text-muted transition-colors hover:text-ink"
                     >
-                      <Check className="w-3.5 h-3.5" /> Marcar todas
+                      <Check className="h-3.5 w-3.5" /> Marcar todas
                     </button>
                   )}
                   {notifications.some((n) => !n.unread) && (
                     <button
+                      type="button"
                       onClick={clearReadNotifications}
-                      className="text-xs font-semibold text-rose-600 hover:text-rose-700 transition-colors flex items-center gap-1"
+                      className="flex items-center gap-1 text-[12px] font-medium text-muted transition-colors hover:text-ink"
                     >
-                      <Trash2 className="w-3.5 h-3.5" /> Eliminar leídas
+                      <Trash2 className="h-3.5 w-3.5" /> Eliminar leídas
                     </button>
                   )}
                 </div>
               </div>
-              <div className="max-h-[300px] overflow-y-auto divide-y divide-slate-100 dark:divide-slate-800">
+              <div className="max-h-[320px] overflow-y-auto">
                 {notifications.length === 0 ? (
-                  <div className="py-8 px-4 text-center text-slate-500 text-sm">
-                    No tenés notificaciones pendientes.
-                  </div>
+                  <p className="px-4 py-8 text-center text-[13px] text-muted">
+                    Sin notificaciones pendientes.
+                  </p>
                 ) : (
                   notifications.map((notification) => (
                     <div
                       key={notification.id}
-                      onClick={() => toggleRead(notification.id)}
-                      className={`group flex gap-3 p-4 hover:bg-slate-50 dark:hover:bg-slate-800/50 cursor-pointer transition-colors relative ${
-                        notification.unread ? "bg-slate-50/50 dark:bg-slate-800/20" : ""
-                      }`}
+                      className="group relative flex gap-3 border-b border-rule px-4 py-3 transition-colors last:border-b-0 hover:bg-slate-50"
                     >
-                      <div className="mt-0.5 w-7 h-7 flex items-center justify-center rounded-lg bg-slate-100 dark:bg-slate-800 shrink-0">
-                        {getIcon(notification.type)}
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <div className="flex items-center justify-between gap-2">
-                          <p className={`text-xs font-semibold truncate ${
-                            notification.unread ? "text-slate-900 dark:text-white" : "text-slate-500"
-                          }`}>
+                      <span className="mt-0.5 shrink-0">{typeIcon(notification.type)}</span>
+                      <div className="min-w-0 flex-1">
+                        <div className="flex items-baseline justify-between gap-2">
+                          <p
+                            className={`truncate text-[13px] ${
+                              notification.unread ? "font-medium text-ink" : "text-muted"
+                            }`}
+                          >
                             {notification.title}
                           </p>
-                          <span className="text-[10px] text-slate-400 shrink-0 font-medium">{notification.time}</span>
+                          <span className="shrink-0 text-[11px] text-muted">{notification.time}</span>
                         </div>
-                        <div className="flex items-start justify-between gap-2 mt-0.5">
-                          <p className={`text-xs line-clamp-2 flex-1 ${
-                            notification.unread ? "text-slate-700 dark:text-slate-300" : "text-slate-500 dark:text-slate-400"
-                          }`}>
-                            {notification.description}
-                          </p>
-                          <div className="flex items-center gap-1.5 shrink-0 self-end">
-                            {notification.unread && (
-                              <div className="w-1.5 h-1.5 bg-rose-500 rounded-full group-hover:hidden transition-all"></div>
-                            )}
-                            <button
-                              type="button"
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                deleteNotification(notification.id);
-                              }}
-                              className="opacity-60 md:opacity-0 group-hover:opacity-100 text-slate-400 hover:text-rose-500 transition-all min-w-11 min-h-11 flex items-center justify-center rounded hover:bg-slate-100 dark:hover:bg-slate-800 -mr-2"
-                              title="Eliminar notificación"
-                            >
-                              <Trash2 className="w-4 h-4" />
-                            </button>
-                          </div>
+                        <p className="mt-0.5 line-clamp-2 text-[12px] text-muted">
+                          {notification.description}
+                        </p>
+                        <div className="mt-1.5 flex items-center gap-2">
+                          <button
+                            type="button"
+                            onClick={() => toggleRead(notification.id)}
+                            className="text-[11px] font-medium text-muted transition-colors hover:text-ink"
+                          >
+                            {notification.unread ? "Marcar leída" : "Marcar no leída"}
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => deleteNotification(notification.id)}
+                            aria-label="Eliminar notificación"
+                            className="text-[11px] text-muted transition-colors hover:text-ink"
+                          >
+                            Eliminar
+                          </button>
                         </div>
                       </div>
                     </div>
@@ -244,9 +203,11 @@ export default function Navbar({ user, onMenuClick }: NavbarProps) {
           )}
         </div>
 
+        <span aria-hidden="true" className="mx-1 h-5 w-px bg-edge" />
+
         <form action={logoutAction}>
-          <button className="inline-flex items-center gap-2 rounded-xl border border-slate-200 px-3 py-2 text-sm font-semibold text-slate-600 transition-colors hover:bg-slate-50 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-800">
-            <LogOut className="h-4 w-4" />
+          <button className="flex h-9 items-center gap-2 rounded-control px-2.5 text-[13px] font-medium text-muted transition-colors hover:bg-slate-900/[0.06] hover:text-ink">
+            <LogOut className="h-4 w-4" aria-hidden="true" />
             Salir
           </button>
         </form>
@@ -254,5 +215,3 @@ export default function Navbar({ user, onMenuClick }: NavbarProps) {
     </header>
   );
 }
-
-

@@ -104,7 +104,7 @@ export default function LivingLandingClient() {
           {/* Top Live Telemetry Badge */}
           <div className="flex items-center gap-3 mb-8 login-fade-1">
             <div className="login-dot-live" />
-            <span className="text-xs tracking-wider uppercase font-semibold text-primary/90 bg-primary/10 border border-primary/20 px-3 py-1 rounded-full backdrop-blur-md">
+            <span className="text-xs font-semibold text-primary/90 bg-primary/10 border border-primary/20 px-3 py-1 rounded-full backdrop-blur-md">
               Ecosistema Operativo • Saboré Insumos
             </span>
           </div>
@@ -123,7 +123,7 @@ export default function LivingLandingClient() {
               />
             </div>
 
-            <p className="login-fade-1 text-primary text-xs font-black uppercase tracking-[0.25em] mb-4 flex items-center gap-2">
+            <p className="login-fade-1 text-primary text-xs font-black tracking-[0.25em] mb-4 flex items-center gap-2">
               <Zap className="w-3.5 h-3.5 text-primary" />
               Insumos & Suministros Gastronómicos
             </p>
@@ -269,7 +269,7 @@ export default function LivingLandingClient() {
                   <h2 className="text-white text-xl font-bold">
                     {loginMode === "client" ? "Acceso a Clientes" : "Acceso Administrativo ERP"}
                   </h2>
-                  <span className="text-[11px] text-primary/80 font-semibold uppercase tracking-wider">
+                  <span className="text-[11px] text-primary/80 font-semibold">
                     {loginMode === "client" ? "Catálogo & Pedidos" : "Gestión & Inventario"}
                   </span>
                 </div>

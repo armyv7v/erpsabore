@@ -102,11 +102,11 @@ export default function SettingsClient({ initialDetails }: Props) {
 
 
   return (
-    <div className="max-w-4xl mx-auto space-y-6">
+    <div className="mx-auto max-w-4xl space-y-6 px-4 py-5 md:px-6">
       {/* Header */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight">Configuración de la Empresa</h1>
+          <h2 className="text-2xl font-bold tracking-tight">Configuración de la Empresa</h2>
           <p className="text-sm text-slate-500 dark:text-slate-400">
             Edite los datos comerciales y tributarios que aparecerán en la firma de sus DTEs y en las cabeceras de boletas y facturas.
           </p>
@@ -114,7 +114,7 @@ export default function SettingsClient({ initialDetails }: Props) {
         <button
           onClick={handleResetToDefault}
           type="button"
-          className="flex items-center gap-1.5 px-3 py-1.5 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 rounded-xl text-xs font-semibold transition-colors cursor-pointer"
+          className="flex items-center gap-1.5 rounded-control border border-control bg-white px-3 py-1.5 text-xs font-semibold text-slate-700 transition-colors hover:bg-slate-50"
         >
           <RefreshCw className="w-3.5 h-3.5" />
           <span>Datos SABORÉ SPA</span>
@@ -145,18 +145,18 @@ export default function SettingsClient({ initialDetails }: Props) {
       )}
 
       {/* Form Card */}
-      <form onSubmit={handleSubmit} className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl overflow-hidden shadow-sm">
+      <form onSubmit={handleSubmit} className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl overflow-hidden">
         <div className="p-6 md:p-8 space-y-8">
           
           {/* Seccion 1: Identificación Tributaria */}
           <section className="space-y-4">
-            <h2 className="text-xs font-bold text-slate-400 uppercase tracking-widest flex items-center gap-2">
+            <h2 className="text-xs font-bold text-slate-400 flex items-center gap-2">
               <Building2 className="w-4 h-4" />
               <span>Identificación Tributaria</span>
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-2">
+                <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-2">
                   RUT de la Empresa
                 </label>
                 <input
@@ -170,7 +170,7 @@ export default function SettingsClient({ initialDetails }: Props) {
                 />
               </div>
               <div>
-                <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-2">
+                <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-2">
                   Razón Social
                 </label>
                 <input
@@ -186,7 +186,7 @@ export default function SettingsClient({ initialDetails }: Props) {
             </div>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div className="md:col-span-2">
-                <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-2">
+                <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-2">
                   Giro Comercial
                 </label>
                 <input
@@ -200,7 +200,7 @@ export default function SettingsClient({ initialDetails }: Props) {
                 />
               </div>
               <div>
-                <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-2">
+                <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-2">
                   Código Acteco
                 </label>
                 <input
@@ -218,12 +218,12 @@ export default function SettingsClient({ initialDetails }: Props) {
 
           {/* Seccion 2: Ubicación Física */}
           <section className="space-y-4 pt-6 border-t border-slate-100 dark:border-slate-800">
-            <h2 className="text-xs font-bold text-slate-400 uppercase tracking-widest">
+            <h2 className="text-xs font-bold text-slate-400">
               Ubicación Casa Matriz
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div className="md:col-span-2">
-                <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-2">
+                <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-2">
                   Dirección Comercial
                 </label>
                 <input
@@ -238,7 +238,7 @@ export default function SettingsClient({ initialDetails }: Props) {
               </div>
               <div className="grid grid-cols-2 gap-3 md:col-span-1">
                 <div>
-                  <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-2">
+                  <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-2">
                     Ciudad / Región
                   </label>
                   <select
@@ -257,7 +257,7 @@ export default function SettingsClient({ initialDetails }: Props) {
                   </select>
                 </div>
                 <div>
-                  <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-2">
+                  <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-2">
                     Comuna
                   </label>
                   <select
@@ -282,12 +282,12 @@ export default function SettingsClient({ initialDetails }: Props) {
 
           {/* Seccion 3: Información de Contacto */}
           <section className="space-y-4 pt-6 border-t border-slate-100 dark:border-slate-800">
-            <h2 className="text-xs font-bold text-slate-400 uppercase tracking-widest">
+            <h2 className="text-xs font-bold text-slate-400">
               Contacto Comercial
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-2">
+                <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-2">
                   Teléfono de Contacto (Opcional)
                 </label>
                 <input
@@ -300,7 +300,7 @@ export default function SettingsClient({ initialDetails }: Props) {
                 />
               </div>
               <div>
-                <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-2">
+                <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-2">
                   Email de Contacto (Opcional)
                 </label>
                 <input
@@ -322,7 +322,7 @@ export default function SettingsClient({ initialDetails }: Props) {
           <button
             type="submit"
             disabled={isPending}
-            className="bg-primary hover:bg-primary/90 disabled:opacity-50 text-white px-6 py-2.5 rounded-xl text-sm font-semibold flex items-center gap-2 ml-auto transition-colors cursor-pointer shadow-sm"
+            className="bg-primary hover:bg-primary/90 disabled:opacity-50 text-white px-6 py-2.5 rounded-xl text-sm font-semibold flex items-center gap-2 ml-auto transition-colors cursor-pointer"
           >
             {isPending ? (
               <Loader2 className="w-4 h-4 animate-spin" />

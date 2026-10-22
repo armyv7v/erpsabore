@@ -90,22 +90,22 @@ export default function TicketReceipt({ sale, customer, items, dteType, onClose 
             
             {/* Cabecera de la empresa */}
             <div className="text-center space-y-1 pb-3 border-b border-dashed border-slate-400">
-              <h2 className="font-extrabold text-base tracking-wider uppercase">SABORÉ SPA</h2>
+              <h2 className="font-extrabold text-base">SABORÉ SPA</h2>
               <p className="text-xs">R.U.T.: 77.947.538-7</p>
-              <p className="text-[10px] leading-tight">Venta al por menor de alimentos y almacenes</p>
-              <p className="text-[10px]">Av. Providencia 1234, Providencia</p>
-              <p className="text-[10px]">Santiago - Chile</p>
+              <p className="text-xs leading-tight">Venta al por menor de alimentos y almacenes</p>
+              <p className="text-xs">Av. Providencia 1234, Providencia</p>
+              <p className="text-xs">Santiago - Chile</p>
             </div>
 
             {/* Datos Tributarios */}
             <div className="text-center py-3 space-y-1 border-b border-dashed border-slate-400">
               <h3 className="font-bold text-xs uppercase underline">{getDteName()}</h3>
               <p className="font-bold text-sm">FOLIO: {sale.folio}</p>
-              <p className="text-[10px]">S.I.I. - SANTIAGO ORIENTE</p>
+              <p className="text-xs">S.I.I. - SANTIAGO ORIENTE</p>
             </div>
 
             {/* Datos de la venta */}
-            <div className="py-2 text-[10px] space-y-1 border-b border-dashed border-slate-400">
+            <div className="py-2 text-xs space-y-1 border-b border-dashed border-slate-400">
               <p><strong>Fecha:</strong> {today}</p>
               <p><strong>Cajero:</strong> Terminal POS #01</p>
               {customer.rut !== "66.666.666-6" && (
@@ -118,7 +118,7 @@ export default function TicketReceipt({ sale, customer, items, dteType, onClose 
             </div>
 
             {/* Listado de items */}
-            <div className="py-3 text-[10px] space-y-1">
+            <div className="py-3 text-xs space-y-1">
               <div className="grid grid-cols-[1fr_30px_35px_50px] font-bold border-b border-slate-350 pb-1">
                 <span>DESCRIPCION</span>
                 <span className="text-center">CANT</span>
@@ -153,16 +153,16 @@ export default function TicketReceipt({ sale, customer, items, dteType, onClose 
                 <span>${sale.total.toLocaleString("es-CL")}</span>
               </div>
               
-              <div className="flex justify-between text-[10px] pt-1.5">
+              <div className="flex justify-between text-xs pt-1.5">
                 <span>Método Pago:</span>
                 <span className="uppercase">{sale.paymentMethod === "cash" ? "Efectivo" : sale.paymentMethod === "debit" ? "Tarjeta Débito" : sale.paymentMethod === "credit" ? "Tarjeta Crédito" : "Transferencia"}</span>
               </div>
-              <div className="flex justify-between text-[10px]">
+              <div className="flex justify-between text-xs">
                 <span>Monto Pagado:</span>
                 <span>${(sale.total + sale.change).toLocaleString("es-CL")}</span>
               </div>
               {sale.change > 0 && (
-                <div className="flex justify-between text-[10px] font-bold text-slate-800">
+                <div className="flex justify-between text-xs font-bold text-slate-800">
                   <span>Su Vuelto:</span>
                   <span>${sale.change.toLocaleString("es-CL")}</span>
                 </div>
@@ -185,7 +185,7 @@ export default function TicketReceipt({ sale, customer, items, dteType, onClose 
 
             {/* Mensaje de cortesía */}
             <div className="text-center pt-3 border-t border-dashed border-slate-400">
-              <p className="text-[10px] font-bold">¡Gracias por tu compra!</p>
+              <p className="text-xs font-bold">¡Gracias por tu compra!</p>
               <p className="text-[8px] text-slate-500">Sabore ERP - Solución POS Inteligente</p>
             </div>
 
@@ -203,7 +203,7 @@ export default function TicketReceipt({ sale, customer, items, dteType, onClose 
           
           <button
             onClick={handlePrint}
-            className="flex-1 flex items-center justify-center gap-2 rounded-xl bg-primary py-2.5 text-xs font-bold text-white hover:bg-primary/95 transition-all shadow-sm"
+            className="flex-1 flex items-center justify-center gap-2 rounded-xl bg-primary py-2.5 text-xs font-bold text-white hover:bg-primary/95 transition-all"
           >
             <Printer className="w-4 h-4" />
             <span>Imprimir Ticket</span>

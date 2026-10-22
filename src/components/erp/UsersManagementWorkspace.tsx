@@ -113,7 +113,7 @@ export default function UsersManagementWorkspace({ users }: { users: ManagedUser
       )}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight">Gestión de Usuarios</h1>
+          <h2 className="text-2xl font-bold tracking-tight">Gestión de Usuarios</h2>
           <p className="text-sm text-slate-500 dark:text-slate-400">Control real de accesos, roles y estado operativo</p>
         </div>
         <div className="flex items-center gap-2 w-full sm:w-auto">
@@ -141,16 +141,16 @@ export default function UsersManagementWorkspace({ users }: { users: ManagedUser
       ) : null}
 
       <div className="grid grid-cols-3 gap-3 sm:gap-4">
-        <div className="flex flex-col gap-1 rounded-xl p-4 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm">
-          <p className="text-slate-500 dark:text-slate-400 text-xs font-medium uppercase tracking-wider">Total</p>
+        <div className="flex flex-col gap-1 rounded-xl p-4 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800">
+          <p className="text-slate-500 dark:text-slate-400 text-xs font-medium">Total</p>
           <p className="text-slate-900 dark:text-white text-2xl font-bold leading-tight">{totalUsers}</p>
         </div>
-        <div className="flex flex-col gap-1 rounded-xl p-4 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm border-l-4 border-l-green-500">
-          <p className="text-slate-500 dark:text-slate-400 text-xs font-medium uppercase tracking-wider">Activos</p>
+        <div className="flex flex-col gap-1 rounded-xl p-4 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 border-l-4 border-l-green-500">
+          <p className="text-slate-500 dark:text-slate-400 text-xs font-medium">Activos</p>
           <p className="text-slate-900 dark:text-white text-2xl font-bold leading-tight">{activeUsers}</p>
         </div>
-        <div className="flex flex-col gap-1 rounded-xl p-4 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm border-l-4 border-l-slate-400">
-          <p className="text-slate-500 dark:text-slate-400 text-xs font-medium uppercase tracking-wider">Inactivos</p>
+        <div className="flex flex-col gap-1 rounded-xl p-4 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 border-l-4 border-l-slate-400">
+          <p className="text-slate-500 dark:text-slate-400 text-xs font-medium">Inactivos</p>
           <p className="text-slate-900 dark:text-white text-2xl font-bold leading-tight">{inactiveUsers}</p>
         </div>
       </div>
@@ -163,7 +163,7 @@ export default function UsersManagementWorkspace({ users }: { users: ManagedUser
             setCreateState(initialState);
             setIsCreateModalOpen(true);
           }}
-          className="flex items-center gap-2 bg-primary hover:bg-primary/90 text-white px-4 py-2 rounded-xl font-semibold text-sm transition-colors shadow-sm"
+          className="flex items-center gap-2 bg-primary hover:bg-primary/90 text-white px-4 py-2 rounded-xl font-semibold text-sm transition-colors"
         >
           <UserPlus className="w-4 h-4" />
           <span className="hidden sm:inline">Agregar Usuario</span>
@@ -173,7 +173,7 @@ export default function UsersManagementWorkspace({ users }: { users: ManagedUser
 
       <div className="flex flex-col gap-3 pb-20">
         {filteredUsers.map((user) => (
-          <div key={user.id} className={`flex items-center gap-4 bg-white dark:bg-slate-900 p-3 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm transition-all hover:shadow-md ${user.status === "inactive" ? "opacity-70" : ""}`}>
+          <div key={user.id} className={`flex items-center gap-4 bg-white dark:bg-slate-900 p-3 rounded-xl border border-slate-200 dark:border-slate-800 transition-all hover:shadow-md ${user.status === "inactive" ? "opacity-70" : ""}`}>
             <div className="relative shrink-0">
               <div className={`flex size-12 items-center justify-center rounded-full font-bold ${user.role === "admin" ? "bg-primary/10 text-primary" : "bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-300"}`}>
                 {user.fullName.slice(0, 2).toUpperCase()}
@@ -186,7 +186,7 @@ export default function UsersManagementWorkspace({ users }: { users: ManagedUser
                 <p className={`text-slate-900 dark:text-white text-sm sm:text-base font-semibold leading-none truncate ${user.status === "inactive" ? "line-through" : ""}`}>
                   {user.fullName}
                 </p>
-                <span className={`text-[10px] px-1.5 py-0.5 rounded font-bold uppercase shrink-0 ${getRoleStyles(user.role)}`}>
+                <span className={`text-xs px-1.5 py-0.5 rounded font-bold uppercase shrink-0 ${getRoleStyles(user.role)}`}>
                   {roleLabels[user.role]}
                 </span>
               </div>
@@ -333,7 +333,7 @@ export default function UsersManagementWorkspace({ users }: { users: ManagedUser
                 <button type="button" onClick={() => setIsCreateModalOpen(false)} className="flex-1 rounded-xl border border-slate-200 px-4 py-2.5 font-bold transition-colors hover:bg-slate-50 dark:border-slate-700 dark:hover:bg-slate-800">
                   Cancelar
                 </button>
-                <button type="submit" disabled={isCreating} className="flex-1 rounded-xl bg-primary px-4 py-2.5 font-bold text-white transition-colors shadow-sm hover:bg-primary/90 disabled:opacity-70">
+                <button type="submit" disabled={isCreating} className="flex-1 rounded-xl bg-primary px-4 py-2.5 font-bold text-white transition-colors hover:bg-primary/90 disabled:opacity-70">
                   {isCreating ? "Creando..." : "Crear usuario"}
                 </button>
               </div>
@@ -432,7 +432,7 @@ export default function UsersManagementWorkspace({ users }: { users: ManagedUser
                 <button
                   type="submit"
                   disabled={isUpdating}
-                  className="flex-1 rounded-xl bg-primary px-4 py-2.5 font-bold text-white transition-colors shadow-sm hover:bg-primary/90 disabled:opacity-70"
+                  className="flex-1 rounded-xl bg-primary px-4 py-2.5 font-bold text-white transition-colors hover:bg-primary/90 disabled:opacity-70"
                 >
                   {isUpdating ? "Guardando..." : "Guardar cambios"}
                 </button>

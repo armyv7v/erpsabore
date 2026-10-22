@@ -192,7 +192,7 @@ describe("Fase 5.3 — teclado y foco (labels asociados, toggles expuestos)", ()
 
   it("sidebar mobile conserva nombre accesible y foco visible en cerrar", () => {
     const sidebar = src("src/components/layout/Sidebar.tsx");
-    expect(sidebar).toContain('aria-label="Cerrar menu lateral"');
+    expect(sidebar).toMatch(/aria-label="Cerrar men[úu] lateral"/);
     expect(sidebar).toContain("focus-visible:outline-primary");
   });
 
@@ -212,7 +212,7 @@ describe("Fase 5.3 — targets ≥44px (Fitts) en componentes tocados", () => {
 
   it("cerrar sidebar mobile con min-h/min-w 44px", () => {
     const sidebar = src("src/components/layout/Sidebar.tsx");
-    expect(sidebar).toMatch(/aria-label="Cerrar menu lateral"[\s\S]*?min-h-\[44px\] min-w-\[44px\]/);
+    expect(sidebar).toMatch(/aria-label="Cerrar men[úu] lateral"[\s\S]*?min-h-\[44px\] min-w-\[44px\]/);
   });
 
   it("QuotesWorkspace: 3 botones táctiles, un solo primario", () => {

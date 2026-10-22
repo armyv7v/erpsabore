@@ -321,7 +321,7 @@ export default function MovementsClient({ movements }: Props) {
       <body>
         <div class="header">
           <div>
-            <h1 class="title">Reporte de Flujo de Caja</h1>
+            <h2 class="title">Reporte de Flujo de Caja</h2>
             <div class="subtitle">ERP Sabore • Gestión de Finanzas</div>
           </div>
           <div style="text-align: right; font-size: 11px; color: #64748b;">
@@ -475,7 +475,7 @@ export default function MovementsClient({ movements }: Props) {
         {showAdvanced && (
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 p-4 bg-slate-50 dark:bg-slate-800/30 border border-slate-200 dark:border-slate-800 rounded-xl animate-in slide-in-from-top-2 duration-150">
             <div>
-              <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Método de Pago</label>
+              <label className="block text-xs font-bold text-slate-500 mb-1">Método de Pago</label>
               <select
                 value={methodFilter}
                 onChange={(e) => setMethodFilter(e.target.value)}
@@ -488,7 +488,7 @@ export default function MovementsClient({ movements }: Props) {
               </select>
             </div>
             <div>
-              <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Desde Fecha</label>
+              <label className="block text-xs font-bold text-slate-500 mb-1">Desde Fecha</label>
               <input
                 type="date"
                 value={startDate}
@@ -497,7 +497,7 @@ export default function MovementsClient({ movements }: Props) {
               />
             </div>
             <div>
-              <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Hasta Fecha</label>
+              <label className="block text-xs font-bold text-slate-500 mb-1">Hasta Fecha</label>
               <input
                 type="date"
                 value={endDate}
@@ -516,11 +516,11 @@ export default function MovementsClient({ movements }: Props) {
         </div>
       ) : (
         <div className="space-y-4">
-          <div className="overflow-hidden rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm bg-white dark:bg-slate-900">
+          <div className="overflow-hidden rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900">
             <div className="overflow-x-auto">
               <table className="w-full text-left border-collapse">
                 <thead>
-                  <tr className="bg-slate-50 dark:bg-slate-800/50 text-slate-500 dark:text-slate-400 text-xs font-bold uppercase tracking-wider">
+                  <tr className="bg-slate-50 dark:bg-slate-800/50 text-slate-500 dark:text-slate-400 text-xs font-bold">
                     <th className="px-4 py-3 border-b border-slate-200 dark:border-slate-800">Fecha</th>
                     <th className="px-4 py-3 border-b border-slate-200 dark:border-slate-800">Tipo</th>
                     <th className="px-4 py-3 border-b border-slate-200 dark:border-slate-800">Referencia</th>

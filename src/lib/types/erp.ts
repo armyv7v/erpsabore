@@ -193,11 +193,10 @@ export interface SalesSummary {
 
 export interface DashboardMetrics {
   monthlySales: number;
+  collectedTotal: number;
+  collectionRate: number;
   pendingInvoicesCount: number;
-  grossMarginPercentage: number;
   stockAlertCount: number;
-  revenueTrendTotal: number;
-  revenueTrendGrowth: string;
   latestInvoices: InvoiceRecord[];
 }
 

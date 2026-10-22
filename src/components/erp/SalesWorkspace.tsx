@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
-import { AlertTriangle, CheckCircle2, Clock, MoreVertical, Plus, Search, X, FileText, ExternalLink, Eye } from "lucide-react";
+import { MoreVertical, Plus, Search, X, FileText, ExternalLink, Eye } from "lucide-react";
 import { submitDraftInvoiceAction } from "@/app/actions/invoices";
 import { formatInvoiceStatus } from "@/lib/formatters/status";
 import type { ActionState, CustomerRecord, InvoiceRecord, SalesSummary } from "@/lib/types/erp";
@@ -279,48 +279,39 @@ export default function SalesWorkspace({
         <div className="fixed inset-0 z-[9998]" onClick={() => setActiveDropdownId(null)} />
       )}
       <div className="mb-6">
-        <h1 className="text-2xl font-bold tracking-tight">Ventas y Facturación</h1>
+        <h2 className="text-2xl font-bold tracking-tight">Ventas y Facturación</h2>
         <p className="text-sm text-slate-500 dark:text-slate-400">
           Flujo comercial real conectado con clientes, facturas y caja.
         </p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <div className="flex flex-col gap-2 rounded-xl p-6 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm">
-          <div className="flex items-center justify-between">
-            <p className="text-slate-500 dark:text-slate-400 text-sm font-medium">Total Cobrado</p>
-            <CheckCircle2 className="text-green-500 w-5 h-5" />
-          </div>
-          <p className="text-slate-900 dark:text-slate-100 tracking-tight text-2xl font-bold">
-            \${summary.totalPaid.toLocaleString("es-CL")}
+        <div className="flex flex-col gap-2 rounded-card p-5 bg-white border border-border">
+          <p className="text-[13px] text-muted">Total cobrado</p>
+          <p className="text-[24px] font-normal leading-7 tabular-nums text-ink">
+            ${summary.totalPaid.toLocaleString("es-CL")}
           </p>
-          <p className="text-[10px] text-green-500 font-bold uppercase tracking-wider">
+          <p className="text-[12px] text-muted">
             {summary.paidCount} facturas pagadas
           </p>
         </div>
 
-        <div className="flex flex-col gap-2 rounded-xl p-6 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm">
-          <div className="flex items-center justify-between">
-            <p className="text-slate-500 dark:text-slate-400 text-sm font-medium">Pendiente</p>
-            <Clock className="text-amber-500 w-5 h-5" />
-          </div>
-          <p className="text-slate-900 dark:text-slate-100 tracking-tight text-2xl font-bold">
-            \${summary.totalPending.toLocaleString("es-CL")}
+        <div className="flex flex-col gap-2 rounded-card p-5 bg-white border border-border">
+          <p className="text-[13px] text-muted">Pendiente</p>
+          <p className="text-[24px] font-normal leading-7 tabular-nums text-ink">
+            ${summary.totalPending.toLocaleString("es-CL")}
           </p>
-          <p className="text-[10px] text-amber-500 font-bold uppercase tracking-wider">
+          <p className="text-[12px] text-muted">
             {summary.pendingCount} facturas en curso
           </p>
         </div>
 
-        <div className="flex flex-col gap-2 rounded-xl p-6 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm">
-          <div className="flex items-center justify-between">
-            <p className="text-slate-500 dark:text-slate-400 text-sm font-medium">Morosidad</p>
-            <AlertTriangle className="text-red-500 w-5 h-5" />
-          </div>
-          <p className="text-slate-900 dark:text-slate-100 tracking-tight text-2xl font-bold">
-            \${summary.totalOverdue.toLocaleString("es-CL")}
+        <div className="flex flex-col gap-2 rounded-card p-5 bg-white border border-border">
+          <p className="text-[13px] text-muted">Morosidad</p>
+          <p className="text-[24px] font-normal leading-7 tabular-nums text-ink">
+            ${summary.totalOverdue.toLocaleString("es-CL")}
           </p>
-          <p className="text-[10px] text-red-500 font-bold uppercase tracking-wider">
+          <p className="text-[12px] text-muted">
             {summary.overdueCount} facturas vencidas
           </p>
         </div>
@@ -347,7 +338,7 @@ export default function SalesWorkspace({
               setIsModalOpen(true);
               setFormState(initialState);
             }}
-            className="flex items-center justify-center gap-2 bg-primary hover:bg-primary/90 text-white px-4 py-2.5 rounded-xl font-bold transition-colors w-full sm:w-auto shrink-0 shadow-sm"
+            className="flex items-center justify-center gap-2 bg-primary hover:bg-primary/90 text-white px-4 py-2.5 rounded-xl font-bold transition-colors w-full sm:w-auto shrink-0"
           >
             <Plus className="w-5 h-5" />
             <span>Nueva Factura</span>
@@ -355,7 +346,7 @@ export default function SalesWorkspace({
         </div>
       </div>
 
-      <div className="flex gap-2 overflow-x-auto no-scrollbar pb-2">
+      <div className="flex flex-wrap gap-x-5 gap-y-1 border-b border-rule pb-2">
         {[
           { key: "all", label: "Todas" },
           { key: "paid", label: "Pagadas" },
@@ -365,13 +356,19 @@ export default function SalesWorkspace({
           <button
             key={tab.key}
             onClick={() => setActiveTab(tab.key)}
-            className={`flex h-9 shrink-0 items-center justify-center rounded-full px-4 text-sm font-medium transition-colors ${
+            className={`relative flex h-8 shrink-0 items-center text-[13px] transition-colors ${
               activeTab === tab.key
-                ? "bg-primary text-white"
-                : "bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-700"
+                ? "font-medium text-ink"
+                : "text-muted hover:text-ink"
             }`}
           >
             {tab.label}
+            {activeTab === tab.key ? (
+              <span
+                aria-hidden="true"
+                className="absolute inset-x-0 -bottom-[9px] h-0.5 rounded-full bg-[var(--color-primary-mark)]"
+              />
+            ) : null}
           </button>
         ))}
       </div>
@@ -380,7 +377,7 @@ export default function SalesWorkspace({
         <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse">
             <thead>
-              <tr className="bg-slate-50 dark:bg-slate-800/50 text-slate-500 dark:text-slate-400 text-xs font-bold uppercase tracking-wider">
+              <tr className="bg-slate-50 dark:bg-slate-800/50 text-slate-500 dark:text-slate-400 text-xs font-bold">
                 <th className="px-4 py-3 border-b border-slate-200 dark:border-slate-800">Factura</th>
                 <th className="px-4 py-3 border-b border-slate-200 dark:border-slate-800">Cliente</th>
                 <th className="px-4 py-3 border-b border-slate-200 dark:border-slate-800">Fechas</th>
@@ -412,8 +409,8 @@ export default function SalesWorkspace({
                       <p>Emisión: {invoice.issueDate}</p>
                       <p className="text-xs text-slate-500">Vence: {invoice.dueDate}</p>
                     </td>
-                    <td className="px-4 py-4 font-bold text-right">\${invoice.total.toLocaleString("es-CL")}</td>
-                    <td className="px-4 py-4 font-bold text-right">\${invoice.outstandingBalance.toLocaleString("es-CL")}</td>
+                    <td className="px-4 py-4 font-bold text-right">${invoice.total.toLocaleString("es-CL")}</td>
+                    <td className="px-4 py-4 font-bold text-right">${invoice.outstandingBalance.toLocaleString("es-CL")}</td>
                     <td className="px-4 py-4">
                       <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
                         invoice.status === "paid"
@@ -493,7 +490,7 @@ export default function SalesWorkspace({
 
       {/* Controles de Paginación Premium */}
       {pageCount > 1 && (
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl px-6 py-4 shadow-sm">
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl px-6 py-4">
           <div className="text-sm text-slate-500 dark:text-slate-400">
             Mostrando <span className="font-bold text-slate-850 dark:text-slate-200">{((page - 1) * pageSize) + 1}</span> a{" "}
             <span className="font-bold text-slate-850 dark:text-slate-200">{Math.min(page * pageSize, totalCount)}</span> de{" "}
@@ -530,7 +527,7 @@ export default function SalesWorkspace({
                     onClick={() => handlePageChange(p)}
                     className={`w-9 h-9 flex items-center justify-center text-sm font-bold rounded-xl transition-all ${
                       page === p
-                        ? "bg-primary text-white shadow-sm"
+                        ? "bg-primary text-white"
                         : "text-slate-650 dark:text-slate-350 hover:bg-slate-100 dark:hover:bg-slate-800"
                     }`}
                   >
@@ -833,7 +830,7 @@ export default function SalesWorkspace({
                   </button>
                   <button
                     type="submit"
-                    className="flex-1 rounded-xl bg-primary px-4 py-2.5 font-bold text-white transition-colors shadow-sm hover:bg-primary/90 disabled:opacity-70"
+                    className="flex-1 rounded-xl bg-primary px-4 py-2.5 font-bold text-white transition-colors hover:bg-primary/90 disabled:opacity-70"
                     disabled={isPending}
                   >
                     {isPending ? "Guardando..." : "Guardar Borrador"}
@@ -856,7 +853,7 @@ export default function SalesWorkspace({
             {/* Header */}
             <div className="flex items-center justify-between p-6 border-b border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/50">
               <div>
-                <span className="text-xs font-bold uppercase tracking-wider text-primary">Detalles del Documento</span>
+                <span className="text-xs font-bold text-primary">Detalles del Documento</span>
                 <h2 className="text-xl font-extrabold text-slate-900 dark:text-white mt-0.5">
                   Factura {selectedInvoice.number}
                 </h2>
@@ -874,8 +871,8 @@ export default function SalesWorkspace({
               {/* Status & Action Bar */}
               <div className="flex items-center justify-between p-4 rounded-xl bg-slate-50 border border-slate-100 dark:bg-slate-800/40 dark:border-slate-805">
                 <div>
-                  <p className="text-xs text-slate-500 uppercase font-bold tracking-wider">Estado de Pago</p>
-                  <span className={`inline-flex items-center mt-1 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wide ${
+                  <p className="text-xs text-slate-500 font-bold tracking-wider">Estado de Pago</p>
+                  <span className={`inline-flex items-center mt-1 px-3 py-1 rounded-full text-xs font-bold  tracking-wide ${
                     selectedInvoice.status === "paid"
                       ? "bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400"
                       : selectedInvoice.status === "overdue"
@@ -892,7 +889,7 @@ export default function SalesWorkspace({
                         router.push(`/facturacion?id=${selectedInvoice.id}`);
                         setSelectedInvoice(null);
                       }}
-                      className="flex items-center gap-2 bg-primary text-white text-xs font-bold px-4 py-2.5 rounded-xl hover:bg-primary/95 transition-colors shadow-sm"
+                      className="flex items-center gap-2 bg-primary text-white text-xs font-bold px-4 py-2.5 rounded-xl hover:bg-primary/95 transition-colors"
                     >
                       <FileText className="w-4 h-4" />
                       Gestionar Facturación
@@ -902,7 +899,7 @@ export default function SalesWorkspace({
                       href={selectedInvoice.dtePdfUrl || `/dte/pdf/${selectedInvoice.id}`}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex items-center gap-2 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-800 dark:text-white text-xs font-bold px-4 py-2.5 rounded-xl transition-colors border border-slate-200 dark:border-slate-700 shadow-sm"
+                      className="flex items-center gap-2 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-800 dark:text-white text-xs font-bold px-4 py-2.5 rounded-xl transition-colors border border-slate-200 dark:border-slate-700"
                     >
                       <ExternalLink className="w-4 h-4" />
                       Ver PDF DTE
@@ -914,7 +911,7 @@ export default function SalesWorkspace({
               {/* Informacion de Cliente y Facturacion */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 bg-white dark:bg-slate-900/40 p-4 rounded-xl border border-slate-150 dark:border-slate-800">
                 <div className="space-y-3">
-                  <h3 className="text-xs font-bold text-slate-500 uppercase tracking-wider">Cliente</h3>
+                  <h3 className="text-xs font-bold text-slate-500">Cliente</h3>
                   <div>
                     <p className="font-extrabold text-slate-900 dark:text-white">{selectedInvoice.customerName}</p>
                     <p className="text-sm text-slate-500 mt-0.5">RUT: {selectedInvoice.customerRut}</p>
@@ -922,7 +919,7 @@ export default function SalesWorkspace({
                 </div>
                 
                 <div className="space-y-3">
-                  <h3 className="text-xs font-bold text-slate-500 uppercase tracking-wider">Información de Fechas</h3>
+                  <h3 className="text-xs font-bold text-slate-500">Información de Fechas</h3>
                   <div className="grid grid-cols-2 gap-4">
                     <div>
                       <p className="text-xs text-slate-400">Fecha Emisión</p>
@@ -938,8 +935,8 @@ export default function SalesWorkspace({
 
               {/* Items Detail */}
               <div className="space-y-3">
-                <h3 className="text-xs font-bold text-slate-500 uppercase tracking-wider">Líneas de Detalle</h3>
-                <div className="border border-slate-200 dark:border-slate-800 rounded-xl overflow-hidden shadow-sm">
+                <h3 className="text-xs font-bold text-slate-500">Líneas de Detalle</h3>
+                <div className="border border-slate-200 dark:border-slate-800 rounded-xl overflow-hidden">
                   <table className="w-full text-left border-collapse">
                     <thead>
                       <tr className="bg-slate-50 dark:bg-slate-850 text-slate-600 dark:text-slate-400 text-xs font-bold uppercase">
@@ -974,7 +971,7 @@ export default function SalesWorkspace({
               {/* Totales y Observaciones */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4">
                 <div className="space-y-3">
-                  <h3 className="text-xs font-bold text-slate-500 uppercase tracking-wider">Notas / Observaciones</h3>
+                  <h3 className="text-xs font-bold text-slate-500">Notas / Observaciones</h3>
                   <div className="p-3 bg-slate-50 dark:bg-slate-850 rounded-xl border border-slate-150 dark:border-slate-800 min-h-24">
                     <p className="text-sm text-slate-600 dark:text-slate-400 italic">
                       {selectedInvoice.notes || "Sin observaciones en esta factura."}

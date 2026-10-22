@@ -19,7 +19,7 @@ export default async function CashFlowPage() {
             <Wallet className="text-primary w-6 h-6" />
           </div>
           <div>
-            <h1 className="text-2xl font-bold tracking-tight">Flujo de Caja</h1>
+            <h2 className="text-2xl font-bold tracking-tight">Flujo de Caja</h2>
             <p className="text-sm text-slate-500 dark:text-slate-400">Métrica derivada desde movimientos y cuentas por cobrar.</p>
           </div>
         </div>
@@ -27,7 +27,7 @@ export default async function CashFlowPage() {
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <div className="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
+        <div className="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800">
           <p className="text-slate-500 dark:text-slate-400 text-sm font-medium">Saldo Disponible</p>
           <h3 className="text-2xl font-bold mt-1">${cashFlow.availableCash.toLocaleString("es-CL")} CLP</h3>
           <div className="mt-2 flex items-center gap-1 text-emerald-600 dark:text-emerald-400 text-sm font-medium">
@@ -35,17 +35,17 @@ export default async function CashFlowPage() {
             <span>${cashFlow.pendingReceivables.toLocaleString("es-CL")} por cobrar</span>
           </div>
         </div>
-        <div className="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
+        <div className="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800">
           <p className="text-slate-500 dark:text-slate-400 text-sm font-medium">Entradas Confirmadas</p>
           <h3 className="text-2xl font-bold mt-1 text-emerald-600 dark:text-emerald-500">${cashFlow.monthlyIncome.toLocaleString("es-CL")} CLP</h3>
           <p className="text-xs text-slate-400 mt-2">Derivadas de pagos registrados.</p>
         </div>
-        <div className="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
+        <div className="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800">
           <p className="text-slate-500 dark:text-slate-400 text-sm font-medium">Salidas</p>
           <h3 className="text-2xl font-bold mt-1 text-rose-600 dark:text-rose-500">${cashFlow.monthlyExpenses.toLocaleString("es-CL")} CLP</h3>
           <p className="text-xs text-slate-400 mt-2">${cashFlow.committedPayments.toLocaleString("es-CL")} comprometidos con proveedores</p>
         </div>
-        <div className="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
+        <div className="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800">
           <p className="text-slate-500 dark:text-slate-400 text-sm font-medium">Flujo Neto</p>
           <h3 className="text-2xl font-bold mt-1 text-primary">${cashFlow.netFlow.toLocaleString("es-CL")} CLP</h3>
           <div className="mt-2 flex items-center gap-1 text-emerald-600 dark:text-emerald-400 text-sm font-medium">
@@ -55,14 +55,14 @@ export default async function CashFlowPage() {
         </div>
       </div>
 
-      <div className="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
+      <div className="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
           <div>
             <h4 className="text-lg font-bold">Proyección de Caja</h4>
             <p className="text-sm text-slate-500 dark:text-slate-400">Basada en pagos confirmados, cuentas por cobrar y compromisos.</p>
           </div>
           <div className="bg-primary/5 px-4 py-2 rounded-lg">
-            <p className="text-xs text-primary font-bold uppercase tracking-wider">Saldo Proyectado</p>
+            <p className="text-xs text-primary font-bold">Saldo Proyectado</p>
             <p className="text-xl font-bold text-primary">${cashFlow.projectedCash.toLocaleString("es-CL")} CLP</p>
           </div>
         </div>
@@ -103,7 +103,7 @@ export default async function CashFlowPage() {
         </div>
       </div>
 
-      <div className="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
+      <div className="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800">
         <div className="mb-6">
           <h4 className="text-lg font-bold">Movimientos recientes</h4>
           <p className="text-sm text-slate-500 dark:text-slate-400">Entradas y salidas confirmadas/pendientes registradas en caja.</p>

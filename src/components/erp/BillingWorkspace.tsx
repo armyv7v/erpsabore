@@ -147,10 +147,10 @@ function InvoiceDocumentCard({
   onClose: () => void;
 }) {
   return (
-    <div className="overflow-hidden rounded-2xl border border-primary/20 bg-white shadow-sm dark:border-primary/20 dark:bg-slate-900">
+    <div className="overflow-hidden rounded-2xl border border-primary/20 bg-white dark:border-primary/20 dark:bg-slate-900">
       <div className="flex items-center justify-between border-b border-slate-100 px-5 py-4 dark:border-slate-800">
         <div>
-          <p className="text-xs font-bold uppercase tracking-[0.2em] text-primary">Documento generado</p>
+          <p className="text-xs font-bold tracking-[0.2em] text-primary">Documento generado</p>
           <h3 className="mt-1 text-lg font-bold">{invoice.number}</h3>
         </div>
         <button
@@ -171,7 +171,7 @@ function InvoiceDocumentCard({
           </div>
 
           <div className="overflow-hidden rounded-xl border border-slate-200 dark:border-slate-800">
-            <div className="grid grid-cols-[1fr_auto_auto_auto] gap-3 bg-slate-50 px-4 py-3 text-xs font-bold uppercase tracking-wider text-slate-500 dark:bg-slate-800/70">
+            <div className="grid grid-cols-[1fr_auto_auto_auto] gap-3 bg-slate-50 px-4 py-3 text-xs font-bold text-slate-500 dark:bg-slate-800/70">
               <span>Detalle</span>
               <span className="text-right">Cant.</span>
               <span className="text-right">P. Unit.</span>
@@ -199,11 +199,11 @@ function InvoiceDocumentCard({
 
         <div className="space-y-4">
           <div className="rounded-xl border border-slate-200 p-4 dark:border-slate-800">
-            <p className="text-xs font-bold uppercase tracking-wider text-slate-500">Resumen</p>
+            <p className="text-xs font-bold text-slate-500">Resumen</p>
             <div className="mt-4 space-y-3 text-sm">
               <div className="flex items-center justify-between">
                 <span>Estado</span>
-                <span className="rounded-full bg-slate-100 px-2 py-1 text-xs font-bold uppercase tracking-wider text-slate-700 dark:bg-slate-800 dark:text-slate-200">
+                <span className="rounded-full bg-slate-100 px-2 py-1 text-xs font-bold text-slate-700 dark:bg-slate-800 dark:text-slate-200">
                   {formatInvoiceStatus(invoice.status)}
                 </span>
               </div>
@@ -405,7 +405,7 @@ export default function BillingWorkspace({
   return (
     <div className="relative space-y-6 p-4 pb-24 md:p-8 md:pb-8">
       <div className="mb-6">
-        <h1 className="text-2xl font-bold tracking-tight">Facturación ERP</h1>
+        <h2 className="text-2xl font-bold tracking-tight">Facturación ERP</h2>
         <p className="text-sm text-slate-500 dark:text-slate-400">
           Emisión interna, cuentas por cobrar y pagos conectados a servicios reales.
         </p>
@@ -460,7 +460,7 @@ export default function BillingWorkspace({
       {activeTab === "invoices" ? (
         <>
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-            <div className="flex flex-col gap-2 rounded-xl border border-primary/20 bg-white p-5 shadow-sm dark:bg-slate-800/50">
+            <div className="flex flex-col gap-2 rounded-xl border border-primary/20 bg-white p-5 dark:bg-slate-800/50">
               <p className="text-sm font-medium leading-normal text-slate-600 dark:text-slate-400">Total Emitido</p>
               <p className="text-2xl font-bold leading-tight tracking-tight text-slate-900 dark:text-slate-100">
                 ${localTotals.totalIssued.toLocaleString("es-CL")}
@@ -471,7 +471,7 @@ export default function BillingWorkspace({
               </div>
             </div>
 
-            <div className="flex flex-col gap-2 rounded-xl border border-primary/20 bg-white p-5 shadow-sm dark:bg-slate-800/50">
+            <div className="flex flex-col gap-2 rounded-xl border border-primary/20 bg-white p-5 dark:bg-slate-800/50">
               <p className="text-sm font-medium leading-normal text-slate-600 dark:text-slate-400">Saldo Pendiente</p>
               <p className="text-2xl font-bold leading-tight tracking-tight text-slate-900 dark:text-slate-100">
                 ${localTotals.totalOutstanding.toLocaleString("es-CL")}
@@ -482,7 +482,7 @@ export default function BillingWorkspace({
               </div>
             </div>
 
-            <div className="flex flex-col gap-2 rounded-xl border border-primary/20 bg-white p-5 shadow-sm dark:bg-slate-800/50">
+            <div className="flex flex-col gap-2 rounded-xl border border-primary/20 bg-white p-5 dark:bg-slate-800/50">
               <p className="text-sm font-medium leading-normal text-slate-600 dark:text-slate-400">Borradores</p>
               <p className="text-2xl font-bold leading-tight tracking-tight text-slate-900 dark:text-slate-100">
                 {localTotals.draftCount}
@@ -494,7 +494,7 @@ export default function BillingWorkspace({
             </div>
           </div>
 
-          <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm dark:border-slate-800 dark:bg-slate-900">
+          <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900">
             <div className="border-b border-slate-100 p-6 dark:border-slate-800">
               <h3 className="text-base font-bold">Flujo de Facturación</h3>
             </div>
@@ -513,11 +513,11 @@ export default function BillingWorkspace({
                     <div>
                       <div className="flex items-center gap-2">
                         <p className="font-bold text-slate-900 dark:text-slate-100">{invoice.number}</p>
-                        <span className="rounded-full bg-slate-100 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-slate-600 dark:bg-slate-800 dark:text-slate-300">
+                        <span className="rounded-full bg-slate-100 px-2 py-0.5 text-xs font-bold text-slate-600 dark:bg-slate-800 dark:text-slate-300">
                           {formatInvoiceStatus(invoice.status)}
                         </span>
                         {invoice.dteStatus && invoice.dteStatus !== "none" ? (
-                          <span className={`rounded-full px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider ${
+                          <span className={`rounded-full px-2 py-0.5 text-xs font-bold ${
                             invoice.dteStatus === "accepted" ? "bg-emerald-100 text-emerald-800 dark:bg-emerald-950/50 dark:text-emerald-300" :
                             invoice.dteStatus === "pending" ? "bg-amber-100 text-amber-800 dark:bg-amber-950/50 dark:text-amber-300" :
                             "bg-rose-100 text-rose-800 dark:bg-rose-950/50 dark:text-rose-300"
@@ -656,7 +656,7 @@ export default function BillingWorkspace({
 
           {/* Controles de Paginación Premium */}
           {pageCount > 1 && (
-            <div className="mt-4 flex flex-col sm:flex-row items-center justify-between gap-4 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl px-6 py-4 shadow-sm">
+            <div className="mt-4 flex flex-col sm:flex-row items-center justify-between gap-4 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl px-6 py-4">
               <div className="text-sm text-slate-500 dark:text-slate-400">
                 Mostrando <span className="font-bold text-slate-850 dark:text-slate-200">{((page - 1) * pageSize) + 1}</span> a{" "}
                 <span className="font-bold text-slate-850 dark:text-slate-200">{Math.min(page * pageSize, totalCount)}</span> de{" "}
@@ -693,7 +693,7 @@ export default function BillingWorkspace({
                         onClick={() => handlePageChange(p)}
                         className={`ux-touch-target flex items-center justify-center text-sm font-bold rounded-xl transition-all ${
                           page === p
-                            ? "bg-primary text-white shadow-sm"
+                            ? "bg-primary text-white"
                             : "text-slate-650 dark:text-slate-355 hover:bg-slate-100 dark:hover:bg-slate-800"
                         }`}
                       >
@@ -718,7 +718,7 @@ export default function BillingWorkspace({
         /* PESTAÑA: CONFIGURACIÓN DTE CHILE (SIMULADOR) */
         <div className="grid gap-6 md:grid-cols-2">
           {/* Tarjeta 1: Firma Digital */}
-          <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+          <div className="rounded-2xl border border-slate-200 bg-white p-6 dark:border-slate-800 dark:bg-slate-900">
             <div className="flex items-center gap-3">
               <div className="rounded-xl bg-primary/10 p-2.5 text-primary">
                 <ShieldCheck className="h-6 w-6" />
@@ -792,7 +792,7 @@ export default function BillingWorkspace({
                 className="space-y-4 pt-2 border-t border-slate-100 dark:border-slate-800"
               >
                 <div className="space-y-2">
-                  <label className="text-xs font-bold uppercase tracking-wider text-slate-500">Cargar firma digital (.pfx / .p12)</label>
+                  <label className="text-xs font-bold text-slate-500">Cargar firma digital (.pfx / .p12)</label>
                   <input
                     name="certificateFile"
                     type="file"
@@ -803,7 +803,7 @@ export default function BillingWorkspace({
                 </div>
                 
                 <div className="space-y-2">
-                  <label className="text-xs font-bold uppercase tracking-wider text-slate-500">Contraseña del Certificado</label>
+                  <label className="text-xs font-bold text-slate-500">Contraseña del Certificado</label>
                   <input
                     type="password"
                     value={password}
@@ -831,7 +831,7 @@ export default function BillingWorkspace({
           </div>
 
           {/* Tarjeta 2: Folios Autorizados (CAF) */}
-          <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+          <div className="rounded-2xl border border-slate-200 bg-white p-6 dark:border-slate-800 dark:bg-slate-900">
             <div className="flex items-center gap-3">
               <div className="rounded-xl bg-emerald-100 p-2.5 text-emerald-600 dark:bg-emerald-950/50 dark:text-emerald-400">
                 <FileCode className="h-6 w-6" />
@@ -865,7 +865,7 @@ export default function BillingWorkspace({
               )}
 
               <div className="space-y-2">
-                <label className="text-xs font-bold uppercase tracking-wider text-slate-500">Cargar Archivo CAF del SII (.xml)</label>
+                <label className="text-xs font-bold text-slate-500">Cargar Archivo CAF del SII (.xml)</label>
                 <div className="flex gap-2">
                   <input
                     type="file"

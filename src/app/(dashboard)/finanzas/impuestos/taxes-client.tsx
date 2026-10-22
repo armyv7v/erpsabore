@@ -106,7 +106,7 @@ export default function TaxesClient({ initialData, defaultStartDate, defaultEndD
   return (
     <div className="space-y-6">
       {/* Date and Parameter Selectors */}
-      <div className="bg-white dark:bg-slate-900 p-4 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col md:flex-row gap-4 items-end justify-between">
+      <div className="bg-white dark:bg-slate-900 p-4 rounded-xl border border-slate-200 dark:border-slate-800 flex flex-col md:flex-row gap-4 items-end justify-between">
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 w-full md:w-auto">
           <div>
             <label className="block text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase mb-1">Fecha Inicio</label>
@@ -230,7 +230,7 @@ export default function TaxesClient({ initialData, defaultStartDate, defaultEndD
             <div className="lg:col-span-2 space-y-6">
               
               {/* Sales / Débito Fiscal Card */}
-              <div className="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm space-y-4">
+              <div className="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 space-y-4">
                 <div className="flex justify-between items-center border-b border-slate-100 dark:border-slate-800 pb-3">
                   <h3 className="font-bold text-lg text-slate-800 dark:text-slate-200">IVA Débito Fiscal (Ventas)</h3>
                   <span className="text-xs font-bold text-emerald-600 bg-emerald-50 dark:bg-emerald-950/30 px-2.5 py-1 rounded-full">Ingreso Afecto</span>
@@ -252,7 +252,7 @@ export default function TaxesClient({ initialData, defaultStartDate, defaultEndD
               </div>
 
               {/* Purchases / Crédito Fiscal Card */}
-              <div className="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm space-y-4">
+              <div className="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 space-y-4">
                 <div className="flex justify-between items-center border-b border-slate-100 dark:border-slate-800 pb-3">
                   <h3 className="font-bold text-lg text-slate-800 dark:text-slate-200">IVA Crédito Fiscal (Compras y Gastos)</h3>
                   <span className="text-xs font-bold text-rose-600 bg-rose-50 dark:bg-rose-950/30 px-2.5 py-1 rounded-full">Egreso Afecto</span>
@@ -276,7 +276,7 @@ export default function TaxesClient({ initialData, defaultStartDate, defaultEndD
             </div>
 
             {/* F29 Estep / Total Panel */}
-            <div className="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm space-y-6 flex flex-col justify-between">
+            <div className="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 space-y-6 flex flex-col justify-between">
               <div className="space-y-4">
                 <h3 className="font-bold text-lg border-b border-slate-100 dark:border-slate-800 pb-3">Cálculo F29 Estimado</h3>
                 
@@ -309,7 +309,7 @@ export default function TaxesClient({ initialData, defaultStartDate, defaultEndD
               </div>
 
               <div className="bg-primary/5 p-4 rounded-xl border border-primary/10 mt-6 space-y-2">
-                <p className="text-xs uppercase font-bold tracking-wide text-primary">Total Estimado F29 a Pagar</p>
+                <p className="text-xs font-bold tracking-wide text-primary">Total Estimado F29 a Pagar</p>
                 <p className="text-3xl font-extrabold text-primary">${totalF29Payable.toLocaleString("es-CL")} CLP</p>
                 <p className="text-xxs text-slate-400">Declarar y pagar hasta el día 20 del mes siguiente.</p>
               </div>
@@ -320,7 +320,7 @@ export default function TaxesClient({ initialData, defaultStartDate, defaultEndD
         {/* TAB 2: Previred (Cotizaciones) */}
         {activeTab === "previred" && (
           <div className="space-y-6">
-            <div className="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
+            <div className="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800">
               <div className="flex justify-between items-center border-b border-slate-100 dark:border-slate-800 pb-4 mb-4">
                 <div>
                   <h3 className="font-bold text-lg text-slate-800 dark:text-slate-200">Planilla Previsional (Previred)</h3>
@@ -384,17 +384,17 @@ export default function TaxesClient({ initialData, defaultStartDate, defaultEndD
 
             {/* Previred Summary Cards */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <div className="bg-white dark:bg-slate-900 p-5 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm space-y-1">
+              <div className="bg-white dark:bg-slate-900 p-5 rounded-xl border border-slate-200 dark:border-slate-800 space-y-1">
                 <p className="text-xs text-slate-500 font-semibold uppercase">Descuentos de Trabajadores</p>
                 <p className="text-2xl font-bold text-slate-800 dark:text-slate-200">${data.previred.totalDeductions.toLocaleString("es-CL")} CLP</p>
                 <p className="text-xxs text-slate-400">AFP, Salud y AFC de cargo del empleado.</p>
               </div>
-              <div className="bg-white dark:bg-slate-900 p-5 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm space-y-1">
+              <div className="bg-white dark:bg-slate-900 p-5 rounded-xl border border-slate-200 dark:border-slate-800 space-y-1">
                 <p className="text-xs text-slate-500 font-semibold uppercase">Seguros Empleador</p>
                 <p className="text-2xl font-bold text-slate-800 dark:text-slate-200">${data.previred.totalEmployerCost.toLocaleString("es-CL")} CLP</p>
                 <p className="text-xxs text-slate-400">SIS, Mutual y AFC de cargo de la empresa.</p>
               </div>
-              <div className="bg-primary/5 p-5 rounded-xl border border-primary/20 shadow-sm space-y-1">
+              <div className="bg-primary/5 p-5 rounded-xl border border-primary/20 space-y-1">
                 <p className="text-xs text-primary font-bold uppercase">Total Declaración Previred</p>
                 <p className="text-2xl font-extrabold text-primary">${data.previred.totalPayable.toLocaleString("es-CL")} CLP</p>
                 <p className="text-xxs text-primary/70">Monto total a transferir por planilla bancaria.</p>
@@ -409,7 +409,7 @@ export default function TaxesClient({ initialData, defaultStartDate, defaultEndD
             <div className="lg:col-span-2 space-y-6">
               
               {/* Financial Income & Expense for Renta */}
-              <div className="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm space-y-4">
+              <div className="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 space-y-4">
                 <h3 className="font-bold text-lg border-b border-slate-100 dark:border-slate-800 pb-3">Resumen de Flujos Anuales</h3>
                 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -438,7 +438,7 @@ export default function TaxesClient({ initialData, defaultStartDate, defaultEndD
             </div>
 
             {/* Estimated Corporate Taxes F22 */}
-            <div className="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm space-y-4">
+            <div className="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 space-y-4">
               <h3 className="font-bold text-lg border-b border-slate-100 dark:border-slate-800 pb-3">Proyección F22 Estimado</h3>
               
               <div className="space-y-4">
@@ -466,7 +466,7 @@ export default function TaxesClient({ initialData, defaultStartDate, defaultEndD
 
         {/* TAB 4: Calendario Tributario */}
         {activeTab === "calendar" && (
-          <div className="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm space-y-6">
+          <div className="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 space-y-6">
             <div className="border-b border-slate-100 dark:border-slate-800 pb-4">
               <h3 className="font-bold text-lg text-slate-800 dark:text-slate-200">Calendario Tributario Anual y Mensual</h3>
               <p className="text-xs text-slate-400">Monitoreo de obligaciones ante el Servicio de Impuestos Internos (SII) y Previred.</p>

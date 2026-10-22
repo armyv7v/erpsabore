@@ -491,7 +491,7 @@ export default function ReconciliationWorkspace({
       <div className="border-b border-primary/20 bg-white dark:bg-slate-900/50 p-4">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
           <div className="flex items-center gap-4">
-            <h1 className="text-xl font-bold tracking-tight">Conciliacion Bancaria</h1>
+            <h2 className="text-xl font-bold tracking-tight">Conciliacion Bancaria</h2>
           </div>
           <div className="flex flex-col sm:flex-row items-center gap-3 w-full md:w-auto">
             <div className="relative w-full sm:w-64">
@@ -507,7 +507,7 @@ export default function ReconciliationWorkspace({
             <button
               type="button"
               onClick={() => setIsImportModalOpen(true)}
-              className="w-full sm:w-auto bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-200 px-4 py-2 rounded-lg font-bold text-sm flex items-center justify-center gap-2 hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors shadow-sm"
+              className="w-full sm:w-auto bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-200 px-4 py-2 rounded-lg font-bold text-sm flex items-center justify-center gap-2 hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors"
             >
               <UploadCloud className="w-4 h-4 text-primary" />
               Importar Cartola
@@ -567,14 +567,14 @@ export default function ReconciliationWorkspace({
         ) : null}
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 lg:gap-6">
-          <div className="bg-white dark:bg-slate-900 p-4 rounded-xl border border-primary/10 shadow-sm">
-            <p className="text-xs font-medium text-slate-500 uppercase tracking-wider">Saldo Extracto</p>
+          <div className="bg-white dark:bg-slate-900 p-4 rounded-xl border border-primary/10">
+            <p className="text-xs font-medium text-slate-500">Saldo Extracto</p>
             <p className="text-2xl font-bold mt-1 text-slate-900 dark:text-slate-50">
               ${statementBalance.toLocaleString("es-CL", { minimumFractionDigits: 2 })}
             </p>
           </div>
-          <div className="bg-white dark:bg-slate-900 p-4 rounded-xl border border-primary/10 shadow-sm">
-            <p className="text-xs font-medium text-slate-500 uppercase tracking-wider">Saldo ERP</p>
+          <div className="bg-white dark:bg-slate-900 p-4 rounded-xl border border-primary/10">
+            <p className="text-xs font-medium text-slate-500">Saldo ERP</p>
             <p className="text-2xl font-bold mt-1 text-slate-900 dark:text-slate-50">
               ${erpBalance.toLocaleString("es-CL", { minimumFractionDigits: 2 })}
             </p>
@@ -615,7 +615,7 @@ export default function ReconciliationWorkspace({
                 filteredBankRows.map((row) => (
                   <div
                     key={row.id}
-                    className={`bg-white dark:bg-slate-900 p-4 rounded-xl border-l-4 shadow-sm ${
+                    className={`bg-white dark:bg-slate-900 p-4 rounded-xl border-l-4 ${
                       row.status === "matched"
                         ? "border-green-500"
                         : row.status === "discrepancy"
@@ -633,7 +633,7 @@ export default function ReconciliationWorkspace({
                         <p className={`font-bold ${row.type === "expense" ? "text-red-500" : "text-green-600"}`}>
                           {row.type === "expense" ? "-" : "+"}${row.amount.toLocaleString("es-CL", { minimumFractionDigits: 2 })}
                         </p>
-                        <span className="inline-flex items-center gap-1 text-[10px] px-2 py-0.5 rounded-full mt-1 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400">
+                        <span className="inline-flex items-center gap-1 text-xs px-2 py-0.5 rounded-full mt-1 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400">
                           {row.status === "matched" ? (
                             <>
                               <CheckCircle2 className="w-3 h-3" /> Coincidencia
@@ -668,7 +668,7 @@ export default function ReconciliationWorkspace({
               {filteredErpRows.map((erp) => (
                 <div
                   key={erp.id}
-                  className={`bg-white dark:bg-slate-900 p-4 rounded-xl border-l-4 shadow-sm ${
+                  className={`bg-white dark:bg-slate-900 p-4 rounded-xl border-l-4 ${
                     erp.matchConfidence ? "border-primary/30" : "border-green-500"
                   }`}
                 >
@@ -683,7 +683,7 @@ export default function ReconciliationWorkspace({
                         {erp.type === "expense" ? "-" : "+"}${erp.amount.toLocaleString("es-CL", { minimumFractionDigits: 2 })}
                       </p>
                       <span
-                        className={`inline-flex items-center gap-1 font-bold text-[10px] px-2 py-0.5 rounded-full mt-1 ${
+                        className={`inline-flex items-center gap-1 font-bold text-xs px-2 py-0.5 rounded-full mt-1 ${
                           erp.matchConfidence ? "bg-primary/10 text-primary" : "text-green-600 bg-transparent"
                         }`}
                       >
@@ -819,7 +819,7 @@ export default function ReconciliationWorkspace({
                     <p className="text-sm font-bold mb-1">Arrastre su archivo CSV aquí</p>
                     <p className="text-xs text-slate-400 mb-4">Solo se admiten formatos de valores delimitados (.csv)</p>
                     
-                    <label className="px-5 py-2.5 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-xs font-bold shadow-sm hover:shadow-md cursor-pointer transition-shadow">
+                    <label className="px-5 py-2.5 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-xs font-bold hover:shadow-md cursor-pointer transition-shadow">
                       Examinar Archivos
                       <input
                         type="file"
