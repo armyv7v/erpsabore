@@ -4,16 +4,16 @@ import { listProducts } from "@/lib/repositories/product-repository";
 import { isSupabaseConfigured } from "@/lib/supabase/config";
 import { listCustomers } from "@/lib/repositories/customer-repository";
 import { mockCatalogProducts } from "@/data/catalog";
-import type { CustomerRecord } from "@/lib/types/erp";
+import type { AuthUser, CustomerRecord } from "@/lib/types/erp";
 import { getMajorCategory } from "@/lib/utils/barcode-generator";
 import CatalogClient from "./catalog-client";
 import DashboardShell from "@/components/layout/DashboardShell";
 import Link from "next/link";
-import Image from "next/image";
+
 
 const SABORE_DEFAULT_TENANT_ID = "211edcae-b525-4d11-9413-1f659d5e846b";
 
-async function getCatalogProducts(user: any) {
+async function getCatalogProducts(user: AuthUser | null) {
   if (!isSupabaseConfigured()) {
     const categoryCounters: Record<string, number> = {};
     return mockCatalogProducts.map((p) => {
@@ -106,18 +106,18 @@ export default async function CatalogPage() {
   return (
     <div className="min-h-screen bg-background-light dark:bg-[#221610] text-slate-900 dark:text-slate-100 flex flex-col">
       {/* Header público de la tienda */}
-      <header className="border-b border-slate-200 dark:border-slate-800 bg-white/70 dark:bg-[#221610]/70 backdrop-blur-md sticky top-0 z-30 transition-colors">
-        <div className="mx-auto max-w-7xl px-4 py-4 flex items-center justify-between">
+      <header className="border-b border-slate-200 dark:border-slate-800 bg-white dark:bg-[#221610] sticky top-0 z-30">
+        <div className="mx-auto max-w-7xl px-4 py-3 flex items-center justify-between">
           <picture className="block h-10 w-auto">
             <source srcSet="/brand/logo_blanco_sin_fondo.png" media="(prefers-color-scheme: dark)" />
             <img src="/brand/logo_camel_sin_fondo.png" alt="Saboré Insumos" className="h-10 w-auto object-contain" />
           </picture>
           
-          <div className="flex items-center gap-3">
-            <Link href="/login" className="text-sm font-bold text-slate-650 hover:text-slate-900 dark:text-slate-350 dark:hover:text-slate-100 transition-colors px-3 py-2">
-              Iniciar Sesión
+          <div className="flex items-center gap-2">
+            <Link href="/login" className="whitespace-nowrap px-3 py-2 text-[13px] font-medium text-slate-600 transition-colors hover:text-slate-900 dark:text-slate-300 dark:hover:text-slate-100">
+              Iniciar sesión
             </Link>
-            <Link href="/registro" className="px-4 py-2.5 rounded-xl bg-primary hover:bg-primary/90 text-white font-bold text-xs shadow-md shadow-primary/20 transition-all hover:scale-[1.02]">
+            <Link href="/registro" className="whitespace-nowrap rounded-xl bg-primary px-4 py-2.5 text-[13px] font-semibold text-white transition-colors hover:bg-primary/90">
               Registrarse
             </Link>
           </div>

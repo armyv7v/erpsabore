@@ -35,10 +35,8 @@ const SORT_OPTIONS = [
   { value: "price-desc", label: "Precio: Mayor a Menor" },
 ];
 
-import { useRouter } from "next/navigation";
 import Image from "next/image";
-import Link from "next/link";
-import type { CustomerRecord } from "@/lib/types/erp";
+import type { AuthUser, CustomerRecord } from "@/lib/types/erp";
 import { submitCreateCustomerAction } from "@/app/actions/crm";
 import ProductDetailsModal from "@/components/erp/ProductDetailsModal";
 import { createDraftInvoiceAction, submitGuestOrderAction } from "@/app/actions/invoices";
@@ -90,16 +88,23 @@ const CART_STORAGE_KEY = "erpSabore:catalogCart";
 interface Props {
   products: CatalogProduct[];
   customers: CustomerRecord[];
-  user?: any | null;
+  user?: AuthUser | null;
 }
 
 export default function CatalogClient({ products, customers = [], user = null }: Props) {
-  const router = useRouter();
   const [searchQuery, setSearchQuery] = useState("");
   const [printMode, setPrintMode] = useState<"book" | "simple">("book");
+  const [isPrinting, setIsPrinting] = useState(false);
+
+  useEffect(() => {
+    const done = () => setIsPrinting(false);
+    window.addEventListener("afterprint", done);
+    return () => window.removeEventListener("afterprint", done);
+  }, []);
 
   const handlePrint = (mode: "book" | "simple") => {
     setPrintMode(mode);
+    setIsPrinting(true);
     setTimeout(() => {
       window.print();
     }, 150);
@@ -574,26 +579,34 @@ export default function CatalogClient({ products, customers = [], user = null }:
     });
   }
 
+  // Dentro del dashboard el h1 lo pone el shell; esta cabecera pasa a h2.
+  const TitleTag = user ? "h2" : "h1";
+
   const stockBadgeClass = (qty: number) =>
     qty > 0
       ? qty < 10
-        ? "bg-orange-500/90"
-        : "bg-green-500/90"
-      : "bg-red-500/90";
+        ? "bg-[var(--color-warning-bg)] text-[var(--color-warning-ink)] border-[var(--color-warning-ink)]/25"
+        : "bg-[var(--color-positive-bg)] text-[var(--color-positive-ink)] border-[var(--color-positive-ink)]/20"
+      : "bg-[var(--color-negative-bg)] text-[var(--color-negative-ink)] border-[var(--color-negative-ink)]/20";
 
   return (
     <div className="flex min-h-screen flex-col bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 bg-watermark">
       {/* Interfaz Web Interactiva — Se oculta por completo durante la impresión */}
       <div className="no-print flex flex-col w-full min-h-screen">
         {/* Header */}
-        <div className="sticky top-0 z-40 flex items-center justify-between border-b border-slate-200 bg-white/80 px-4 py-4 backdrop-blur-md dark:border-slate-800 dark:bg-slate-900/80 md:px-8">
+        <div className="sticky top-0 z-40 flex items-center justify-between border-b border-slate-200 bg-white px-4 py-3 dark:border-slate-800 dark:bg-slate-900 md:px-8">
         <div className="flex items-center gap-3">
           <div className="text-primary flex size-10 items-center justify-center rounded-lg bg-primary/10">
-            <PackageSearch className="w-6 h-6" />
+            <PackageSearch className="w-5 h-5" />
           </div>
-          <h1 className="text-slate-900 text-xl font-bold leading-tight tracking-tight dark:text-slate-100">
-            Catálogo Digital
-          </h1>
+          <div>
+            <TitleTag className="text-slate-900 text-lg font-semibold leading-tight tracking-tight dark:text-slate-100 sm:text-xl">
+              Catálogo Digital
+            </TitleTag>
+            <p className="text-[12px] leading-tight text-slate-500 dark:text-slate-400">
+              Insumos y suministros para gastronomía
+            </p>
+          </div>
         </div>
         <div className="flex items-center gap-2">
           <button
@@ -630,17 +643,6 @@ export default function CatalogClient({ products, customers = [], user = null }:
       </div>
 
       <main className="no-print flex-1 pb-24 md:p-8">
-        {/* Banner de Bienvenida Corporativo */}
-        <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-[#E8C19D] to-[#BC7A3A] px-6 py-8 text-[#221610] mb-6 mx-4 md:mx-0 border border-[#BC7A3A]/30">
-          {/* Fondo decorativo con marcas de agua */}
-          <div className="absolute right-0 top-0 bottom-0 w-1/3 opacity-15 pointer-events-none bg-contain bg-right bg-no-repeat" style={{ backgroundImage: 'url("/brand/logo_negro_sin_fondo.png")' }}></div>
-          <div className="relative z-10 max-w-2xl text-left">
-            <span className="bg-[#221610]/10 text-[#221610] px-2.5 py-0.5 rounded-full text-xs font-black border border-[#221610]/20">
-              Saboré Insumos y Suministros
-            </span>
-            <h2 className="text-2xl md:text-3xl font-black mt-2 tracking-tight text-[#221610]">Catálogo Digital Oficial</h2>
-          </div>
-        </div>
 
         {/* Search */}
         <div className="px-4 py-4 md:px-0">
@@ -661,11 +663,11 @@ export default function CatalogClient({ products, customers = [], user = null }:
         </div>
 
         {/* Pestañas de Stock */}
-        <div className="border-b border-slate-200 dark:border-slate-800 mb-4 px-4 md:px-0 flex gap-6">
+        <div className="border-b border-slate-200 dark:border-slate-800 mb-4 px-4 md:px-0 flex gap-4 sm:gap-6">
           <button
             type="button"
             onClick={() => setStockFilter("all")}
-            className={`pb-3 text-sm font-bold border-b-2 transition-all cursor-pointer ${
+            className={`whitespace-nowrap border-b-2 pb-3 text-[13px] font-semibold transition-colors cursor-pointer sm:text-sm ${
               stockFilter === "all"
                 ? "border-primary text-primary"
                 : "border-transparent text-slate-500 hover:text-slate-800 dark:hover:text-slate-250"
@@ -676,7 +678,7 @@ export default function CatalogClient({ products, customers = [], user = null }:
           <button
             type="button"
             onClick={() => setStockFilter("critical")}
-            className={`pb-3 text-sm font-bold border-b-2 transition-all cursor-pointer ${
+            className={`whitespace-nowrap border-b-2 pb-3 text-[13px] font-semibold transition-colors cursor-pointer sm:text-sm ${
               stockFilter === "critical"
                 ? "border-primary text-primary"
                 : "border-transparent text-slate-500 hover:text-slate-800 dark:hover:text-slate-250"
@@ -687,7 +689,7 @@ export default function CatalogClient({ products, customers = [], user = null }:
           <button
             type="button"
             onClick={() => setStockFilter("out_of_stock")}
-            className={`pb-3 text-sm font-bold border-b-2 transition-all cursor-pointer ${
+            className={`whitespace-nowrap border-b-2 pb-3 text-[13px] font-semibold transition-colors cursor-pointer sm:text-sm ${
               stockFilter === "out_of_stock"
                 ? "border-primary text-primary"
                 : "border-transparent text-slate-500 hover:text-slate-800 dark:hover:text-slate-250"
@@ -707,7 +709,7 @@ export default function CatalogClient({ products, customers = [], user = null }:
                 setIsCategoryDropdownOpen(!isCategoryDropdownOpen);
                 setIsSortDropdownOpen(false);
               }}
-              className="flex items-center gap-1.5 rounded-xl border border-slate-200 bg-white px-3 py-2 text-xs font-bold text-slate-700 dark:border-slate-800 dark:bg-slate-950 dark:text-slate-200 hover:border-primary transition-all active:scale-95 cursor-pointer"
+              className="flex items-center gap-1.5 rounded-xl border border-slate-200 bg-white px-3 py-2 text-[13px] font-semibold text-slate-700 dark:border-slate-800 dark:bg-slate-950 dark:text-slate-200 hover:border-primary transition-all active:scale-95 cursor-pointer"
             >
               <Filter className="w-3.5 h-3.5 text-slate-400" />
               <span>Categoría: <strong>{activeCategory}</strong></span>
@@ -724,7 +726,7 @@ export default function CatalogClient({ products, customers = [], user = null }:
                         setActiveCategory(cat);
                         setIsCategoryDropdownOpen(false);
                       }}
-                      className={`w-full text-left rounded-lg px-2.5 py-2 text-xs font-semibold transition-colors cursor-pointer ${
+                      className={`w-full text-left rounded-lg px-2.5 py-2 text-[13px] font-semibold transition-colors cursor-pointer ${
                         activeCategory === cat
                           ? "bg-primary text-white"
                           : "text-slate-600 hover:bg-slate-50 dark:text-slate-300 dark:hover:bg-slate-900"
@@ -746,7 +748,7 @@ export default function CatalogClient({ products, customers = [], user = null }:
                 setIsSortDropdownOpen(!isSortDropdownOpen);
                 setIsCategoryDropdownOpen(false);
               }}
-              className="flex items-center gap-1.5 rounded-xl border border-slate-200 bg-white px-3 py-2 text-xs font-bold text-slate-700 dark:border-slate-800 dark:bg-slate-950 dark:text-slate-200 hover:border-primary transition-all active:scale-95 cursor-pointer"
+              className="flex items-center gap-1.5 rounded-xl border border-slate-200 bg-white px-3 py-2 text-[13px] font-semibold text-slate-700 dark:border-slate-800 dark:bg-slate-950 dark:text-slate-200 hover:border-primary transition-all active:scale-95 cursor-pointer"
             >
               <ArrowUpDown className="w-3.5 h-3.5 text-slate-400" />
               <span>Ordenar por: <strong>{SORT_OPTIONS.find(o => o.value === sortBy)?.label}</strong></span>
@@ -763,7 +765,7 @@ export default function CatalogClient({ products, customers = [], user = null }:
                         setSortBy(opt.value);
                         setIsSortDropdownOpen(false);
                       }}
-                      className={`w-full text-left rounded-lg px-2.5 py-2 text-xs font-semibold transition-colors cursor-pointer ${
+                      className={`w-full text-left rounded-lg px-2.5 py-2 text-[13px] font-semibold transition-colors cursor-pointer ${
                         sortBy === opt.value
                           ? "bg-primary text-white"
                           : "text-slate-600 hover:bg-slate-50 dark:text-slate-300 dark:hover:bg-slate-900"
@@ -791,10 +793,8 @@ export default function CatalogClient({ products, customers = [], user = null }:
               <div
                 key={product.id}
                 onClick={() => setDetailsProduct(product)}
-                className={`flex flex-col overflow-hidden rounded-xl border border-slate-200 bg-white transition-all hover:shadow-md dark:border-slate-800 dark:bg-slate-900 cursor-pointer select-none ${
-                  product.stockQuantity === 0
-                    ? "grayscale opacity-60"
-                    : "hover:border-primary/30"
+                className={`flex flex-col overflow-hidden rounded-xl border border-slate-200 bg-white transition-colors hover:border-[var(--color-primary)]/40 dark:border-slate-800 dark:bg-slate-900 cursor-pointer select-none ${
+                  product.stockQuantity === 0 ? "grayscale opacity-60" : ""
                 }`}
               >
                 <div className="relative aspect-square w-full overflow-hidden bg-slate-100 dark:bg-slate-800">
@@ -822,13 +822,13 @@ export default function CatalogClient({ products, customers = [], user = null }:
                     </div>
                   )}
                   <div
-                    className={`absolute top-2 right-2 rounded px-2 py-1 text-xs font-bold text-white backdrop-blur-sm ${stockBadgeClass(product.stockQuantity)}`}
+                    className={`absolute right-2 top-2 rounded-md border px-2 py-1 text-[12px] font-semibold ${stockBadgeClass(product.stockQuantity)}`}
                   >
                     {product.stockQuantity > 0 ? `Stock: ${product.stockQuantity}` : "Sin stock"}
                   </div>
                 </div>
                 <div className="flex flex-1 flex-col p-3">
-                  <p className="text-slate-500 text-xs font-bold dark:text-slate-400">
+                  <p className="text-slate-500 text-[13px] font-medium dark:text-slate-400">
                     {product.sku}
                   </p>
                   <h3
@@ -839,10 +839,10 @@ export default function CatalogClient({ products, customers = [], user = null }:
                   </h3>
                   {product.category && (
                     <div className="flex flex-wrap items-center gap-1.5 mb-2">
-                      <span className="bg-primary/10 text-primary px-1.5 py-0.5 rounded text-[8px] font-black">
+                      <span className="bg-primary/10 text-[var(--color-primary-ink)] px-1.5 py-0.5 rounded text-[12px] font-medium">
                         {product.category}
                       </span>
-                      <span className="text-slate-400 dark:text-slate-500 text-[8px] font-bold">
+                      <span className="hidden text-[13px] text-slate-500 dark:text-slate-400 sm:inline">
                         • {getShortSubcategory(product.name)}
                       </span>
                     </div>
@@ -853,7 +853,7 @@ export default function CatalogClient({ products, customers = [], user = null }:
                     }`}
                   >
                     ${product.unitPrice.toLocaleString("es-CL")}
-                    <span className="text-slate-400 text-xs font-normal"> CLP</span>
+                    <span className="text-slate-400 text-[13px] font-normal"> CLP</span>
                   </p>
                   {(() => {
                     const cartItem = cartItems.find((item) => item.id === product.id);
@@ -898,10 +898,10 @@ export default function CatalogClient({ products, customers = [], user = null }:
                           e.stopPropagation();
                           addToCart(product);
                         }}
-                        className={`mt-3 w-full rounded-lg py-2.5 text-xs font-bold flex items-center justify-center gap-1 transition-all h-[38px] ${
+                        className={`mt-3 w-full rounded-lg py-2.5 text-[13px] font-semibold flex items-center justify-center gap-1 transition-colors h-[38px] ${
                           product.stockQuantity > 0
-                            ? "bg-primary text-white active:scale-95 shadow-primary/20 hover:bg-primary/90"
-                            : "cursor-not-allowed border border-slate-200 bg-slate-100 text-slate-400 dark:border-slate-700 dark:bg-slate-800"
+                            ? "bg-primary text-white hover:bg-primary/90"
+                            : "cursor-not-allowed border border-slate-200 bg-slate-100 text-slate-600 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300"
                         }`}
                         disabled={product.stockQuantity === 0}
                       >
@@ -926,7 +926,7 @@ export default function CatalogClient({ products, customers = [], user = null }:
         {/* Paginación */}
         {filteredProducts.length > 0 && (
           <div className="mt-8 flex flex-col md:flex-row items-center justify-between gap-4 border-t border-slate-200/60 dark:border-slate-800/60 pt-6">
-            <div className="text-xs font-semibold text-slate-500 dark:text-slate-400">
+            <div className="text-[13px] font-medium text-slate-500 dark:text-slate-400">
               Mostrando <span className="font-bold text-slate-900 dark:text-slate-100">{Math.min((currentPage - 1) * itemsPerPage + 1, filteredProducts.length)}</span> al <span className="font-bold text-slate-900 dark:text-slate-100">{Math.min(currentPage * itemsPerPage, filteredProducts.length)}</span> de <span className="font-bold text-slate-900 dark:text-slate-100">{filteredProducts.length}</span> productos
             </div>
 
@@ -1189,7 +1189,7 @@ export default function CatalogClient({ products, customers = [], user = null }:
                                 }}
                                 className="text-primary font-bold mt-1.5 hover:underline cursor-pointer inline-flex items-center gap-0.5"
                               >
-                                <Plus className="w-3 h-3" /> Crear "{customerSearch}"
+                                <Plus className="w-3 h-3" /> Crear &quot;{customerSearch}&quot;
                               </button>
                             </div>
                           ) : (
@@ -1503,7 +1503,7 @@ export default function CatalogClient({ products, customers = [], user = null }:
           }}
           onClose={() => setDetailsProduct(null)}
           onAddToCart={() => addToCart(detailsProduct)}
-          showCostPrice={user && ["admin", "finanzas", "bodega"].includes(user.role)}
+          showCostPrice={user ? ["admin", "finanzas", "bodega"].includes(user.role) : false}
         />
       )}
 
@@ -1614,7 +1614,8 @@ export default function CatalogClient({ products, customers = [], user = null }:
 
       </div>
 
-      {/* Área Imprimible - Oculta en pantalla, visible al imprimir */}
+      {/* Área Imprimible — se monta solo al imprimir (14k nodos menos en pantalla) */}
+      {isPrinting && (
       <div id="catalog-print-area" className="hidden print:block bg-white text-black font-sans">
         <style dangerouslySetInnerHTML={{ __html: `
           @page {
@@ -1922,6 +1923,7 @@ export default function CatalogClient({ products, customers = [], user = null }:
           );
         })}
       </div>
+      )}
     </div>
   );
 }
