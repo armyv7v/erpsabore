@@ -502,7 +502,7 @@ export default function ShipmentsClient({ shipments, userRole }: Props) {
                 <button
                   type="submit"
                   disabled={isPending}
-                  className="flex-1 py-2.5 rounded-xl bg-primary hover:bg-primary/95 text-white font-bold text-xs shadow-lg shadow-primary/10 transition hover:scale-[1.01] active:scale-95 cursor-pointer text-center flex items-center justify-center gap-1.5"
+                  className="flex-1 py-2.5 rounded-xl bg-primary hover:bg-primary/95 text-white font-bold text-xs transition hover:scale-[1.01] active:scale-95 cursor-pointer text-center flex items-center justify-center gap-1.5"
                 >
                   {isPending ? (
                     <>

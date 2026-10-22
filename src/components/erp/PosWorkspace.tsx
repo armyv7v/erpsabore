@@ -1368,7 +1368,7 @@ export default function PosWorkspace({ products: initialProducts, branches }: Po
       </div>
 
       {/* PANEL DERECHO: Venta, Cliente y Barra de Pago */}
-      <div className="w-[410px] bg-white dark:bg-slate-950 flex flex-col overflow-hidden shadow-xl z-10">
+      <div className="w-[410px] bg-white dark:bg-slate-950 flex flex-col overflow-hidden border-l border-slate-200 dark:border-slate-800 z-10">
         
         {/* Barra Cabecera Carrito */}
         <div className="p-4 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between bg-slate-50/50 dark:bg-slate-900/30">

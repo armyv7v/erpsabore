@@ -123,7 +123,7 @@ export default function RegisterForm() {
 
         <div className="pt-2">
           <button
-            className="w-full bg-primary hover:bg-primary/90 text-white font-bold py-3.5 rounded-xl shadow-lg shadow-primary/20 transition-colors flex items-center justify-center gap-2 group disabled:opacity-70 text-sm"
+            className="w-full bg-primary hover:bg-primary/90 text-white font-bold py-3.5 rounded-xl transition-colors flex items-center justify-center gap-2 group disabled:opacity-70 text-sm"
             type="submit"
             disabled={isPending || isGoogleLoading}
           >

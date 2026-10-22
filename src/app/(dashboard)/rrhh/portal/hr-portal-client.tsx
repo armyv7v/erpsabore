@@ -514,7 +514,7 @@ export default function HRPortalClient({
           <main className="flex-1 pb-8">
             {/* Welcome Card */}
             <section className="p-4">
-              <div className="relative overflow-hidden rounded-xl bg-primary p-6 text-white shadow-lg shadow-primary/20">
+              <div className="relative overflow-hidden rounded-xl bg-primary p-6 text-white">
                 <div className="relative z-10">
                   <h3 className="text-xl sm:text-2xl font-bold mb-1">
                     ¡Buen día, {employee?.fullName || currentUser.fullName}!

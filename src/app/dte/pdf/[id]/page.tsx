@@ -125,7 +125,7 @@ export default async function DtePdfPage({ params }: PageProps) {
       <PrintActions />
 
       {/* Contenedor de la hoja física (estilo A4 con proporciones de hoja) */}
-      <article className="max-w-[850px] mx-auto bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-2xl rounded-3xl p-8 print:p-0 print:shadow-none print:border-0 print:bg-white print:dark:bg-white print:rounded-none text-slate-800 dark:text-slate-200 print:text-black print:dark:text-black font-sans leading-relaxed text-sm">
+      <article className="max-w-[850px] mx-auto bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-8 print:p-0 print:shadow-none print:border-0 print:bg-white print:dark:bg-white print:rounded-none text-slate-800 dark:text-slate-200 print:text-black print:dark:text-black font-sans leading-relaxed text-sm">
         
         {/* ENCABEZADO: Emisor y Recuadro Rojo de Factura SII */}
         <header className="grid grid-cols-1 md:grid-cols-12 gap-6 items-start pb-6 border-b border-slate-200 dark:border-slate-800">

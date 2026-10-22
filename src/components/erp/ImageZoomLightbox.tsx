@@ -46,7 +46,7 @@ export default function ImageZoomLightbox({ imageUrl, onClose }: Props) {
         <img
           src={imageUrl}
           alt="Foto ampliada del producto"
-          className="w-full h-full object-contain rounded-2xl shadow-2xl scale-100"
+          className="w-full h-full object-contain rounded-2xl scale-100"
         />
       </div>
 

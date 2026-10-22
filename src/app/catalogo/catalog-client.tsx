@@ -1603,7 +1603,7 @@ export default function CatalogClient({ products, customers = [], user = null }:
               <button
                 type="button"
                 onClick={() => setCompletedOrder(null)}
-                className="w-full py-2.5 rounded-xl bg-slate-900 hover:bg-slate-850 dark:bg-primary dark:hover:bg-primary/95 text-white font-bold text-xs shadow-lg transition hover:scale-[1.01] active:scale-95 cursor-pointer text-center"
+                className="w-full py-2.5 rounded-xl bg-slate-900 hover:bg-slate-850 dark:bg-primary dark:hover:bg-primary/95 text-white font-bold text-xs transition hover:scale-[1.01] active:scale-95 cursor-pointer text-center"
               >
                 Entendido
               </button>
