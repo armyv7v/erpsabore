@@ -270,7 +270,7 @@ export default function CorrectionModal({ invoice, onClose, onSuccess }: Correct
             <button
               type="button"
               onClick={handleSubmit}
-              className="px-5 py-2.5 bg-primary hover:bg-primary/95 text-white active:scale-98 rounded-xl text-xs font-bold transition-all shadow-md shadow-primary/10 flex items-center gap-1.5"
+              className="px-5 py-2.5 bg-primary hover:bg-primary/95 text-white active:scale-98 rounded-xl text-xs font-bold transition shadow-md shadow-primary/10 flex items-center gap-1.5"
               disabled={isPending}
             >
               {isPending ? "Procesando DTE..." : "Emitir Corrección DTE"}

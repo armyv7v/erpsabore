@@ -300,7 +300,7 @@ export default function LivingProductShowcase() {
                       sound.playClick(440);
                       setSelectedSpecimen(null);
                     }}
-                    className="px-4 py-3 rounded-xl border border-white/10 text-white/60 hover:text-white hover:bg-white/5 text-sm font-semibold transition-all"
+                    className="px-4 py-3 rounded-xl border border-white/10 text-white/60 hover:text-white hover:bg-white/5 text-sm font-semibold transition-colors"
                   >
                     Cerrar
                   </button>

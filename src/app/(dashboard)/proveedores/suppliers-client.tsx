@@ -107,7 +107,7 @@ export default function SuppliersClient({ suppliers }: Props) {
           <div className="flex items-center gap-2">
             <button
               onClick={() => setIsModalOpen(true)}
-              className="hidden md:flex items-center gap-2 px-4 py-2.5 bg-primary hover:bg-primary/95 text-white font-bold rounded-xl text-xs transition-all hover:shadow-lg hover:shadow-primary/20 hover:scale-[1.02] active:scale-95 cursor-pointer"
+              className="hidden md:flex items-center gap-2 px-4 py-2.5 bg-primary hover:bg-primary/95 text-white font-bold rounded-xl text-xs transition hover:shadow-lg hover:shadow-primary/20 hover:scale-[1.02] active:scale-95 cursor-pointer"
             >
               <Plus className="w-4 h-4" />
               <span>Agregar Proveedor</span>
@@ -165,7 +165,7 @@ export default function SuppliersClient({ suppliers }: Props) {
               return (
                 <div
                   key={supplier.id}
-                  className={`bg-white dark:bg-slate-800/50 rounded-xl p-4 border border-slate-200 dark:border-slate-700 hover:border-primary/30 transition-all ${
+                  className={`bg-white dark:bg-slate-800/50 rounded-xl p-4 border border-slate-200 dark:border-slate-700 hover:border-primary/30 transition-colors ${
                     supplier.pendingBalance === 0 ? "opacity-80" : ""
                   }`}
                 >

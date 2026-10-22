@@ -52,7 +52,7 @@ export default function RegisterForm() {
             <User className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 w-5 h-5" />
             <input
               name="fullName"
-              className="form-input flex w-full rounded-xl text-slate-900 dark:text-white focus:outline-0 focus:ring-2 focus:ring-primary/50 border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 h-12 pl-12 pr-4 text-sm font-medium transition-all"
+              className="form-input flex w-full rounded-xl text-slate-900 dark:text-white focus:outline-0 focus:ring-2 focus:ring-primary/50 border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 h-12 pl-12 pr-4 text-sm font-medium transition-colors"
               placeholder="Ej: Rodrigo Valdés"
               type="text"
               required
@@ -69,7 +69,7 @@ export default function RegisterForm() {
             <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 w-5 h-5" />
             <input
               name="email"
-              className="form-input flex w-full rounded-xl text-slate-900 dark:text-white focus:outline-0 focus:ring-2 focus:ring-primary/50 border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 h-12 pl-12 pr-4 text-sm font-medium transition-all"
+              className="form-input flex w-full rounded-xl text-slate-900 dark:text-white focus:outline-0 focus:ring-2 focus:ring-primary/50 border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 h-12 pl-12 pr-4 text-sm font-medium transition-colors"
               placeholder="correo@ejemplo.cl"
               type="email"
               required
@@ -86,7 +86,7 @@ export default function RegisterForm() {
             <User className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 w-5 h-5" />
             <input
               name="rut"
-              className="form-input flex w-full rounded-xl text-slate-900 dark:text-white focus:outline-0 focus:ring-2 focus:ring-primary/50 border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 h-12 pl-12 pr-4 text-sm font-medium transition-all"
+              className="form-input flex w-full rounded-xl text-slate-900 dark:text-white focus:outline-0 focus:ring-2 focus:ring-primary/50 border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 h-12 pl-12 pr-4 text-sm font-medium transition-colors"
               placeholder="Ej: 19.876.543-2"
               type="text"
               required
@@ -106,7 +106,7 @@ export default function RegisterForm() {
             <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 w-5 h-5" />
             <input
               name="password"
-              className="form-input flex w-full rounded-xl text-slate-900 dark:text-white focus:outline-0 focus:ring-2 focus:ring-primary/50 border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 h-12 pl-12 pr-4 text-sm font-medium transition-all"
+              className="form-input flex w-full rounded-xl text-slate-900 dark:text-white focus:outline-0 focus:ring-2 focus:ring-primary/50 border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 h-12 pl-12 pr-4 text-sm font-medium transition-colors"
               placeholder="Mínimo 8 caracteres"
               type="password"
               required
@@ -123,7 +123,7 @@ export default function RegisterForm() {
 
         <div className="pt-2">
           <button
-            className="w-full bg-primary hover:bg-primary/90 text-white font-bold py-3.5 rounded-xl shadow-lg shadow-primary/20 transition-all flex items-center justify-center gap-2 group disabled:opacity-70 text-sm"
+            className="w-full bg-primary hover:bg-primary/90 text-white font-bold py-3.5 rounded-xl shadow-lg shadow-primary/20 transition-colors flex items-center justify-center gap-2 group disabled:opacity-70 text-sm"
             type="submit"
             disabled={isPending || isGoogleLoading}
           >
@@ -151,7 +151,7 @@ export default function RegisterForm() {
           type="button"
           onClick={handleGoogleSignUp}
           disabled={isPending || isGoogleLoading}
-          className="w-full bg-white dark:bg-slate-950 hover:bg-slate-50 dark:hover:bg-slate-900 text-slate-700 dark:text-slate-200 border border-slate-250 dark:border-slate-850 font-bold py-3.5 rounded-xl transition-all flex items-center justify-center gap-2 text-sm disabled:opacity-75"
+          className="w-full bg-white dark:bg-slate-950 hover:bg-slate-50 dark:hover:bg-slate-900 text-slate-700 dark:text-slate-200 border border-slate-250 dark:border-slate-850 font-bold py-3.5 rounded-xl transition-colors flex items-center justify-center gap-2 text-sm disabled:opacity-75"
         >
           <Chrome className="w-4 h-4 text-[var(--color-negative)] shrink-0" />
           <span>{isGoogleLoading ? "Conectando con Google..." : "Registrarse con Google"}</span>

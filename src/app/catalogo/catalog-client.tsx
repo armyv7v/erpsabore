@@ -612,7 +612,7 @@ export default function CatalogClient({ products, customers = [], user = null }:
           <button
             type="button"
             onClick={() => handlePrint("simple")}
-            className="flex items-center gap-2 px-3 h-12 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-750 text-slate-800 dark:text-slate-200 text-xs font-extrabold transition-all hover:scale-[1.02] active:scale-95 cursor-pointer"
+            className="flex items-center gap-2 px-3 h-12 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-750 text-slate-800 dark:text-slate-200 text-xs font-extrabold transition hover:scale-[1.02] active:scale-95 cursor-pointer"
             title="Exportar catálogo simple para clientes (sin códigos de barra, fotos más grandes)"
           >
             <Printer className="w-4 h-4" />
@@ -622,7 +622,7 @@ export default function CatalogClient({ products, customers = [], user = null }:
           <button
             type="button"
             onClick={() => handlePrint("book")}
-            className="flex items-center gap-2 px-3 h-12 rounded-xl bg-primary/10 hover:bg-primary/15 text-primary text-xs font-extrabold transition-all hover:scale-[1.02] active:scale-95 cursor-pointer shadow-primary/5"
+            className="flex items-center gap-2 px-3 h-12 rounded-xl bg-primary/10 hover:bg-primary/15 text-primary text-xs font-extrabold transition hover:scale-[1.02] active:scale-95 cursor-pointer shadow-primary/5"
             title="Exportar catálogo completo a formato PDF Libro (A4) con portada, índice y códigos de barra"
           >
             <BookOpen className="w-4 h-4" />
@@ -709,7 +709,7 @@ export default function CatalogClient({ products, customers = [], user = null }:
                 setIsCategoryDropdownOpen(!isCategoryDropdownOpen);
                 setIsSortDropdownOpen(false);
               }}
-              className="flex items-center gap-1.5 rounded-xl border border-slate-200 bg-white px-3 py-2 text-[13px] font-semibold text-slate-700 dark:border-slate-800 dark:bg-slate-950 dark:text-slate-200 hover:border-primary transition-all active:scale-95 cursor-pointer"
+              className="flex items-center gap-1.5 rounded-xl border border-slate-200 bg-white px-3 py-2 text-[13px] font-semibold text-slate-700 dark:border-slate-800 dark:bg-slate-950 dark:text-slate-200 hover:border-primary transition active:scale-95 cursor-pointer"
             >
               <Filter className="w-3.5 h-3.5 text-slate-400" />
               <span>Categoría: <strong>{activeCategory}</strong></span>
@@ -748,7 +748,7 @@ export default function CatalogClient({ products, customers = [], user = null }:
                 setIsSortDropdownOpen(!isSortDropdownOpen);
                 setIsCategoryDropdownOpen(false);
               }}
-              className="flex items-center gap-1.5 rounded-xl border border-slate-200 bg-white px-3 py-2 text-[13px] font-semibold text-slate-700 dark:border-slate-800 dark:bg-slate-950 dark:text-slate-200 hover:border-primary transition-all active:scale-95 cursor-pointer"
+              className="flex items-center gap-1.5 rounded-xl border border-slate-200 bg-white px-3 py-2 text-[13px] font-semibold text-slate-700 dark:border-slate-800 dark:bg-slate-950 dark:text-slate-200 hover:border-primary transition active:scale-95 cursor-pointer"
             >
               <ArrowUpDown className="w-3.5 h-3.5 text-slate-400" />
               <span>Ordenar por: <strong>{SORT_OPTIONS.find(o => o.value === sortBy)?.label}</strong></span>
@@ -980,7 +980,7 @@ export default function CatalogClient({ products, customers = [], user = null }:
                       key={p}
                       type="button"
                       onClick={() => setCurrentPage(p)}
-                      className={`flex size-8 ux-touch-target items-center justify-center rounded-lg text-xs font-bold transition-all cursor-pointer ${
+                      className={`flex size-8 ux-touch-target items-center justify-center rounded-lg text-xs font-bold transition-colors cursor-pointer ${
                         currentPage === p
                           ? "bg-primary text-white shadow-primary/20"
                           : "border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-350 hover:bg-slate-50 dark:hover:bg-slate-800"
@@ -1073,7 +1073,7 @@ export default function CatalogClient({ products, customers = [], user = null }:
                           <button
                             type="button"
                             onClick={() => updateQuantity(item.id, -item.quantity)}
-                            className="rounded-lg p-1.5 text-slate-400 hover:text-[var(--color-negative)] hover:bg-red-50 dark:hover:bg-red-950/20 transition-all cursor-pointer"
+                            className="rounded-lg p-1.5 text-slate-400 hover:text-[var(--color-negative)] hover:bg-red-50 dark:hover:bg-red-950/20 transition-colors cursor-pointer"
                             title="Eliminar producto"
                           >
                             <Trash2 className="w-3.5 h-3.5" />
@@ -1096,7 +1096,7 @@ export default function CatalogClient({ products, customers = [], user = null }:
                             value={item.quantity === 0 ? "" : item.quantity}
                             onChange={(e) => handleManualQuantityChange(item.id, e.target.value)}
                             onBlur={() => handleQuantityBlur(item.id, item.quantity)}
-                            className="w-12 h-8 text-center font-bold text-xs bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg focus:ring-1 focus:ring-primary focus:outline-none focus:bg-white dark:focus:bg-slate-900 transition-all [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                            className="w-12 h-8 text-center font-bold text-xs bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg focus:ring-1 focus:ring-primary focus:outline-none focus:bg-white dark:focus:bg-slate-900 transition-colors [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
                           />
                           <button
                             type="button"
@@ -1168,7 +1168,7 @@ export default function CatalogClient({ products, customers = [], user = null }:
                         <button
                           type="button"
                           onClick={() => setIsNewCustomerModalOpen(true)}
-                          className="px-3 py-2 text-xs font-bold bg-primary/10 hover:bg-primary/15 text-primary rounded-xl flex items-center gap-1 transition-all hover:scale-[1.02] active:scale-95 cursor-pointer"
+                          className="px-3 py-2 text-xs font-bold bg-primary/10 hover:bg-primary/15 text-primary rounded-xl flex items-center gap-1 transition hover:scale-[1.02] active:scale-95 cursor-pointer"
                         >
                           <Plus className="w-3.5 h-3.5" />
                           <span>Nuevo</span>
@@ -1359,7 +1359,7 @@ export default function CatalogClient({ products, customers = [], user = null }:
                   type="button"
                   onClick={handleConfirmOrder}
                   disabled={cartItems.length === 0 || (user && !selectedCustomer) || isPendingOrder}
-                  className="flex-[2] rounded-xl bg-primary hover:bg-primary/95 py-2.5 font-bold text-xs text-white disabled:opacity-50 transition-all hover:scale-[1.01] active:scale-95 flex items-center justify-center gap-1.5 cursor-pointer shadow-md shadow-primary/20"
+                  className="flex-[2] rounded-xl bg-primary hover:bg-primary/95 py-2.5 font-bold text-xs text-white disabled:opacity-50 transition hover:scale-[1.01] active:scale-95 flex items-center justify-center gap-1.5 cursor-pointer shadow-md shadow-primary/20"
                 >
                   {isPendingOrder ? (
                     <>
@@ -1603,7 +1603,7 @@ export default function CatalogClient({ products, customers = [], user = null }:
               <button
                 type="button"
                 onClick={() => setCompletedOrder(null)}
-                className="w-full py-2.5 rounded-xl bg-slate-900 hover:bg-slate-850 dark:bg-primary dark:hover:bg-primary/95 text-white font-bold text-xs shadow-lg transition-all hover:scale-[1.01] active:scale-95 cursor-pointer text-center"
+                className="w-full py-2.5 rounded-xl bg-slate-900 hover:bg-slate-850 dark:bg-primary dark:hover:bg-primary/95 text-white font-bold text-xs shadow-lg transition hover:scale-[1.01] active:scale-95 cursor-pointer text-center"
               >
                 Entendido
               </button>

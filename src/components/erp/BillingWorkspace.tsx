@@ -691,7 +691,7 @@ export default function BillingWorkspace({
                       <button
                         key={p}
                         onClick={() => handlePageChange(p)}
-                        className={`ux-touch-target flex items-center justify-center text-sm font-bold rounded-xl transition-all ${
+                        className={`ux-touch-target flex items-center justify-center text-sm font-bold rounded-xl transition-colors ${
                           page === p
                             ? "bg-primary text-white"
                             : "text-slate-650 dark:text-slate-355 hover:bg-slate-100 dark:hover:bg-slate-800"

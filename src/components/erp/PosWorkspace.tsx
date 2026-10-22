@@ -795,7 +795,7 @@ export default function PosWorkspace({ products: initialProducts, branches }: Po
                   value={selectedBranchId}
                   onChange={(e) => setSelectedBranchId(e.target.value)}
                   required
-                  className="w-full rounded-2xl border border-slate-250 dark:border-slate-700 px-3.5 py-3 bg-slate-50/50 dark:bg-slate-900 text-xs font-bold outline-none focus:ring-2 focus:ring-primary/20 transition-all text-slate-850 dark:text-slate-150"
+                  className="w-full rounded-2xl border border-slate-250 dark:border-slate-700 px-3.5 py-3 bg-slate-50/50 dark:bg-slate-900 text-xs font-bold outline-none focus:ring-2 focus:ring-primary/20 transition-colors text-slate-850 dark:text-slate-150"
                 >
                   <option value="" disabled>Selecciona una Sucursal...</option>
                   {branches.map((b) => (
@@ -816,7 +816,7 @@ export default function PosWorkspace({ products: initialProducts, branches }: Po
                     required
                     min="0"
                     placeholder="Ej: 50000"
-                    className="w-full rounded-2xl border border-slate-250 dark:border-slate-700 pl-8 pr-4 py-3 bg-slate-50/50 dark:bg-slate-900 text-sm font-extrabold outline-none focus:ring-2 focus:ring-primary/20 transition-all text-slate-850 dark:text-slate-150"
+                    className="w-full rounded-2xl border border-slate-250 dark:border-slate-700 pl-8 pr-4 py-3 bg-slate-50/50 dark:bg-slate-900 text-sm font-extrabold outline-none focus:ring-2 focus:ring-primary/20 transition-colors text-slate-850 dark:text-slate-150"
                   />
                 </div>
               </div>
@@ -860,7 +860,7 @@ export default function PosWorkspace({ products: initialProducts, branches }: Po
           <div className="flex items-center gap-2 flex-1">
             <Link
               href="/"
-              className="p-2.5 rounded-xl border border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-900 text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-slate-200 transition-all active:scale-95 flex items-center justify-center shrink-0"
+              className="p-2.5 rounded-xl border border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-900 text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-slate-200 transition active:scale-95 flex items-center justify-center shrink-0"
               title="Volver al Inicio del ERP"
             >
               <ChevronLeft className="w-4 h-4 text-slate-500 hover:text-slate-800 dark:text-slate-400" />
@@ -872,7 +872,7 @@ export default function PosWorkspace({ products: initialProducts, branches }: Po
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Buscar por SKU, Nombre o código de barra (F1)..."
-                className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 focus:ring-2 focus:ring-primary/20 outline-none text-sm font-medium transition-all"
+                className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 focus:ring-2 focus:ring-primary/20 outline-none text-sm font-medium transition-colors"
               />
             </div>
           </div>
@@ -880,7 +880,7 @@ export default function PosWorkspace({ products: initialProducts, branches }: Po
           <div className="flex bg-slate-100 dark:bg-slate-900 p-1 rounded-xl">
             <button
               onClick={() => setActiveTab("catalog")}
-              className={`px-4 py-2 rounded-lg text-xs font-bold transition-all ${
+              className={`px-4 py-2 rounded-lg text-xs font-bold transition-colors ${
                 activeTab === "catalog"
                   ? "bg-white dark:bg-slate-800 text-primary"
                   : "text-slate-500 hover:text-slate-800 dark:hover:text-slate-200"
@@ -890,7 +890,7 @@ export default function PosWorkspace({ products: initialProducts, branches }: Po
             </button>
             <button
               onClick={() => setActiveTab("orders")}
-              className={`px-4 py-2 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 ${
+              className={`px-4 py-2 rounded-lg text-xs font-bold transition-colors flex items-center gap-1.5 ${
                 activeTab === "orders"
                   ? "bg-white dark:bg-slate-800 text-primary"
                   : "text-slate-500 hover:text-slate-800 dark:hover:text-slate-200"
@@ -905,7 +905,7 @@ export default function PosWorkspace({ products: initialProducts, branches }: Po
             </button>
             <button
               onClick={() => setActiveTab("history")}
-              className={`px-4 py-2 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 ${
+              className={`px-4 py-2 rounded-lg text-xs font-bold transition-colors flex items-center gap-1.5 ${
                 activeTab === "history"
                   ? "bg-white dark:bg-slate-800 text-primary"
                   : "text-slate-500 hover:text-slate-800 dark:hover:text-slate-200"
@@ -918,7 +918,7 @@ export default function PosWorkspace({ products: initialProducts, branches }: Po
               onClick={handleSyncImages}
               disabled={isSyncing}
               title="Sincronizar imágenes del catálogo con la base de datos Supabase"
-              className="ml-1 p-2 rounded-lg hover:bg-white dark:hover:bg-slate-800 text-slate-500 hover:text-primary transition-all disabled:opacity-50 flex items-center justify-center cursor-pointer"
+              className="ml-1 p-2 rounded-lg hover:bg-white dark:hover:bg-slate-800 text-slate-500 hover:text-primary transition-colors disabled:opacity-50 flex items-center justify-center cursor-pointer"
             >
               <RefreshCw className={`w-3.5 h-3.5 ${isSyncing ? "animate-spin text-primary" : ""}`} />
             </button>
@@ -928,7 +928,7 @@ export default function PosWorkspace({ products: initialProducts, branches }: Po
                 type="button"
                 onClick={handleOpenCloseShiftModal}
                 title="Realizar Arqueo y Cerrar Caja"
-                className="ml-2 px-3 py-1.5 rounded-lg border border-red-200 hover:border-red-300 dark:border-red-950 dark:hover:border-red-900 bg-red-500/10 hover:bg-red-500/15 text-red-600 dark:text-red-400 text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer active:scale-95 shrink-0"
+                className="ml-2 px-3 py-1.5 rounded-lg border border-red-200 hover:border-red-300 dark:border-red-950 dark:hover:border-red-900 bg-red-500/10 hover:bg-red-500/15 text-red-600 dark:text-red-400 text-xs font-bold transition flex items-center gap-1.5 cursor-pointer active:scale-95 shrink-0"
               >
                 <Landmark className="w-3.5 h-3.5" />
                 <span>Cerrar Caja</span>
@@ -962,7 +962,7 @@ export default function PosWorkspace({ products: initialProducts, branches }: Po
                 <button
                   type="button"
                   onClick={() => setStockFilter("all")}
-                  className={`pb-2.5 text-xs font-bold border-b-2 transition-all cursor-pointer ${
+                  className={`pb-2.5 text-xs font-bold border-b-2 transition-colors cursor-pointer ${
                     stockFilter === "all"
                       ? "border-primary text-primary"
                       : "border-transparent text-slate-500 hover:text-slate-800 dark:hover:text-slate-250"
@@ -973,7 +973,7 @@ export default function PosWorkspace({ products: initialProducts, branches }: Po
                 <button
                   type="button"
                   onClick={() => setStockFilter("critical")}
-                  className={`pb-2.5 text-xs font-bold border-b-2 transition-all cursor-pointer ${
+                  className={`pb-2.5 text-xs font-bold border-b-2 transition-colors cursor-pointer ${
                     stockFilter === "critical"
                       ? "border-primary text-primary"
                       : "border-transparent text-slate-500 hover:text-slate-800 dark:hover:text-slate-250"
@@ -984,7 +984,7 @@ export default function PosWorkspace({ products: initialProducts, branches }: Po
                 <button
                   type="button"
                   onClick={() => setStockFilter("out_of_stock")}
-                  className={`pb-2.5 text-xs font-bold border-b-2 transition-all cursor-pointer ${
+                  className={`pb-2.5 text-xs font-bold border-b-2 transition-colors cursor-pointer ${
                     stockFilter === "out_of_stock"
                       ? "border-primary text-primary"
                       : "border-transparent text-slate-500 hover:text-slate-800 dark:hover:text-slate-250"
@@ -1004,7 +1004,7 @@ export default function PosWorkspace({ products: initialProducts, branches }: Po
                       setIsCategoryDropdownOpen(!isCategoryDropdownOpen);
                       setIsSortDropdownOpen(false);
                     }}
-                    className="flex items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-2.5 py-1.5 text-[11px] font-bold text-slate-700 dark:border-slate-850 dark:bg-slate-950 dark:text-slate-200 hover:border-primary transition-all active:scale-95 cursor-pointer"
+                    className="flex items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-2.5 py-1.5 text-[11px] font-bold text-slate-700 dark:border-slate-850 dark:bg-slate-950 dark:text-slate-200 hover:border-primary transition active:scale-95 cursor-pointer"
                   >
                     <Filter className="w-3 h-3 text-slate-400" />
                     <span>Categoría: <strong>{activeCategory}</strong></span>
@@ -1043,7 +1043,7 @@ export default function PosWorkspace({ products: initialProducts, branches }: Po
                       setIsSortDropdownOpen(!isSortDropdownOpen);
                       setIsCategoryDropdownOpen(false);
                     }}
-                    className="flex items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-2.5 py-1.5 text-[11px] font-bold text-slate-700 dark:border-slate-850 dark:bg-slate-950 dark:text-slate-200 hover:border-primary transition-all active:scale-95 cursor-pointer"
+                    className="flex items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-2.5 py-1.5 text-[11px] font-bold text-slate-700 dark:border-slate-850 dark:bg-slate-950 dark:text-slate-200 hover:border-primary transition active:scale-95 cursor-pointer"
                   >
                     <ArrowUpDown className="w-3 h-3 text-slate-400" />
                     <span>Ordenar por: <strong>{sortOptions.find(o => o.value === sortBy)?.label}</strong></span>
@@ -1087,7 +1087,7 @@ export default function PosWorkspace({ products: initialProducts, branches }: Po
                     return (
                       <div
                         key={p.id}
-                        className={`relative flex flex-col rounded-xl bg-white border p-2.5 hover:shadow-md transition-all dark:bg-slate-950 dark:border-slate-800 ${
+                        className={`relative flex flex-col rounded-xl bg-white border p-2.5 hover:shadow-md transition-colors dark:bg-slate-950 dark:border-slate-800 ${
                           p.stockQuantity <= 0 ? "opacity-50" : ""
                         }`}
                       >
@@ -1262,7 +1262,7 @@ export default function PosWorkspace({ products: initialProducts, branches }: Po
                         </div>
                         <button
                           onClick={() => loadOrder(order)}
-                          className="px-4 py-2 bg-primary hover:bg-primary/95 text-white font-bold text-xs rounded-xl transition-all"
+                          className="px-4 py-2 bg-primary hover:bg-primary/95 text-white font-bold text-xs rounded-xl transition-colors"
                         >
                           Cargar
                         </button>
@@ -1283,7 +1283,7 @@ export default function PosWorkspace({ products: initialProducts, branches }: Po
                     type="text"
                     value={historySearch}
                     onChange={(e) => setHistorySearch(e.target.value)}
-                    className="w-full bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-lg py-2 pl-9 pr-4 focus:ring-2 focus:ring-primary/20 outline-none transition-all text-xs placeholder:text-slate-400"
+                    className="w-full bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-lg py-2 pl-9 pr-4 focus:ring-2 focus:ring-primary/20 outline-none transition-colors text-xs placeholder:text-slate-400"
                     placeholder="Buscar folio o cliente..."
                   />
                 </div>
@@ -1419,7 +1419,7 @@ export default function PosWorkspace({ products: initialProducts, branches }: Po
                       const val = parseInt(e.target.value) || 0;
                       updateCartQty(item.product.id, val);
                     }}
-                    className="w-10 text-center font-bold text-xs outline-none bg-transparent hover:bg-slate-100 focus:bg-slate-100 dark:hover:bg-slate-800 dark:focus:bg-slate-800 rounded py-0.5 transition-all text-slate-800 dark:text-slate-200 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                    className="w-10 text-center font-bold text-xs outline-none bg-transparent hover:bg-slate-100 focus:bg-slate-100 dark:hover:bg-slate-800 dark:focus:bg-slate-800 rounded py-0.5 transition-colors text-slate-800 dark:text-slate-200 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
                   />
                   <button
                     onClick={() => addToCart(item.product)}
@@ -1470,7 +1470,7 @@ export default function PosWorkspace({ products: initialProducts, branches }: Po
                 if (!customerName) setCustomerName("Cliente General");
                 setShowPaymentModal(true);
               }}
-              className="w-full flex items-center justify-center gap-2 rounded-2xl bg-primary hover:bg-primary/95 py-3.5 text-sm font-bold text-white transition-all shadow-md active:scale-[0.98]"
+              className="w-full flex items-center justify-center gap-2 rounded-2xl bg-primary hover:bg-primary/95 py-3.5 text-sm font-bold text-white transition shadow-md active:scale-[0.98]"
             >
               <CreditCard className="w-5 h-5" />
               <span>Cobrar (${subtotal.toLocaleString("es-CL")})</span>
@@ -1565,7 +1565,7 @@ export default function PosWorkspace({ products: initialProducts, branches }: Po
                         setCustomerName("Cliente General");
                         setCustomerRut("66.666.666-6");
                       }}
-                      className={`py-2.5 rounded-lg text-xs font-extrabold transition-all flex items-center justify-center gap-1.5 ${
+                      className={`py-2.5 rounded-lg text-xs font-extrabold transition-colors flex items-center justify-center gap-1.5 ${
                         dteType === 39
                           ? "bg-white dark:bg-slate-800 text-primary"
                           : "text-slate-500 hover:text-slate-800 dark:hover:text-slate-200"
@@ -1583,7 +1583,7 @@ export default function PosWorkspace({ products: initialProducts, branches }: Po
                           setCustomerRut("");
                         }
                       }}
-                      className={`py-2.5 rounded-lg text-xs font-extrabold transition-all flex items-center justify-center gap-1.5 ${
+                      className={`py-2.5 rounded-lg text-xs font-extrabold transition-colors flex items-center justify-center gap-1.5 ${
                         dteType === 33
                           ? "bg-white dark:bg-slate-800 text-primary"
                           : "text-slate-500 hover:text-slate-800 dark:hover:text-slate-200"
@@ -1693,7 +1693,7 @@ export default function PosWorkspace({ products: initialProducts, branches }: Po
                               setTransferTimestamp(new Date().toLocaleString("es-CL"));
                             }
                           }}
-                          className={`flex items-center justify-center py-3 px-2 rounded-xl border transition-all text-xs font-extrabold gap-2 ${
+                          className={`flex items-center justify-center py-3 px-2 rounded-xl border transition-colors text-xs font-extrabold gap-2 ${
                             paymentMethod === method.id
                               ? "border-primary bg-primary/5 text-primary ring-1 ring-primary"
                               : "border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-900 text-slate-650 dark:text-slate-405"
@@ -1946,7 +1946,7 @@ export default function PosWorkspace({ products: initialProducts, branches }: Po
                   autoFocus
                   onChange={(e) => setAmountPaid(e.target.value)}
                   placeholder={`${subtotal}`}
-                  className="w-full rounded-2xl border border-slate-250 dark:border-slate-700 pl-8 pr-4 py-3 bg-slate-50/50 dark:bg-slate-900/20 text-lg font-extrabold outline-none focus:ring-2 focus:ring-primary/20 transition-all text-slate-850 dark:text-slate-150"
+                  className="w-full rounded-2xl border border-slate-250 dark:border-slate-700 pl-8 pr-4 py-3 bg-slate-50/50 dark:bg-slate-900/20 text-lg font-extrabold outline-none focus:ring-2 focus:ring-primary/20 transition-colors text-slate-850 dark:text-slate-150"
                 />
               </div>
             </div>
@@ -1961,7 +1961,7 @@ export default function PosWorkspace({ products: initialProducts, branches }: Po
                       key={amt}
                       type="button"
                       onClick={() => setAmountPaid(String(amt))}
-                      className={`min-h-11 py-1 rounded-xl border text-xs font-extrabold text-center transition-all ${
+                      className={`min-h-11 py-1 rounded-xl border text-xs font-extrabold text-center transition-colors ${
                         Number(amountPaid) === amt
                           ? "bg-primary border-primary text-white shadow-md scale-[1.03]"
                           : "bg-slate-50 dark:bg-slate-900 border-slate-200 dark:border-slate-850 text-slate-750 dark:text-slate-350 hover:bg-slate-100 dark:hover:bg-slate-800"
@@ -2044,7 +2044,7 @@ export default function PosWorkspace({ products: initialProducts, branches }: Po
                 autoFocus
                 onChange={(e) => setTransferTxId(e.target.value)}
                 placeholder="Ej: TX-902381"
-                className="w-full rounded-2xl border border-slate-250 dark:border-slate-700 px-4 py-3 bg-slate-50/50 dark:bg-slate-900/20 text-sm font-extrabold outline-none focus:ring-2 focus:ring-primary/20 transition-all text-slate-850 dark:text-slate-150"
+                className="w-full rounded-2xl border border-slate-250 dark:border-slate-700 px-4 py-3 bg-slate-50/50 dark:bg-slate-900/20 text-sm font-extrabold outline-none focus:ring-2 focus:ring-primary/20 transition-colors text-slate-850 dark:text-slate-150"
               />
             </div>
 
@@ -2055,7 +2055,7 @@ export default function PosWorkspace({ products: initialProducts, branches }: Po
                 type="text"
                 value={transferTimestamp}
                 onChange={(e) => setTransferTimestamp(e.target.value)}
-                className="w-full rounded-2xl border border-slate-250 dark:border-slate-700 px-4 py-3 bg-slate-50/50 dark:bg-slate-900/20 text-xs font-bold outline-none focus:ring-2 focus:ring-primary/20 transition-all text-slate-600 dark:text-slate-450"
+                className="w-full rounded-2xl border border-slate-250 dark:border-slate-700 px-4 py-3 bg-slate-50/50 dark:bg-slate-900/20 text-xs font-bold outline-none focus:ring-2 focus:ring-primary/20 transition-colors text-slate-600 dark:text-slate-450"
               />
             </div>
 
@@ -2294,7 +2294,7 @@ export default function PosWorkspace({ products: initialProducts, branches }: Po
                 <button
                   type="submit"
                   disabled={isClosingShiftPending}
-                  className="flex-1 py-3 rounded-2xl bg-red-600 hover:bg-red-700 text-white font-extrabold text-xs transition-all shadow-md shadow-red-600/10 active:scale-[0.98] disabled:opacity-50 flex items-center justify-center gap-1.5"
+                  className="flex-1 py-3 rounded-2xl bg-red-600 hover:bg-red-700 text-white font-extrabold text-xs transition shadow-md shadow-red-600/10 active:scale-[0.98] disabled:opacity-50 flex items-center justify-center gap-1.5"
                 >
                   {isClosingShiftPending ? (
                     <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />

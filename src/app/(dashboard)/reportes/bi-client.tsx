@@ -384,7 +384,7 @@ export default function BIClient({ biBase }: Props) {
                   {biBase.revenueSeries.map((bar, i) => (
                     <div key={i} className="flex-1 flex flex-col items-center gap-1">
                       <div
-                        className={`w-full rounded-t-md transition-all ${
+                        className={`w-full rounded-t-md transition-colors ${
                           i === biBase.revenueSeries.length - 1
                             ? "bg-primary"
                             : "bg-primary/25 dark:bg-primary/20"

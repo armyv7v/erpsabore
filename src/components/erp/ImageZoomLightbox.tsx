@@ -36,7 +36,7 @@ export default function ImageZoomLightbox({ imageUrl, onClose }: Props) {
           e.stopPropagation();
           onClose();
         }}
-        className="absolute top-6 right-6 size-12 bg-white/10 hover:bg-white/20 active:scale-95 text-white rounded-full flex items-center justify-center transition-all cursor-pointer z-10"
+        className="absolute top-6 right-6 size-12 bg-white/10 hover:bg-white/20 active:scale-95 text-white rounded-full flex items-center justify-center transition cursor-pointer z-10"
         title="Cerrar (Esc)"
       >
         <X className="w-6 h-6" />

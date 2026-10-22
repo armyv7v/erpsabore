@@ -203,7 +203,7 @@ export default function TicketReceipt({ sale, customer, items, dteType, onClose 
           
           <button
             onClick={handlePrint}
-            className="flex-1 flex items-center justify-center gap-2 rounded-xl bg-primary py-2.5 text-xs font-bold text-white hover:bg-primary/95 transition-all"
+            className="flex-1 flex items-center justify-center gap-2 rounded-xl bg-primary py-2.5 text-xs font-bold text-white hover:bg-primary/95 transition-colors"
           >
             <Printer className="w-4 h-4" />
             <span>Imprimir Ticket</span>

@@ -215,12 +215,12 @@ export default function BranchesClient({ branches }: Props) {
         <div className="flex gap-2 w-full sm:w-auto">
           <button
             onClick={() => setShowAddModal(true)}
-            className="flex flex-1 sm:flex-none justify-center items-center gap-2 px-4 py-2 rounded-xl bg-primary text-white font-medium hover:bg-primary/90 transition-all hover:scale-[1.02] active:scale-[0.98]"
+            className="flex flex-1 sm:flex-none justify-center items-center gap-2 px-4 py-2 rounded-xl bg-primary text-white font-medium hover:bg-primary/90 transition hover:scale-[1.02] active:scale-[0.98]"
           >
             <Plus className="w-5 h-5" />
             <span>Añadir Sucursal</span>
           </button>
-          <button className="flex flex-1 sm:flex-none justify-center items-center gap-2 px-4 py-2 rounded-xl bg-primary/10 text-primary font-medium hover:bg-primary/20 transition-all">
+          <button className="flex flex-1 sm:flex-none justify-center items-center gap-2 px-4 py-2 rounded-xl bg-primary/10 text-primary font-medium hover:bg-primary/20 transition-colors">
             <Filter className="w-5 h-5" />
             <span>Filtros</span>
           </button>
@@ -271,7 +271,7 @@ export default function BranchesClient({ branches }: Props) {
             {branches.length === 0 && (
               <button
                 onClick={() => setShowAddModal(true)}
-                className="flex items-center gap-2 px-4 py-2 rounded-xl bg-primary text-white text-sm font-semibold hover:bg-primary/90 transition-all hover:scale-[1.02] active:scale-[0.98]"
+                className="flex items-center gap-2 px-4 py-2 rounded-xl bg-primary text-white text-sm font-semibold hover:bg-primary/90 transition hover:scale-[1.02] active:scale-[0.98]"
               >
                 <Plus className="w-4 h-4" />
                 <span>Añadir Sucursal</span>
@@ -384,7 +384,7 @@ export default function BranchesClient({ branches }: Props) {
                     </button>
                     <button
                       onClick={() => handleOpenDetails(branch)}
-                      className="px-4 py-2 text-sm font-semibold bg-primary text-white rounded-xl hover:bg-primary/90 transition-all hover:scale-[1.02] active:scale-[0.98]"
+                      className="px-4 py-2 text-sm font-semibold bg-primary text-white rounded-xl hover:bg-primary/90 transition hover:scale-[1.02] active:scale-[0.98]"
                     >
                       Ver Detalles
                     </button>
@@ -584,7 +584,7 @@ export default function BranchesClient({ branches }: Props) {
                 <button
                   type="submit"
                   disabled={isPending}
-                  className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-semibold bg-primary text-white shadow-md hover:bg-primary/90 transition-all hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50"
+                  className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-semibold bg-primary text-white shadow-md hover:bg-primary/90 transition hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50"
                 >
                   {isPending ? (
                     <>
@@ -789,7 +789,7 @@ export default function BranchesClient({ branches }: Props) {
                 <button
                   type="submit"
                   disabled={isPending}
-                  className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-semibold bg-primary text-white shadow-md hover:bg-primary/90 transition-all hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50"
+                  className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-semibold bg-primary text-white shadow-md hover:bg-primary/90 transition hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50"
                 >
                   {isPending ? (
                     <>
@@ -949,7 +949,7 @@ export default function BranchesClient({ branches }: Props) {
                   setShowDetailsModal(false);
                   handleOpenEdit(detailsBranch);
                 }}
-                className="px-4 py-2 text-sm font-semibold bg-primary text-white rounded-xl shadow-md hover:bg-primary/90 transition-all"
+                className="px-4 py-2 text-sm font-semibold bg-primary text-white rounded-xl shadow-md hover:bg-primary/90 transition-colors"
               >
                 Configurar Sucursal
               </button>

@@ -376,7 +376,7 @@ export default function InventoryClient({ products, summary }: Props) {
           <div className="relative">
             <button
               onClick={() => setActiveFilterDropdown(activeFilterDropdown === "category" ? null : "category")}
-              className={`flex items-center gap-2 px-3 py-1.5 border rounded-lg text-sm transition-all z-30 relative ${
+              className={`flex items-center gap-2 px-3 py-1.5 border rounded-lg text-sm transition-colors z-30 relative ${
                 selectedCategory !== "all"
                   ? "bg-primary/10 border-primary/40 text-primary font-semibold"
                   : "bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-200"
@@ -415,7 +415,7 @@ export default function InventoryClient({ products, summary }: Props) {
           <div className="relative">
             <button
               onClick={() => setActiveFilterDropdown(activeFilterDropdown === "warehouse" ? null : "warehouse")}
-              className={`flex items-center gap-2 px-3 py-1.5 border rounded-lg text-sm transition-all z-30 relative ${
+              className={`flex items-center gap-2 px-3 py-1.5 border rounded-lg text-sm transition-colors z-30 relative ${
                 selectedWarehouse !== "all"
                   ? "bg-primary/10 border-primary/40 text-primary font-semibold"
                   : "bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-750 dark:text-slate-200"
@@ -454,7 +454,7 @@ export default function InventoryClient({ products, summary }: Props) {
           <div className="relative">
             <button
               onClick={() => setActiveFilterDropdown(activeFilterDropdown === "sort" ? null : "sort")}
-              className={`flex items-center gap-2 px-3 py-1.5 border rounded-lg text-sm transition-all z-30 relative ${
+              className={`flex items-center gap-2 px-3 py-1.5 border rounded-lg text-sm transition-colors z-30 relative ${
                 selectedSort !== "name-asc"
                   ? "bg-primary/10 border-primary/40 text-primary font-semibold"
                   : "bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-750 dark:text-slate-200"
@@ -767,7 +767,7 @@ export default function InventoryClient({ products, summary }: Props) {
                     key={p}
                     type="button"
                     onClick={() => setCurrentPage(p)}
-                    className={`flex size-8 ux-touch-target items-center justify-center rounded-lg text-xs font-bold transition-all cursor-pointer ${
+                    className={`flex size-8 ux-touch-target items-center justify-center rounded-lg text-xs font-bold transition-colors cursor-pointer ${
                       currentPage === p
                         ? "bg-primary text-white shadow-primary/20"
                         : "border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-350 hover:bg-slate-50 dark:hover:bg-slate-800"
@@ -1057,7 +1057,7 @@ export default function InventoryClient({ products, summary }: Props) {
                     <button
                       type="button"
                       onClick={() => setEditStockQty((q) => Math.max(0, q - 1))}
-                      className="flex size-10 items-center justify-center rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-350 transition-all font-bold text-lg select-none active:scale-95 cursor-pointer"
+                      className="flex size-10 items-center justify-center rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-350 transition font-bold text-lg select-none active:scale-95 cursor-pointer"
                     >
                       -
                     </button>
@@ -1071,7 +1071,7 @@ export default function InventoryClient({ products, summary }: Props) {
                     <button
                       type="button"
                       onClick={() => setEditStockQty((q) => q + 1)}
-                      className="flex size-10 items-center justify-center rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-350 transition-all font-bold text-lg select-none active:scale-95 cursor-pointer"
+                      className="flex size-10 items-center justify-center rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-350 transition font-bold text-lg select-none active:scale-95 cursor-pointer"
                     >
                       +
                     </button>
@@ -1282,7 +1282,7 @@ export default function InventoryClient({ products, summary }: Props) {
                     }
                   });
                 }}
-                className="px-4 py-2 bg-red-600 hover:bg-red-700 active:scale-98 rounded-xl text-xs font-bold text-white transition-all shadow-md shadow-red-600/10 flex items-center gap-1.5"
+                className="px-4 py-2 bg-red-600 hover:bg-red-700 active:scale-98 rounded-xl text-xs font-bold text-white transition shadow-md shadow-red-600/10 flex items-center gap-1.5"
                 disabled={isDeletePending}
               >
                 {isDeletePending ? "Eliminando..." : "Sí, Eliminar"}

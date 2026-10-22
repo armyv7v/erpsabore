@@ -330,7 +330,7 @@ export default function SalesWorkspace({
               value={searchQuery}
               onChange={(event) => setSearchQuery(event.target.value)}
               placeholder="Buscar por cliente, número o RUT..."
-              className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 focus:ring-2 focus:ring-primary/20 outline-none text-sm transition-all"
+              className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 focus:ring-2 focus:ring-primary/20 outline-none text-sm transition-colors"
             />
           </div>
           <button
@@ -525,7 +525,7 @@ export default function SalesWorkspace({
                   <button
                     key={p}
                     onClick={() => handlePageChange(p)}
-                    className={`w-9 h-9 flex items-center justify-center text-sm font-bold rounded-xl transition-all ${
+                    className={`w-9 h-9 flex items-center justify-center text-sm font-bold rounded-xl transition-colors ${
                       page === p
                         ? "bg-primary text-white"
                         : "text-slate-650 dark:text-slate-350 hover:bg-slate-100 dark:hover:bg-slate-800"

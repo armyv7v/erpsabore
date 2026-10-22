@@ -196,7 +196,7 @@ export default function ProductDetailsModal({ product, onClose, onAddToCart, onE
                     onClose();
                   }}
                   disabled={product.stockQuantity === 0}
-                  className="w-full flex items-center justify-center gap-2 bg-primary hover:bg-primary/95 py-3 rounded-xl text-xs font-bold text-white transition-all shadow-md shadow-primary/20 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+                  className="w-full flex items-center justify-center gap-2 bg-primary hover:bg-primary/95 py-3 rounded-xl text-xs font-bold text-white transition shadow-md shadow-primary/20 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
                 >
                   <ShoppingCart className="w-4 h-4" />
                   <span>AÑADIR AL CARRITO</span>
@@ -210,7 +210,7 @@ export default function ProductDetailsModal({ product, onClose, onAddToCart, onE
                     onEdit();
                     onClose();
                   }}
-                  className="w-full flex items-center justify-center gap-2 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 py-3 rounded-xl text-xs font-bold text-slate-800 dark:text-slate-200 transition-all active:scale-95 cursor-pointer border border-slate-200 dark:border-slate-700/60"
+                  className="w-full flex items-center justify-center gap-2 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 py-3 rounded-xl text-xs font-bold text-slate-800 dark:text-slate-200 transition active:scale-95 cursor-pointer border border-slate-200 dark:border-slate-700/60"
                 >
                   <Sliders className="w-4 h-4 text-slate-400" />
                   <span>EDITAR PRODUCTO</span>

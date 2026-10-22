@@ -133,7 +133,7 @@ export default function ProductImageUploader({ currentImageUrl = null, name = "i
             <button
               type="button"
               onClick={triggerSelect}
-              className="p-2.5 bg-white/20 hover:bg-white/35 text-white rounded-full backdrop-blur-md transition-all active:scale-90 flex items-center justify-center cursor-pointer shadow"
+              className="p-2.5 bg-white/20 hover:bg-white/35 text-white rounded-full backdrop-blur-md transition active:scale-90 flex items-center justify-center cursor-pointer shadow"
               title="Cambiar foto"
             >
               <RefreshCw className="w-5 h-5 animate-hover-spin" />
@@ -141,7 +141,7 @@ export default function ProductImageUploader({ currentImageUrl = null, name = "i
             <button
               type="button"
               onClick={handleRemove}
-              className="p-2.5 bg-red-500/80 hover:bg-red-500 text-white rounded-full backdrop-blur-md transition-all active:scale-90 flex items-center justify-center cursor-pointer shadow"
+              className="p-2.5 bg-red-500/80 hover:bg-red-500 text-white rounded-full backdrop-blur-md transition active:scale-90 flex items-center justify-center cursor-pointer shadow"
               title="Quitar foto"
             >
               <X className="w-5 h-5" />

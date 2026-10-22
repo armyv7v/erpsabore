@@ -24,7 +24,7 @@ export default function PrintActions() {
       
       <button
         onClick={handlePrint}
-        className="flex items-center gap-2 px-5 py-2.5 text-xs font-bold text-white bg-emerald-600 hover:bg-emerald-700 rounded-xl transition-all shadow-md hover:shadow-lg hover:scale-105 active:scale-95"
+        className="flex items-center gap-2 px-5 py-2.5 text-xs font-bold text-white bg-emerald-600 hover:bg-emerald-700 rounded-xl transition shadow-md hover:shadow-lg hover:scale-105 active:scale-95"
       >
         <Printer className="h-4 w-4" />
         Imprimir DTE (PDF)

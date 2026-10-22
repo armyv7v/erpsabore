@@ -170,7 +170,7 @@ export default function ShipmentsClient({ shipments, userRole }: Props) {
         {/* Search + Filters */}
         <div className="flex flex-col md:flex-row gap-4">
           <div className="flex-1">
-            <div className="flex h-12 w-full items-stretch rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 focus-within:border-primary transition-all">
+            <div className="flex h-12 w-full items-stretch rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 focus-within:border-primary transition-colors">
               <div className="text-slate-400 flex items-center justify-center pl-4">
                 <Search className="w-5 h-5" />
               </div>
@@ -192,7 +192,7 @@ export default function ShipmentsClient({ shipments, userRole }: Props) {
               <button
                 key={value}
                 onClick={() => setActiveStatus(value)}
-                className={`flex h-9 shrink-0 items-center justify-center gap-2 rounded-full px-5 text-sm font-semibold transition-all ${
+                className={`flex h-9 shrink-0 items-center justify-center gap-2 rounded-full px-5 text-sm font-semibold transition-colors ${
                   activeStatus === value
                     ? "bg-primary text-white"
                     : "bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:border-primary"
@@ -495,14 +495,14 @@ export default function ShipmentsClient({ shipments, userRole }: Props) {
                   type="button"
                   onClick={() => setEditingShipment(null)}
                   disabled={isPending}
-                  className="flex-1 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-900 font-bold text-xs transition-all cursor-pointer text-center"
+                  className="flex-1 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-900 font-bold text-xs transition-colors cursor-pointer text-center"
                 >
                   Cancelar
                 </button>
                 <button
                   type="submit"
                   disabled={isPending}
-                  className="flex-1 py-2.5 rounded-xl bg-primary hover:bg-primary/95 text-white font-bold text-xs shadow-lg shadow-primary/10 transition-all hover:scale-[1.01] active:scale-95 cursor-pointer text-center flex items-center justify-center gap-1.5"
+                  className="flex-1 py-2.5 rounded-xl bg-primary hover:bg-primary/95 text-white font-bold text-xs shadow-lg shadow-primary/10 transition hover:scale-[1.01] active:scale-95 cursor-pointer text-center flex items-center justify-center gap-1.5"
                 >
                   {isPending ? (
                     <>

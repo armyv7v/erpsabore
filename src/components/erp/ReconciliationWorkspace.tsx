@@ -774,7 +774,7 @@ export default function ReconciliationWorkspace({
                     <select
                       value={selectedBank}
                       onChange={(e) => setSelectedBank(e.target.value)}
-                      className="w-full h-11 px-4 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-slate-100 text-sm focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all"
+                      className="w-full h-11 px-4 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-slate-100 text-sm focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-colors"
                     >
                       <option value="">Seleccione el banco emisor</option>
                       <option value="Santander">Banco Santander Chile</option>
@@ -807,7 +807,7 @@ export default function ReconciliationWorkspace({
                       const file = e.dataTransfer.files?.[0];
                       if (file) processFile(file);
                     }}
-                    className={`border-2 border-dashed rounded-2xl p-10 flex flex-col items-center justify-center text-center transition-all ${
+                    className={`border-2 border-dashed rounded-2xl p-10 flex flex-col items-center justify-center text-center transition-colors ${
                       isDragging
                         ? "border-primary bg-primary/5"
                         : "border-slate-200 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-900/20 hover:border-primary/50"

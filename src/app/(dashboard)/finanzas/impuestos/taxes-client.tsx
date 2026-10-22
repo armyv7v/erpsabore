@@ -162,7 +162,7 @@ export default function TaxesClient({ initialData, defaultStartDate, defaultEndD
         {alerts.map((alert) => (
           <div 
             key={alert.id} 
-            className={`p-4 rounded-xl border flex gap-3 items-start transition-all ${
+            className={`p-4 rounded-xl border flex gap-3 items-start transition-colors ${
               alert.type === "error" 
                 ? "bg-rose-50 dark:bg-rose-950/20 border-rose-200 text-rose-800 dark:text-rose-400" 
                 : alert.type === "warning"
