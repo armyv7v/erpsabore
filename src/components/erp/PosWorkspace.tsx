@@ -2015,7 +2015,7 @@ export default function PosWorkspace({ products: initialProducts, branches }: Po
             {/* Cabecera */}
             <div className="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-slate-800/85">
               <div className="flex items-center gap-2">
-                <Landmark className="w-5 h-5 text-purple-500" />
+                <Landmark className="w-5 h-5 text-[var(--color-primary-ink)]" />
                 <h3 className="font-extrabold text-base text-slate-900 dark:text-slate-100">Validar Transferencia</h3>
               </div>
               <button 
@@ -2133,7 +2133,7 @@ export default function PosWorkspace({ products: initialProducts, branches }: Po
                   }
                   setShowTransferPopup(false);
                 }}
-                className="flex-1 py-2.5 rounded-xl bg-purple-600 hover:bg-purple-700 text-white font-extrabold text-xs transition-colors shadow-md shadow-purple-600/10 active:scale-[0.98]"
+                className="flex-1 py-2.5 rounded-xl bg-primary hover:bg-primary/90 text-white font-semibold text-[12px] transition-colors active:scale-[0.98]"
               >
                 Validar y Confirmar
               </button>

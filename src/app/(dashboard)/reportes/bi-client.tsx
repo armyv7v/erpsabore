@@ -236,7 +236,7 @@ export default function BIClient({ biBase }: Props) {
       {/* Filters Bar */}
       <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 mb-8">
         <div>
-          <h2 className="text-2xl font-bold bg-gradient-to-r from-slate-900 to-slate-700 dark:from-white dark:to-slate-300 bg-clip-text text-transparent">
+          <h2 className="text-2xl font-bold text-slate-900 dark:text-white">
             Inteligencia de Negocios
           </h2>
           <p className="text-sm text-slate-500 dark:text-slate-400">
@@ -270,7 +270,7 @@ export default function BIClient({ biBase }: Props) {
           </div>
           <button
             onClick={handleExport}
-            className="flex w-full md:w-auto items-center justify-center gap-2 rounded-xl bg-primary px-4 py-2.5 text-sm font-bold text-white shadow-primary/20 hover:bg-primary/95 hover:shadow-md transition-all active:scale-[0.98]"
+            className="flex w-full md:w-auto items-center justify-center gap-2 rounded-xl bg-primary px-4 py-2.5 text-sm font-bold text-white hover:bg-primary/95 transition-colors active:scale-[0.98]"
           >
             <Download className="w-4 h-4" />
             Exportar CSV
@@ -280,22 +280,22 @@ export default function BIClient({ biBase }: Props) {
 
       {/* KPI Cards */}
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        <div className="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-6 transition-all hover:shadow-md">
+        <div className="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-6 transition-colors">
           <div className="flex items-center justify-between">
             <p className="text-sm font-semibold text-slate-500 dark:text-slate-400">Ingresos Totales (CLP)</p>
-            <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400">
+            <span className="text-[var(--color-muted)]">
               <BanknotesIcon />
             </span>
           </div>
           <div className="mt-4 flex items-end justify-between">
             <div>
-              <h3 className="text-3xl font-bold tracking-tight text-slate-900 dark:text-white">
+              <h3 className="text-3xl font-bold tabular-nums tracking-tight text-slate-900 dark:text-white">
                 ${biMetrics.totalRevenue.toLocaleString("es-CL")}
               </h3>
-              <p className="mt-1 flex items-center text-sm font-semibold text-green-600 dark:text-green-400">
+              <p className="mt-1 flex items-center text-sm font-semibold text-[var(--color-positive)] dark:text-emerald-400">
                 <TrendingUp className="w-4 h-4 mr-1" />
                 {biMetrics.revenueGrowth.toFixed(1)}%{" "}
-                <span className="ml-1 text-slate-400 font-normal">vs periodo previo</span>
+                <span className="ml-1 font-normal text-[var(--color-muted)]">vs periodo previo</span>
               </p>
             </div>
             <div className="h-10 w-24 flex items-end gap-1 shrink-0">
@@ -314,22 +314,22 @@ export default function BIClient({ biBase }: Props) {
           </div>
         </div>
 
-        <div className="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-6 transition-all hover:shadow-md">
+        <div className="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-6 transition-colors">
           <div className="flex items-center justify-between">
             <p className="text-sm font-semibold text-slate-500 dark:text-slate-400">Margen Bruto</p>
-            <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400">
+            <span className="text-[var(--color-muted)]">
               <Percent className="w-5 h-5" />
             </span>
           </div>
           <div className="mt-4 flex items-end justify-between">
             <div>
-              <h3 className="text-3xl font-bold tracking-tight text-slate-900 dark:text-white">
+              <h3 className="text-3xl font-bold tabular-nums tracking-tight text-slate-900 dark:text-white">
                 {biMetrics.grossMargin.toFixed(1)}%
               </h3>
-              <p className="mt-1 flex items-center text-sm font-semibold text-green-600 dark:text-green-400">
+              <p className="mt-1 flex items-center text-sm font-semibold text-[var(--color-positive)] dark:text-emerald-400">
                 <TrendingUp className="w-4 h-4 mr-1" />
                 {biMetrics.marginGrowth.toFixed(1)}%{" "}
-                <span className="ml-1 text-slate-400 font-normal">vs base operativa</span>
+                <span className="ml-1 font-normal text-[var(--color-muted)]">vs base operativa</span>
               </p>
             </div>
             <div className="h-10 w-24 flex items-end gap-1 shrink-0">
@@ -340,22 +340,22 @@ export default function BIClient({ biBase }: Props) {
           </div>
         </div>
 
-        <div className="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-6 transition-all hover:shadow-md sm:col-span-2 lg:col-span-1">
+        <div className="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-6 transition-colors sm:col-span-2 lg:col-span-1">
           <div className="flex items-center justify-between">
             <p className="text-sm font-semibold text-slate-500 dark:text-slate-400">Costo Adquisición (CAC)</p>
-            <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-orange-100 dark:bg-orange-900/30 text-orange-600 dark:text-orange-400">
+            <span className="text-[var(--color-muted)]">
               <MousePointerClick className="w-5 h-5" />
             </span>
           </div>
           <div className="mt-4 flex items-end justify-between">
             <div>
-              <h3 className="text-3xl font-bold tracking-tight text-slate-900 dark:text-white">
+              <h3 className="text-3xl font-bold tabular-nums tracking-tight text-slate-900 dark:text-white">
                 ${Math.round(biMetrics.cac).toLocaleString("es-CL")}
               </h3>
-              <p className="mt-1 flex items-center text-sm font-semibold text-green-600 dark:text-green-400">
+              <p className="mt-1 flex items-center text-sm font-semibold text-[var(--color-positive)] dark:text-emerald-400">
                 <TrendingDown className="w-4 h-4 mr-1" />
                 {biMetrics.cacImprovement.toFixed(1)}%{" "}
-                <span className="ml-1 text-slate-400 font-normal">cierre efectivo</span>
+                <span className="ml-1 font-normal text-[var(--color-muted)]">cierre efectivo</span>
               </p>
             </div>
             <div className="h-10 w-24 flex items-end gap-1 shrink-0">
@@ -406,11 +406,11 @@ export default function BIClient({ biBase }: Props) {
                 <svg className="h-full w-full" preserveAspectRatio="none" viewBox="0 0 400 200">
                   <defs>
                     <linearGradient id="lineGradient" x1="0" x2="0" y1="0" y2="1">
-                      <stop offset="0%" stopColor="#ec5b13" stopOpacity="0.3" />
-                      <stop offset="100%" stopColor="#ec5b13" stopOpacity="0" />
+                      <stop offset="0%" stopColor="#9a5f26" stopOpacity="0.3" />
+                      <stop offset="100%" stopColor="#9a5f26" stopOpacity="0" />
                     </linearGradient>
                   </defs>
-                  <path d="M0,180 L40,160 L80,170 L120,130 L160,140 L200,90 L240,110 L280,60 L320,70 L360,30 L400,45" fill="none" stroke="#ec5b13" strokeLinecap="round" strokeWidth="3" />
+                  <path d="M0,180 L40,160 L80,170 L120,130 L160,140 L200,90 L240,110 L280,60 L320,70 L360,30 L400,45" fill="none" stroke="#9a5f26" strokeLinecap="round" strokeWidth="3" />
                   <path d="M0,180 L40,160 L80,170 L120,130 L160,140 L200,90 L240,110 L280,60 L320,70 L360,30 L400,45 L400,200 L0,200 Z" fill="url(#lineGradient)" />
                   <line className="text-slate-100 dark:text-slate-800" stroke="currentColor" strokeDasharray="4" x1="0" x2="400" y1="50" y2="50" />
                   <line className="text-slate-100 dark:text-slate-800" stroke="currentColor" strokeDasharray="4" x1="0" x2="400" y1="100" y2="100" />
@@ -436,19 +436,19 @@ export default function BIClient({ biBase }: Props) {
             <div className="relative flex h-48 w-48 items-center justify-center shrink-0">
               <svg className="h-full w-full rotate-[-90deg]" viewBox="0 0 36 36">
                 <circle className="text-slate-100 dark:text-slate-800" cx="18" cy="18" fill="transparent" r="16" stroke="currentColor" strokeWidth="4" />
-                <circle cx="18" cy="18" fill="transparent" r="16" stroke="#ec5b13" strokeDasharray="45 100" strokeLinecap="round" strokeWidth="4" />
-                <circle cx="18" cy="18" fill="transparent" r="16" stroke="#fbd38d" strokeDasharray="30 100" strokeDashoffset="-45" strokeLinecap="round" strokeWidth="4" />
+                <circle cx="18" cy="18" fill="transparent" r="16" stroke="#9a5f26" strokeDasharray="45 100" strokeLinecap="round" strokeWidth="4" />
+                <circle cx="18" cy="18" fill="transparent" r="16" stroke="#e3b486" strokeDasharray="30 100" strokeDashoffset="-45" strokeLinecap="round" strokeWidth="4" />
                 <circle cx="18" cy="18" fill="transparent" r="16" stroke="#94a3b8" strokeDasharray="25 100" strokeDashoffset="-75" strokeLinecap="round" strokeWidth="4" />
               </svg>
               <div className="absolute inset-0 flex flex-col items-center justify-center">
-                <span className="text-2xl font-bold">100%</span>
+                <span className="text-2xl font-bold tabular-nums">100%</span>
                 <span className="text-xs uppercase text-slate-400 font-bold">Total</span>
               </div>
             </div>
             <div className="flex-1 space-y-4 w-full sm:w-auto">
               {[
                 { label: "Productos", color: "bg-primary", pct: "45%" },
-                { label: "Servicios", color: "bg-orange-300", pct: "30%" },
+                { label: "Servicios", color: "bg-[var(--color-primary-light)]", pct: "30%" },
                 { label: "Otros", color: "bg-slate-400", pct: "25%" },
               ].map(({ label, color, pct }) => (
                 <div key={label} className="flex items-center justify-between">
@@ -456,7 +456,7 @@ export default function BIClient({ biBase }: Props) {
                     <div className={`h-3 w-3 rounded-full ${color}`} />
                     <span className="text-sm font-medium">{label}</span>
                   </div>
-                  <span className="text-sm font-bold">{pct}</span>
+                  <span className="text-sm font-bold tabular-nums">{pct}</span>
                 </div>
               ))}
             </div>
@@ -477,9 +477,9 @@ export default function BIClient({ biBase }: Props) {
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {/* Inventario */}
-          <div className="flex flex-col justify-between p-5 rounded-xl border border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-900/50 hover:shadow-xs transition-all">
+          <div className="flex flex-col justify-between p-5 rounded-xl border border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-900/50 transition-colors">
             <div className="space-y-2 mb-4">
-              <div className="inline-flex p-2 rounded-lg bg-primary/10 text-primary">
+              <div className="inline-flex text-[var(--color-muted)]">
                 <FileText className="w-5 h-5" />
               </div>
               <h4 className="font-semibold text-slate-900 dark:text-white">Reporte de Inventario</h4>
@@ -496,7 +496,7 @@ export default function BIClient({ biBase }: Props) {
                 {exportLoading["inventory_excel"] ? (
                   <Loader2 className="w-3.5 h-3.5 animate-spin" />
                 ) : (
-                  <FileSpreadsheet className="w-3.5 h-3.5 text-green-600" />
+                  <FileSpreadsheet className="w-3.5 h-3.5 text-[var(--color-positive)]" />
                 )}
                 <span>Excel</span>
               </button>
@@ -508,7 +508,7 @@ export default function BIClient({ biBase }: Props) {
                 {exportLoading["inventory_pdf"] ? (
                   <Loader2 className="w-3.5 h-3.5 animate-spin" />
                 ) : (
-                  <Download className="w-3.5 h-3.5 text-orange-600" />
+                  <Download className="w-3.5 h-3.5 text-[var(--color-muted)]" />
                 )}
                 <span>PDF</span>
               </button>
@@ -516,9 +516,9 @@ export default function BIClient({ biBase }: Props) {
           </div>
 
           {/* Ventas */}
-          <div className="flex flex-col justify-between p-5 rounded-xl border border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-900/50 hover:shadow-xs transition-all">
+          <div className="flex flex-col justify-between p-5 rounded-xl border border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-900/50 transition-colors">
             <div className="space-y-2 mb-4">
-              <div className="inline-flex p-2 rounded-lg bg-primary/10 text-primary">
+              <div className="inline-flex text-[var(--color-muted)]">
                 <FileText className="w-5 h-5" />
               </div>
               <h4 className="font-semibold text-slate-900 dark:text-white">Reporte de Ventas</h4>
@@ -535,7 +535,7 @@ export default function BIClient({ biBase }: Props) {
                 {exportLoading["sales_excel"] ? (
                   <Loader2 className="w-3.5 h-3.5 animate-spin" />
                 ) : (
-                  <FileSpreadsheet className="w-3.5 h-3.5 text-green-600" />
+                  <FileSpreadsheet className="w-3.5 h-3.5 text-[var(--color-positive)]" />
                 )}
                 <span>Excel</span>
               </button>
@@ -547,7 +547,7 @@ export default function BIClient({ biBase }: Props) {
                 {exportLoading["sales_pdf"] ? (
                   <Loader2 className="w-3.5 h-3.5 animate-spin" />
                 ) : (
-                  <Download className="w-3.5 h-3.5 text-orange-600" />
+                  <Download className="w-3.5 h-3.5 text-[var(--color-muted)]" />
                 )}
                 <span>PDF</span>
               </button>
@@ -555,9 +555,9 @@ export default function BIClient({ biBase }: Props) {
           </div>
 
           {/* POS Closings */}
-          <div className="flex flex-col justify-between p-5 rounded-xl border border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-900/50 hover:shadow-xs transition-all">
+          <div className="flex flex-col justify-between p-5 rounded-xl border border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-900/50 transition-colors">
             <div className="space-y-2 mb-4">
-              <div className="inline-flex p-2 rounded-lg bg-primary/10 text-primary">
+              <div className="inline-flex text-[var(--color-muted)]">
                 <FileText className="w-5 h-5" />
               </div>
               <h4 className="font-semibold text-slate-900 dark:text-white">Cierres de Caja POS</h4>
@@ -574,7 +574,7 @@ export default function BIClient({ biBase }: Props) {
                 {exportLoading["pos_excel"] ? (
                   <Loader2 className="w-3.5 h-3.5 animate-spin" />
                 ) : (
-                  <FileSpreadsheet className="w-3.5 h-3.5 text-green-600" />
+                  <FileSpreadsheet className="w-3.5 h-3.5 text-[var(--color-positive)]" />
                 )}
                 <span>Excel</span>
               </button>
@@ -586,7 +586,7 @@ export default function BIClient({ biBase }: Props) {
                 {exportLoading["pos_pdf"] ? (
                   <Loader2 className="w-3.5 h-3.5 animate-spin" />
                 ) : (
-                  <Download className="w-3.5 h-3.5 text-orange-600" />
+                  <Download className="w-3.5 h-3.5 text-[var(--color-muted)]" />
                 )}
                 <span>PDF</span>
               </button>

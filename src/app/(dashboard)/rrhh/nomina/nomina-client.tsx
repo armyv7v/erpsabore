@@ -313,7 +313,7 @@ export default function NominaClient({ initialEmployees }: { initialEmployees: E
         {toasts.map((toast) => (
           <div 
             key={toast.id} 
-            className={`flex items-center gap-3 p-4 rounded-xl shadow-lg border text-sm font-semibold transition-all duration-300 animate-in slide-in-from-bottom-5 ${
+            className={`flex items-center gap-3 p-4 rounded-xl border text-sm font-semibold transition-colors duration-300 animate-in slide-in-from-bottom-5 ${
               toast.type === 'success' 
                 ? 'bg-emerald-50 dark:bg-emerald-950 border-emerald-200 dark:border-emerald-900 text-emerald-800 dark:text-emerald-300' 
                 : toast.type === 'error'
@@ -321,7 +321,7 @@ export default function NominaClient({ initialEmployees }: { initialEmployees: E
                 : 'bg-blue-50 dark:bg-blue-950 border-blue-200 dark:border-blue-900 text-blue-800 dark:text-blue-300'
             }`}
           >
-            {toast.type === 'success' && <CheckCircle className="w-5 h-5 shrink-0 text-emerald-500" />}
+            {toast.type === 'success' && <CheckCircle className="w-5 h-5 shrink-0 text-[var(--color-positive)]" />}
             {toast.type === 'error' && <AlertCircle className="w-5 h-5 shrink-0 text-red-500" />}
             {toast.type === 'info' && <Info className="w-5 h-5 shrink-0 text-blue-500" />}
             <span className="flex-1">{toast.message}</span>
@@ -336,7 +336,7 @@ export default function NominaClient({ initialEmployees }: { initialEmployees: E
       </div>
  
       {/* Header principal de nomina */}
-      <div className="flex items-center justify-between px-4 md:px-8 py-4 border-b border-slate-200 dark:border-slate-800 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md sticky top-0 z-40">
+      <div className="flex items-center justify-between px-4 md:px-8 py-4 border-b border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 sticky top-0 z-40">
         <div className="flex items-center gap-3">
           <div className="bg-primary p-2 rounded-lg text-white">
             <Receipt className="w-5 h-5" />
@@ -353,7 +353,7 @@ export default function NominaClient({ initialEmployees }: { initialEmployees: E
         {/* Welcome and Primary Action */}
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div>
-            <h2 className="text-2xl font-bold tracking-tight bg-gradient-to-r from-slate-900 to-slate-700 dark:from-white dark:to-slate-300 bg-clip-text text-transparent">
+            <h2 className="text-2xl font-bold tracking-tight text-slate-900 dark:text-white">
               Resumen Mensual de Sueldos
             </h2>
             <p className="text-slate-500 dark:text-slate-400">Control de haberes e imposiciones legales en base a topes vigentes</p>
@@ -362,12 +362,12 @@ export default function NominaClient({ initialEmployees }: { initialEmployees: E
           <button 
             onClick={handleBulkGenerate}
             disabled={isBulkGenerating || !employees.some(e => e.status === 'pending')}
-            className={`flex w-full md:w-auto items-center justify-center gap-2 px-6 py-3 rounded-xl font-bold transition-all shadow-lg active:scale-[0.98] ${
+            className={`flex w-full md:w-auto items-center justify-center gap-2 px-6 py-3 rounded-xl font-bold transition-colors active:scale-[0.98] ${
               isBulkGenerating 
                 ? 'bg-slate-100 dark:bg-slate-800 text-slate-400 cursor-not-allowed shadow-none border border-slate-200 dark:border-slate-700'
                 : !employees.some(e => e.status === 'pending')
                 ? 'bg-slate-100 dark:bg-slate-800 text-slate-400 cursor-not-allowed shadow-none border border-slate-200 dark:border-slate-700'
-                : 'bg-primary hover:bg-primary/95 text-white shadow-primary/20 hover:shadow-xl'
+                : 'bg-primary hover:bg-primary/95 text-white'
             }`}
           >
             {isBulkGenerating ? (
@@ -394,26 +394,26 @@ export default function NominaClient({ initialEmployees }: { initialEmployees: E
  
         {/* Financial Summary Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <div className="flex flex-col gap-2 rounded-xl p-6 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:shadow-md transition-shadow">
+          <div className="flex flex-col gap-2 rounded-xl p-6 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 transition-colors">
             <div className="flex items-center justify-between">
               <p className="text-slate-500 dark:text-slate-400 text-sm font-semibold">Total Haberes (Bruto)</p>
               <span className="p-1.5 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400"><BankIcon /></span>
             </div>
-            <p className="text-2xl font-bold leading-tight text-slate-900 dark:text-white">
+            <p className="text-2xl font-bold tabular-nums leading-tight text-slate-900 dark:text-white">
               ${currentSummary.totalHaberes.toLocaleString('es-CL')}
             </p>
             <div className="flex items-center gap-1 mt-1">
-              <TrendingUp className="text-emerald-500 w-4 h-4 shrink-0" />
-              <p className="text-emerald-500 text-xs font-semibold">{currentSummary.growthHaberes} vs mes anterior</p>
+              <TrendingUp className="text-[var(--color-positive)] w-4 h-4 shrink-0" />
+              <p className="text-[var(--color-positive)] text-xs font-semibold">{currentSummary.growthHaberes} vs mes anterior</p>
             </div>
           </div>
  
-          <div className="flex flex-col gap-2 rounded-xl p-6 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:shadow-md transition-shadow">
+          <div className="flex flex-col gap-2 rounded-xl p-6 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 transition-colors">
             <div className="flex items-center justify-between">
               <p className="text-slate-500 dark:text-slate-400 text-sm font-semibold">Descuentos Previsionales</p>
               <span className="p-1.5 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400"><BankIcon /></span>
             </div>
-            <p className="text-2xl font-bold leading-tight text-slate-900 dark:text-white">
+            <p className="text-2xl font-bold tabular-nums leading-tight text-slate-900 dark:text-white">
               ${currentSummary.totalDescuentos.toLocaleString('es-CL')}
             </p>
             <div className="flex items-center gap-1.5 mt-1 text-slate-400 dark:text-slate-550">
@@ -422,24 +422,23 @@ export default function NominaClient({ initialEmployees }: { initialEmployees: E
             </div>
           </div>
  
-          <div className="flex flex-col gap-2 rounded-xl p-6 bg-primary/10 border-2 border-primary/20 dark:bg-primary/20 dark:border-primary/40 relative overflow-hidden group">
-            <div className="absolute right-0 top-0 translate-x-8 -translate-y-8 size-32 bg-primary/5 rounded-full group-hover:scale-110 transition-transform duration-500" />
-            <div className="flex items-center justify-between relative z-10">
-              <p className="text-primary font-bold text-sm">Sueldo Líquido Total</p>
-              <span className="p-1.5 rounded-lg bg-primary/20 text-primary"><BankIcon /></span>
+          <div className="flex flex-col gap-2 rounded-xl p-6 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800">
+            <div className="flex items-center justify-between">
+              <p className="text-slate-500 dark:text-slate-400 text-sm font-semibold">Sueldo Líquido Total</p>
+              <span className="p-1.5 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400"><BankIcon /></span>
             </div>
-            <p className="text-primary text-2xl font-black leading-tight relative z-10">
+            <p className="text-2xl font-bold tabular-nums leading-tight text-[var(--color-primary-ink)]">
               ${currentSummary.sueldoLiquidoTotal.toLocaleString('es-CL')}
             </p>
-            <div className="flex items-center gap-1 mt-1 relative z-10">
-              <Verified className="text-primary w-4 h-4 shrink-0" />
-              <p className="text-primary/95 text-xs font-bold">Monto final a transferir por banco</p>
+            <div className="flex items-center gap-1.5 mt-1 text-slate-500 dark:text-slate-400">
+              <Verified className="w-4 h-4 shrink-0" />
+              <p className="text-xs font-medium">Monto final a transferir por banco</p>
             </div>
           </div>
         </div>
  
         {/* Specific Breakdown Section */}
-        <div className="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 overflow-hidden hover:shadow-md transition-shadow">
+        <div className="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 overflow-hidden transition-colors">
           <div className="px-6 py-4 border-b border-slate-100 dark:border-slate-800 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 bg-slate-50/50 dark:bg-slate-900/50">
             <div>
               <h3 className="font-bold text-lg text-slate-900 dark:text-white">Detalle de Empleados</h3>
@@ -551,7 +550,7 @@ export default function NominaClient({ initialEmployees }: { initialEmployees: E
                             <button 
                               onClick={() => setSelectedEmployeeForSlip(emp)}
                               title="Ver y descargar Liquidación de Sueldo"
-                              className="p-1.5 rounded-lg bg-emerald-50 dark:bg-emerald-950 text-emerald-600 dark:text-emerald-400 hover:bg-emerald-100 dark:hover:bg-emerald-900 border border-emerald-100 dark:border-emerald-900 transition-colors flex items-center gap-1 font-bold text-xs"
+                              className="p-1.5 rounded-lg bg-[var(--color-positive-bg)] text-[var(--color-positive)] hover:bg-[var(--color-positive-bg)]/70 border border-[var(--color-positive)]/20 transition-colors flex items-center gap-1 font-semibold text-xs"
                             >
                               <Eye className="w-4 h-4" />
                               <span>Liquidación</span>
@@ -706,7 +705,7 @@ export default function NominaClient({ initialEmployees }: { initialEmployees: E
               </button>
               <button 
                 onClick={saveEmployeePayroll}
-                className="flex-1 px-4 py-2.5 bg-primary hover:bg-primary/95 text-white font-bold text-sm rounded-xl transition-all shadow-md shadow-primary/20 active:scale-[0.98]"
+                className="flex-1 px-4 py-2.5 bg-primary hover:bg-primary/95 text-white font-bold text-sm rounded-xl transition-colors active:scale-[0.98]"
               >
                 Guardar y Recalcular
               </button>
@@ -738,7 +737,7 @@ export default function NominaClient({ initialEmployees }: { initialEmployees: E
                   PERIODO: {currentSummary.month.toUpperCase()}
                 </span>
                 {selectedEmployeeForSlip.status === 'paid' ? (
-                  <span className="block mt-2 text-xs font-bold text-emerald-500">
+                  <span className="block mt-2 text-xs font-bold text-[var(--color-positive)]">
                     ✓ TRANSFERENCIA PROCESADA
                   </span>
                 ) : (
@@ -848,7 +847,7 @@ export default function NominaClient({ initialEmployees }: { initialEmployees: E
               </button>
               <button 
                 onClick={() => window.print()}
-                className="flex-1 px-4 py-2.5 bg-slate-900 dark:bg-slate-100 dark:text-slate-900 hover:bg-slate-800 dark:hover:bg-white text-white font-bold text-sm rounded-xl transition-all shadow-md flex items-center justify-center gap-2"
+                className="flex-1 px-4 py-2.5 bg-slate-900 dark:bg-slate-100 dark:text-slate-900 hover:bg-slate-800 dark:hover:bg-white text-white font-bold text-sm rounded-xl transition-colors flex items-center justify-center gap-2"
               >
                 <Printer className="w-4 h-4" />
                 <span>Imprimir / Descargar PDF</span>
