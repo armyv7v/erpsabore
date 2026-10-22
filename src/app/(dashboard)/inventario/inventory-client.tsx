@@ -255,21 +255,21 @@ export default function InventoryClient({ products, summary }: Props) {
         </div>
         <button
           onClick={() => setIsModalOpen(true)}
-          className="hidden md:flex items-center gap-2 bg-primary text-white px-4 py-2.5 rounded-xl font-bold hover:bg-primary/90 transition-colors"
+          className="flex w-full items-center justify-center gap-2 rounded-xl bg-primary px-4 py-2.5 font-semibold text-white transition-colors hover:bg-primary/90 sm:w-auto"
         >
           <Plus className="w-5 h-5" />
-          Añadir Producto
+          Añadir producto
         </button>
       </div>
 
       {/* Summary Stats */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
         <div 
           onClick={() => {
             setActiveTab("all");
             setCurrentPage(1);
           }}
-          className={`p-4 rounded-xl border transition-all duration-200 cursor-pointer select-none active:scale-[0.98] ${
+          className={`rounded-xl border p-3.5 lg:p-4 transition-colors duration-200 cursor-pointer select-none active:scale-[0.98] ${
             activeTab === "all"
               ? "bg-primary/5 border-primary"
               : "bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 hover:border-primary/50 dark:hover:border-primary/50 hover:shadow-xs"
@@ -278,7 +278,7 @@ export default function InventoryClient({ products, summary }: Props) {
           <p className="text-slate-500 dark:text-slate-400 text-xs font-medium">
             Total SKU
           </p>
-          <p className="text-2xl font-bold mt-1">
+          <p className="mt-1 text-[clamp(20px,4.6vw,24px)] font-semibold leading-tight tabular-nums whitespace-nowrap">
             {summary.skuCount.toLocaleString("es-CL")}
           </p>
         </div>
@@ -287,7 +287,7 @@ export default function InventoryClient({ products, summary }: Props) {
             setActiveTab("low");
             setCurrentPage(1);
           }}
-          className={`p-4 rounded-xl border transition-all duration-200 cursor-pointer select-none active:scale-[0.98] ${
+          className={`rounded-xl border p-3.5 lg:p-4 transition-colors duration-200 cursor-pointer select-none active:scale-[0.98] ${
             activeTab === "low"
               ? "bg-orange-500/5 border-orange-500"
               : "bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 hover:border-orange-500/50 dark:hover:border-orange-950/50 hover:shadow-xs"
@@ -296,15 +296,15 @@ export default function InventoryClient({ products, summary }: Props) {
           <p className="text-slate-500 dark:text-slate-400 text-xs font-medium">
             Stock Bajo
           </p>
-          <p className="text-2xl font-bold mt-1 text-orange-500">
+          <p className="mt-1 text-[clamp(20px,4.6vw,24px)] font-semibold leading-tight tabular-nums whitespace-nowrap text-[var(--color-warning-ink)]">
             {summary.lowStockCount}
           </p>
         </div>
-        <div className="bg-white dark:bg-slate-900 p-4 rounded-xl border border-slate-200 dark:border-slate-800">
-          <p className="text-slate-500 dark:text-slate-400 text-xs font-medium">
+        <div className="rounded-xl border border-slate-200 bg-white p-3.5 dark:border-slate-800 dark:bg-slate-900 lg:p-4">
+          <p className="text-xs font-medium text-slate-500 dark:text-slate-400">
             Valor Total
           </p>
-          <p className="text-2xl font-bold mt-1">
+          <p className="mt-1 text-[clamp(20px,4.6vw,24px)] font-semibold leading-tight tabular-nums whitespace-nowrap">
             {formatCLP(summary.totalInventoryValue)}
           </p>
         </div>
@@ -313,7 +313,7 @@ export default function InventoryClient({ products, summary }: Props) {
             setActiveTab("alerts");
             setCurrentPage(1);
           }}
-          className={`p-4 rounded-xl border transition-all duration-200 cursor-pointer select-none active:scale-[0.98] ${
+          className={`rounded-xl border p-3.5 lg:p-4 transition-colors duration-200 cursor-pointer select-none active:scale-[0.98] ${
             activeTab === "alerts"
               ? "bg-red-500/5 border-red-500"
               : "bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 hover:border-red-500/50 dark:hover:border-red-950/50 hover:shadow-xs"
@@ -322,7 +322,7 @@ export default function InventoryClient({ products, summary }: Props) {
           <p className="text-slate-500 dark:text-slate-400 text-xs font-medium">
             Alertas
           </p>
-          <p className={`text-2xl font-bold mt-1 ${summary.stockAlertCount > 0 ? "text-red-500" : "text-green-500"}`}>
+          <p className={`mt-1 text-[clamp(20px,4.6vw,24px)] font-semibold leading-tight tabular-nums whitespace-nowrap ${summary.stockAlertCount > 0 ? "text-[var(--color-negative)]" : "text-[var(--color-positive)]"}`}>
             {summary.stockAlertCount}
           </p>
         </div>
@@ -336,13 +336,13 @@ export default function InventoryClient({ products, summary }: Props) {
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
           placeholder="Buscar producto por nombre o SKU..."
-          className="w-full pl-12 pr-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 focus:ring-2 focus:ring-primary/20 outline-none transition-all"
+          className="w-full pl-12 pr-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-[14px] focus:ring-2 focus:ring-primary/20 outline-none transition-colors"
         />
       </div>
 
       {/* Tabs & Filters */}
       <div className="space-y-4">
-        <div className="flex border-b border-slate-200 dark:border-slate-800 overflow-x-auto no-scrollbar">
+        <div className="flex flex-wrap border-b border-slate-200 dark:border-slate-800 lg:flex-nowrap lg:overflow-x-auto no-scrollbar">
           {(
             [
               { key: "all", label: "Todos los Productos" },
@@ -511,11 +511,11 @@ export default function InventoryClient({ products, summary }: Props) {
 
       {/* Product List Table */}
       <div className="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 overflow-visible">
-        <div className="hidden md:grid grid-cols-6 gap-4 p-4 border-b border-slate-200 dark:border-slate-800 text-[12px] font-medium text-muted tabular-nums">
-          <div className="col-span-2">Producto / SKU</div>
-          <div>Precio Unit.</div>
-          <div>Estado Stock</div>
-          <div>Cantidad</div>
+        <div className="hidden lg:grid grid-cols-[minmax(0,2.6fr)_minmax(0,0.9fr)_minmax(0,1.1fr)_minmax(0,0.7fr)_auto] gap-4 px-4 py-3 border-b border-slate-200 dark:border-slate-800 text-[12px] font-medium text-muted">
+          <div>Producto / SKU</div>
+          <div className="text-right">Precio unit.</div>
+          <div>Estado stock</div>
+          <div className="text-right">Cantidad</div>
           <div className="text-right">Acciones</div>
         </div>
 
@@ -536,7 +536,7 @@ export default function InventoryClient({ products, summary }: Props) {
                 <div
                   key={product.id}
                   onDoubleClick={() => setDetailsProduct(product)}
-                  className={`p-4 flex flex-col md:grid md:grid-cols-6 md:items-center gap-4 cursor-pointer select-none tabular-nums transition-all hover:bg-slate-50/50 dark:hover:bg-slate-850/20 ${
+                  className={`relative flex flex-col gap-3 px-4 py-3.5 cursor-pointer select-none tabular-nums transition-colors hover:bg-slate-50/50 dark:hover:bg-slate-850/20 lg:grid lg:grid-cols-[minmax(0,2.6fr)_minmax(0,0.9fr)_minmax(0,1.1fr)_minmax(0,0.7fr)_auto] lg:items-center lg:gap-4 ${
                     product.stockStatus === "low"
                       ? "bg-orange-50/30 dark:bg-primary/5"
                       : isOutOfStock
@@ -544,94 +544,96 @@ export default function InventoryClient({ products, summary }: Props) {
                         : ""
                   }`}
                 >
-                  <div className={`col-span-2 flex items-center gap-4 ${outOfStockClass}`}>
+                  <div className={`flex min-w-0 items-center gap-3 pr-16 lg:pr-0 ${outOfStockClass}`}>
                     {product.imageUrl ? (
                       <div
-                        className="size-12 rounded-lg bg-slate-100 dark:bg-slate-800 flex-shrink-0 bg-cover bg-center"
+                        className="size-11 flex-shrink-0 rounded-lg bg-slate-100 bg-cover bg-center dark:bg-slate-800"
                         style={{ backgroundImage: `url('${product.imageUrl}')` }}
                       />
                     ) : (
-                      <div className="size-12 rounded-lg bg-slate-100 dark:bg-slate-800 flex-shrink-0 flex items-center justify-center">
-                        <Package className="w-5 h-5 text-slate-400" />
+                      <div className="flex size-11 flex-shrink-0 items-center justify-center rounded-lg bg-slate-100 dark:bg-slate-800">
+                        <Package className="h-5 w-5 text-slate-400" />
                       </div>
                     )}
-                    <div className="min-w-0 space-y-1">
-                      <h3 className="font-semibold text-sm truncate">{product.name}</h3>
-                      <div className="flex flex-wrap items-center gap-1.5">
-                        <span className="text-xs font-bold px-1.5 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-slate-500">
+                    <div className="min-w-0 flex-1 space-y-1">
+                      <h3 className="line-clamp-2 text-sm font-semibold">{product.name}</h3>
+                      <div className="flex min-w-0 flex-wrap items-center gap-1.5">
+                        <span className="min-w-0 max-w-full truncate rounded bg-slate-100 px-1.5 py-0.5 text-[12px] font-medium text-slate-600 dark:bg-slate-800 dark:text-slate-300">
                           SKU: {product.sku}
                         </span>
-                        <span className="text-xs font-bold px-1.5 py-0.5 rounded bg-blue-50 dark:bg-blue-950/40 text-blue-600 dark:text-blue-400">
+                        <span className="rounded bg-blue-50 px-1.5 py-0.5 text-[12px] font-medium text-blue-700 dark:bg-blue-950/40 dark:text-blue-300">
                           {detectCategory(product.name)}
                         </span>
-                        <span className="text-xs font-bold px-1.5 py-0.5 rounded bg-slate-100 text-slate-700">
+                        <span className="rounded bg-slate-100 px-1.5 py-0.5 text-[12px] font-medium text-slate-700 dark:bg-slate-800 dark:text-slate-300">
                           {getProductWarehouse(product)}
                         </span>
                       </div>
                     </div>
                   </div>
 
-                  <div className={`flex justify-between md:block ${outOfStockClass}`}>
-                    <span className="md:hidden text-xs text-slate-500 uppercase font-bold">Precio:</span>
-                    <span className="text-sm font-medium">{formatCLP(product.unitPrice)}</span>
-                  </div>
-
-                  <div className={`space-y-2 ${outOfStockClass}`}>
-                    <div
-                      className={`flex justify-between text-[12px] font-medium ${
-                        product.stockStatus === "low"
-                          ? "text-[var(--color-warning-ink)]"
-                          : isOutOfStock
-                            ? "text-[var(--color-negative)]"
-                            : "text-slate-500"
-                      }`}
-                    >
-                      <span>
-                        {product.stockStatus === "low"
-                          ? "Bajo Stock"
-                          : isOutOfStock
-                            ? "Agotado"
-                            : "Nivel de Stock"}
-                      </span>
-                      <span>{levelPercent}%</span>
+                  <div className="grid grid-cols-2 gap-x-4 gap-y-2 border-t border-slate-100 pt-3 dark:border-slate-800 lg:col-span-3 lg:grid-cols-subgrid lg:border-0 lg:pt-0">
+                    <div className="flex items-baseline justify-between gap-2 tabular-nums lg:block lg:text-right">
+                      <span className="text-[11px] text-muted lg:hidden">Precio</span>
+                      <span className="whitespace-nowrap text-[13px] font-medium">{formatCLP(product.unitPrice)}</span>
                     </div>
-                    <div className="h-1.5 w-full bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden">
-                      <div
-                        className={`h-full ${
-                          product.stockStatus === "low"
-                            ? "bg-orange-500"
-                            : isOutOfStock
-                              ? "bg-red-500"
-                              : "bg-green-500"
+
+                    <div className="flex items-baseline justify-between gap-2 lg:order-3 lg:block lg:text-right">
+                      <span className="text-[11px] text-muted lg:hidden">Cantidad</span>
+                      <span
+                        className={`whitespace-nowrap text-[13px] tabular-nums ${
+                          product.stockStatus !== "normal"
+                            ? "font-semibold " +
+                              (product.stockStatus === "low"
+                                ? "text-[var(--color-warning-ink)]"
+                                : "text-[var(--color-negative)]")
+                            : ""
                         }`}
-                        style={{ width: `${levelPercent}%` }}
-                      />
+                      >
+                        {product.stockQuantity} uds
+                      </span>
+                    </div>
+
+                    <div className="col-span-2 space-y-1.5 lg:order-2 lg:col-auto lg:space-y-2">
+                      <div
+                        className={`flex items-baseline justify-between gap-2 text-[12px] font-medium ${
+                          product.stockStatus === "low"
+                            ? "text-[var(--color-warning-ink)]"
+                            : isOutOfStock
+                              ? "text-[var(--color-negative)]"
+                              : "text-slate-500"
+                        }`}
+                      >
+                        <span>
+                          {product.stockStatus === "low"
+                            ? "Bajo stock"
+                            : isOutOfStock
+                              ? "Agotado"
+                              : "Nivel de stock"}
+                        </span>
+                        <span className="tabular-nums">{levelPercent}%</span>
+                      </div>
+                      <div className="h-1.5 w-full overflow-hidden rounded-full bg-slate-100 dark:bg-slate-800">
+                        <div
+                          className={`h-full ${
+                            product.stockStatus === "low"
+                              ? "bg-[var(--color-primary-mark)]"
+                              : isOutOfStock
+                                ? "bg-[var(--color-negative)]"
+                                : "bg-[var(--color-positive)]"
+                          }`}
+                          style={{ width: `${levelPercent}%` }}
+                        />
+                      </div>
                     </div>
                   </div>
 
-                  <div className={`flex justify-between md:block ${outOfStockClass}`}>
-                    <span className="md:hidden text-[12px] font-medium text-muted">Cant:</span>
-                    <span
-                      className={`text-sm ${
-                        product.stockStatus !== "normal"
-                          ? "font-bold " +
-                            (product.stockStatus === "low"
-                              ? "text-[var(--color-warning-ink)]"
-                              : "text-[var(--color-negative)]")
-                          : ""
-                      }`}
-                    >
-                      {product.stockQuantity} uds
-                    </span>
-                  </div>
-
-                  <div className="flex justify-end gap-2 relative">
+                  <div className="absolute right-2 top-2 flex gap-1 lg:static lg:justify-end lg:gap-2">
                     <button
                       onClick={() => setEditingProduct(product)}
-                      className="p-1.5 hover:bg-slate-100 dark:hover:bg-slate-800 rounded text-primary transition-colors animate-in fade-in"
-                      title="Editar Producto"
+                      className="rounded p-1.5 text-primary transition-colors hover:bg-slate-100 dark:hover:bg-slate-800"
+                      title="Editar producto"
                     >
-                      <Edit className="w-5 h-5" />
+                      <Edit className="h-4 w-4 lg:h-5 lg:w-5" />
                     </button>
                     <div className="relative inline-block text-left">
                       <button
@@ -711,7 +713,7 @@ export default function InventoryClient({ products, summary }: Props) {
       {/* Paginación */}
       {filteredProducts.length > 0 && (
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4 border-t border-slate-200/60 dark:border-slate-800/60 pt-6">
-          <div className="text-xs font-semibold text-slate-500 dark:text-slate-400">
+          <div className="text-[13px] font-medium text-slate-500 dark:text-slate-400">
             Mostrando <span className="font-bold text-slate-900 dark:text-slate-100">{Math.min((currentPage - 1) * itemsPerPage + 1, filteredProducts.length)}</span> al <span className="font-bold text-slate-900 dark:text-slate-100">{Math.min(currentPage * itemsPerPage, filteredProducts.length)}</span> de <span className="font-bold text-slate-900 dark:text-slate-100">{filteredProducts.length}</span> productos
           </div>
 
@@ -740,12 +742,12 @@ export default function InventoryClient({ products, summary }: Props) {
 
             {/* Botonera de navegación */}
             {totalPages > 1 && (
-              <div className="flex items-center gap-1">
+              <div className="flex flex-wrap items-center gap-1">
                 <button
                   type="button"
                   onClick={() => setCurrentPage(1)}
                   disabled={currentPage === 1}
-                  className="flex size-8 ux-touch-target items-center justify-center rounded-lg border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-350 disabled:opacity-40 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors disabled:cursor-not-allowed cursor-pointer"
+                  className="max-sm:hidden flex size-8 ux-touch-target items-center justify-center rounded-lg border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-350 disabled:opacity-40 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors disabled:cursor-not-allowed cursor-pointer"
                   title="Primera Página"
                 >
                   <ChevronsLeft className="w-4 h-4" />
@@ -788,7 +790,7 @@ export default function InventoryClient({ products, summary }: Props) {
                   type="button"
                   onClick={() => setCurrentPage(totalPages)}
                   disabled={currentPage === totalPages}
-                  className="flex size-8 ux-touch-target items-center justify-center rounded-lg border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-350 disabled:opacity-40 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors disabled:cursor-not-allowed cursor-pointer"
+                  className="max-sm:hidden flex size-8 ux-touch-target items-center justify-center rounded-lg border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-350 disabled:opacity-40 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors disabled:cursor-not-allowed cursor-pointer"
                   title="Última Página"
                 >
                   <ChevronsRight className="w-4 h-4" />
@@ -798,14 +800,6 @@ export default function InventoryClient({ products, summary }: Props) {
           </div>
         </div>
       )}
-
-      {/* FAB Mobile */}
-      <button
-        onClick={() => setIsModalOpen(true)}
-        className="md:hidden fixed bottom-24 right-6 size-14 bg-primary text-white rounded-full shadow-lg shadow-primary/30 flex items-center justify-center transition-transform hover:scale-110 active:scale-95 z-20"
-      >
-        <Plus className="w-8 h-8" />
-      </button>
 
       {/* Modal — Añadir Producto */}
       {isModalOpen && (
