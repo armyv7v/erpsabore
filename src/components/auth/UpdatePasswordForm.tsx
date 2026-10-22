@@ -11,45 +11,48 @@ const initialState: ActionState = {
   message: "",
 };
 
+const inputClass =
+  "h-11 w-full rounded-lg border border-[#1c1512]/15 bg-white pl-10 pr-12 text-[14px] leading-normal text-[var(--color-ink)] transition-colors placeholder:text-[var(--color-muted)] hover:border-[#1c1512]/25 focus:border-[var(--color-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]/20";
+
+const labelClass = "pb-1.5 text-[13px] font-medium text-[var(--color-muted)]";
+
+const iconClass =
+  "pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-[var(--color-muted)]";
+
 export default function UpdatePasswordForm() {
   const [state, formAction, isPending] = useActionState(updatePasswordAction, initialState);
   const [showPassword, setShowPassword] = useState(false);
 
   if (state.status === "success") {
     return (
-      <div className="space-y-5 login-fade-3">
-        <div className="rounded-xl border border-emerald-500/30 bg-emerald-500/10 px-4 py-4 text-sm text-emerald-200">
+      <div className="space-y-5">
+        <div className="rounded-lg border border-[var(--color-positive)]/25 bg-[var(--color-positive-bg)] px-4 py-3 text-[13px] text-[var(--color-positive-ink)]">
           <p className="font-semibold">Contraseña actualizada</p>
-          <p className="mt-1 text-emerald-200/80">{state.message}</p>
+          <p className="mt-1">{state.message}</p>
         </div>
-        <div className="pt-2 login-fade-5">
-          <Link
-            href="/login"
-            className="login-cta-btn w-full text-white font-bold py-4 rounded-xl flex items-center justify-center gap-2 group"
-          >
-            <span>Ir al inicio de sesión</span>
-            <LogIn className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-          </Link>
-        </div>
+        <Link
+          href="/login"
+          className="flex w-full items-center justify-center gap-2 rounded-xl bg-[var(--color-primary)] py-3 text-[13px] font-semibold text-white transition-colors hover:bg-[var(--color-primary-ink)]"
+        >
+          <span>Ir al inicio de sesión</span>
+          <LogIn className="size-4" aria-hidden="true" />
+        </Link>
       </div>
     );
   }
 
   return (
-    <form action={formAction} className="space-y-5">
-      <div className="flex flex-col login-fade-3">
-        <label
-          htmlFor="update-password"
-          className="text-[rgba(248,246,246,0.5)] text-xs font-bold pb-2 px-1"
-        >
+    <form action={formAction} className="space-y-4">
+      <div className="flex flex-col">
+        <label htmlFor="update-password" className={labelClass}>
           Nueva contraseña
         </label>
         <div className="relative">
-          <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-primary/60 w-5 h-5" />
+          <Lock aria-hidden="true" className={iconClass} />
           <input
             id="update-password"
             name="password"
-            className="login-glass-input flex w-full rounded-xl h-14 pl-12 pr-14 text-base font-normal leading-normal"
+            className={inputClass}
             placeholder="Mínimo 8 caracteres"
             type={showPassword ? "text" : "password"}
             autoComplete="new-password"
@@ -60,27 +63,28 @@ export default function UpdatePasswordForm() {
             onClick={() => setShowPassword((prev) => !prev)}
             aria-label={showPassword ? "Ocultar contraseña" : "Mostrar contraseña"}
             aria-pressed={showPassword}
-            className="absolute right-1 top-1/2 flex min-h-[44px] min-w-[44px] -translate-y-1/2 items-center justify-center rounded-lg text-primary/60 transition-colors hover:text-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+            className="absolute right-0 top-1/2 flex min-h-[44px] min-w-[44px] -translate-y-1/2 items-center justify-center rounded-lg text-[var(--color-muted)] transition-colors hover:text-[var(--color-ink)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-primary)]"
           >
-            {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+            {showPassword ? (
+              <EyeOff className="size-4" aria-hidden="true" />
+            ) : (
+              <Eye className="size-4" aria-hidden="true" />
+            )}
           </button>
         </div>
       </div>
 
-      <div className="flex flex-col login-fade-4">
-        <label
-          htmlFor="update-confirm"
-          className="text-[rgba(248,246,246,0.5)] text-xs font-bold pb-2 px-1"
-        >
+      <div className="flex flex-col">
+        <label htmlFor="update-confirm" className={labelClass}>
           Confirmar contraseña
         </label>
         <div className="relative">
-          <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-primary/60 w-5 h-5" />
+          <Lock aria-hidden="true" className={iconClass} />
           <input
             id="update-confirm"
             name="confirm"
-            className="login-glass-input flex w-full rounded-xl h-14 pl-12 pr-4 text-base font-normal leading-normal"
-            placeholder="Repetí tu nueva contraseña"
+            className={`${inputClass} pr-3`}
+            placeholder="Repita su nueva contraseña"
             type={showPassword ? "text" : "password"}
             autoComplete="new-password"
             required
@@ -89,21 +93,22 @@ export default function UpdatePasswordForm() {
       </div>
 
       {state.status === "error" ? (
-        <div className="rounded-xl border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-300 login-fade-5">
+        <div
+          role="alert"
+          className="rounded-lg border border-[var(--color-negative)]/25 bg-[var(--color-negative-bg)] px-3 py-2.5 text-[13px] leading-relaxed text-[var(--color-negative-ink)]"
+        >
           {state.message}
         </div>
       ) : null}
 
-      <div className="pt-2 login-fade-5">
-        <button
-          className="login-cta-btn w-full text-white font-bold py-4 rounded-xl flex items-center justify-center gap-2 group disabled:opacity-70"
-          type="submit"
-          disabled={isPending}
-        >
-          <span>{isPending ? "Actualizando..." : "Actualizar contraseña"}</span>
-          <Lock className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-        </button>
-      </div>
+      <button
+        className="flex w-full items-center justify-center gap-2 rounded-xl bg-[var(--color-primary)] py-3 text-[13px] font-semibold text-white transition-colors hover:bg-[var(--color-primary-ink)] disabled:cursor-not-allowed disabled:opacity-70"
+        type="submit"
+        disabled={isPending}
+      >
+        <span>{isPending ? "Actualizando…" : "Actualizar contraseña"}</span>
+        <Lock className="size-4" aria-hidden="true" />
+      </button>
     </form>
   );
 }

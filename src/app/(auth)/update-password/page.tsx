@@ -4,7 +4,7 @@ import UpdatePasswordForm from "@/components/auth/UpdatePasswordForm";
 
 export const metadata = {
   title: "Nueva contraseña | Saboré",
-  description: "Definí tu nueva contraseña.",
+  description: "Defina su nueva contraseña.",
 };
 
 interface UpdatePasswordPageProps {
@@ -28,12 +28,12 @@ export default async function UpdatePasswordPage({ searchParams }: UpdatePasswor
   const expired = error === "expired" || !hasSession;
 
   return (
-    <main className="min-h-screen bg-[#1c110b] text-[#f8f6f6] flex items-center justify-center p-4">
-      <div className="login-glass-card rounded-3xl p-8 w-full max-w-[480px] login-fade-2 relative overflow-hidden">
-        <div className="mb-6 login-fade-1">
-          <Link href="/login" className="inline-flex items-center gap-2 h-8 w-auto">
+    <main className="flex min-h-screen items-center justify-center bg-[var(--color-frame)] p-4 text-slate-900 dark:bg-background-dark dark:text-slate-100">
+      <div className="w-full max-w-[440px] rounded-xl border border-slate-200 bg-white p-8 dark:border-slate-800 dark:bg-slate-900">
+        <div className="mb-6">
+          <Link href="/login" className="inline-flex h-8 w-auto items-center gap-2">
             <img
-              src="/brand/logo_blanco_sin_fondo.png"
+              src="/brand/logo_camel_sin_fondo.png"
               alt="Saboré Insumos"
               className="h-8 w-auto object-contain"
             />
@@ -41,31 +41,29 @@ export default async function UpdatePasswordPage({ searchParams }: UpdatePasswor
         </div>
 
         {expired ? (
-          <div className="space-y-5 login-fade-3">
-            <h1 className="text-2xl sm:text-3xl font-black tracking-tight">
+          <div className="space-y-5">
+            <h1 className="text-2xl font-semibold tracking-tight text-slate-900 dark:text-white">
               Enlace expirado o inválido
             </h1>
-            <div className="rounded-xl border border-red-500/30 bg-red-500/10 px-4 py-4 text-sm text-red-300">
+            <div className="rounded-lg border border-[var(--color-negative)]/25 bg-[var(--color-negative-bg)] px-4 py-3 text-[13px] leading-relaxed text-[var(--color-negative-ink)]">
               <p>
-                Este enlace de recuperación ya no es válido. Solicitá uno nuevo para continuar.
+                Este enlace de recuperación ya no es válido. Solicite uno nuevo para continuar.
               </p>
             </div>
-            <div className="pt-2 login-fade-5">
-              <Link
-                href="/forgot-password"
-                className="login-cta-btn w-full text-white font-bold py-4 rounded-xl flex items-center justify-center gap-2 group"
-              >
-                <span>Solicitar nuevo enlace</span>
-              </Link>
-            </div>
+            <Link
+              href="/forgot-password"
+              className="flex w-full items-center justify-center gap-2 rounded-xl bg-[var(--color-primary)] py-3 text-[13px] font-semibold text-white transition-colors hover:bg-[var(--color-primary-ink)]"
+            >
+              Solicitar nuevo enlace
+            </Link>
           </div>
         ) : (
           <>
-            <h1 className="login-fade-2 text-2xl sm:text-3xl font-black tracking-tight mb-3">
+            <h1 className="text-2xl font-semibold tracking-tight text-slate-900 dark:text-white">
               Nueva contraseña
             </h1>
-            <p className="login-fade-3 text-[rgba(248,246,246,0.7)] text-sm leading-relaxed mb-8">
-              Definí tu nueva contraseña. Debe tener al menos 8 caracteres.
+            <p className="mt-2 mb-6 text-sm leading-relaxed text-[var(--color-muted)]">
+              Defina su nueva contraseña. Debe tener al menos 8 caracteres.
             </p>
             <UpdatePasswordForm />
           </>

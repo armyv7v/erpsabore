@@ -11,21 +11,24 @@ const initialState: ActionState = {
   message: "",
 };
 
+const inputClass =
+  "h-11 w-full rounded-lg border border-[#1c1512]/15 bg-white pl-10 pr-3 text-[14px] leading-normal text-[var(--color-ink)] transition-colors placeholder:text-[var(--color-muted)] hover:border-[#1c1512]/25 focus:border-[var(--color-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]/20";
+
+const linkClass =
+  "rounded py-1 text-[13px] text-[var(--color-muted)] underline-offset-4 transition-colors hover:text-[var(--color-primary-ink)] hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-primary)]";
+
 export default function ForgotPasswordForm() {
   const [state, formAction, isPending] = useActionState(requestPasswordResetAction, initialState);
 
   if (state.status === "success") {
     return (
-      <div className="space-y-5 login-fade-3">
-        <div className="rounded-xl border border-emerald-500/30 bg-emerald-500/10 px-4 py-4 text-sm text-emerald-200">
-          <p className="font-semibold">Revisá tu correo</p>
-          <p className="mt-1 text-emerald-200/80">{state.message}</p>
+      <div className="space-y-5">
+        <div className="rounded-lg border border-[var(--color-positive)]/25 bg-[var(--color-positive-bg)] px-4 py-3 text-[13px] text-[var(--color-positive-ink)]">
+          <p className="font-semibold">Revise su correo</p>
+          <p className="mt-1">{state.message}</p>
         </div>
-        <div className="text-center">
-          <Link
-            href="/login"
-            className="rounded px-1 py-1 text-xs font-semibold text-primary/80 underline-offset-4 hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
-          >
+        <div className="flex justify-center">
+          <Link href="/login" className={linkClass}>
             Volver al inicio de sesión
           </Link>
         </div>
@@ -34,20 +37,23 @@ export default function ForgotPasswordForm() {
   }
 
   return (
-    <form action={formAction} className="space-y-5">
-      <div className="flex flex-col login-fade-3">
+    <form action={formAction} className="space-y-4">
+      <div className="flex flex-col">
         <label
           htmlFor="forgot-email"
-          className="text-[rgba(248,246,246,0.5)] text-xs font-bold pb-2 px-1"
+          className="pb-1.5 text-[13px] font-medium text-[var(--color-muted)]"
         >
           Correo electrónico
         </label>
         <div className="relative">
-          <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-primary/60 w-5 h-5" />
+          <Mail
+            aria-hidden="true"
+            className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-[var(--color-muted)]"
+          />
           <input
             id="forgot-email"
             name="email"
-            className="login-glass-input flex w-full rounded-xl h-14 pl-12 pr-4 text-base font-normal leading-normal"
+            className={inputClass}
             placeholder="correo@ejemplo.cl"
             type="email"
             autoComplete="email"
@@ -57,27 +63,25 @@ export default function ForgotPasswordForm() {
       </div>
 
       {state.status === "error" ? (
-        <div className="rounded-xl border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-300 login-fade-4">
+        <div
+          role="alert"
+          className="rounded-lg border border-[var(--color-negative)]/25 bg-[var(--color-negative-bg)] px-3 py-2.5 text-[13px] leading-relaxed text-[var(--color-negative-ink)]"
+        >
           {state.message}
         </div>
       ) : null}
 
-      <div className="pt-2 login-fade-5">
-        <button
-          className="login-cta-btn w-full text-white font-bold py-4 rounded-xl flex items-center justify-center gap-2 group disabled:opacity-70"
-          type="submit"
-          disabled={isPending}
-        >
-          <span>{isPending ? "Enviando..." : "Enviar enlace de recuperación"}</span>
-          <Send className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-        </button>
-      </div>
+      <button
+        className="flex w-full items-center justify-center gap-2 rounded-xl bg-[var(--color-primary)] py-3 text-[13px] font-semibold text-white transition-colors hover:bg-[var(--color-primary-ink)] disabled:cursor-not-allowed disabled:opacity-70"
+        type="submit"
+        disabled={isPending}
+      >
+        <span>{isPending ? "Enviando…" : "Enviar enlace de recuperación"}</span>
+        <Send className="size-4" aria-hidden="true" />
+      </button>
 
-      <div className="text-center">
-        <Link
-          href="/login"
-          className="rounded px-1 py-1 text-xs font-semibold text-primary/80 underline-offset-4 hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
-        >
+      <div className="flex justify-center">
+        <Link href="/login" className={linkClass}>
           Volver al inicio de sesión
         </Link>
       </div>
