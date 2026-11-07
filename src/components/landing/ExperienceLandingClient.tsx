@@ -12,6 +12,7 @@ import styles from "./ExperienceLanding.module.css";
 export default function ExperienceLandingClient() {
   const [loginMode, setLoginMode] = useState<"client" | "erp">("client");
   const [paused, setPaused] = useState(false);
+  const [sceneQuiet, setSceneQuiet] = useState(false);
   const [stageError, setStageError] = useState<string | null>(null);
   const progressRef = useRef<HTMLSpanElement | null>(null);
 
@@ -107,7 +108,7 @@ export default function ExperienceLandingClient() {
       </header>
 
       <section className={styles.hero} id="contenido" aria-labelledby="hero-title">
-        <ExperienceStage paused={paused} onError={setStageError} />
+        <ExperienceStage paused={paused} quiet={sceneQuiet} onError={setStageError} />
         <div className={styles.heroOverlay} aria-hidden="true" />
 
         <div className={styles.heroInner}>
@@ -133,7 +134,18 @@ export default function ExperienceLandingClient() {
             <p className={styles.hint}>Arrastre para girar · Mueva para inclinar la luz</p>
           </div>
 
-          <aside className={styles.accessCard} id="acceso" aria-labelledby="login-title">
+          <aside
+            className={styles.accessCard}
+            id="acceso"
+            aria-labelledby="login-title"
+            onFocus={() => setSceneQuiet(true)}
+            onBlur={(event) => {
+              const next = event.relatedTarget;
+              if (!(next instanceof Node) || !event.currentTarget.contains(next)) {
+                setSceneQuiet(false);
+              }
+            }}
+          >
             <div className={styles.loginTabs} role="tablist" aria-label="Tipo de acceso">
               <button
                 type="button"

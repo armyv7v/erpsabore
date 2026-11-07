@@ -6,15 +6,17 @@ import { FRAGMENT_SHADER, VERTEX_SHADER } from "./experience-shaders";
 
 type ExperienceStageProps = {
   paused: boolean;
+  quiet: boolean;
   onError: (message: string) => void;
 };
 
 const FREEZE = 7.5;
 
-export default function ExperienceStage({ paused, onError }: ExperienceStageProps) {
+export default function ExperienceStage({ paused, quiet, onError }: ExperienceStageProps) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const controlRef = useRef<{ start: () => void; stop: () => void } | null>(null);
   const pausedRef = useRef(paused);
+  const quietRef = useRef(quiet);
 
   useEffect(() => {
     const canvasEl = canvasRef.current;
@@ -90,7 +92,7 @@ export default function ExperienceStage({ paused, onError }: ExperienceStageProp
       const aspect = (el.clientWidth || 1) / (el.clientHeight || 1);
       if (aspect >= 1.5) fit = 1;
       else if (aspect >= 1) fit = Math.max(0.7, aspect / 1.5);
-      else fit = Math.max(0.34, aspect * 0.62);
+      else fit = Math.max(0.40, aspect * 0.62);
       camX = Math.min(0.18, Math.max(0, (aspect - 1) * 0.18));
     }
 
@@ -168,7 +170,7 @@ export default function ExperienceStage({ paused, onError }: ExperienceStageProp
     }
 
     function start() {
-      if (!program || reduceMq.matches || pausedRef.current || !heroVisible || document.hidden) return;
+      if (!program || reduceMq.matches || pausedRef.current || quietRef.current || !heroVisible || document.hidden) return;
       if (running) return;
       running = true;
       last = 0;
@@ -338,10 +340,11 @@ export default function ExperienceStage({ paused, onError }: ExperienceStageProp
 
   useEffect(() => {
     pausedRef.current = paused;
+    quietRef.current = quiet;
     if (!controlRef.current) return;
-    if (paused) controlRef.current.stop();
+    if (paused || quiet) controlRef.current.stop();
     else controlRef.current.start();
-  }, [paused]);
+  }, [paused, quiet]);
 
   return (
     <div className={styles.stage}>
