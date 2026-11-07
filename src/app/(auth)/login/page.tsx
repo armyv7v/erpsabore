@@ -1,19 +1,16 @@
-"use client";
+import type { Metadata, Viewport } from "next";
+import ExperienceLandingClient from "@/components/landing/ExperienceLandingClient";
 
-import dynamic from "next/dynamic";
+export const metadata: Metadata = {
+  title: "Saboré — Insumos y suministros gastronómicos",
+  description:
+    "Catálogo con precios por mayor y detalle, listas guardadas y despacho coordinado para su negocio.",
+};
 
-const LivingLandingClient = dynamic(
-  () => import("@/components/landing/LivingLandingClient"),
-  {
-    ssr: false,
-    loading: () => (
-      <main className="flex min-h-screen items-center justify-center bg-[#f3f2f0]">
-        <div className="size-6 animate-pulse rounded-full bg-[var(--color-primary)]/30" />
-      </main>
-    ),
-  }
-);
+export const viewport: Viewport = {
+  themeColor: "#f3f2f0",
+};
 
 export default function LoginPage() {
-  return <LivingLandingClient />;
+  return <ExperienceLandingClient />;
 }

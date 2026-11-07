@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Public_Sans } from "next/font/google";
 import { Suspense } from "react";
 import "./globals.css";
@@ -13,7 +13,10 @@ export const metadata: Metadata = {
   title: "ERP Sabore",
   description: "Sistema ERP Empresarial",
   manifest: "/manifest.webmanifest",
-  themeColor: "#0f766e",
+};
+
+export const viewport: Viewport = {
+  themeColor: "#f3f2f0",
 };
 
 export default function RootLayout({
